@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.comments</OriginalElement>
+  <nodes>
+    <node x="816.0" y="593.5">06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.posts</node>
+    <node x="669.0347758887171" y="443.53091190108194">06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.tags</node>
+    <node x="848.5" y="444.03091190108194">06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.posts_tags</node>
+    <node x="402.5" y="534.0">06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.users_posts</node>
+    <node x="148.83771251931992" y="708.4397217928902">06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.subscribers</node>
+    <node x="412.0" y="829.0">06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.users</node>
+    <node x="148.83771251931992" y="950.0">06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.roles</node>
+    <node x="820.0" y="941.9690880989181">06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.comments</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.subscribers" target="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.users" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.comments" target="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.users" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.users" target="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.roles" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.comments" target="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.posts" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.posts_tags" target="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.posts" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="907.4013189929682" y="569.7391257494897" />
+      <point x="906.0455687451366" y="587.9979059557604" />
+      <point x="905.9148316134351" y="605.902759607916" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.posts_tags" target="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.tags" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.users_posts" target="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.posts" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.posts" target="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.users" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="569.2124572906038" y="942.9335818810531" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.users_posts" target="06084e92-5e98-4229-80e2-c5d049c6b7bb.TABLE:blog.users" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Edge Bundled Organic" zoom="0.6568527918781726" showDependencies="false" x="803.2805255023184" y="883.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

@@ -1,0 +1,190 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: University project
+  license:
+    name: none
+servers:
+  - url: http://university.project.ru
+
+paths:
+  /authorize:
+    get:
+      summary: authorization
+      oprationId: authorization
+      tags:
+        - OAuth
+      
+  /oauth/token:
+    post:
+      summary: authorization
+      oprationId: authorization
+      tags:
+        - OAuth
+    
+  /v1/users/{userId}:
+    get:
+      summary: Get user
+      tags:
+        - Users
+    delete:
+      summary: Delete user
+      oprationId: authorization
+      tags:
+        - Users
+    put:
+      summary: Update user
+      tags:
+        - Users
+    
+  /v1/users:
+    post:
+      summary: Create user
+      tags:
+        - Users
+    get:
+      summary: Get list of users
+      tags:
+        - Users
+
+  
+  /v1/users/{userId}/profiles/{profileId}:
+    put:
+      summary: Update user profile
+      tags:
+        - User-profiles
+    get:
+      summary: Get user profile
+      tags:
+        - User-profiles
+    delete:
+      summary: Delete user profile
+      tags:
+        - User-profiles
+    
+  /v1/users/{userId}/profiles:  
+    post:  
+      summary: Create user profile
+      tags:
+        - User-profiles
+    get:
+      summary: Get list of user profiles
+      tags:
+        - User-profiles
+        
+  /v1/users/{userId}/profile/{profileId}/article:
+    get:
+      summary: Get list of user arcticles
+      tags:
+        - Arcticles
+    post:
+      summary: Create arcticle
+      tags:
+        - Arcticles
+  /v1/users/{userId}/profile/{profileId}/article/{arcticleId}:
+    get:
+      summary: Get user arcticle
+      tags:
+        - Arcticles
+    put:
+      summary: Update user arcticle
+      tags:
+        - Arcticles
+    delete:
+      summary: Delete user arcticle
+      tags:
+        - Arcticles
+  /v1/users/{userId}/profile/{profileId}/article/{arcticleId}/searches:
+    get:
+      summary: Searches arcticles
+      tags:
+        - Arcticles
+        
+  /v1/users/{userId}/subscribes/{subscribeUserId}/following:
+    post:
+      summary: Create subscribe on user
+      tags:
+        - Subscribes
+  /v1/users/{userId}/subscribes:
+    get:
+      summary: Get list of user subscribes
+      tags:
+        - Subscribes
+  /v1/users/{userId}/subscribes/{subscribeId}:
+    get:
+      summary: Get user subscribe
+      tags:
+        - Subscribes
+    put:
+      summary: Update subscribe on user
+      tags:
+        - Subscribes
+    delete:
+      summary: Delete subscribe on user
+      tags:
+        - Subscribes
+  /v1/users/{userId}/articles/{arcticleId}/likes:
+    get:
+      summary: Get likes
+      tags:
+        - Likes
+    post:
+      summary: Create like
+      tags:
+        - Likes
+    delete:
+      summary: Delete like
+      tags:
+        - Likes
+  /v1/users/{userId}/bookmarks:
+    get:
+      summary: Get list of user bookmarks
+      tags:
+        - Bookmarks
+    post:
+      summary: Create user bookmark
+      tags:
+        - Bookmarks
+  /v1/users/{userId}/bookmarks/{bookmarkId}:
+    delete:
+      summary: Delet user bookmark
+      tags:
+        - Bookmarks
+    put:
+      summary: Update user bookmark
+      tags:
+        - Bookmarks
+    get:
+      summary: Get user bookmarks
+      tags:
+        - Bookmarks
+        
+  /v1/users/{userId}/arcticles/{articleId}/comments/{userAuthorId}/posting:
+    post:
+      summary: Create comment for article
+      tags:
+        - Comments
+    get:
+      summary: Get list of user comments
+      tags:
+        - Comments
+  /v1/users/{userId}/arcticles/{articleId}/comments/{commentId}:
+    get:
+      summary: Get user comment
+      tags:
+        - Comments
+    put:
+      summary: Get list of user comments
+      tags:
+        - Comments
+    delete:
+      summary: Get list of user comments
+      tags:
+        - Comments
+  
+      
+  
+  
+  
+  
+  

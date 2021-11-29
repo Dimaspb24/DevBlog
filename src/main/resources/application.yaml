@@ -1,0 +1,6 @@
+spring:
+  flyway:
+    user: ''
+    password: ''
+    url: ''
+

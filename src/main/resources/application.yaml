@@ -3,7 +3,6 @@ spring:
     user: ''
     password: ''
     url: ''
-    enabled: false
   datasource:
     username: ''
     password: ''

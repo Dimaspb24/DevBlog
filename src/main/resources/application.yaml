@@ -3,4 +3,12 @@ spring:
     user: ''
     password: ''
     url: ''
+    enabled: false
+  datasource:
+    username: ''
+    password: ''
+    url: ''
+  redis:
+    host: ''
+    port:
 

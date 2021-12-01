@@ -1,0 +1,47 @@
+version: 1.0.0
+services:
+  postgres:
+    image: postgres:alpine3.15
+    restart: always
+    environment:
+      POSTGRES_USER: demouser
+      POSTGRES_PASSWORD: demopassword
+      POSTGRES_DB: postgres
+    ports:
+      - "15432:5432"
+    networks:
+      app-network:
+
+  redis:
+    image: redis:alpine3.15
+    restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "16379:6379"
+    networks:
+      app-network:
+
+  app:
+    build: ../
+    environment:
+      SPRING_FLYWAY_USER: demouser
+      SPRING_FLYWAY_PASSWORD: demopassword
+      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/postgres
+
+      SPRING_DATASOURCE_USERNAME: demouser
+      SPRING_DATASOURCE_PASSWORD: demopassword
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+    ports:
+      -  "8080:8080"
+    networks:
+      app-network:
+
+networks:
+  app-network:
+    name: app-network
+    driver: bridge
+

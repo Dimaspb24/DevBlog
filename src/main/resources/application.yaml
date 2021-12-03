@@ -1,13 +1,8 @@
 spring:
-  flyway:
-    user: ''
-    password: ''
-    url: ''
   datasource:
     username: ''
     password: ''
     url: ''
-  redis:
-    host: ''
-    port:
+  flyway:
+    out-of-order: true
 

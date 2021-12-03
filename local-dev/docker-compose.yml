@@ -1,0 +1,33 @@
+version: "3.3"
+services:
+  postgres:
+    image: postgres:alpine3.15
+    restart: always
+    environment:
+      POSTGRES_USER: demouser
+      POSTGRES_PASSWORD: demopassword
+      POSTGRES_DB: postgres
+    ports:
+      - "15432:5432"
+    networks:
+      app-network:
+
+  app:
+    build: ../
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_USERNAME: demouser
+      SPRING_DATASOURCE_PASSWORD: demopassword
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+
+    ports:
+      -  "8080:8080"
+    networks:
+      app-network:
+
+networks:
+  app-network:
+    name: app-network
+    driver: bridge
+

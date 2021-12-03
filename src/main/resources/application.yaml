@@ -1,8 +1,8 @@
 spring:
   datasource:
-    username: ''
-    password: ''
-    url: ''
+    username: demouser
+    password: demopassword
+    url: jdbc:postgresql://localhost:5432/postgres
   flyway:
     out-of-order: true
 

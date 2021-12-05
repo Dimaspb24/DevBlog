@@ -4,11 +4,15 @@ import com.project.devblog.model.enums.Role;
 import com.project.devblog.model.enums.StatusUser;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@DynamicInsert
+@DynamicUpdate
 @Data
 @ToString(exclude = {"selfComments", "receivedComments", "selfPosts", "subscribers", "subscriptions", "relationPosts"})
 @EqualsAndHashCode(of = "login")
@@ -22,7 +26,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Integer id;
     String login;
     String password;
     @Enumerated(EnumType.STRING)
@@ -36,12 +40,12 @@ public class UserEntity {
     PersonalInfo personalInfo;
 
     @Builder.Default
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("createdDate")
     List<CommentEntity> selfComments = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("createdDate")
     List<CommentEntity> receivedComments = new ArrayList<>();
 
@@ -73,7 +77,7 @@ public class UserEntity {
 
     // todo нужна ли нам эта связь здесь?
     @Builder.Default
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     List<UserPostEntity> relationPosts = new ArrayList<>();
 
     /*-----------------------------------FOR_MANY_TO_MANY_SUBSCRIBERS--------------------------------*/
@@ -87,5 +91,4 @@ public class UserEntity {
         subscriber.getSubscribers().remove(this);
     }
 
-    /*-----------------------------------FOR_MANY_TO_MANY_RELATION_POSTS--------------------------------*/
 }

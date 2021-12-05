@@ -12,8 +12,8 @@ create table if not exists users
     info         text      null,
     phone        text      null,
     enabled      boolean   null     default true,
-    created_date timestamp not null,
-    updated_date timestamp not null,
+    created_date timestamp not null default now(),
+    updated_date timestamp not null default now(),
     constraint unique_nickname unique (nickname),
     constraint unique_phone unique (phone),
     constraint unique_login unique (login)

@@ -10,6 +10,7 @@ spring:
     show-sql: true
     properties:
       hibernate:
+        format_sql: true
 #        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
 

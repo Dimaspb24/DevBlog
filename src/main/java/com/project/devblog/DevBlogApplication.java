@@ -1,13 +1,39 @@
 package com.project.devblog;
 
+import com.project.devblog.model.UserEntity;
+import com.project.devblog.model.enums.Role;
+import com.project.devblog.model.enums.StatusUser;
+import com.project.devblog.repository.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import javax.transaction.Transactional;
+
 @SpringBootApplication
-public class DevBlogApplication {
+@RequiredArgsConstructor
+public class DevBlogApplication implements CommandLineRunner {
+
+    final UserRepository userRepository;
+    final PostRepository postRepository;
+    final UserPostRepository userPostRepository;
+    final CommentRepository commentRepository;
+    final TagRepository tagRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(DevBlogApplication.class, args);
     }
 
+    @Transactional
+    @Override
+    public void run(String... args) throws Exception {
+//        UserEntity user1 = UserEntity.builder()
+//                .login("dima@mail.ru")
+//                .password("12345678")
+//                .role(Role.USER)
+//                .status(StatusUser.ACTIVE)
+//                .build();
+//        userRepository.save(user1);
+    }
 }

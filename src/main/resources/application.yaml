@@ -1,8 +1,20 @@
 spring:
+
   datasource:
     username: demouser
     password: demopassword
     url: jdbc:postgresql://localhost:5432/postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+#        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+
   flyway:
     out-of-order: true
 
+server:
+  port : 8081

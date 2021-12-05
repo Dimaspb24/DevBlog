@@ -20,7 +20,6 @@ services:
       SPRING_DATASOURCE_USERNAME: demouser
       SPRING_DATASOURCE_PASSWORD: demopassword
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
-
     ports:
       -  "8081:8080"
     networks:
@@ -30,4 +29,3 @@ networks:
   app-network:
     name: app-network
     driver: bridge
-

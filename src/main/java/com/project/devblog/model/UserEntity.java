@@ -81,12 +81,12 @@ public class UserEntity {
     List<UserPostEntity> relationPosts = new ArrayList<>();
 
     /*-----------------------------------FOR_MANY_TO_MANY_SUBSCRIBERS--------------------------------*/
-    private void addSubscription(UserEntity subscriber) {
+    public void addSubscription(UserEntity subscriber) {
         subscriptions.add(subscriber);
         subscriber.getSubscribers().add(this);
     }
 
-    private void removeSubscription(UserEntity subscriber) {
+    public void removeSubscription(UserEntity subscriber) {
         subscriptions.remove(subscriber);
         subscriber.getSubscribers().remove(this);
     }

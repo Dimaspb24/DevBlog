@@ -40,17 +40,17 @@ public class CommentEntity {
     UserEntity receiver;
 
     /*-----------------------------------FOR_MANY_TO_ONE--------------------------------*/
-    private void setPost(PostEntity post) {
+    public void setPost(PostEntity post) {
         this.post = post;
         post.getComments().add(this);
     }
 
-    private void setAuthor(UserEntity author) {
+    public void setAuthor(UserEntity author) {
         this.author = author;
         author.getSelfComments().add(this);
     }
 
-    private void setReceiver(UserEntity receiver) {
+    public void setReceiver(UserEntity receiver) {
         this.receiver = receiver;
         receiver.getReceivedComments().add(this);
     }

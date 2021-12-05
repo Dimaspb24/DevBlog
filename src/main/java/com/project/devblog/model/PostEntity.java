@@ -58,18 +58,18 @@ public class PostEntity {
     List<UserPostEntity> relationUsers = new ArrayList<>();
 
     /*-----------------------------------FOR_MANY_TO_MANY_TAG--------------------------------*/
-    private void addTag(TagEntity tag) {
+    public void addTag(TagEntity tag) {
         tags.add(tag);
         tag.getPosts().add(this);
     }
 
-    private void removeTag(TagEntity tag) {
+    public void removeTag(TagEntity tag) {
         tags.remove(tag);
         tag.getPosts().remove(this);
     }
 
     /*-----------------------------------FOR_MANY_TO_ONE_AUTHOR--------------------------------*/
-    private void setAuthor(UserEntity author) {
+    public void setAuthor(UserEntity author) {
         this.author = author;
         author.getSelfPosts().add(this);
     }

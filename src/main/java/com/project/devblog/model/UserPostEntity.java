@@ -35,13 +35,13 @@ public class UserPostEntity {
     PostEntity post;
 
     /*-----------------------------------FOR_MANY_TO_ONE_USER--------------------------------*/
-    private void setUser(UserEntity user) {
+    public void setUser(UserEntity user) {
         this.user = user;
         user.getRelationPosts().add(this);
     }
 
     /*-----------------------------------FOR_MANY_TO_ONE_POST--------------------------------*/
-    private void setPost(PostEntity post) {
+    public void setPost(PostEntity post) {
         this.post = post;
         post.getRelationUsers().add(this);
     }

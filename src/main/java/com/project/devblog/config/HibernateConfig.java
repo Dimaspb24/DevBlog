@@ -16,7 +16,7 @@ import java.util.Properties;
 @Configuration
 @RequiredArgsConstructor
 public class HibernateConfig {
-
+//
 //    private final Environment env;
 //
 //    @Bean(name = "dataSource")

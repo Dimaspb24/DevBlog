@@ -83,12 +83,10 @@ public class UserEntity {
     /*-----------------------------------FOR_MANY_TO_MANY_SUBSCRIBERS--------------------------------*/
     public void addSubscription(UserEntity subscriber) {
         subscriptions.add(subscriber);
-        subscriber.getSubscribers().add(this);
     }
 
     public void removeSubscription(UserEntity subscriber) {
         subscriptions.remove(subscriber);
-        subscriber.getSubscribers().remove(this);
     }
 
 }

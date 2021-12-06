@@ -14,8 +14,8 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@EnableTransactionManagement
-@RequiredArgsConstructor
+//@EnableTransactionManagement
+//@RequiredArgsConstructor
 //@PropertySource({"classpath:persistence-h2.properties"})
 public class HibernateConf {
 

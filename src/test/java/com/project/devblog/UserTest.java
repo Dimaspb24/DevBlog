@@ -5,26 +5,28 @@ import com.project.devblog.model.enums.Role;
 import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.repository.UserPostRepository;
 import com.project.devblog.repository.UserRepository;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.junit.Before;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.project.devblog.service.UserService;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@ContextConfiguration(classes = { PersistenceConfig.class }, loader = AnnotationConfigContextLoader.class)
 //@TransactionConfiguration(transactionManager = "txMgr" , defaultRollback = false)
-class UserTest extends AbstractIT {
+public class UserTest extends AbstractIT {
 
-    // todo Нужно сделать так, чтобы здесь была возможность управялть транзакциями в тестах!!!
+//    @Autowired
+//    EntityManager entityManager;
+
+//    TransactionManager transactionManager = new ;
+
+    @Autowired
+    TransactionTemplate transactionTemplate;
 
 //    @Autowired
 //    private SessionFactory sessionFactory;
@@ -47,6 +49,9 @@ class UserTest extends AbstractIT {
     @Autowired
     UserRepository userRepository;
 //    final PostRepository postRepository;
+
+    @Autowired
+    UserService userService;
     @Autowired
     UserPostRepository userPostRepository;
 //    final CommentRepository commentRepository;
@@ -68,19 +73,32 @@ class UserTest extends AbstractIT {
         userRepository.save(user1);
     }
 
-    @Rollback(value = false)
     @Test
-    @Transactional
-    void addSubscriber() {
-        UserEntity user1 = userRepository.findById(1).orElseThrow();
-        UserEntity user2 = userRepository.findById(2).orElseThrow();
-        user1.addSubscription(user2);
+    void addSubscription() {
+        userService.addSubscription(1, 2);
 
-        System.out.println("OK");
+        transactionTemplate.executeWithoutResult(transactionStatus -> {
+            UserEntity user1 = userRepository.findById(1).orElseThrow();
+            UserEntity user2 = userRepository.findById(2).orElseThrow();
+
+            List<UserEntity> subscriptionsUser1 = user1.getSubscriptions();
+            List<UserEntity> subscribersUser2 = user2.getSubscribers();
+
+            System.out.println("subscriptionsUser1 = " + subscriptionsUser1);
+            System.out.println("subscribersUser2 = " + subscribersUser2);
+
+            assertEquals(subscriptionsUser1.size(), subscribersUser2.size());
+            assertTrue(subscriptionsUser1.contains(user2));
+            assertTrue(subscribersUser2.contains(user1));
+        });
     }
 
     @Test
+    @Transactional
     void checkSubscribers() {
-        userPostRepository.findAll().forEach(System.out::println);
+        UserEntity user1 = userRepository.findById(1).orElseThrow();
+        user1.getSubscriptions().forEach(System.out::println);
+        UserEntity user2 = userRepository.findById(2).orElseThrow();
+        user2.getSubscribers().forEach(System.out::println);
     }
 }

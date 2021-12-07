@@ -3,6 +3,7 @@ package com.project.devblog.security.jwt;
 import com.project.devblog.model.enums.Role;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Component
-@RequiredArgsConstructor
 public class JwtTokenProvider {
 
     @Value(("${jwt.token.secret}"))
@@ -26,7 +26,8 @@ public class JwtTokenProvider {
     @Value(("${jwt.token.expired}"))
     private long validityInMs;
 
-    private final UserDetailsService userDetailsService;
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

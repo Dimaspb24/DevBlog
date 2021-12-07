@@ -4,6 +4,8 @@ import com.project.devblog.model.enums.Role;
 import com.project.devblog.model.enums.StatusUser;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +14,8 @@ import java.util.List;
 @Data
 @ToString(exclude = {"selfComments", "receivedComments", "selfPosts", "subscribers", "subscriptions", "relationPosts"})
 @EqualsAndHashCode(of = "login")
+@DynamicInsert
+@DynamicUpdate
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -3,12 +3,16 @@ package com.project.devblog.model;
 import com.project.devblog.model.enums.BookmarkType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Data
 @ToString(exclude = {"user", "post"})
 @EqualsAndHashCode(of = "id")
+@DynamicInsert
+@DynamicUpdate
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

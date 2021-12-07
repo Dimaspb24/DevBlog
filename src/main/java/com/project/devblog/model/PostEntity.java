@@ -3,6 +3,8 @@ package com.project.devblog.model;
 import com.project.devblog.model.enums.StatusPost;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +14,8 @@ import java.util.List;
 @Data
 @ToString(exclude = {"comments", "author", "tags", "relationUsers"})
 @EqualsAndHashCode(of = "id")
+@DynamicInsert
+@DynamicUpdate
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

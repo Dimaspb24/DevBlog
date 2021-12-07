@@ -12,8 +12,8 @@ create table if not exists users
     info         text      null,
     phone        text      null,
     enabled      boolean   null     default true,
-    created_date timestamp not null,
-    updated_date timestamp not null,
+    created_date timestamp not null default now(),
+    updated_date timestamp not null default now(),
     constraint unique_nickname unique (nickname),
     constraint unique_phone unique (phone),
     constraint unique_login unique (login)
@@ -22,15 +22,15 @@ create table if not exists users
 create table if not exists posts
 (
     id             serial    not null primary key,
-    user_id        int       null,
+    user_id        int       not null,
     title          text      not null,
     body           text      not null,
     status         text      not null,
     description    text      not null,
     enabled        boolean   not null default true,
-    created_date   timestamp not null,
-    updated_date   timestamp not null,
-    published_date timestamp not null,
+    created_date   timestamp not null default now(),
+    updated_date   timestamp not null default now(),
+    published_date timestamp null,
     deleted_date   timestamp null,
     constraint id_fk_posts_users foreign key (user_id) references users (id) --on delete  -- При удалении юзера нужно удалять его посты?
 );
@@ -43,8 +43,8 @@ create table if not exists comments
     receiver_id  int       null,
     message      text      not null,
     enabled      boolean   not null default true,
-    created_date timestamp not null,
-    updated_date timestamp not null,
+    created_date timestamp not null default now(),
+    updated_date timestamp not null default now(),
     deleted_date timestamp null,
     constraint id_fk_comments_post_id__posts foreign key (post_id) references posts (id) on delete cascade,
     constraint id_fk_comments_author_id__users foreign key (author_id) references users (id),

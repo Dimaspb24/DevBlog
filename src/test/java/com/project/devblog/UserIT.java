@@ -6,64 +6,43 @@ import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.repository.UserPostRepository;
 import com.project.devblog.repository.UserRepository;
 import com.project.devblog.service.UserService;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.transaction.Transactional;
+import javax.persistence.EntityManager;
 import java.util.List;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@ContextConfiguration(classes = { PersistenceConfig.class }, loader = AnnotationConfigContextLoader.class)
-//@TransactionConfiguration(transactionManager = "txMgr" , defaultRollback = false)
-public class UserTest extends AbstractIT {
-
-//    @Autowired
-//    EntityManager entityManager;
-
-//    TransactionManager transactionManager = new ;
-
-    @Autowired
-    TransactionTemplate transactionTemplate;
-
-//    @Autowired
-//    private SessionFactory sessionFactory;
-//
-//    private Session session;
-//
-//    @BeforeEach
-//    public final void before() {
-//        session = sessionFactory.openSession();
-//        session.beginTransaction();
-//    }
-//
-//    @AfterEach
-//    public final void after() {
-//        session.getTransaction().commit();
-//        session.close();
-//    }
-
-
-    @Autowired
-    UserRepository userRepository;
-//    final PostRepository postRepository;
+public class UserIT extends AbstractIT {
 
     @Autowired
     UserService userService;
     @Autowired
+    UserRepository userRepository;
+    @Autowired
     UserPostRepository userPostRepository;
+    @Autowired
+    private PlatformTransactionManager transactionManager;
+    @Autowired
+    private EntityManager entityManager;
+    private TransactionTemplate transactionTemplate;
+
+    @BeforeEach
+    public void setUp() {
+        transactionTemplate = new TransactionTemplate(transactionManager);
+    }
+//    final PostRepository postRepository;
 //    final CommentRepository commentRepository;
 //    final TagRepository tagRepository;
 
+    @Rollback
     @Test
-    void printUsers() {
-        userRepository.findAll().forEach(System.out::println);
-    }
-
-    @Test
-    void saveUser() {
+    void testA_checkSaveUserWithDefaultFieldsInDB() {
         UserEntity user1 = UserEntity.builder()
                 .login("dima@mail.ru")
                 .password("12345678")
@@ -74,7 +53,7 @@ public class UserTest extends AbstractIT {
     }
 
     @Test
-    void addSubscription() {
+    void testB_addSubscription() {
         userService.addSubscription(1, 2);
 
         transactionTemplate.executeWithoutResult(transactionStatus -> {
@@ -93,12 +72,4 @@ public class UserTest extends AbstractIT {
         });
     }
 
-    @Test
-    @Transactional
-    void checkSubscribers() {
-        UserEntity user1 = userRepository.findById(1).orElseThrow();
-        user1.getSubscriptions().forEach(System.out::println);
-        UserEntity user2 = userRepository.findById(2).orElseThrow();
-        user2.getSubscribers().forEach(System.out::println);
-    }
 }

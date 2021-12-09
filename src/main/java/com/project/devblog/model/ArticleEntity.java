@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -39,6 +41,7 @@ public class ArticleEntity {
     LocalDateTime publishedDate;
     LocalDateTime deletedDate;
 
+    @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL) // здесь указываем название поля
     List<CommentEntity> comments = new ArrayList<>();
@@ -47,6 +50,7 @@ public class ArticleEntity {
     @JoinColumn(name = "user_id")
     UserEntity author;
 
+    @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
     @ManyToMany
     @JoinTable(
@@ -57,6 +61,7 @@ public class ArticleEntity {
     List<TagEntity> tags = new ArrayList<>();
 
     // todo нужна ли нам эта связь здесь? не нужна
+    @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
     @OneToMany(mappedBy = "article")
     List<UserArticleEntity> relationUsers = new ArrayList<>();

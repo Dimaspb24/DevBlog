@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class TagEntity {
 
     String name;
 
+    @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
     @ManyToMany(mappedBy = "tags")
     List<ArticleEntity> articles = new ArrayList<>();

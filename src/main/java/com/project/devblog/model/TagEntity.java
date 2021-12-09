@@ -12,7 +12,7 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @Data
-@ToString(exclude = "posts")
+@ToString(exclude = "articles")
 @EqualsAndHashCode(of = "name")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,5 +30,5 @@ public class TagEntity {
 
     @Builder.Default
     @ManyToMany(mappedBy = "tags")
-    List<PostEntity> posts = new ArrayList<>();
+    List<ArticleEntity> articles = new ArrayList<>();
 }

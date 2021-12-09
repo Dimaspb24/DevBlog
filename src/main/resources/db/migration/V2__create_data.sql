@@ -5,7 +5,7 @@ values
  ('mail3@mail.ru', 'password3', 'USER', 'ACTIVE');
 
 
-insert into posts (user_id, title, body, status, description)
+insert into articles (user_id, title, body, status, description)
 values
 (1, 'test title 1', 'test body 1','CREATED', 'test description'),
 (2, 'test title 2', 'test body 2','CREATED', 'test description'),

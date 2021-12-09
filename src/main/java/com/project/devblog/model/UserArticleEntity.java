@@ -11,15 +11,15 @@ import javax.persistence.*;
 @DynamicInsert
 @DynamicUpdate
 @Data
-@ToString(exclude = {"user", "post"})
+@ToString(exclude = {"user", "article"})
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "users_posts")
-public class UserPostEntity {
+@Table(name = "users_articles")
+public class UserArticleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,18 +35,18 @@ public class UserPostEntity {
     UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
-    PostEntity post;
+    @JoinColumn(name = "article_id")
+    ArticleEntity article;
 
     /*-----------------------------------FOR_MANY_TO_ONE_USER--------------------------------*/
     public void setUser(UserEntity user) {
         this.user = user;
-        user.getRelationPosts().add(this);
+        user.getRelationArticles().add(this);
     }
 
-    /*-----------------------------------FOR_MANY_TO_ONE_POST--------------------------------*/
-    public void setPost(PostEntity post) {
-        this.post = post;
-        post.getRelationUsers().add(this);
+    /*-----------------------------------FOR_MANY_TO_ONE_ARTICLE--------------------------------*/
+    public void setArticle(ArticleEntity article) {
+        this.article = article;
+        article.getRelationUsers().add(this);
     }
 }

@@ -1,8 +1,5 @@
 package com.project.devblog;
 
-import com.project.devblog.model.UserEntity;
-import com.project.devblog.model.enums.Role;
-import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -16,8 +13,8 @@ import javax.transaction.Transactional;
 public class DevBlogApplication implements CommandLineRunner {
 
     final UserRepository userRepository;
-    final PostRepository postRepository;
-    final UserPostRepository userPostRepository;
+    final ArticleRepository articleRepository;
+    final UserArticleRepository userArticleRepository;
     final CommentRepository commentRepository;
     final TagRepository tagRepository;
 

@@ -1,6 +1,6 @@
 package com.project.devblog.model;
 
-import com.project.devblog.model.enums.StatusPost;
+import com.project.devblog.model.enums.StatusArticle;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
@@ -21,8 +21,8 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "posts")
-public class PostEntity {
+@Table(name = "articles")
+public class ArticleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class PostEntity {
     String title;
     String body;
     @Enumerated(EnumType.STRING)
-    StatusPost status;
+    StatusArticle status;
     String description;
     Boolean enabled;
     LocalDateTime createdDate;
@@ -40,7 +40,7 @@ public class PostEntity {
     LocalDateTime deletedDate;
 
     @Builder.Default
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL) // здесь указываем название поля
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL) // здесь указываем название поля
     List<CommentEntity> comments = new ArrayList<>();
 
     @ManyToOne
@@ -50,31 +50,31 @@ public class PostEntity {
     @Builder.Default
     @ManyToMany
     @JoinTable(
-            name = "posts_tags",
-            joinColumns = @JoinColumn(name = "post_id"),
+            name = "articles_tags",
+            joinColumns = @JoinColumn(name = "article_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     List<TagEntity> tags = new ArrayList<>();
 
     // todo нужна ли нам эта связь здесь? не нужна
     @Builder.Default
-    @OneToMany(mappedBy = "post")
-    List<UserPostEntity> relationUsers = new ArrayList<>();
+    @OneToMany(mappedBy = "article")
+    List<UserArticleEntity> relationUsers = new ArrayList<>();
 
     /*-----------------------------------FOR_MANY_TO_MANY_TAG--------------------------------*/
     public void addTag(TagEntity tag) {
         tags.add(tag);
-        tag.getPosts().add(this);
+        tag.getArticles().add(this);
     }
 
     public void removeTag(TagEntity tag) {
         tags.remove(tag);
-        tag.getPosts().remove(this);
+        tag.getArticles().remove(this);
     }
 
     /*-----------------------------------FOR_MANY_TO_ONE_AUTHOR--------------------------------*/
     public void setAuthor(UserEntity author) {
         this.author = author;
-        author.getSelfPosts().add(this);
+        author.getSelfArticles().add(this);
     }
 }

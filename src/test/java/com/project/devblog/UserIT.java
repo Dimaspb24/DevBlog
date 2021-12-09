@@ -3,7 +3,7 @@ package com.project.devblog;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.model.enums.StatusUser;
-import com.project.devblog.repository.UserPostRepository;
+import com.project.devblog.repository.UserArticleRepository;
 import com.project.devblog.repository.UserRepository;
 import com.project.devblog.service.UserService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +25,7 @@ public class UserIT extends AbstractIT {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    UserPostRepository userPostRepository;
+    UserArticleRepository userArticleRepository;
     @Autowired
     private PlatformTransactionManager transactionManager;
     @Autowired

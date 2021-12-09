@@ -4,6 +4,7 @@ import com.project.devblog.model.enums.Role;
 import com.project.devblog.model.enums.StatusUser;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @Data
-@ToString(exclude = {"selfComments", "receivedComments", "selfPosts", "subscribers", "subscriptions", "relationPosts"})
+@ToString(exclude = {"selfComments", "receivedComments", "selfArticles", "subscribers", "subscriptions", "relationArticles"})
 @EqualsAndHashCode(of = "login")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,20 +40,23 @@ public class UserEntity {
     @AttributeOverride(name = "updatedDate", column = @Column(name = "updated_date"))
     PersonalInfo personalInfo;
 
+    @BatchSize(size = 20)
     @Builder.Default
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("createdDate")
     List<CommentEntity> selfComments = new ArrayList<>();
 
+    @BatchSize(size = 20)
     @Builder.Default
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("createdDate")
     List<CommentEntity> receivedComments = new ArrayList<>();
 
+    @BatchSize(size = 20)
     @Builder.Default
     @OneToMany(mappedBy = "author"/*, cascade = CascadeType.ALL*/, orphanRemoval = true)
     @OrderBy("createdDate")
-    List<PostEntity> selfPosts = new ArrayList<>();
+    List<ArticleEntity> selfArticles = new ArrayList<>();
 
     // TODO проверить правильность на деле!
     @Builder.Default
@@ -75,10 +79,9 @@ public class UserEntity {
     @OrderBy("personalInfo.nickname")
     List<UserEntity> subscriptions = new ArrayList<>();
 
-    // todo нужна ли нам эта связь здесь?
     @Builder.Default
     @OneToMany(mappedBy = "user", orphanRemoval = true)
-    List<UserPostEntity> relationPosts = new ArrayList<>();
+    List<UserArticleEntity> relationArticles = new ArrayList<>();
 
     /*-----------------------------------FOR_MANY_TO_MANY_SUBSCRIBERS--------------------------------*/
     public void addSubscription(UserEntity subscriber) {

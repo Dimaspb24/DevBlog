@@ -19,7 +19,7 @@ create table if not exists users
     constraint unique_login unique (login)
 );
 
-create table if not exists posts
+create table if not exists articles
 (
     id             serial    not null primary key,
     user_id        int       not null,
@@ -32,13 +32,13 @@ create table if not exists posts
     updated_date   timestamp not null default now(),
     published_date timestamp null,
     deleted_date   timestamp null,
-    constraint id_fk_posts_users foreign key (user_id) references users (id) --on delete  -- При удалении юзера нужно удалять его посты?
+    constraint id_fk_articles_users foreign key (user_id) references users (id) --on delete  -- При удалении юзера нужно удалять его посты?
 );
 
 create table if not exists comments
 (
     id           bigserial not null primary key,
-    post_id      int       not null,
+    article_id      int       not null,
     author_id    int       not null,
     receiver_id  int       null,
     message      text      not null,
@@ -46,7 +46,7 @@ create table if not exists comments
     created_date timestamp not null default now(),
     updated_date timestamp not null default now(),
     deleted_date timestamp null,
-    constraint id_fk_comments_post_id__posts foreign key (post_id) references posts (id) on delete cascade,
+    constraint id_fk_comments_articleles foreign key (article_id) references articles (id) on delete cascade,
     constraint id_fk_comments_author_id__users foreign key (author_id) references users (id),
     constraint id_fk_comments_receiver_id__users foreign key (receiver_id) references users (id)
 );
@@ -59,13 +59,13 @@ create table if not exists tags
     constraint unique_name unique (name)
 );
 
-create table if not exists posts_tags
+create table if not exists articles_tags
 (
-    post_id int not null,
+    article_id int not null,
     tag_id  int not null,
-    primary key (post_id, tag_id),
-    constraint id_fk_posts_tags__posts foreign key (post_id) references posts (id) on delete cascade,
-    constraint id_fk_posts_tags__tags foreign key (tag_id) references tags (id) on delete cascade
+    primary key (article_id, tag_id),
+    constraint id_fk_articles_tags__articles foreign key (article_id) references articles (id) on delete cascade,
+    constraint id_fk_articles_tags__tags foreign key (tag_id) references tags (id) on delete cascade
 );
 
 create table if not exists subscribers
@@ -77,14 +77,14 @@ create table if not exists subscribers
     constraint id_fk_subscribers_subscriber_id__users foreign key (subscriber_id) references users (id) on delete cascade
 );
 
-create table if not exists users_posts
+create table if not exists users_articles
 (
     id            bigserial primary key,
     user_id       int  not null,
-    post_id       int  not null,
+    article_id       int  not null,
     rating        int  null,
     bookmark_type text null,
-    constraint unique_user_id_post_id unique (user_id, post_id),
-    constraint id_fk_users_posts__posts foreign key (post_id) references posts (id) on delete cascade,
-    constraint id_fk_users_posts__users foreign key (user_id) references users (id) on delete cascade
+    constraint unique_user_id_article_id unique (user_id, article_id),
+    constraint id_fk_users_articles__articles foreign key (article_id) references articles (id) on delete cascade,
+    constraint id_fk_users_articles__users foreign key (user_id) references users (id) on delete cascade
 );

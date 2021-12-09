@@ -1,12 +1,8 @@
 package com.project.devblog;
 
-import com.project.devblog.model.PostEntity;
-import com.project.devblog.model.TagEntity;
-import com.project.devblog.model.UserEntity;
-import com.project.devblog.model.enums.StatusPost;
-import com.project.devblog.repository.PostRepository;
+import com.project.devblog.repository.ArticleRepository;
 import com.project.devblog.repository.TagRepository;
-import com.project.devblog.repository.UserPostRepository;
+import com.project.devblog.repository.UserArticleRepository;
 import com.project.devblog.repository.UserRepository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,18 +12,17 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
-import java.util.List;
 
-public class PostIT extends AbstractIT {
+public class ArticleIT extends AbstractIT {
 
     @Autowired
     UserRepository userRepository;
     @Autowired
     TagRepository tagRepository;
     @Autowired
-    PostRepository postRepository;
+    ArticleRepository articleRepository;
     @Autowired
-    UserPostRepository userPostRepository;
+    UserArticleRepository userArticleRepository;
 
     @Autowired
     private PlatformTransactionManager transactionManager;

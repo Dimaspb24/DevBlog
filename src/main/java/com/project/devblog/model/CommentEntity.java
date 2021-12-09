@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @DynamicInsert
 @DynamicUpdate
 @Data
-@ToString(exclude = {"post", "author", "receiver"})
+@ToString(exclude = {"article", "author", "receiver"})
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,8 +32,8 @@ public class CommentEntity {
     LocalDateTime deletedDate;
 
     @ManyToOne // нужно или нет каскады?
-    @JoinColumn(name = "post_id")
-    PostEntity post;
+    @JoinColumn(name = "article_id")
+    ArticleEntity article;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
@@ -44,9 +44,9 @@ public class CommentEntity {
     UserEntity receiver;
 
     /*-----------------------------------FOR_MANY_TO_ONE--------------------------------*/
-    public void setPost(PostEntity post) {
-        this.post = post;
-        post.getComments().add(this);
+    public void setArticle(ArticleEntity article) {
+        this.article = article;
+        article.getComments().add(this);
     }
 
     public void setAuthor(UserEntity author) {

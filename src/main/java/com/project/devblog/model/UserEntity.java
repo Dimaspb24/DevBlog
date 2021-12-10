@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,11 +57,15 @@ public class UserEntity {
 
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
-    @OneToMany(mappedBy = "author"/*, cascade = CascadeType.ALL*/, orphanRemoval = true)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("createdDate")
     List<ArticleEntity> selfArticles = new ArrayList<>();
 
-    // TODO проверить правильность на деле!
+    @Fetch(FetchMode.SUBSELECT)
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    List<UserArticleEntity> relationArticles = new ArrayList<>();
+
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
     @ManyToMany
@@ -82,11 +87,6 @@ public class UserEntity {
     )
     @OrderBy("personalInfo.nickname")
     List<UserEntity> subscriptions = new ArrayList<>();
-
-    @Fetch(FetchMode.SUBSELECT)
-    @Builder.Default
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
-    List<UserArticleEntity> relationArticles = new ArrayList<>();
 
     /*-----------------------------------FOR_MANY_TO_MANY_SUBSCRIBERS--------------------------------*/
     public void addSubscription(UserEntity subscriber) {

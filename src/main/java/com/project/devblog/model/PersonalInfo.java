@@ -3,7 +3,7 @@ package com.project.devblog.model;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
 import java.time.LocalDateTime;
 
 @Data

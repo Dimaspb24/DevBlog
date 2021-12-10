@@ -43,7 +43,7 @@ public class ArticleEntity {
 
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL) // здесь указываем название поля
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     List<CommentEntity> comments = new ArrayList<>();
 
     @ManyToOne
@@ -60,7 +60,6 @@ public class ArticleEntity {
     )
     List<TagEntity> tags = new ArrayList<>();
 
-    // todo нужна ли нам эта связь здесь? не нужна
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
     @OneToMany(mappedBy = "article")

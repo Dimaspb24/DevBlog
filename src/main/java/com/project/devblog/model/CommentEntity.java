@@ -31,7 +31,7 @@ public class CommentEntity {
     LocalDateTime updatedDate;
     LocalDateTime deletedDate;
 
-    @ManyToOne // нужно или нет каскады?
+    @ManyToOne
     @JoinColumn(name = "article_id")
     ArticleEntity article;
 

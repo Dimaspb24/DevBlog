@@ -24,7 +24,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "articles")
-public class ArticleEntity {
+public class ArticleEntity extends AuditableBaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,23 +36,23 @@ public class ArticleEntity {
     StatusArticle status;
     String description;
     Boolean enabled;
-    LocalDateTime createdDate;
-    LocalDateTime updatedDate;
-    LocalDateTime publishedDate;
-    LocalDateTime deletedDate;
+    @Column(name = "publication_date")
+    LocalDateTime publicationDate;
+    @Column(name = "deletion_date")
+    LocalDateTime deletionDate;
 
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     List<CommentEntity> comments = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     UserEntity author;
 
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "articles_tags",
             joinColumns = @JoinColumn(name = "article_id"),

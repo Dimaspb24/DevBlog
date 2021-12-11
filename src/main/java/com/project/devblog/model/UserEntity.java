@@ -4,14 +4,12 @@ import com.project.devblog.model.enums.Role;
 import com.project.devblog.model.enums.StatusUser;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +24,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class UserEntity extends AuditableBaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,27 +36,24 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     StatusUser status;
 
-    @Embedded
-    @AttributeOverride(name = "createdDate", column = @Column(name = "created_date"))
-    @AttributeOverride(name = "updatedDate", column = @Column(name = "updated_date"))
     PersonalInfo personalInfo;
 
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("createdDate")
+    @OrderBy("creationDate")
     List<CommentEntity> selfComments = new ArrayList<>();
 
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("createdDate")
+    @OrderBy("creationDate")
     List<CommentEntity> receivedComments = new ArrayList<>();
 
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("createdDate")
+    @OrderBy("creationDate")
     List<ArticleEntity> selfArticles = new ArrayList<>();
 
     @Fetch(FetchMode.SUBSELECT)
@@ -95,6 +90,16 @@ public class UserEntity {
 
     public void removeSubscription(UserEntity subscriber) {
         subscriptions.remove(subscriber);
+    }
+
+    /*-----------------------------------FOR_MANY_TO_MANY_USER_ARTICLE--------------------------------*/
+    public void addRelationArticle(UserArticleEntity userArticle) {
+        relationArticles.add(userArticle);
+        userArticle.setUser(this);
+    }
+
+    public void removeRelationArticle(UserArticleEntity userArticle) {
+        relationArticles.remove(userArticle);
     }
 
 }

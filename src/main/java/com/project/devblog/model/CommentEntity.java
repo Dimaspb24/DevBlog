@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "comments")
-public class CommentEntity {
+public class CommentEntity extends AuditableBaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,19 +27,18 @@ public class CommentEntity {
 
     String message;
     Boolean enabled;
-    LocalDateTime createdDate;
-    LocalDateTime updatedDate;
-    LocalDateTime deletedDate;
+    @Column(name = "deletion_date")
+    LocalDateTime deletionDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     ArticleEntity article;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     UserEntity author;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
     UserEntity receiver;
 

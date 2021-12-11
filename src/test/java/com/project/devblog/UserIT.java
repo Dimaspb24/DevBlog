@@ -1,11 +1,17 @@
 package com.project.devblog;
 
+import com.project.devblog.model.ArticleEntity;
+import com.project.devblog.model.UserArticleEntity;
 import com.project.devblog.model.UserEntity;
+import com.project.devblog.model.enums.BookmarkType;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.model.enums.StatusUser;
+import com.project.devblog.repository.ArticleRepository;
 import com.project.devblog.repository.UserArticleRepository;
 import com.project.devblog.repository.UserRepository;
 import com.project.devblog.service.UserService;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +23,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserIT extends AbstractIT {
 
     @Autowired
@@ -26,24 +33,22 @@ public class UserIT extends AbstractIT {
     @Autowired
     UserArticleRepository userArticleRepository;
     @Autowired
-    private PlatformTransactionManager transactionManager;
+    ArticleRepository articleRepository;
     @Autowired
-    private EntityManager entityManager;
-    private TransactionTemplate transactionTemplate;
+    PlatformTransactionManager transactionManager;
+    @Autowired
+    EntityManager entityManager;
+    TransactionTemplate transactionTemplate;
 
     @BeforeEach
     public void setUp() {
         transactionTemplate = new TransactionTemplate(transactionManager);
     }
-//    final PostRepository postRepository;
-//    final CommentRepository commentRepository;
-//    final TagRepository tagRepository;
 
     @Test
     @Transactional
-    void testA_checkSaveUserWithDefaultFieldsInDB() {
+    void checkSaveUserWithDefaultFieldsInDB() {
         String login = "test@mail.ru";
-
         UserEntity testUser = UserEntity.builder()
                 .login(login)
                 .password("123456789")
@@ -58,21 +63,10 @@ public class UserIT extends AbstractIT {
 
         assertEquals(login, userEntity.getLogin());
         assertNotNull(userEntity.getPersonalInfo().getNickname());
-        entityManager.close();
     }
 
     @Test
-    void testB_getUserWithSubscribers() {
-        int sizeSubscribersUser1 = transactionTemplate.execute(status -> {
-            UserEntity user1 = userRepository.getById(1);
-            return user1.getSubscribers().size();
-        });
-        assertEquals(0, sizeSubscribersUser1);
-    }
-
-
-    @Test
-    void testC_addSubscription() {
+    void addSubscription() {
         userService.addSubscription(1, 2);
 
         transactionTemplate.executeWithoutResult(transactionStatus -> {
@@ -89,6 +83,26 @@ public class UserIT extends AbstractIT {
             assertTrue(subscriptionsUser1.contains(user2));
             assertTrue(subscribersUser2.contains(user1));
         });
+    }
+
+    @Test
+    @Transactional
+    void addRelationArticleToUser() {
+        final int rating = 5;
+        UserEntity user = userRepository.findById(1).orElseThrow();
+        ArticleEntity article = articleRepository.findById(1).orElseThrow();
+        UserArticleEntity userArticle = UserArticleEntity.builder()
+                .user(user)
+                .article(article)
+                .rating(rating)
+                .bookmarkType(BookmarkType.FAVORITES)
+                .build();
+        user.addRelationArticle(userArticle);
+
+        entityManager.flush();
+
+        UserArticleEntity savedUserArticle = userArticleRepository.findByUserAndArticle(user, article).orElseThrow();
+        assertEquals(rating, savedUserArticle.getRating());
     }
 
 }

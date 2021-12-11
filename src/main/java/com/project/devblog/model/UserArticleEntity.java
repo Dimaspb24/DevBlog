@@ -30,11 +30,11 @@ public class UserArticleEntity {
     @Enumerated(EnumType.STRING)
     BookmarkType bookmarkType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     UserEntity user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     ArticleEntity article;
 

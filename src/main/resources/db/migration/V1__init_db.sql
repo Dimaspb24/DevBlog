@@ -1,19 +1,19 @@
 create table if not exists users
 (
-    id           serial    not null primary key,
-    login        text      not null,
-    password     text      not null,
-    role         text      not null,
-    status       text      not null,
-    firstname    text      null,
-    lastname     text      null,
-    nickname     text      not null default concat('user#', gen_random_uuid()),
-    photo        text      null,
-    info         text      null,
-    phone        text      null,
-    enabled      boolean   null     default true,
-    created_date timestamp not null default now(),
-    updated_date timestamp not null default now(),
+    id                serial    not null primary key,
+    login             text      not null,
+    password          text      not null,
+    role              text      not null,
+    status            text      not null,
+    firstname         text      null,
+    lastname          text      null,
+    nickname          text      not null default concat('user#', gen_random_uuid()),
+    photo             text      null,
+    info              text      null,
+    phone             text      null,
+    enabled           boolean   null     default true,
+    creation_date     timestamp not null default now(),
+    modification_date timestamp not null default now(),
     constraint unique_nickname unique (nickname),
     constraint unique_phone unique (phone),
     constraint unique_login unique (login)
@@ -21,31 +21,31 @@ create table if not exists users
 
 create table if not exists articles
 (
-    id             serial    not null primary key,
-    user_id        int       not null,
-    title          text      not null,
-    body           text      not null,
-    status         text      not null,
-    description    text      not null,
-    enabled        boolean   not null default true,
-    created_date   timestamp not null default now(),
-    updated_date   timestamp not null default now(),
-    published_date timestamp null,
-    deleted_date   timestamp null,
+    id                serial    not null primary key,
+    user_id           int       not null,
+    title             text      not null,
+    body              text      not null,
+    status            text      not null,
+    description       text      not null,
+    enabled           boolean   not null default true,
+    creation_date     timestamp not null default now(),
+    modification_date timestamp not null default now(),
+    publication_date  timestamp null,
+    deletion_date     timestamp null,
     constraint id_fk_articles_users foreign key (user_id) references users (id) --on delete  -- При удалении юзера нужно удалять его посты?
 );
 
 create table if not exists comments
 (
-    id           bigserial not null primary key,
-    article_id      int       not null,
-    author_id    int       not null,
-    receiver_id  int       null,
-    message      text      not null,
-    enabled      boolean   not null default true,
-    created_date timestamp not null default now(),
-    updated_date timestamp not null default now(),
-    deleted_date timestamp null,
+    id                bigserial not null primary key,
+    article_id        int       not null,
+    author_id         int       not null,
+    receiver_id       int       null,
+    message           text      not null,
+    enabled           boolean   not null default true,
+    creation_date     timestamp not null default now(),
+    modification_date timestamp not null default now(),
+    deletion_date     timestamp null,
     constraint id_fk_comments_articleles foreign key (article_id) references articles (id) on delete cascade,
     constraint id_fk_comments_author_id__users foreign key (author_id) references users (id),
     constraint id_fk_comments_receiver_id__users foreign key (receiver_id) references users (id)
@@ -62,7 +62,7 @@ create table if not exists tags
 create table if not exists articles_tags
 (
     article_id int not null,
-    tag_id  int not null,
+    tag_id     int not null,
     primary key (article_id, tag_id),
     constraint id_fk_articles_tags__articles foreign key (article_id) references articles (id) on delete cascade,
     constraint id_fk_articles_tags__tags foreign key (tag_id) references tags (id) on delete cascade
@@ -81,7 +81,7 @@ create table if not exists users_articles
 (
     id            bigserial primary key,
     user_id       int  not null,
-    article_id       int  not null,
+    article_id    int  not null,
     rating        int  null,
     bookmark_type text null,
     constraint unique_user_id_article_id unique (user_id, article_id),

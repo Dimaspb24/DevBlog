@@ -4,7 +4,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.Embeddable;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -21,6 +20,4 @@ public class PersonalInfo {
     String info;
     String phone;
     Boolean enabled;
-    LocalDateTime createdDate;
-    LocalDateTime updatedDate;
 }

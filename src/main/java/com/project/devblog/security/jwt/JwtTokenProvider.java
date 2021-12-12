@@ -1,10 +1,9 @@
 package com.project.devblog.security.jwt;
 
+import com.project.devblog.config.JwtProperties;
 import com.project.devblog.model.enums.Role;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,21 +15,22 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Component
-@PropertySource(value = {"classpath:application.yaml"})
 public class JwtTokenProvider {
-
-    @Value("${jwt.token.secret}")
-    private String secret;
-
-    @Value("${jwt.token.expired}")
-    private long validityInMs;
 
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private JwtProperties jwtProperties;
+
+    private String secret;
+    private long validityInMs;
+
     @PostConstruct
     protected void init() {
+        secret = jwtProperties.getSecret();
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
+        validityInMs = jwtProperties.getExpired();
     }
 
     public String createToken(String login) {

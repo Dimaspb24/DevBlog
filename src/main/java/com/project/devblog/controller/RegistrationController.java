@@ -4,15 +4,13 @@ import com.project.devblog.dto.AuthenticationRequestDto;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/v1/registration")
@@ -33,11 +31,7 @@ public class RegistrationController {
 
             userService.register(user);
 
-            Map<Object, Object> response = new HashMap<>();
-            response.put("login", login);
-            response.put("password", user.getPassword());
-
-            return ResponseEntity.ok(response);
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             throw new BadCredentialsException("Login already exists");
         }

@@ -1,8 +1,10 @@
 package com.project.devblog.dto;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Data
+@AllArgsConstructor
+@Getter
 public class AuthenticationRequestDto {
     private String login;
     private String password;

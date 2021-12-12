@@ -10,7 +10,6 @@ spring:
     show-sql: true
     properties:
       hibernate:
-#        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
 
   flyway:

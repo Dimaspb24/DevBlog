@@ -1,18 +1,45 @@
 package com.project.devblog.service;
 
 import com.project.devblog.model.UserEntity;
+import com.project.devblog.model.enums.Role;
+import com.project.devblog.model.enums.StatusUser;
+import com.project.devblog.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface UserService {
+@Service
+@AllArgsConstructor
+@Transactional
+public class UserService {
 
-    UserEntity register(UserEntity user);
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    List<UserEntity> getAll();
+    public UserEntity register(UserEntity user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.USER);
+        user.setStatus(StatusUser.ACTIVE);
 
-    UserEntity findByLogin(String login);
+        return userRepository.save(user);
+    }
 
-    UserEntity findById(Long id);
+    public List<UserEntity> getAll() {
+        return userRepository.findAll();
+    }
 
-    void delete(Long id);
+    public UserEntity findByLogin(String login) {
+        return userRepository.findByLogin(login);
+    }
+
+    public UserEntity findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public void delete(Long id) {
+        userRepository.deleteById(id);
+    }
 }

@@ -1,13 +1,13 @@
 package com.project.devblog.security.jwt;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class JwtUser implements UserDetails {
 
     private final Long id;

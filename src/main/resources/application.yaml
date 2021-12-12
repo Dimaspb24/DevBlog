@@ -3,7 +3,7 @@ spring:
   datasource:
     username: demouser
     password: demopassword
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:15432/postgres
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -15,9 +15,6 @@ spring:
 
   flyway:
     out-of-order: true
-
-server:
-  port : 8081
 
 jwt:
   token:

@@ -4,8 +4,8 @@ import com.project.devblog.dto.AuthenticationRequestDto;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.security.jwt.JwtTokenProvider;
 import com.project.devblog.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,24 +22,16 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/v1/auth/")
+@RequiredArgsConstructor
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
 
-    @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager,
-                                    JwtTokenProvider jwtTokenProvider,
-                                    UserService userService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.userService = userService;
-    }
-
-    @PostMapping("login")
-    public ResponseEntity<Map<Object, Object>> login(@RequestBody AuthenticationRequestDto requestDto) {
-//        try {
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) {
+        try {
             String login = requestDto.getLogin();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login, requestDto.getPassword()));
             UserEntity user = userService.findByLogin(login);
@@ -55,9 +47,9 @@ public class AuthenticationController {
             response.put("login", login);
             response.put("token", token);
 
-            return new ResponseEntity<>(response, HttpStatus.OK);
-//        } catch (AuthenticationException e) {
-//            throw new BadCredentialsException("Invalid login or password");
-//        }
+            return ResponseEntity.ok(response);
+        } catch (AuthenticationException e) {
+            throw new BadCredentialsException("Invalid login or password");
+        }
     }
 }

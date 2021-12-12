@@ -1,11 +1,11 @@
-package com.project.devblog.dto;
+package com.project.devblog.controller.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class AuthenticationResponseDto {
+public class AuthenticationResponse {
 
     private String login;
     private String token;

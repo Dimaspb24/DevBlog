@@ -1,6 +1,6 @@
 package com.project.devblog.controller;
 
-import com.project.devblog.dto.AuthenticationRequestDto;
+import com.project.devblog.controller.dto.request.AuthenticationRequest;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.service.UserService;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class RegistrationController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity registration(@RequestBody AuthenticationRequestDto requestDto) {
+    public ResponseEntity registration(@RequestBody AuthenticationRequest requestDto) {
         String login = requestDto.getLogin();
         String password = requestDto.getPassword();
 

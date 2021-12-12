@@ -1,8 +1,27 @@
 spring:
+
   datasource:
     username: demouser
     password: demopassword
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:15432/postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        ddl-auto: none
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+
   flyway:
     out-of-order: true
 
+logging:
+  level:
+    org.springframework.orm.jpa: DEBUG
+    org.springframework.transaction: DEBUG
+jwt:
+  token:
+    secret: jwtdevblog
+    expired: 3600000

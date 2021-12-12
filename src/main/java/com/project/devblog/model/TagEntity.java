@@ -28,6 +28,7 @@ public class TagEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @NonNull
     String name;
 
     @Fetch(FetchMode.SUBSELECT)

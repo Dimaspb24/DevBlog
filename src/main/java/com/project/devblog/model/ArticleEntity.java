@@ -17,9 +17,9 @@ import java.util.List;
 @DynamicUpdate
 @Data
 @ToString(exclude = {"comments", "author", "tags", "relationUsers"})
-@EqualsAndHashCode(of = "id")
-@NoArgsConstructor
+@EqualsAndHashCode(of = {"title", "body", "status", "description", "author"})
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
@@ -30,25 +30,36 @@ public class ArticleEntity extends AuditableBaseEntity<Integer> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @NonNull
     String title;
+
+    @NonNull
     String body;
+
+    @NonNull
     @Enumerated(EnumType.STRING)
     StatusArticle status;
+
+    @NonNull
     String description;
+
     Boolean enabled;
+
     @Column(name = "publication_date")
     LocalDateTime publicationDate;
+
     @Column(name = "deletion_date")
     LocalDateTime deletionDate;
+
+    @NonNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    UserEntity author;
 
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     List<CommentEntity> comments = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    UserEntity author;
 
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default

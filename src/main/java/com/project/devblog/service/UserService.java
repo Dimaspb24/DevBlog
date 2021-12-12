@@ -2,13 +2,13 @@ package com.project.devblog.service;
 
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Transactional
 public class UserService {
 

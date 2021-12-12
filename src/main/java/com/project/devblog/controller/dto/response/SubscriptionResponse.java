@@ -1,4 +1,4 @@
 package com.project.devblog.controller.dto.response;
 
-public class SubscribeResponse {
+public class SubscriptionResponse {
 }

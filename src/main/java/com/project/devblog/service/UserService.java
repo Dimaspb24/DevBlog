@@ -1,11 +1,15 @@
 package com.project.devblog.service;
 
 import com.project.devblog.model.UserEntity;
+import com.project.devblog.model.enums.Role;
+import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -13,10 +17,29 @@ import javax.transaction.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public void addSubscription(Integer userId, Integer userForSubscriptionId) {
-        UserEntity user1 = userRepository.getById(userId);
-        UserEntity user2 = userRepository.getById(userForSubscriptionId);
-        user1.addSubscription(user2);
+    public UserEntity register(UserEntity user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.USER);
+        user.setStatus(StatusUser.ACTIVE);
+
+        return userRepository.save(user);
+    }
+
+    public List<UserEntity> getAll() {
+        return userRepository.findAll();
+    }
+
+    public UserEntity findByLogin(String login) {
+        return userRepository.findByLogin(login).orElseThrow();
+    }
+
+    public UserEntity findById(Integer id) {
+        return userRepository.findById(id).orElseThrow();
+    }
+
+    public void delete(Integer id) {
+        userRepository.deleteById(id);
     }
 }

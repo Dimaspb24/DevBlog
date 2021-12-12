@@ -21,3 +21,7 @@ logging:
   level:
     org.springframework.orm.jpa: DEBUG
     org.springframework.transaction: DEBUG
+jwt:
+  token:
+    secret: jwtdevblog
+    expired: 3600000

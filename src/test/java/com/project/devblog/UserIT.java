@@ -66,12 +66,15 @@ public class UserIT extends AbstractIT {
     }
 
     @Test
+    @Transactional
     void addSubscription() {
-        userService.addSubscription(1, 2);
-
         transactionTemplate.executeWithoutResult(transactionStatus -> {
             UserEntity user1 = userRepository.findById(1).orElseThrow();
             UserEntity user2 = userRepository.findById(2).orElseThrow();
+
+            user1.addSubscription(user2);
+
+            entityManager.flush();
 
             List<UserEntity> subscriptionsUser1 = user1.getSubscriptions();
             List<UserEntity> subscribersUser2 = user2.getSubscribers();

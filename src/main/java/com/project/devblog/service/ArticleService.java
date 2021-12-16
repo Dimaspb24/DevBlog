@@ -1,81 +1,79 @@
 package com.project.devblog.service;
 
 import com.project.devblog.model.ArticleEntity;
-import com.project.devblog.model.UserArticleEntity;
+import com.project.devblog.model.TagEntity;
+import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.repository.ArticleRepository;
-import com.project.devblog.repository.UserArticleRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.project.devblog.service.exception.ArticleConflictException;
+import com.project.devblog.service.exception.ArticleNotFoundException;
+import com.project.devblog.service.exception.TagNotFoundException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import javax.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 @Transactional
+@AllArgsConstructor
 public class ArticleService {
 
+    @NonNull
     private final ArticleRepository articleRepository;
-    private final UserArticleRepository userArticleRepository;
+    @NonNull
+    private final UserService userService;
 
-    public List<ArticleEntity> getAll() {
-        return articleRepository.findAll();
+    @NonNull
+    public ArticleEntity get(@NonNull Integer articleId, @NonNull Integer authorId) {
+        return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(articleId, authorId).orElseThrow(ArticleNotFoundException::new);
     }
 
-    public ArticleEntity save(ArticleEntity article) {
-        if (articleRepository.findById(article.getId()).isPresent()) {
-            article.setModificationDate(LocalDateTime.now());
-        } else {
-            article.setCreationDate(LocalDateTime.now());
-            article.setStatus(StatusArticle.CREATED);
+    @NonNull
+    public ArticleEntity create(@NonNull Integer userId, @NonNull String title, List<TagEntity> tags,
+                                @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
+
+        final UserEntity author = userService.get(userId);
+        final ArticleEntity articleEntity = new ArticleEntity(title, body, status, description, author);
+        articleEntity.setTags(tags);
+
+        return articleRepository.save(articleEntity);
+    }
+
+    @NonNull
+    public Page<ArticleEntity> getAll(@NonNull Integer userId, @NonNull Pageable pageable) {
+        return articleRepository.findByAuthorIdAndEnabledIsTrue(userId, pageable);
+    }
+
+    public void delete(@NonNull Integer authorId, @NonNull Integer articleId) {
+        final ArticleEntity articleEntity = get(articleId, authorId);
+
+        if (articleEntity.getEnabled()) {
+            final LocalDateTime now = LocalDateTime.now();
+
+            articleEntity.setEnabled(false);
+            articleEntity.setDeletionDate(now);
+            articleRepository.save(articleEntity);
         }
-        return articleRepository.save(article);
+
+        throw new ArticleConflictException();
     }
 
-    public void publish(ArticleEntity article) {
-        article.setPublicationDate(LocalDateTime.now());
-        article.setStatus(StatusArticle.PUBLISHED);
+    @NonNull
+    public ArticleEntity update(@NonNull Integer authorId, @NonNull Integer articleId, @NonNull String title, List<TagEntity> tags,
+                                @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
+        final ArticleEntity articleEntity = get(articleId, authorId);
+
+        articleEntity.setTitle(title);
+        articleEntity.setTags(tags);
+        articleEntity.setDescription(description);
+        articleEntity.setBody(body);
+        articleEntity.setStatus(status);
+
+        return articleRepository.save(articleEntity);
     }
 
-    public Float getTotalRating(Integer articleId) {
-        List<UserArticleEntity> userArticleEntityList = userArticleRepository.findAll();
-
-        float totalRating = 0.0f;
-        int countUsers = 0;
-        for (UserArticleEntity userArticle : userArticleEntityList) {
-            if (userArticle.getArticle().getId().equals(articleId) && userArticle.getRating() != null) {
-                totalRating += userArticle.getRating();
-                countUsers++;
-            }
-        }
-
-        return totalRating /= countUsers;
-    }
-
-    public List<ArticleEntity> getSortedListByPublicationDateDescending() {
-        List<ArticleEntity> sortedList = new ArrayList<>(articleRepository.findAll());
-        Collections.sort(sortedList, Comparator.comparing(ArticleEntity::getPublicationDate).reversed());
-        return sortedList;
-    }
-
-    public List<ArticleEntity> getSortedListByPublicationDateAscending() {
-        List<ArticleEntity> sortedList = new ArrayList<>(articleRepository.findAll());
-        Collections.sort(sortedList, Comparator.comparing(ArticleEntity::getPublicationDate));
-        return sortedList;
-    }
-
-    public List<ArticleEntity> getSortedListByRatingDescending() {
-        List<ArticleEntity> sortedList = new ArrayList<>(articleRepository.findAll());
-        Collections.sort(sortedList, Comparator.comparing(article -> getTotalRating(article.getId())));
-        Collections.reverse(sortedList);
-        return sortedList;
-    }
-
-    public List<ArticleEntity> getSortedListByRatingAscending() {
-        List<ArticleEntity> sortedList = new ArrayList<>(articleRepository.findAll());
-        Collections.sort(sortedList, Comparator.comparing(article -> getTotalRating(article.getId())));
-        return sortedList;
-    }
 }

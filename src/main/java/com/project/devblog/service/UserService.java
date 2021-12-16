@@ -32,14 +32,16 @@ public class UserService {
     }
 
     public UserEntity findByLogin(String login) {
-        return userRepository.findByLogin(login).orElse(null);
+        return userRepository.findByLogin(login).orElseThrow();
     }
 
-    public UserEntity findById(Integer id) {
-        return userRepository.findById(id).orElse(null);
+    public UserEntity get(Integer id) {
+        return userRepository.findById(id).orElseThrow();
     }
 
     public void delete(Integer id) {
         userRepository.deleteById(id);
     }
 }
+
+

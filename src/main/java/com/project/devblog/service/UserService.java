@@ -35,7 +35,7 @@ public class UserService {
         return userRepository.findByLogin(login).orElseThrow();
     }
 
-    public UserEntity findById(Integer id) {
+    public UserEntity get(Integer id) {
         return userRepository.findById(id).orElseThrow();
     }
 
@@ -43,3 +43,5 @@ public class UserService {
         userRepository.deleteById(id);
     }
 }
+
+

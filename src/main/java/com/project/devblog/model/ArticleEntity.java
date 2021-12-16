@@ -76,6 +76,15 @@ public class ArticleEntity extends AuditableBaseEntity<Integer> {
     @OneToMany(mappedBy = "article")
     List<UserArticleEntity> relationUsers = new ArrayList<>();
 
+    public ArticleEntity(@NonNull String title, @NonNull String body, @NonNull StatusArticle status,
+                         @NonNull String description, @NonNull UserEntity author) {
+        this.title = title;
+        this.body = body;
+        this.status = status;
+        this.description = description;
+        this.author = author;
+    }
+
     /*-----------------------------------FOR_MANY_TO_MANY_TAG--------------------------------*/
     public void addTag(TagEntity tag) {
         tags.add(tag);

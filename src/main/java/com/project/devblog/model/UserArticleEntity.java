@@ -38,6 +38,12 @@ public class UserArticleEntity {
     @JoinColumn(name = "article_id")
     ArticleEntity article;
 
+    public UserArticleEntity(Integer rating, UserEntity user, ArticleEntity article) {
+        this.rating = rating;
+        this.setUser(user);
+        this.setArticle(article);
+    }
+
     /*-----------------------------------FOR_MANY_TO_ONE_USER--------------------------------*/
     public void setUser(UserEntity user) {
         this.user = user;

@@ -35,4 +35,8 @@ public class TagEntity {
     @Builder.Default
     @ManyToMany(mappedBy = "tags")
     List<ArticleEntity> articles = new ArrayList<>();
+
+    public TagEntity(@NonNull String name) {
+        this.name = name;
+    }
 }

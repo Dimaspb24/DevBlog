@@ -1,6 +1,7 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.controller.dto.request.AuthenticationRequest;
+import com.project.devblog.controller.dto.response.AuthenticationResponse;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.security.jwt.JwtTokenProvider;
 import com.project.devblog.service.UserService;
@@ -21,8 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/v1/auth/")
@@ -34,7 +33,7 @@ public class AuthenticationController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody AuthenticationRequest requestDto) {
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest requestDto) {
         try {
             String login = requestDto.getLogin();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login, requestDto.getPassword()));
@@ -45,11 +44,9 @@ public class AuthenticationController {
             }
 
             String token = jwtTokenProvider.createToken(login);
+            Integer userId = user.getId();
 
-            Map<Object, Object> response = new HashMap<>();
-
-            response.put("login", login);
-            response.put("token", token);
+            AuthenticationResponse response = new AuthenticationResponse(userId, login, token);
 
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {

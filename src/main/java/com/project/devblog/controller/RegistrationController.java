@@ -1,6 +1,7 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.controller.dto.request.AuthenticationRequest;
+import com.project.devblog.controller.dto.response.RegistrationResponse;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.service.UserService;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ public class RegistrationController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity registration(@RequestBody AuthenticationRequest requestDto) {
+    public ResponseEntity<?> registration(@RequestBody AuthenticationRequest requestDto) {
         String login = requestDto.getLogin();
         String password = requestDto.getPassword();
 
@@ -31,7 +32,10 @@ public class RegistrationController {
 
             userService.register(user);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            Integer userId = user.getId();
+            RegistrationResponse response = new RegistrationResponse(userId, login);
+
+            return ResponseEntity.ok(response);
         } else {
             throw new BadCredentialsException("Login already exists");
         }

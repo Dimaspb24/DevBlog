@@ -2,6 +2,7 @@ package com.project.devblog.security.jwt;
 
 import com.project.devblog.config.JwtProperties;
 import com.project.devblog.model.enums.Role;
+import com.project.devblog.security.jwt.exception.JwtAuthenticationException;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -77,7 +78,7 @@ public class JwtTokenProvider {
 
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtAuthenticationException("JWT token is expired or invalid");
+            throw new JwtAuthenticationException();
         }
     }
 

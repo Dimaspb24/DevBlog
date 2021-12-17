@@ -18,12 +18,8 @@ public class JwtUserDetailsService implements UserDetailsService {
     private final UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String login) {
         UserEntity user = userService.findByLogin(login);
-
-        if (user == null) {
-            throw new UsernameNotFoundException("User with login: " + login + " NOT FOUND!");
-        }
 
         return JwtUserFactory.create(user);
     }

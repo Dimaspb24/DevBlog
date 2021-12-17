@@ -1,5 +1,6 @@
 package com.project.devblog.security.jwt;
 
+import com.project.devblog.security.jwt.exception.JwtAuthenticationException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -35,7 +36,7 @@ public class JwtTokenFilter extends GenericFilterBean {
         } catch (JwtAuthenticationException e) {
             SecurityContextHolder.clearContext();
             ((HttpServletResponse) servletResponse).sendError(HttpStatus.UNAUTHORIZED.value());
-            throw new JwtAuthenticationException("Jwt token is expired or invalid");
+            throw new JwtAuthenticationException();
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

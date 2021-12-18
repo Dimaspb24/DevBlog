@@ -1,6 +1,5 @@
 package com.project.devblog.controller.dto.request;
 
-import com.project.devblog.model.TagEntity;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,5 +20,5 @@ public class ArticleRequest {
     @NotBlank(message = "Description is required")
     private final String description;
     @NotNull(message = "Tags must no be null")
-    private final List<TagEntity> tags;
+    private final List<String> tags;
 }

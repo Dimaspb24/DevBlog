@@ -4,9 +4,14 @@ import com.project.devblog.controller.annotation.ApiV1;
 import com.project.devblog.controller.dto.request.ArticleRequest;
 import com.project.devblog.controller.dto.response.CloseArticleResponse;
 import com.project.devblog.controller.dto.response.OpenArticleResponse;
+import com.project.devblog.controller.dto.response.TagResponse;
 import com.project.devblog.model.ArticleEntity;
+import com.project.devblog.model.PersonalInfo;
+import com.project.devblog.model.TagEntity;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.service.ArticleService;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +38,7 @@ public class UserArticleController {
 
     @PostMapping("/users/{userId}/articles")
     @ResponseStatus(HttpStatus.CREATED)
-    public OpenArticleResponse create(@NonNull @PathVariable Integer userId, @NonNull @Valid ArticleRequest request) {
+    public OpenArticleResponse create(@NonNull @PathVariable Integer userId, @NonNull @Valid @RequestBody ArticleRequest request) {
         return toResponse(articleService.create(userId, request.getTitle(), request.getTags(), request.getDescription(),
                 request.getBody(), StatusArticle.valueOf(request.getStatus())));
     }
@@ -68,12 +74,21 @@ public class UserArticleController {
     private OpenArticleResponse toResponse(@NonNull ArticleEntity article) {
         return new OpenArticleResponse(article.getId(), article.getTitle(), article.getBody(), article.getStatus().name(),
                 article.getDescription(), article.getPublicationDate(), article.getModificationDate(), article.getAuthor().getId(),
-                article.getComments(), article.getTags(), article.getRelationUsers());
+                tagEntityToResponse(article.getTags()));
     }
 
     @NonNull
     private CloseArticleResponse toCloseArticleResponse(@NonNull ArticleEntity article) {
-        return new CloseArticleResponse(article.getId(), article.getTitle(), article.getStatus(), article.getDescription(),
-                article.getPublicationDate(), article.getModificationDate(), article.getAuthor().getId(), article.getTags());
+        final PersonalInfo personalInfo = article.getAuthor().getPersonalInfo();
+        return new CloseArticleResponse(article.getId(), article.getTitle(), article.getStatus().name(), article.getDescription(),
+                article.getPublicationDate(), article.getModificationDate(), article.getAuthor().getId(), personalInfo.getNickname(),
+                personalInfo.getPhoto(), tagEntityToResponse(article.getTags()));
+    }
+
+    @NonNull
+    private List<TagResponse> tagEntityToResponse(@NonNull List<TagEntity> tagEntities) {
+        return tagEntities.stream()
+                .map(tagEntity -> new TagResponse(tagEntity.getId(), tagEntity.getName()))
+                .collect(Collectors.toList());
     }
 }

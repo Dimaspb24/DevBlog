@@ -1,8 +1,6 @@
 package com.project.devblog.controller.dto.response;
 
-import com.project.devblog.model.CommentEntity;
-import com.project.devblog.model.TagEntity;
-import com.project.devblog.model.UserArticleEntity;
+import com.sun.istack.Nullable;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -22,16 +20,12 @@ public class OpenArticleResponse {
     private final String status;
     @NonNull
     private final String description;
-    @NonNull
+    @Nullable
     private final LocalDateTime publicationDate;
     @NonNull
     private final LocalDateTime modificationDate;
     @NonNull
     private final Integer authorId;
-    @NonNull
-    private final List<CommentEntity> comments;
-    @NonNull
-    private final List<TagEntity> tags;
-    @NonNull
-    private final List<UserArticleEntity> relationUsers;
+    @Nullable
+    private final List<TagResponse> tags;
 }

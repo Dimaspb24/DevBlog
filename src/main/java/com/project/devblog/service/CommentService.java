@@ -5,12 +5,13 @@ import com.project.devblog.model.CommentEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.CommentRepository;
 import com.project.devblog.service.exception.CommentNotFoundException;
-import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 @Transactional
@@ -22,7 +23,7 @@ public class CommentService {
     @NonNull
     private final ArticleService articleService;
     @NonNull
-    private final UserService userService;
+    private final AuthUserService userService;
 
     @NonNull
     public CommentEntity create(@NonNull Integer authorId, @NonNull Integer articleId, @NonNull String message,

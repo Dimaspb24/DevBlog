@@ -19,7 +19,7 @@ import javax.persistence.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "users_articles")
-public class UserArticleEntity {
+public class UserArticleEntity extends AuditableBaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +40,12 @@ public class UserArticleEntity {
 
     public UserArticleEntity(Integer rating, UserEntity user, ArticleEntity article) {
         this.rating = rating;
+        this.setUser(user);
+        this.setArticle(article);
+    }
+
+    public UserArticleEntity(BookmarkType bookmarkType, UserEntity user, ArticleEntity article) {
+        this.bookmarkType = bookmarkType;
         this.setUser(user);
         this.setArticle(article);
     }

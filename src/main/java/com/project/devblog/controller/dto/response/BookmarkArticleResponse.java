@@ -1,16 +1,16 @@
 package com.project.devblog.controller.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 
 @Getter
+@Builder
 @AllArgsConstructor
-public class BookmarkResponse {
+public class BookmarkArticleResponse {
     @NonNull
-    private final Integer userId;
+    private final Long id;
     @NonNull
-    private final Integer articleId;
-    @NonNull
-    private final String bookmarkType;
+    private final CloseArticleResponse articleResponse;
 }

@@ -79,11 +79,13 @@ create table if not exists subscribers
 
 create table if not exists users_articles
 (
-    id            bigserial primary key,
-    user_id       int  not null,
-    article_id    int  not null,
-    rating        int  null,
-    bookmark_type text null,
+    id                bigserial primary key,
+    user_id           int       not null,
+    article_id        int       not null,
+    rating            int       null,
+    bookmark_type     text      null,
+    creation_date     timestamp not null default now(),
+    modification_date timestamp not null default now(),
     constraint unique_user_id_article_id unique (user_id, article_id),
     constraint id_fk_users_articles__articles foreign key (article_id) references articles (id) on delete cascade,
     constraint id_fk_users_articles__users foreign key (user_id) references users (id) on delete cascade

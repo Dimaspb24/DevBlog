@@ -9,7 +9,7 @@ import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.repository.ArticleRepository;
 import com.project.devblog.repository.UserArticleRepository;
 import com.project.devblog.repository.UserRepository;
-import com.project.devblog.service.UserService;
+import com.project.devblog.service.AuthUserService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +27,7 @@ import java.util.List;
 public class UserIT extends AbstractIT {
 
     @Autowired
-    UserService userService;
+    AuthUserService userService;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -98,7 +98,7 @@ public class UserIT extends AbstractIT {
                 .user(user)
                 .article(article)
                 .rating(rating)
-                .bookmarkType(BookmarkType.FAVORITES)
+                .bookmarkType(BookmarkType.FAVORITE)
                 .build();
         user.addRelationArticle(userArticle);
 

@@ -3,7 +3,7 @@ package com.project.devblog.controller;
 import com.project.devblog.controller.dto.request.AuthenticationRequest;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.security.jwt.JwtTokenProvider;
-import com.project.devblog.service.UserService;
+import com.project.devblog.service.AuthUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,14 +31,14 @@ public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserService userService;
+    private final AuthUserService authUserService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequest requestDto) {
         try {
             String login = requestDto.getLogin();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login, requestDto.getPassword()));
-            UserEntity user = userService.findByLogin(login);
+            UserEntity user = authUserService.findByLogin(login);
 
             if (user == null) {
                 throw new UsernameNotFoundException("User with login: " + login + " NOT FOUND");

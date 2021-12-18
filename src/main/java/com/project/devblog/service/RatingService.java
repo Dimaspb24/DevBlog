@@ -6,10 +6,11 @@ import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.UserArticleRepository;
 import com.project.devblog.service.exception.CommentNotFoundException;
 import com.sun.istack.Nullable;
-import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 @Transactional
@@ -21,7 +22,7 @@ public class RatingService {
     @NonNull
     private final ArticleService articleService;
     @NonNull
-    private final UserService userService;
+    private final AuthUserService userService;
 
     @NonNull
     public UserArticleEntity create(@NonNull Integer authorId, @NonNull Integer articleId, @NonNull Integer rating) {

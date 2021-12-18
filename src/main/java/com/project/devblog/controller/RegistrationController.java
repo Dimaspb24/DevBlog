@@ -2,7 +2,7 @@ package com.project.devblog.controller;
 
 import com.project.devblog.controller.dto.request.AuthenticationRequest;
 import com.project.devblog.model.UserEntity;
-import com.project.devblog.service.UserService;
+import com.project.devblog.service.AuthUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class RegistrationController {
 
-    private final UserService userService;
+    private final AuthUserService authUserService;
 
     @PostMapping
     public ResponseEntity registration(@RequestBody AuthenticationRequest requestDto) {
         String login = requestDto.getLogin();
         String password = requestDto.getPassword();
 
-        if (userService.findByLogin(login) == null && !login.isEmpty()) {
+        if (authUserService.findByLogin(login) == null && !login.isEmpty()) {
             UserEntity user = new UserEntity();
             user.setLogin(login);
             user.setPassword(password);
 
-            userService.register(user);
+            authUserService.create(user);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

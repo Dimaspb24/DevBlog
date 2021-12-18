@@ -2,7 +2,7 @@ package com.project.devblog.security;
 
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.security.jwt.JwtUserFactory;
-import com.project.devblog.service.UserService;
+import com.project.devblog.service.AuthUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class JwtUserDetailsService implements UserDetailsService {
 
-    private final UserService userService;
+    private final AuthUserService authUserService;
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        UserEntity user = userService.findByLogin(login);
+        UserEntity user = authUserService.findByLogin(login);
 
         if (user == null) {
             throw new UsernameNotFoundException("User with login: " + login + " NOT FOUND!");

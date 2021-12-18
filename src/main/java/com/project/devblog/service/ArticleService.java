@@ -7,14 +7,15 @@ import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.repository.ArticleRepository;
 import com.project.devblog.service.exception.ArticleConflictException;
 import com.project.devblog.service.exception.ArticleNotFoundException;
-import java.time.LocalDateTime;
-import java.util.List;
-import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -24,13 +25,19 @@ public class ArticleService {
     @NonNull
     private final ArticleRepository articleRepository;
     @NonNull
-    private final UserService userService;
+    private final AuthUserService userService;
     @NonNull
     private final TagService tagService;
 
+    // todo replace or delete
     @NonNull
     public ArticleEntity get(@NonNull Integer articleId, @NonNull Integer authorId) {
         return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(authorId, articleId).orElseThrow(ArticleNotFoundException::new);
+    }
+
+    @NonNull
+    public ArticleEntity findById(@NonNull Integer articleId) {
+        return articleRepository.findById(articleId).orElseThrow(ArticleNotFoundException::new);
     }
 
     @NonNull

@@ -1,12 +1,16 @@
 package com.project.devblog.controller.dto.request;
 
-import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
+
+import javax.validation.constraints.NotNull;
 
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RatingRequest {
     @NotNull(message = "Rating is required")
-    private final Integer rating;
+    Integer rating;
 }

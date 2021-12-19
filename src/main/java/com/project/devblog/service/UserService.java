@@ -18,6 +18,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    public UserEntity save(UserEntity userEntity) {
+        return userRepository.save(userEntity);
+    }
+
     public UserEntity findByLogin(String login) {
         return userRepository.findByLogin(login).orElseThrow(UserNotFoundException::new);
     }

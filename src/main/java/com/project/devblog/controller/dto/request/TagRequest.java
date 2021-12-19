@@ -1,12 +1,16 @@
 package com.project.devblog.controller.dto.request;
 
-import javax.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
+
+import javax.validation.constraints.NotBlank;
 
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TagRequest {
     @NotBlank(message = "Name is required")
-    private final String name;
+    String name;
 }

@@ -1,24 +1,28 @@
 package com.project.devblog.controller.dto.request;
 
-import java.util.List;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import java.util.List;
 
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ArticleRequest {
     @NotBlank(message = "Title is required")
-    private final String title;
+    String title;
     @NotBlank(message = "Body is required")
-    private final String body;
+    String body;
     @NotBlank(message = "Status is required")
     @Pattern(regexp = "(PUBLISHED)|(CREATED)|(REMOVED)")
-    private final String status;
+    String status;
     @NotBlank(message = "Description is required")
-    private final String description;
+    String description;
     @NotNull(message = "Tags must no be null")
-    private final List<String> tags;
+    List<String> tags;
 }

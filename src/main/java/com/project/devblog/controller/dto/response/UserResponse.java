@@ -4,13 +4,17 @@ import com.project.devblog.model.PersonalInfo;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserResponse {
+    @NonNull
     Integer id;
+    @NonNull
     String login;
+    @NonNull
     PersonalInfo personalInfo;
 }

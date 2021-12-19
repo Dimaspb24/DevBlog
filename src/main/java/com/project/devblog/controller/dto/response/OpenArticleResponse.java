@@ -1,31 +1,35 @@
 package com.project.devblog.controller.dto.response;
 
 import com.sun.istack.Nullable;
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OpenArticleResponse {
     @NonNull
-    private final Integer id;
+    Integer id;
     @NonNull
-    private final String title;
+    String title;
     @NonNull
-    private final String body;
+    String body;
     @NonNull
-    private final String status;
+    String status;
     @NonNull
-    private final String description;
+    String description;
     @Nullable
-    private final LocalDateTime publicationDate;
+    LocalDateTime publicationDate;
     @NonNull
-    private final LocalDateTime modificationDate;
+    LocalDateTime modificationDate;
     @NonNull
-    private final Integer authorId;
+    Integer authorId;
     @Nullable
-    private final List<TagResponse> tags;
+    List<TagResponse> tags;
 }

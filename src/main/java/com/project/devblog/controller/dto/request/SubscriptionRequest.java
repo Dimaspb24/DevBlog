@@ -5,14 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import javax.validation.constraints.NotNull;
+
 @Getter
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserRequest {
-    //    @Pattern(regexp = "^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$")
-    String phone;
-    String firstname;
-    String lastname;
-    String nickname;
-    String info;
+public class SubscriptionRequest {
+    @NotNull(message = "User id is required")
+    Integer userId;
+    @NotNull(message = "Author id is required")
+    Integer authorId;
 }

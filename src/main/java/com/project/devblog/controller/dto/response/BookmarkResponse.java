@@ -1,16 +1,19 @@
 package com.project.devblog.controller.dto.response;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class BookmarkResponse {
     @NonNull
-    private final Integer userId;
+    Integer userId;
     @NonNull
-    private final Integer articleId;
+    Integer articleId;
     @NonNull
-    private final String bookmarkType;
+    String bookmarkType;
 }

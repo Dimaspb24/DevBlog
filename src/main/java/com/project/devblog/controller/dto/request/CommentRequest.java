@@ -1,14 +1,18 @@
 package com.project.devblog.controller.dto.request;
 
-import javax.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
+
+import javax.validation.constraints.NotBlank;
 
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentRequest {
     @NotBlank(message = "Message is required")
-    private final String message;
+    String message;
     @NotBlank(message = "Receiver id is required")
-    private final Integer receiverId;
+    Integer receiverId;
 }

@@ -1,11 +1,12 @@
 package com.project.devblog.controller.dto.request;
 
-import java.util.List;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.lang.Nullable;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -19,6 +20,6 @@ public class ArticleRequest {
     private final String status;
     @NotBlank(message = "Description is required")
     private final String description;
-    @NotNull(message = "Tags must no be null")
+    @Nullable
     private final List<String> tags;
 }

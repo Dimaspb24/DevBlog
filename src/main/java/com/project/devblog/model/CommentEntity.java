@@ -42,10 +42,10 @@ public class CommentEntity extends AuditableBaseEntity<Integer> {
     @JoinColumn(name = "receiver_id")
     UserEntity receiver;
 
-    public CommentEntity(@NonNull String message, @NonNull ArticleEntity article, @NonNull UserEntity author) {
+    public CommentEntity(@NonNull String message, @NonNull ArticleEntity article, @NonNull UserEntity authorComment) {
         this.message = message;
         this.setArticle(article);
-        this.setAuthor(author);
+        this.setAuthor(authorComment);
     }
 
     /*-----------------------------------FOR_MANY_TO_ONE--------------------------------*/

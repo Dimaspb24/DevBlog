@@ -10,23 +10,17 @@ import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.service.ArticleService;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ApiV1
 @RestController
@@ -46,7 +40,7 @@ public class UserArticleController {
     @GetMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
     public OpenArticleResponse get(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId) {
-        return toResponse(articleService.get(userId, articleId));
+        return toResponse(articleService.get(articleId));
     }
 
     @GetMapping("/users/{userId}/articles")
@@ -74,7 +68,7 @@ public class UserArticleController {
     private OpenArticleResponse toResponse(@NonNull ArticleEntity article) {
         return new OpenArticleResponse(article.getId(), article.getTitle(), article.getBody(), article.getStatus().name(),
                 article.getDescription(), article.getPublicationDate(), article.getModificationDate(), article.getAuthor().getId(),
-                tagEntityToResponse(article.getTags()));
+                article.getAuthor().getPersonalInfo().getNickname(), tagEntityToResponse(article.getTags()));
     }
 
     @NonNull

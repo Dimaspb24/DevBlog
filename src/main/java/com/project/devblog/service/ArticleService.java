@@ -7,14 +7,15 @@ import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.repository.ArticleRepository;
 import com.project.devblog.service.exception.ArticleConflictException;
 import com.project.devblog.service.exception.ArticleNotFoundException;
-import java.time.LocalDateTime;
-import java.util.List;
-import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -29,8 +30,8 @@ public class ArticleService {
     private final TagService tagService;
 
     @NonNull
-    public ArticleEntity get(@NonNull Integer articleId, @NonNull Integer authorId) {
-        return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(authorId, articleId).orElseThrow(ArticleNotFoundException::new);
+    public ArticleEntity get(@NonNull Integer articleId) {
+        return articleRepository.findByIdAndEnabledIsTrue(articleId).orElseThrow(ArticleNotFoundException::new);
     }
 
     @NonNull
@@ -39,14 +40,16 @@ public class ArticleService {
 
         final UserEntity author = userService.get(userId);
         final ArticleEntity articleEntity = new ArticleEntity(title, body, status, description, author);
-        final List<TagEntity> tagEntities = tagService.getAllByName(tags);
 
         if (status.name().equalsIgnoreCase(StatusArticle.PUBLISHED.name())) {
             final LocalDateTime now = LocalDateTime.now();
             articleEntity.setPublicationDate(now);
         }
 
-        articleEntity.setTags(tagEntities);
+        if (tags != null) {
+            final List<TagEntity> tagEntities = tagService.getAllByName(tags);
+            articleEntity.setTags(tagEntities);
+        }
 
         return articleRepository.save(articleEntity);
     }
@@ -57,7 +60,7 @@ public class ArticleService {
     }
 
     public void delete(@NonNull Integer authorId, @NonNull Integer articleId) {
-        final ArticleEntity articleEntity = get(articleId, authorId);
+        final ArticleEntity articleEntity = get(articleId);
 
         if (!articleEntity.getEnabled()) {
             throw new ArticleConflictException();
@@ -73,7 +76,7 @@ public class ArticleService {
     @NonNull
     public ArticleEntity update(@NonNull Integer authorId, @NonNull Integer articleId, @NonNull String title, List<String> tags,
                                 @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
-        final ArticleEntity articleEntity = get(articleId, authorId);
+        final ArticleEntity articleEntity = get(articleId);
         final List<TagEntity> tagEntities = tagService.getAllByName(tags);
 
         articleEntity.setTitle(title);

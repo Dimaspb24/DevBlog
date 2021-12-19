@@ -6,11 +6,9 @@ import lombok.NonNull;
 
 @Getter
 @AllArgsConstructor
-public class RatingResponse {
+public class TagResponse {
     @NonNull
-    private final Integer authorId;
+    private final Integer id;
     @NonNull
-    private final Integer articleId;
-    @NonNull
-    private final Integer rating;
+    private final String name;
 }

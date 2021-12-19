@@ -104,7 +104,7 @@ public class UserIT extends AbstractIT {
 
         entityManager.flush();
 
-        UserArticleEntity savedUserArticle = userArticleRepository.findByUserAndArticle(user, article).orElseThrow();
+        UserArticleEntity savedUserArticle = userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(user.getId(), article.getId()).orElseThrow();
         assertEquals(rating, savedUserArticle.getRating());
     }
 

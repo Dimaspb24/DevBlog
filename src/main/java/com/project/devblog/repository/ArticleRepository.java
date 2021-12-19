@@ -18,7 +18,7 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
     @NonNull
     List<ArticleEntity> findByTitleContains(@NonNull String title);
     @NonNull
-    Optional<ArticleEntity> findByIdAndAuthorIdAndEnabledIsTrue(@NonNull Integer id, @NonNull Integer authorId);
+    Optional<ArticleEntity> findByIdAndAuthorIdAndEnabledIsTrue(@NonNull Integer authorId, @NonNull Integer id);
     @NonNull
     Page<ArticleEntity> findByAuthorIdAndEnabledIsTrue(@NonNull Integer authorId, @NonNull Pageable pageable);
     @NonNull

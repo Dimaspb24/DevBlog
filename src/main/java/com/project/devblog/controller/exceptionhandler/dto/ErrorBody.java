@@ -1,11 +1,10 @@
 package com.project.devblog.controller.exceptionhandler.dto;
 
-import lombok.AllArgsConstructor;
+import com.project.devblog.controller.ErrorsEnum;
 import lombok.Getter;
 import lombok.NonNull;
 
 @Getter
-@AllArgsConstructor
 public class ErrorBody {
 
     private final int status;
@@ -13,4 +12,10 @@ public class ErrorBody {
     private final String code;
     @NonNull
     private final String message;
+
+    public ErrorBody(@NonNull ErrorsEnum status, @NonNull String message) {
+        this.status = status.getStatus().value();
+        this.code = status.name();
+        this.message = message;
+    }
 }

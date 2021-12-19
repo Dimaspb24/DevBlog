@@ -1,7 +1,6 @@
 package com.project.devblog.controller.dto.response;
 
-import com.project.devblog.model.TagEntity;
-import com.project.devblog.model.enums.StatusArticle;
+import com.sun.istack.Nullable;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -16,15 +15,19 @@ public class CloseArticleResponse {
     @NonNull
     private final String title;
     @NonNull
-    private final StatusArticle status;
+    private final String status;
     @NonNull
     private final String description;
-    @NonNull
+    @Nullable
     private final LocalDateTime publicationDate;
     @NonNull
     private final LocalDateTime modificationDate;
     @NonNull
     private final Integer authorId;
     @NonNull
-    private final List<TagEntity> tags;
+    private final String authorNickname;
+    @NonNull
+    private final String photo;
+    @Nullable
+    private final List<TagResponse> tags;
 }

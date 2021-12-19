@@ -13,7 +13,6 @@ public class ArticleNotFoundExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ErrorBody> handleException(@NonNull ArticleNotFoundException exception) {
-        return new ResponseEntity<>(new ErrorBody(ErrorsEnum.NOT_FOUND.getStatus().value(),
-                ErrorsEnum.NOT_FOUND.name(), exception.getMessage()), ErrorsEnum.NOT_FOUND.getStatus());
+        return new ResponseEntity<>(new ErrorBody(ErrorsEnum.NOT_FOUND, exception.getMessage()), ErrorsEnum.NOT_FOUND.getStatus());
     }
 }

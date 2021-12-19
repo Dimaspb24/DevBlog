@@ -15,6 +15,4 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
 
     @NonNull
     Optional<CommentEntity> findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(@NonNull Integer id, @NonNull Integer authorId, @NonNull Integer articleId);
-
-    void delete(@NonNull Integer id);
 }

@@ -31,6 +31,11 @@ public class TagService {
         return tagRepository.findAll();
     }
 
+    @NonNull
+    public List<TagEntity> getAllByName(@NonNull List<String> tags) {
+        return tagRepository.findAllByNameIn(tags);
+    }
+
     public void delete(@NonNull Integer tagId) {
         tagRepository.deleteById(tagId);
     }

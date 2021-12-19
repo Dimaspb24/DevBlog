@@ -88,6 +88,16 @@ public class ArticleEntity extends AuditableBaseEntity<Integer> {
         this.author = author;
     }
 
+    public ArticleEntity(@NonNull String title, @NonNull String body, @NonNull StatusArticle status, @NonNull String description,
+                         LocalDateTime publicationDate, @NonNull UserEntity author) {
+        this.title = title;
+        this.body = body;
+        this.status = status;
+        this.description = description;
+        this.publicationDate = publicationDate;
+        this.author = author;
+    }
+
     /*-----------------------------------FOR_MANY_TO_MANY_TAG--------------------------------*/
     public void addTag(TagEntity tag) {
         tags.add(tag);

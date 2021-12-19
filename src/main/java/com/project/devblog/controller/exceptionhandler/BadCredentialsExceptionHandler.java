@@ -1,7 +1,7 @@
 package com.project.devblog.controller.exceptionhandler;
 
+import com.project.devblog.controller.ErrorsEnum;
 import com.project.devblog.controller.exceptionhandler.dto.ErrorBody;
-import com.project.devblog.model.enums.ErrorsEnum;
 import lombok.NonNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,7 +13,7 @@ public class BadCredentialsExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ErrorBody> handleException(@NonNull BadCredentialsException exception) {
-        return new ResponseEntity<>(new ErrorBody(ErrorsEnum.CONFLICT.getStatus().value(),
-                ErrorsEnum.CONFLICT.name(), exception.getMessage()), ErrorsEnum.CONFLICT.getStatus());
+        return new ResponseEntity<>(new ErrorBody(ErrorsEnum.CONFLICT, exception.getMessage()),
+                ErrorsEnum.CONFLICT.getStatus());
     }
 }

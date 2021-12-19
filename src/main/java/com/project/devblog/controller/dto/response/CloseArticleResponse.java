@@ -26,7 +26,7 @@ public class CloseArticleResponse {
     private final Integer authorId;
     @NonNull
     private final String authorNickname;
-    @NonNull
+
     private final String photo;
     @Nullable
     private final List<TagResponse> tags;

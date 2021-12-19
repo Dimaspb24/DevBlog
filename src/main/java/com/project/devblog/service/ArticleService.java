@@ -92,6 +92,7 @@ public class ArticleService {
         final ArticleEntity article = get(articleId);
         article.setPublicationDate(LocalDateTime.now());
         article.setStatus(StatusArticle.PUBLISHED);
+        articleRepository.save(article);
     }
 
     @NonNull

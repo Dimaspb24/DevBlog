@@ -24,6 +24,6 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
     @NonNull
     @Query("select a, avg(ua.rating) as rating from ArticleEntity a\n" +
             "left outer join UserArticleEntity ua on a.id = ua.article.id\n" +
-            "group by a\n")
+            "group by a")
     List<ArticleEntity> findOrderedByRating(@NonNull Sort sort);
 }

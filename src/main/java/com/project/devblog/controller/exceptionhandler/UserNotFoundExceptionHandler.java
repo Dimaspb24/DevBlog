@@ -1,7 +1,7 @@
 package com.project.devblog.controller.exceptionhandler;
 
-import com.project.devblog.controller.ErrorsEnum;
 import com.project.devblog.controller.exceptionhandler.dto.ErrorBody;
+import com.project.devblog.model.enums.ErrorsEnum;
 import com.project.devblog.service.exception.UserNotFoundException;
 import lombok.NonNull;
 import org.springframework.http.ResponseEntity;

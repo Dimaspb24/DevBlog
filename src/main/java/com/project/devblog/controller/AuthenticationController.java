@@ -3,6 +3,7 @@ package com.project.devblog.controller;
 import com.project.devblog.controller.annotation.ApiV1;
 import com.project.devblog.controller.dto.request.AuthenticationRequest;
 import com.project.devblog.controller.dto.response.AuthenticationResponse;
+import com.project.devblog.model.UserEntity;
 import com.project.devblog.security.jwt.JwtTokenProvider;
 import com.project.devblog.service.UserService;
 import lombok.AllArgsConstructor;
@@ -39,10 +40,10 @@ public class AuthenticationController {
         final String login = request.getLogin();
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(login, request.getPassword()));
-        final String token = jwtTokenProvider.createToken(login);
-        final Integer userId = userService.findByLogin(login).getId();
+        final UserEntity user = userService.findByLogin(login);
+        final String token = jwtTokenProvider.createToken(login, user.getRole());
 
-        return toResponse(userId, login, token);
+        return toResponse(user.getId(), login, token);
     }
 
     @PostMapping("/auth/logout")

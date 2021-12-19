@@ -1,5 +1,6 @@
 package com.project.devblog.config;
 
+import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.jwt.JwtConfigurer;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,9 +15,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String ADMIN_ENDPOINT = "/v1/admin/**";
+    private static final String USER_ENDPOINT = "/v1/user/**";
     private static final String LOGIN_ENDPOINT = "/v1/auth/**";
     private static final String REGISTRATION_ENDPOINT = "/v1/registration";
     private static final String CHECK_TOKEN_ENDPOINT = "/v1/checkToken/**";
+    private static final String ARTICLES_SORTING_ENDPOINT = "/v1/articles/sorting/**";
 
     private final JwtConfigurer jwtConfigurer;
 
@@ -37,7 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
                 .antMatchers(REGISTRATION_ENDPOINT).permitAll()
                 .antMatchers(CHECK_TOKEN_ENDPOINT).permitAll()
-                .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
+                .antMatchers(ARTICLES_SORTING_ENDPOINT).hasRole(Role.USER.name())
+                .antMatchers(ADMIN_ENDPOINT).hasRole(Role.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 .apply(jwtConfigurer);

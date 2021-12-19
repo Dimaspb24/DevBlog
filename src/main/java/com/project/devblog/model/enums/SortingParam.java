@@ -1,16 +1,13 @@
 package com.project.devblog.model.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
 public enum SortingParam {
     PUBLICATION_DATE("publicationDate"),
     RATING("rating");
 
     private final String name;
-
-    SortingParam(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
 }

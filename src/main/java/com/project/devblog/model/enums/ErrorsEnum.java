@@ -1,4 +1,4 @@
-package com.project.devblog.model.enums;
+package com.project.devblog.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

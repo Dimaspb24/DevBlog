@@ -30,6 +30,8 @@ public class OpenArticleResponse {
     LocalDateTime modificationDate;
     @NonNull
     Integer authorId;
+    @NonNull
+    String nickname;
     @Nullable
     List<TagResponse> tags;
 }

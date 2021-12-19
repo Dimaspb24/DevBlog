@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
 
@@ -13,6 +14,6 @@ import javax.validation.constraints.NotBlank;
 public class CommentRequest {
     @NotBlank(message = "Message is required")
     String message;
-    @NotBlank(message = "Receiver id is required")
+    @Nullable
     Integer receiverId;
 }

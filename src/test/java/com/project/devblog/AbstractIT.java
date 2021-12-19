@@ -16,7 +16,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class AbstractIT {
 
     @Container
-    private static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>("postgres:13")
+    private static final PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>("postgres:13")
             .withUsername("demouser")
             .withPassword("demopassword");
 

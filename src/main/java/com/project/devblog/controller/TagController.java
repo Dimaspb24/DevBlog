@@ -5,16 +5,12 @@ import com.project.devblog.controller.dto.request.TagRequest;
 import com.project.devblog.controller.dto.response.TagResponse;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.service.TagService;
-import java.util.List;
+import static java.util.stream.Collectors.toList;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import static java.util.stream.Collectors.toList;
+import java.util.List;
 
 @ApiV1
 @RestController

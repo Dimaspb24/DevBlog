@@ -31,8 +31,8 @@ public class ArticleService {
 
     // todo replace or delete
     @NonNull
-    public ArticleEntity get(@NonNull Integer articleId, @NonNull Integer authorId) {
-        return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(authorId, articleId).orElseThrow(ArticleNotFoundException::new);
+    public ArticleEntity get(@NonNull Integer userId, @NonNull Integer articleId) {
+        return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(userId, articleId).orElseThrow(ArticleNotFoundException::new);
     }
 
     @NonNull
@@ -46,14 +46,16 @@ public class ArticleService {
 
         final UserEntity author = userService.get(userId);
         final ArticleEntity articleEntity = new ArticleEntity(title, body, status, description, author);
-        final List<TagEntity> tagEntities = tagService.getAllByName(tags);
 
         if (status.name().equalsIgnoreCase(StatusArticle.PUBLISHED.name())) {
             final LocalDateTime now = LocalDateTime.now();
             articleEntity.setPublicationDate(now);
         }
 
-        articleEntity.setTags(tagEntities);
+        if (tags != null) {
+            final List<TagEntity> tagEntities = tagService.getAllByName(tags);
+            articleEntity.setTags(tagEntities);
+        }
 
         return articleRepository.save(articleEntity);
     }
@@ -70,10 +72,8 @@ public class ArticleService {
             throw new ArticleConflictException();
         }
 
-        final LocalDateTime now = LocalDateTime.now();
-
         articleEntity.setEnabled(false);
-        articleEntity.setDeletionDate(now);
+        articleEntity.setDeletionDate(LocalDateTime.now());
         articleRepository.save(articleEntity);
     }
 

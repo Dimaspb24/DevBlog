@@ -1,18 +1,17 @@
 spring:
 
-  # Запуск с локальной базой данных
   datasource:
+    driver-class-name: org.postgresql.Driver
+
+    # for docker db
+    #    username: demouser
+    #    password: demopassword
+    #    url: jdbc:postgresql://localhost:15432/postgres
+
+    # for local db
     username: postgres
     password: postgres
     url: jdbc:postgresql://localhost:5432/postgres
-    driver-class-name: org.postgresql.Driver
-
-  #  Запуск с базой в контейнере
-  #  datasource:
-  #    username: demouser
-  #    password: demopassword
-  #    url: jdbc:postgresql://localhost:15432/postgres
-  #    driver-class-name: org.postgresql.Driver
 
   jpa:
     show-sql: true

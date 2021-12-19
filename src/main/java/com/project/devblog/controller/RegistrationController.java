@@ -9,8 +9,10 @@ import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -24,6 +26,7 @@ public class RegistrationController {
     private final UserService userService;
 
     @PostMapping("/registration")
+    @ResponseStatus(HttpStatus.OK)
     public RegistrationResponse registration(@NonNull @Valid RegistrationRequest request) {
         if (!userService.isExists(request.getLogin())) {
             return toResponse(userService.register(

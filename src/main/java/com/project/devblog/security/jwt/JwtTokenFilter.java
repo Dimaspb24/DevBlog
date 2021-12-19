@@ -1,6 +1,8 @@
 package com.project.devblog.security.jwt;
 
+import com.project.devblog.security.jwt.exception.JwtAuthenticationException;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -11,25 +13,34 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
 @AllArgsConstructor
 public class JwtTokenFilter extends GenericFilterBean {
 
+    @Autowired
     private final JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private final RestAuthenticationEntryPoint authenticationEntryPoint;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
+        try {
+            if (token != null && jwtTokenProvider.validateToken(token)) {
+                Authentication authentication = jwtTokenProvider.getAuthentication(token);
 
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-
-            if (authentication != null) {
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                if (authentication != null) {
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
+        } catch (JwtAuthenticationException authenticationException) {
+            SecurityContextHolder.clearContext();
+            authenticationEntryPoint.commence((HttpServletRequest) servletRequest,
+                    (HttpServletResponse) servletResponse, authenticationException);
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

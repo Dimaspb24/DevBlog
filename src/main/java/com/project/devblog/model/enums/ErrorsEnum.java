@@ -10,8 +10,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorsEnum {
     NOT_FOUND(HttpStatus.NOT_FOUND),
     CONFLICT(HttpStatus.CONFLICT),
-    BAD_REQUEST(HttpStatus.BAD_REQUEST),
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED);
+    BAD_REQUEST(HttpStatus.BAD_REQUEST);
 
     @NonNull
     private final HttpStatus status;

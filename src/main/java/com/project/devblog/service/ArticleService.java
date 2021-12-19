@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -96,14 +96,18 @@ public class ArticleService {
     }
 
     @NonNull
-    public List<ArticleEntity> getSortedList(@NonNull SortingParam sortingParam, @NonNull SortOrder sortOrder) {
+    public Page<ArticleEntity> getSortedList(@NonNull SortingParam sortingParam,
+                                                 @NonNull SortOrder sortOrder, @NonNull Pageable pageable) {
         switch (sortingParam) {
             case PUBLICATION_DATE: {
                 switch (sortOrder) {
-                    case ASCENDING:
-                        return articleRepository.findAll(Sort.by(sortingParam.getName()).ascending());
+                    case ASCENDING: {
+                        return articleRepository.findByEnabledIsTrue(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                                Sort.by(sortingParam.getName()).ascending()));
+                    }
                     case DESCENDING:
-                        return articleRepository.findAll(Sort.by(sortingParam.getName()).descending());
+                        return articleRepository.findByEnabledIsTrue(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                                Sort.by(sortingParam.getName()).descending()));
                 }
             }
             case RATING: {
@@ -119,10 +123,11 @@ public class ArticleService {
                 }
                 final List<Sort.Order> orders = new ArrayList<>(Arrays.asList(orderByRating, orderByPublicationDateDesc));
 
-                return articleRepository.findOrderedByRating(Sort.by(orders));
+                return articleRepository.findByEnabledIsTrue(PageRequest
+                        .of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(orders)));
             }
         }
 
-        return articleRepository.findAll();
+        return articleRepository.findByEnabledIsTrue(pageable);
     }
 }

@@ -22,8 +22,5 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
     @NonNull
     Page<ArticleEntity> findByAuthorIdAndEnabledIsTrue(@NonNull Integer authorId, @NonNull Pageable pageable);
     @NonNull
-    @Query("select a, avg(ua.rating) as rating from ArticleEntity a\n" +
-            "left outer join UserArticleEntity ua on a.id = ua.article.id\n" +
-            "group by a")
-    List<ArticleEntity> findOrderedByRating(@NonNull Sort sort);
+    Page<ArticleEntity> findByEnabledIsTrue(@NonNull Pageable pageable);
 }

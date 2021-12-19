@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @ApiV1
 @RestController
 @AllArgsConstructor
-public class UserArticleController {
+public class ArticleController {
 
     @NonNull
     private final ArticleService articleService;
@@ -40,7 +40,7 @@ public class UserArticleController {
     @GetMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
     public OpenArticleResponse get(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId) {
-        return toResponse(articleService.get(articleId));
+        return toResponse(articleService.get(userId, articleId));
     }
 
     @GetMapping("/users/{userId}/articles")

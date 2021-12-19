@@ -30,8 +30,8 @@ public class ArticleService {
     private final TagService tagService;
 
     @NonNull
-    public ArticleEntity get(@NonNull Integer articleId) {
-        return articleRepository.findByIdAndEnabledIsTrue(articleId).orElseThrow(ArticleNotFoundException::new);
+    public ArticleEntity get(@NonNull Integer userId, @NonNull Integer articleId) {
+        return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(userId, articleId).orElseThrow(ArticleNotFoundException::new);
     }
 
     @NonNull
@@ -60,23 +60,21 @@ public class ArticleService {
     }
 
     public void delete(@NonNull Integer authorId, @NonNull Integer articleId) {
-        final ArticleEntity articleEntity = get(articleId);
+        final ArticleEntity articleEntity = get(articleId, authorId);
 
         if (!articleEntity.getEnabled()) {
             throw new ArticleConflictException();
         }
 
-        final LocalDateTime now = LocalDateTime.now();
-
         articleEntity.setEnabled(false);
-        articleEntity.setDeletionDate(now);
+        articleEntity.setDeletionDate(LocalDateTime.now());
         articleRepository.save(articleEntity);
     }
 
     @NonNull
     public ArticleEntity update(@NonNull Integer authorId, @NonNull Integer articleId, @NonNull String title, List<String> tags,
                                 @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
-        final ArticleEntity articleEntity = get(articleId);
+        final ArticleEntity articleEntity = get(articleId, authorId);
         final List<TagEntity> tagEntities = tagService.getAllByName(tags);
 
         articleEntity.setTitle(title);

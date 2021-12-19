@@ -29,7 +29,7 @@ public class CommentService {
     public CommentEntity create(@NonNull Integer authorCommentId, @NonNull Integer articleId, @NonNull String message,
                                 Integer receiverId) {
 
-        final ArticleEntity articleEntity = articleService.get(articleId);
+        final ArticleEntity articleEntity = articleService.get(authorCommentId, articleId);
         final UserEntity author = userService.get(authorCommentId);
         final CommentEntity commentEntity = new CommentEntity(message, articleEntity, author);
         final UserEntity receiver = (receiverId == null) ? articleEntity.getAuthor() : userService.get(receiverId);
@@ -49,7 +49,7 @@ public class CommentService {
     }
 
     public void deleteComment(@NonNull Integer id, @NonNull Integer authorId, @NonNull Integer articleId) {
-        final ArticleEntity articleEntity = articleService.get(articleId);
+        final ArticleEntity articleEntity = articleService.get(articleId, authorId);
         final CommentEntity commentEntity = get(id, authorId, articleId);
         articleEntity.getComments().remove(commentEntity);
 

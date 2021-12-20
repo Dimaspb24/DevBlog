@@ -9,11 +9,13 @@ import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.repository.ArticleRepository;
 import com.project.devblog.service.exception.ArticleConflictException;
 import com.project.devblog.service.exception.ArticleNotFoundException;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.transaction.Transactional;
+
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
@@ -112,12 +114,12 @@ public class ArticleService {
                     case ASCENDING: {
                         return articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(PageRequest
                                 .of(pageable.getPageNumber(), pageable.getPageSize(),
-                                Sort.by(sortingParam.getName()).ascending()));
+                                        Sort.by(sortingParam.getName()).ascending()));
                     }
                     case DESCENDING:
                         return articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(PageRequest
                                 .of(pageable.getPageNumber(), pageable.getPageSize(),
-                                Sort.by(sortingParam.getName()).descending()));
+                                        Sort.by(sortingParam.getName()).descending()));
                 }
             }
             case RATING: {

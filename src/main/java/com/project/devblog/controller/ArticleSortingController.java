@@ -13,11 +13,9 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,12 +28,12 @@ public class ArticleSortingController {
     @NonNull
     private final ArticleService articleService;
 
-    @GetMapping("/users/{userId}/articles/sorting/{sortingParam}/{sortOrder}")
+    @GetMapping("/users/{userId}/articles/sorting")
     @ResponseStatus(HttpStatus.OK)
     public Page<CloseArticleResponse> sorting(@NonNull @PathVariable String userId,
-                                              @NonNull @PathVariable String sortingParam,
-                                              @NonNull @PathVariable String sortOrder,
-                                              @NonNull Pageable pageable) {
+                                              @NonNull @RequestParam String sortingParam,
+                                              @NonNull @RequestParam String sortOrder,
+                                              @PageableDefault Pageable pageable) {
         return articleService.getSortedList(SortingParam.valueOf(sortingParam), SortOrder.valueOf(sortOrder), pageable)
                 .map(this::toResponse);
     }

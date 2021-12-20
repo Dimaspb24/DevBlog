@@ -1,11 +1,12 @@
 package com.project.devblog.controller.dto.response;
 
-import com.sun.istack.Nullable;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
+import org.springframework.lang.Nullable;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -26,6 +27,8 @@ public class OpenArticleResponse {
     private final LocalDateTime modificationDate;
     @NonNull
     private final Integer authorId;
+    @NonNull
+    private final String nickname;
     @Nullable
     private final List<TagResponse> tags;
 }

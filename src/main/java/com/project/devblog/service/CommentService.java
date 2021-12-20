@@ -5,12 +5,13 @@ import com.project.devblog.model.CommentEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.CommentRepository;
 import com.project.devblog.service.exception.CommentNotFoundException;
-import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 @Transactional
@@ -25,17 +26,14 @@ public class CommentService {
     private final UserService userService;
 
     @NonNull
-    public CommentEntity create(@NonNull Integer authorId, @NonNull Integer articleId, @NonNull String message,
-                                @NonNull Integer receiverId) {
+    public CommentEntity create(@NonNull Integer authorCommentId, @NonNull Integer articleId, @NonNull String message,
+                                Integer receiverId) {
 
-        final ArticleEntity articleEntity = articleService.get(authorId, articleId);
-        final UserEntity author = userService.get(authorId);
+        final ArticleEntity articleEntity = articleService.get(authorCommentId, articleId);
+        final UserEntity author = userService.get(authorCommentId);
         final CommentEntity commentEntity = new CommentEntity(message, articleEntity, author);
-
-        if (!receiverId.equals(authorId)) {
-            final UserEntity receiver = userService.get(receiverId);
-            commentEntity.setReceiver(receiver);
-        }
+        final UserEntity receiver = (receiverId == null) ? articleEntity.getAuthor() : userService.get(receiverId);
+        commentEntity.setReceiver(receiver);
 
         return commentRepository.save(commentEntity);
     }

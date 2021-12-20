@@ -17,6 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,14 +29,18 @@ public class ArticleSortingController {
     @NonNull
     private final ArticleService articleService;
 
-    @GetMapping("/users/{userId}/articles/sorting")
+    @GetMapping("/topic/articles")
     @ResponseStatus(HttpStatus.OK)
-    public Page<CloseArticleResponse> sorting(@NonNull @PathVariable String userId,
-                                              @NonNull @RequestParam String sortingParam,
-                                              @NonNull @RequestParam String sortOrder,
+    public Page<CloseArticleResponse> sorting(@NonNull @Valid @RequestParam SortingParam sortingParam,
+                                              @NonNull @Valid @RequestParam SortOrder sortOrder,
                                               @PageableDefault Pageable pageable) {
-        return articleService.getSortedList(SortingParam.valueOf(sortingParam), SortOrder.valueOf(sortOrder), pageable)
-                .map(this::toResponse);
+        if (sortingParam == SortingParam.RATING) {
+            return articleService.getSortedListByRating(sortOrder, pageable)
+                    .map(this::toResponse);
+        } else {
+            return articleService.getSortedListByPublicationDate(sortOrder, pageable)
+                    .map(this::toResponse);
+        }
     }
 
     @NonNull

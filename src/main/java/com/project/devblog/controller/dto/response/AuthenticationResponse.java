@@ -10,6 +10,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationResponse {
+
+    @NonNull
+    Integer id;
     @NonNull
     String login;
     @NonNull

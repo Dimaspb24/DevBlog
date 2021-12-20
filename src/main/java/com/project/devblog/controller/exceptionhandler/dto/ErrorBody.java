@@ -1,6 +1,5 @@
 package com.project.devblog.controller.exceptionhandler.dto;
 
-import com.project.devblog.controller.ErrorsEnum;
 import lombok.Getter;
 import lombok.NonNull;
 

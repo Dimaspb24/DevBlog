@@ -8,9 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public final class JwtUserFactory {
@@ -21,14 +19,13 @@ public final class JwtUserFactory {
                 user.getLogin(),
                 user.getPassword(),
                 user.getStatus().equals(StatusUser.ACTIVE),
-                mapToGrantedAuthorities()
+                mapToGrantedAuthorities(user.getRole())
         );
     }
 
-    private static List<GrantedAuthority> mapToGrantedAuthorities() {
-        return new ArrayList<Role>(Arrays.asList(Role.values())).stream()
-                .map(role ->
-                        new SimpleGrantedAuthority(role.name())
-                ).collect(Collectors.toList());
+    private static List<GrantedAuthority> mapToGrantedAuthorities(Role role) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role.nameWithPrefix()));
+        return authorities;
     }
 }

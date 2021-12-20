@@ -30,9 +30,8 @@ public class SubscriptionController {
 
     @DeleteMapping("/users/{userId}/subscription/{authorId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Object> unsubscribe(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer authorId) {
+    public void unsubscribe(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer authorId) {
         subscriptionService.unsubscribe(userId, authorId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/users/{userId}/subscription")

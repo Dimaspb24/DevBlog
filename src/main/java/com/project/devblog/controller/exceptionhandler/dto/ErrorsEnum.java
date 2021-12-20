@@ -1,4 +1,4 @@
-package com.project.devblog.controller;
+package com.project.devblog.controller.exceptionhandler.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

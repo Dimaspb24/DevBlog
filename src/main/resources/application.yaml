@@ -20,6 +20,7 @@ spring:
         ddl-auto: none
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        order_by.default_null_ordering: last
 
   flyway:
     out-of-order: true
@@ -31,4 +32,4 @@ logging:
 jwt:
   token:
     secret: jwtdevblog
-    expired: 3600000
+    expired: 3600000 # 1 hour

@@ -2,31 +2,68 @@ package com.project.devblog.service;
 
 import com.project.devblog.controller.dto.request.UserRequest;
 import com.project.devblog.model.UserEntity;
+import com.project.devblog.model.enums.Role;
 import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.repository.UserRepository;
 import com.project.devblog.service.exception.UserNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 @Transactional
 public class UserService {
 
+    @NonNull
     private final UserRepository userRepository;
+    @NonNull
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    @NonNull
+    public UserEntity register(@NonNull String login, @NonNull String password,
+                               @NonNull Role role, @NonNull StatusUser status) {
+
+        final UserEntity userEntity = new UserEntity(login, role, status);
+        userEntity.setPassword(passwordEncoder.encode(password));
+
+        return userRepository.save(userEntity);
+    }
+
+    public boolean isExists(@NonNull String login) {
+        return userRepository.existsByLogin(login);
+    }
+
+    @NonNull
+    public List<UserEntity> getAll() {
+        return userRepository.findAll();
+    }
+
+    public Page<UserEntity> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
 
     public UserEntity save(UserEntity userEntity) {
         return userRepository.save(userEntity);
     }
 
-    public UserEntity get(Integer id) {
+    @NonNull
+    public UserEntity findByLogin(@NonNull String login) {
+        return userRepository.findByLogin(login).orElseThrow(UserNotFoundException::new);
+    }
+
+    @NonNull
+    public UserEntity get(@NonNull Integer id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
-    public void deleteById(Integer userId) {
+    public void delete(Integer userId) {
         UserEntity user = get(userId);
         user.setStatus(StatusUser.BANNED);
         userRepository.save(user);
@@ -64,7 +101,4 @@ public class UserService {
         return user;
     }
 
-    public Page<UserEntity> findAll(Pageable pageable) {
-        return userRepository.findAll(pageable);
-    }
 }

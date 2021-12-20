@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
@@ -50,6 +51,9 @@ public class ArticleEntity extends AuditableBaseEntity<Integer> {
 
     @Column(name = "deletion_date")
     LocalDateTime deletionDate;
+
+    @Formula("(select avg(ua.rating) from users_articles ua where ua.article_id = id)")
+    Double rating;
 
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)

@@ -63,7 +63,7 @@ public class ArticleService {
         }
 
         if (tags != null) {
-            final List<TagEntity> tagEntities = tagService.getAllByName(tags);
+            final List<TagEntity> tagEntities = tagService.createAndGetAllByName(tags);
             articleEntity.setTags(tagEntities);
         }
 
@@ -91,7 +91,7 @@ public class ArticleService {
     public ArticleEntity update(@NonNull Integer authorId, @NonNull Integer articleId, @NonNull String title, List<String> tags,
                                 @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
         final ArticleEntity articleEntity = get(articleId, authorId);
-        final List<TagEntity> tagEntities = tagService.getAllByName(tags);
+        final List<TagEntity> tagEntities = tagService.createAndGetAllByName(tags);
 
         articleEntity.setTitle(title);
         articleEntity.setTags(tagEntities);

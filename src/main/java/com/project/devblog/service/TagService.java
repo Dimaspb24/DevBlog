@@ -8,6 +8,7 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,8 +34,12 @@ public class TagService {
     }
 
     @NonNull
-    public List<TagEntity> getAllByName(@NonNull List<String> tags) {
-        return tagRepository.findAllByNameIn(tags);
+    public List<TagEntity> createAndGetAllByName(@NonNull List<String> tags) {
+        ArrayList<TagEntity> tagEntities = new ArrayList<>();
+        tags.forEach(name ->
+                tagEntities.add(tagRepository.findByName(name).orElseGet(() ->
+                        tagRepository.save(new TagEntity(name)))));
+        return tagEntities;
     }
 
     public void delete(@NonNull Integer tagId) {

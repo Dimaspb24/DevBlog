@@ -9,7 +9,6 @@ import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.repository.ArticleRepository;
 import com.project.devblog.repository.UserArticleRepository;
 import com.project.devblog.repository.UserRepository;
-import com.project.devblog.service.AuthUserService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,8 +25,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserIT extends AbstractIT {
 
-    @Autowired
-    AuthUserService userService;
     @Autowired
     UserRepository userRepository;
     @Autowired

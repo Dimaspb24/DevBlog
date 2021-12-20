@@ -22,10 +22,6 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
-    public UserEntity findByLogin(String login) {
-        return userRepository.findByLogin(login).orElseThrow(UserNotFoundException::new);
-    }
-
     public UserEntity get(Integer id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }

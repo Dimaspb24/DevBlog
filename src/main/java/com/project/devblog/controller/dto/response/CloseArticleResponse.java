@@ -29,7 +29,7 @@ public class CloseArticleResponse {
     @NonNull
     Integer authorId;
     @NonNull
-    String authorNickname;
+    String nickname;
     @Nullable
     String photo;
     @Nullable

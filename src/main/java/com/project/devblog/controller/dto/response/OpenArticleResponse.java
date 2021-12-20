@@ -1,11 +1,11 @@
 package com.project.devblog.controller.dto.response;
 
-import com.sun.istack.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +32,8 @@ public class OpenArticleResponse {
     Integer authorId;
     @NonNull
     String nickname;
+    @Nullable
+    String photo;
     @Nullable
     List<TagResponse> tags;
 }

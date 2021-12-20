@@ -32,4 +32,4 @@ logging:
 jwt:
   token:
     secret: jwtdevblog
-    expired: 3600000
+    expired: 3600000 # 1 hour

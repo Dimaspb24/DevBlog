@@ -66,9 +66,10 @@ public class ArticleController {
 
     @NonNull
     private OpenArticleResponse toResponse(@NonNull ArticleEntity article) {
+        PersonalInfo personalInfo = article.getAuthor().getPersonalInfo();
         return new OpenArticleResponse(article.getId(), article.getTitle(), article.getBody(), article.getStatus().name(),
                 article.getDescription(), article.getPublicationDate(), article.getModificationDate(), article.getAuthor().getId(),
-                article.getAuthor().getPersonalInfo().getNickname(), tagEntityToResponse(article.getTags()));
+                personalInfo.getNickname(), personalInfo.getPhoto(), tagEntityToResponse(article.getTags()));
     }
 
     @NonNull

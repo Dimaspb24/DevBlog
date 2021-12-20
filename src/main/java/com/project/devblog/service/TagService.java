@@ -3,11 +3,12 @@ package com.project.devblog.service;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.repository.TagRepository;
 import com.project.devblog.service.exception.TagNotFoundException;
-import java.util.List;
-import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional

@@ -16,8 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +43,11 @@ public class ArticleService {
     @NonNull
     public ArticleEntity get(@NonNull Integer userId, @NonNull Integer articleId) {
         return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(userId, articleId).orElseThrow(ArticleNotFoundException::new);
+    }
+
+    @NonNull
+    public ArticleEntity findById(@NonNull Integer articleId) {
+        return articleRepository.findById(articleId).orElseThrow(ArticleNotFoundException::new);
     }
 
     @NonNull

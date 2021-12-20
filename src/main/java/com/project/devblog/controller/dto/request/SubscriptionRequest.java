@@ -10,7 +10,9 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class RatingRequest {
-    @NotNull(message = "Rating is required")
-    Integer rating;
+public class SubscriptionRequest {
+    @NotNull(message = "User id is required")
+    Integer userId;
+    @NotNull(message = "Author id is required")
+    Integer authorId;
 }

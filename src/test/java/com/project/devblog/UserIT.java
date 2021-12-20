@@ -9,7 +9,6 @@ import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.repository.ArticleRepository;
 import com.project.devblog.repository.UserArticleRepository;
 import com.project.devblog.repository.UserRepository;
-import com.project.devblog.service.UserService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,17 +16,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserIT extends AbstractIT {
 
-    @Autowired
-    UserService userService;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -98,7 +95,7 @@ public class UserIT extends AbstractIT {
                 .user(user)
                 .article(article)
                 .rating(rating)
-                .bookmarkType(BookmarkType.FAVORITES)
+                .bookmarkType(BookmarkType.FAVORITE)
                 .build();
         user.addRelationArticle(userArticle);
 

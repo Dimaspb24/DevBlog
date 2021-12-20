@@ -14,14 +14,14 @@ paths:
       oprationId: authorization
       tags:
         - OAuth
-      
+
   /oauth/token:
     post:
       summary: authorization
       oprationId: authorization
       tags:
         - OAuth
-    
+
   /v1/users/{userId}:
     get:
       summary: Get user
@@ -36,7 +36,7 @@ paths:
       summary: Update user
       tags:
         - Users
-    
+
   /v1/users:
     post:
       summary: Create user
@@ -47,7 +47,7 @@ paths:
       tags:
         - Users
 
-  
+
   /v1/users/{userId}/profiles/{profileId}:
     put:
       summary: Update user profile
@@ -61,9 +61,9 @@ paths:
       summary: Delete user profile
       tags:
         - User-profiles
-    
-  /v1/users/{userId}/profiles:  
-    post:  
+
+  /v1/users/{userId}/profiles:
+    post:
       summary: Create user profile
       tags:
         - User-profiles
@@ -71,7 +71,7 @@ paths:
       summary: Get list of user profiles
       tags:
         - User-profiles
-        
+
   /v1/users/{userId}/profile/{profileId}/article:
     get:
       summary: Get list of user arcticles
@@ -99,7 +99,7 @@ paths:
       summary: Searches arcticles
       tags:
         - Arcticles
-        
+
   /v1/users/{userId}/subscribes/{subscribeUserId}/following:
     post:
       summary: Create subscribe on user
@@ -158,7 +158,7 @@ paths:
       summary: Get user bookmarks
       tags:
         - Bookmarks
-        
+
   /v1/users/{userId}/arcticles/{articleId}/comments/{userAuthorId}/posting:
     post:
       summary: Create comment for article
@@ -181,10 +181,3 @@ paths:
       summary: Get list of user comments
       tags:
         - Comments
-  
-      
-  
-  
-  
-  
-  

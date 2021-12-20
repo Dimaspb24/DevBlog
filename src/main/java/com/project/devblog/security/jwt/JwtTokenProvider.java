@@ -2,6 +2,7 @@ package com.project.devblog.security.jwt;
 
 import com.project.devblog.config.JwtProperties;
 import com.project.devblog.model.enums.Role;
+import com.project.devblog.security.jwt.exception.JwtAuthenticationException;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,10 +34,9 @@ public class JwtTokenProvider {
         validityInMs = jwtProperties.getExpired();
     }
 
-    public String createToken(String login) {
-
+    public String createToken(String login, Role role) {
         Claims claims = Jwts.claims().setSubject(login);
-        claims.put("roles", getRoleNames());
+        claims.put("roles", getRoleNames(role));
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMs);
@@ -60,35 +60,24 @@ public class JwtTokenProvider {
 
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
-            return bearerToken.substring(7, bearerToken.length());
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
         }
-
         return null;
     }
 
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-
-            if (claims.getBody().getExpiration().before(new Date())) {
-                return false;
-            }
-
-            return true;
+            return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtAuthenticationException("JWT token is expired or invalid");
+            throw new JwtAuthenticationException("JWT token has expired or is invalid");
         }
     }
 
-    private List<String> getRoleNames() {
+    private List<String> getRoleNames(Role role) {
         List<String> roleList = new ArrayList<>();
-
-        new ArrayList<Role>(Arrays.asList(Role.values()))
-                .forEach(role -> {
-                    roleList.add(role.name());
-                });
-
+        roleList.add(role.nameWithPrefix());
         return roleList;
     }
 }

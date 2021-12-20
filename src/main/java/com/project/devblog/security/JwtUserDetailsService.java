@@ -6,7 +6,6 @@ import com.project.devblog.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,13 +17,8 @@ public class JwtUserDetailsService implements UserDetailsService {
     private final UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String login) {
         UserEntity user = userService.findByLogin(login);
-
-        if (user == null) {
-            throw new UsernameNotFoundException("User with login: " + login + " NOT FOUND!");
-        }
-
         return JwtUserFactory.create(user);
     }
 }

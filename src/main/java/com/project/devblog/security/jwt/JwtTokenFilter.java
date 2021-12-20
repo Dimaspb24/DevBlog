@@ -1,7 +1,8 @@
 package com.project.devblog.security.jwt;
 
+import com.project.devblog.security.jwt.exception.JwtAuthenticationException;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -19,10 +20,14 @@ import java.io.IOException;
 @AllArgsConstructor
 public class JwtTokenFilter extends GenericFilterBean {
 
+    @Autowired
     private final JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private final RestAuthenticationEntryPoint authenticationEntryPoint;
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+            throws IOException, ServletException {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
         try {
             if (token != null && jwtTokenProvider.validateToken(token)) {
@@ -32,10 +37,10 @@ public class JwtTokenFilter extends GenericFilterBean {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
-        } catch (JwtAuthenticationException e) {
+        } catch (JwtAuthenticationException authenticationException) {
             SecurityContextHolder.clearContext();
-            ((HttpServletResponse) servletResponse).sendError(HttpStatus.UNAUTHORIZED.value());
-            throw new JwtAuthenticationException("Jwt token is expired or invalid");
+            authenticationEntryPoint.commence((HttpServletRequest) servletRequest,
+                    (HttpServletResponse) servletResponse, authenticationException);
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

@@ -83,6 +83,12 @@ public class UserEntity extends AuditableBaseEntity<Integer> {
     @OrderBy("personalInfo.nickname")
     List<UserEntity> subscriptions = new ArrayList<>();
 
+    public UserEntity(@NonNull String login, @NonNull Role role, @NonNull StatusUser status) {
+        this.login = login;
+        this.role = role;
+        this.status = status;
+    }
+
     /*-----------------------------------FOR_MANY_TO_MANY_SUBSCRIBERS--------------------------------*/
     public void addSubscription(UserEntity subscriber) {
         subscriptions.add(subscriber);

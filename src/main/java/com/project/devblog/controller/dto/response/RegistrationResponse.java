@@ -6,12 +6,10 @@ import lombok.NonNull;
 
 @AllArgsConstructor
 @Getter
-public class AuthenticationResponse {
+public class RegistrationResponse {
 
     @NonNull
     private final Integer id;
     @NonNull
     private final String login;
-    @NonNull
-    private final String token;
 }

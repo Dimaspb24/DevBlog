@@ -1,67 +1,61 @@
 package com.project.devblog.controller;
 
+import com.project.devblog.controller.annotation.ApiV1;
 import com.project.devblog.controller.dto.request.AuthenticationRequest;
+import com.project.devblog.controller.dto.response.AuthenticationResponse;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.security.jwt.JwtTokenProvider;
 import com.project.devblog.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import lombok.NonNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
+import javax.validation.Valid;
 
+@ApiV1
 @RestController
-@RequestMapping(value = "/v1/auth/")
 @AllArgsConstructor
 public class AuthenticationController {
 
+    @NonNull
     private final AuthenticationManager authenticationManager;
+    @NonNull
     private final JwtTokenProvider jwtTokenProvider;
+    @NonNull
     private final UserService userService;
 
-    @PostMapping("/login")
-    public ResponseEntity login(@RequestBody AuthenticationRequest requestDto) {
-        try {
-            String login = requestDto.getLogin();
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login, requestDto.getPassword()));
-            UserEntity user = userService.findByLogin(login);
+    @PostMapping("/auth/login")
+    @ResponseStatus(HttpStatus.OK)
+    public AuthenticationResponse login(@NonNull @Valid AuthenticationRequest request) {
+        final String login = request.getLogin();
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(login, request.getPassword()));
+        final UserEntity user = userService.findByLogin(login);
+        final String token = jwtTokenProvider.createToken(login, user.getRole());
 
-            if (user == null) {
-                throw new UsernameNotFoundException("User with login: " + login + " NOT FOUND");
-            }
-
-            String token = jwtTokenProvider.createToken(login);
-
-            Map<Object, Object> response = new HashMap<>();
-
-            response.put("login", login);
-            response.put("token", token);
-
-            return ResponseEntity.ok(response);
-        } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid login or password");
-        }
+        return toResponse(user.getId(), login, token);
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+    @PostMapping("/auth/logout")
+    @ResponseStatus(HttpStatus.OK)
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
         securityContextLogoutHandler.logout(request, response, auth);
-        return ResponseEntity.ok(null);
+    }
+
+    @NonNull
+    private AuthenticationResponse toResponse(@NonNull Integer id, @NonNull String login, @NonNull String token) {
+        return new AuthenticationResponse(id, login, token);
     }
 }

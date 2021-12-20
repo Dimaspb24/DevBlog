@@ -4,7 +4,9 @@ import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.repository.UserRepository;
+import com.project.devblog.service.exception.UserNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,30 +18,41 @@ import java.util.List;
 @Transactional
 public class UserService {
 
+    @NonNull
     private final UserRepository userRepository;
+    @NonNull
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserEntity register(UserEntity user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Role.USER);
-        user.setStatus(StatusUser.ACTIVE);
+    @NonNull
+    public UserEntity register(@NonNull String login, @NonNull String password,
+                               @NonNull Role role, @NonNull StatusUser status) {
 
-        return userRepository.save(user);
+        final UserEntity userEntity = new UserEntity(login, role, status);
+        userEntity.setPassword(passwordEncoder.encode(password));
+
+        return userRepository.save(userEntity);
     }
 
+    public boolean isExists(@NonNull String login) {
+        return userRepository.findByLogin(login).isPresent();
+    }
+
+    @NonNull
+    public UserEntity findByLogin(@NonNull String login) {
+        return userRepository.findByLogin(login).orElseThrow(UserNotFoundException::new);
+    }
+
+    @NonNull
+    public UserEntity get(@NonNull Integer id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+    }
+
+    @NonNull
     public List<UserEntity> getAll() {
         return userRepository.findAll();
     }
 
-    public UserEntity findByLogin(String login) {
-        return userRepository.findByLogin(login).orElseThrow();
-    }
-
-    public UserEntity get(Integer id) {
-        return userRepository.findById(id).orElseThrow();
-    }
-
-    public void delete(Integer id) {
+    public void delete(@NonNull Integer id) {
         userRepository.deleteById(id);
     }
 }

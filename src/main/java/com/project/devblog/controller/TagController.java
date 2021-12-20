@@ -8,7 +8,11 @@ import com.project.devblog.service.TagService;
 import static java.util.stream.Collectors.toList;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -33,7 +37,7 @@ public class TagController {
     }
 
     @GetMapping("/tag/{tagId}")
-    public TagResponse getAll(@NonNull @PathVariable Integer tagId) {
+    public TagResponse get(@NonNull @PathVariable Integer tagId) {
         return toResponse(tagService.get(tagId));
     }
 

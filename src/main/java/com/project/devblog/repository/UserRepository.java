@@ -16,5 +16,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     Boolean existsByPersonalInfoNickname(String nickname);
 
     @NonNull
+    Boolean existsByPersonalInfoPhone(String phone);
+
+    @NonNull
     Boolean existsByLogin(String login);
 }

@@ -83,7 +83,7 @@ public class UserService {
         }
 
         String phone = userRequest.getPhone();
-        if (phone != null && !phone.isEmpty()) {
+        if (phone != null && !phone.isEmpty() && !userRepository.existsByPersonalInfoPhone(phone)) {
             user.getPersonalInfo().setPhone(phone);
         }
 

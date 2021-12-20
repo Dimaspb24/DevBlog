@@ -27,7 +27,7 @@ public class RatingService {
     @NonNull
     public UserArticleEntity create(@NonNull Integer authorId, @NonNull Integer articleId, @NonNull Integer rating) {
         final ArticleEntity articleEntity = articleService.get(articleId, authorId);
-        final UserEntity userEntity = userService.findById(authorId);
+        final UserEntity userEntity = userService.get(authorId);
         final UserArticleEntity userArticleEntity = new UserArticleEntity(rating, userEntity, articleEntity);
 
         return userArticleRepository.save(userArticleEntity);

@@ -20,27 +20,27 @@ public class SubscriptionService {
     private final UserService userService;
 
     public void subscribe(Integer userId, Integer authorId) {
-        UserEntity user = userService.findById(userId);
-        UserEntity author = userService.findById(authorId);
+        UserEntity user = userService.get(userId);
+        UserEntity author = userService.get(authorId);
         user.addSubscription(author);
         userService.save(user);
     }
 
     public void unsubscribe(Integer userId, Integer authorId) {
-        UserEntity user = userService.findById(userId);
-        UserEntity author = userService.findById(authorId);
+        UserEntity user = userService.get(userId);
+        UserEntity author = userService.get(authorId);
         user.getSubscriptions().remove(author);
         userService.save(user);
     }
 
     public Page<UserEntity> findAllSubsriptions(Integer userId, Pageable pageable) {
-        UserEntity user = userService.findById(userId);
+        UserEntity user = userService.get(userId);
         List<UserEntity> subscriptions = user.getSubscriptions();
         return new PageImpl<>(subscriptions, pageable, subscriptions.size());
     }
 
     public Page<UserEntity> findAllSubsribers(Integer userId, Pageable pageable) {
-        UserEntity user = userService.findById(userId);
+        UserEntity user = userService.get(userId);
         List<UserEntity> subscribers = user.getSubscribers();
         return new PageImpl<>(subscribers, pageable, subscribers.size());
     }

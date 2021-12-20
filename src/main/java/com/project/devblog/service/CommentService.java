@@ -22,7 +22,7 @@ public class CommentService {
     @NonNull
     private final ArticleService articleService;
     @NonNull
-    private final AuthUserService userService;
+    private final UserService userService;
 
     @NonNull
     public CommentEntity create(@NonNull Integer authorCommentId, @NonNull Integer articleId, @NonNull String message,

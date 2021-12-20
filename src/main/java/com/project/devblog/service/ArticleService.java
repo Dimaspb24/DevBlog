@@ -25,11 +25,10 @@ public class ArticleService {
     @NonNull
     private final ArticleRepository articleRepository;
     @NonNull
-    private final AuthUserService userService;
+    private final UserService userService;
     @NonNull
     private final TagService tagService;
 
-    // todo replace or delete
     @NonNull
     public ArticleEntity get(@NonNull Integer userId, @NonNull Integer articleId) {
         return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(userId, articleId).orElseThrow(ArticleNotFoundException::new);

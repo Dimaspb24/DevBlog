@@ -26,18 +26,18 @@ public class UserService {
         return userRepository.findByLogin(login).orElseThrow(UserNotFoundException::new);
     }
 
-    public UserEntity findById(Integer id) {
+    public UserEntity get(Integer id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     public void deleteById(Integer userId) {
-        UserEntity user = findById(userId);
+        UserEntity user = get(userId);
         user.setStatus(StatusUser.BANNED);
         userRepository.save(user);
     }
 
     public UserEntity update(Integer userId, UserRequest userRequest) {
-        UserEntity user = findById(userId);
+        UserEntity user = get(userId);
 
         String firstname = userRequest.getFirstname();
         if (firstname != null && !firstname.isEmpty()) {

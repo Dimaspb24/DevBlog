@@ -26,7 +26,7 @@ public class UserController {
     @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public UserResponse get(@NonNull @PathVariable Integer userId) {
-        UserEntity user = userService.findById(userId);
+        UserEntity user = userService.get(userId);
         return toResponse(user);
     }
 

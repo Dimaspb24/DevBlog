@@ -3,12 +3,13 @@ package com.project.devblog.model;
 import com.project.devblog.model.enums.StatusArticle;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

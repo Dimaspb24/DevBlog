@@ -41,8 +41,8 @@ public class ArticleService {
     }
 
     @NonNull
-    public ArticleEntity get(@NonNull Integer userId, @NonNull Integer articleId) {
-        return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(userId, articleId).orElseThrow(ArticleNotFoundException::new);
+    public ArticleEntity get(@NonNull Integer authorId, @NonNull Integer articleId) {
+        return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(articleId, authorId).orElseThrow(ArticleNotFoundException::new);
     }
 
     @NonNull

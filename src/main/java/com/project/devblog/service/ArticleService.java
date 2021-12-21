@@ -76,9 +76,9 @@ public class ArticleService {
     }
 
     public void delete(@NonNull Integer authorId, @NonNull Integer articleId) {
-        final ArticleEntity articleEntity = get(articleId, authorId);
+        final ArticleEntity articleEntity = get(authorId, articleId);
 
-        if (!articleEntity.getEnabled()) {
+        if (Boolean.FALSE.equals(articleEntity.getEnabled())) {
             throw new ArticleConflictException();
         }
 
@@ -90,7 +90,7 @@ public class ArticleService {
     @NonNull
     public ArticleEntity update(@NonNull Integer authorId, @NonNull Integer articleId, @NonNull String title, List<String> tags,
                                 @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
-        final ArticleEntity articleEntity = get(articleId, authorId);
+        final ArticleEntity articleEntity = get(authorId, articleId);
         final List<TagEntity> tagEntities = tagService.createAndGetAllByName(tags);
 
         articleEntity.setTitle(title);

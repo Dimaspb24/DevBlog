@@ -39,9 +39,8 @@ public class UserController {
 
     @DeleteMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Object> delete(@NonNull @PathVariable Integer userId) {
+    public void delete(@NonNull @PathVariable Integer userId) {
         userService.delete(userId);
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/users/{userId}")

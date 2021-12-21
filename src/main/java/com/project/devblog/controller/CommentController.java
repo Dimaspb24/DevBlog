@@ -22,14 +22,14 @@ public class CommentController {
     @NonNull
     private final CommentService commentService;
 
-    @PostMapping("/users/{userId}/articles/{articleId}/comment")
+    @PostMapping("/users/{userId}/articles/{articleId}/comments")
     @ResponseStatus(HttpStatus.CREATED)
     public CommentResponse create(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId,
                                   @NonNull @Valid CommentRequest request) {
         return toResponse(commentService.create(userId, articleId, request.getMessage(), request.getReceiverId()));
     }
 
-    @GetMapping("/users/{userId}/articles/{articleId}/comment/{commentId}")
+    @GetMapping("/users/{userId}/articles/{articleId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.OK)
     public CommentResponse get(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId,
                                @NonNull @PathVariable Integer commentId) {
@@ -44,14 +44,14 @@ public class CommentController {
                 .map(this::toResponse);
     }
 
-    @DeleteMapping("/users/{userId}/articles/{articleId}/comment/{commentId}")
+    @DeleteMapping("/users/{userId}/articles/{articleId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId,
                        @NonNull @PathVariable Integer commentId) {
         commentService.deleteComment(commentId, userId, articleId);
     }
 
-    @PutMapping("/users/{userId}/articles/{articleId}/comment/{commentId}")
+    @PutMapping("/users/{userId}/articles/{articleId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.OK)
     public CommentResponse update(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer commentId,
                                   @NonNull @PathVariable Integer articleId, @NonNull @Valid CommentRequest request) {

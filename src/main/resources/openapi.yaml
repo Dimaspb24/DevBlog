@@ -8,176 +8,1834 @@ servers:
   - url: http://university.project.ru
 
 paths:
-  /authorize:
-    get:
-      summary: authorization
-      oprationId: authorization
-      tags:
-        - OAuth
-
-  /oauth/token:
-    post:
-      summary: authorization
-      oprationId: authorization
-      tags:
-        - OAuth
 
   /v1/users/{userId}:
     get:
       summary: Get user
       tags:
         - Users
+      description: get user
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+      responses:
+        200:
+          description: Get user
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+
     delete:
       summary: Delete user
-      oprationId: authorization
       tags:
         - Users
+      description: delete user
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+      responses:
+        204:
+          description: user deleted
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
     put:
       summary: Update user
       tags:
         - Users
-
+      description: Update user
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        200:
+          description: Update user
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
   /v1/users:
     post:
       summary: Create user
       tags:
         - Users
+      description: Create user
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        200:
+          description: Create user
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
     get:
-      summary: Get list of users
+      summary: Get all user
       tags:
         - Users
+      description: get all user
+      responses:
+        200:
+          description: Get all user
+          content:
+            application/josn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
 
 
   /v1/users/{userId}/profiles/{profileId}:
-    put:
-      summary: Update user profile
-      tags:
-        - User-profiles
     get:
       summary: Get user profile
       tags:
         - User-profiles
+      description: get user profile
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/userProfileIdPath'
+      responses:
+        200:
+          description: Get user profile
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/PersonalInfoResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+
     delete:
       summary: Delete user profile
       tags:
         - User-profiles
+      description: delete user profile
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/userProfileIdPath'
+      responses:
+        204:
+          description: user profile deleted
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+    put:
+      summary: Update user profile
+      tags:
+        - User-profiles
+      description: Update user profile
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/userProfileIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        200:
+          description: Update user
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/PersonalInfoResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
 
   /v1/users/{userId}/profiles:
-    post:
-      summary: Create user profile
-      tags:
-        - User-profiles
     get:
-      summary: Get list of user profiles
+      summary: Get all user profile
       tags:
-        - User-profiles
+        - Users
+      description: get all user profile
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+      responses:
+        200:
+          description: Get all user profile
+          content:
+            application/josn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonalInfoResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
 
-  /v1/users/{userId}/profile/{profileId}/article:
+  /v1/users/{userId}/article/{articleId}:
     get:
-      summary: Get list of user arcticles
+      summary: get user article
       tags:
-        - Arcticles
-    post:
-      summary: Create arcticle
-      tags:
-        - Arcticles
-  /v1/users/{userId}/profile/{profileId}/article/{arcticleId}:
-    get:
-      summary: Get user arcticle
-      tags:
-        - Arcticles
-    put:
-      summary: Update user arcticle
-      tags:
-        - Arcticles
-    delete:
-      summary: Delete user arcticle
-      tags:
-        - Arcticles
-  /v1/users/{userId}/profile/{profileId}/article/{arcticleId}/searches:
-    get:
-      summary: Searches arcticles
-      tags:
-        - Arcticles
+        - Articles
+      description: get user profile
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/articleIdPath'
+      responses:
+        200:
+          description: Get user article
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/OpenArticleResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
 
-  /v1/users/{userId}/subscribes/{subscribeUserId}/following:
-    post:
-      summary: Create subscribe on user
+    delete:
+      summary: Delete user article
       tags:
-        - Subscribes
-  /v1/users/{userId}/subscribes:
-    get:
-      summary: Get list of user subscribes
-      tags:
-        - Subscribes
-  /v1/users/{userId}/subscribes/{subscribeId}:
-    get:
-      summary: Get user subscribe
-      tags:
-        - Subscribes
+        - Articles
+      description: delete user article
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/articleIdPath'
+      responses:
+        204:
+          description: user article deleted
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        409:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
     put:
-      summary: Update subscribe on user
+      summary: Update user article
       tags:
-        - Subscribes
-    delete:
-      summary: Delete subscribe on user
-      tags:
-        - Subscribes
-  /v1/users/{userId}/articles/{arcticleId}/likes:
-    get:
-      summary: Get likes
-      tags:
-        - Likes
+        - Articles
+      description: Update user article
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/articleIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleRequest'
+      responses:
+        200:
+          description: Update user article
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/OpenArticleResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+  /v1/users/{userId}/article:
     post:
-      summary: Create like
+      summary: Create user article
       tags:
-        - Likes
-    delete:
-      summary: Delete like
-      tags:
-        - Likes
-  /v1/users/{userId}/bookmarks:
+        - Articles
+      description: Create user article
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleRequest'
+      responses:
+        200:
+          description: Create user
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/OpenArticleResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
     get:
-      summary: Get list of user bookmarks
+      summary: Get all user articles
+      tags:
+        - Articles
+      description: get all user articles
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+      responses:
+        200:
+          description: Get all user article
+          content:
+            application/josn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CloseArticleResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+
+  /v1/topic/articles:
+    get:
+      summary: Get sorted articles by rating or publicationDate
+      tags:
+        - Article-topic
+      description: get all user articles
+      responses:
+        200:
+          description: Get all user article
+          content:
+            application/josn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CloseArticleResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+
+  /v1/auth/login:
+    post:
+      summary: User login
+      tags:
+        - User login
+      description: User login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+      responses:
+        200:
+          description: Create user
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+  /v1/users/{userId}/articles/{articleId}/bookmarks:
+    post:
+      summary: Create bookmark to article
       tags:
         - Bookmarks
-    post:
-      summary: Create user bookmark
+      description: Create bookmark to article
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/articleIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookmarkRequest'
+      responses:
+        200:
+          description: Create user
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/BookmarkResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+  /v1/users/{userId}/bookmarks/{bookmarkType}:
+    get:
+      summary: Get all user bookmarks
       tags:
         - Bookmarks
+      description: get all user bookmarks
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/bookmarkTypePath'
+      responses:
+        200:
+          description: Get all user article
+          content:
+            application/josn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookmarkArticleResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
   /v1/users/{userId}/bookmarks/{bookmarkId}:
     delete:
-      summary: Delet user bookmark
+      summary: Delete bookmark
       tags:
         - Bookmarks
-    put:
-      summary: Update user bookmark
-      tags:
-        - Bookmarks
+      description: delete bookmark
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/bookmarkIdPath'
+      responses:
+        204:
+          description: bookmark deleted
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+  /v1/users/{userId}/articles/{articleId}/comments/{commentId}:
     get:
-      summary: Get user bookmarks
+      summary: Get article comments
       tags:
-        - Bookmarks
+        - Article-comments
+      description: Get article comments
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/articleIdPath'
+        - $ref: '#/components/parameters/commentIdPath'
+      responses:
+        200:
+          description: Get article comments
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/CommentResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
 
-  /v1/users/{userId}/arcticles/{articleId}/comments/{userAuthorId}/posting:
-    post:
-      summary: Create comment for article
-      tags:
-        - Comments
-    get:
-      summary: Get list of user comments
-      tags:
-        - Comments
-  /v1/users/{userId}/arcticles/{articleId}/comments/{commentId}:
-    get:
-      summary: Get user comment
-      tags:
-        - Comments
-    put:
-      summary: Get list of user comments
-      tags:
-        - Comments
     delete:
-      summary: Get list of user comments
+      summary: Delete article comment
       tags:
-        - Comments
+        - Article-comments
+      description: Delete article comment
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/articleIdPath'
+        - $ref: '#/components/parameters/commentIdPath'
+      responses:
+        204:
+          description: Deleted article comment
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+    put:
+      summary: Update article comment
+      tags:
+        - Article-comments
+      description: Update article comment
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/articleIdPath'
+        - $ref: '#/components/parameters/commentIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+      responses:
+        200:
+          description: Update user
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/CommentResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+  /v1 /users/{userId}/articles/{articleId}/comments:
+    post:
+      summary: Create article comment
+      tags:
+        - Article-comments
+      description: Create article comment
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/articleIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+      responses:
+        200:
+          description: Article comment created
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/CommentResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+    get:
+      summary: Get all article comments
+      tags:
+        - Article-comments
+      description: Get all article comments
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/articleIdPath'
+      responses:
+        200:
+          description: Get all article comments
+          content:
+            application/josn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+  /v1/checkToken:
+    post:
+      summary: Validate token
+      tags:
+        - Token
+      description: validate token
+      responses:
+        200:
+          description: token is valid
+          content:
+            application/json:
+              schema:
+                properties:
+                  bool:
+                    description: is token valid
+                    type: boolean
+  /v1/users/{userId}/articles/{articleId}/ratings:
+    post:
+      summary: Create article rate
+      tags:
+        - Article-ratings
+      description: Create article rate
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/articleIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatingRequest'
+      responses:
+        200:
+          description: Article rate created
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/RatingResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+    get:
+      summary: Get article rating
+      tags:
+        - Article-ratings
+      description: Get article rating
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/articleIdPath'
+      responses:
+        200:
+          description: Get article rating
+          content:
+            application/josn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RatingResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+    put:
+      summary: Update article rating
+      tags:
+        - Article-ratings
+      description: Update article rate
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/articleIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatingRequest'
+      responses:
+        200:
+          description: Article rate updated
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/RatingResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+  /v1/registration:
+    post:
+      summary: User registration
+      tags:
+        - User registration
+      description: User registration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+      responses:
+        200:
+          description: User registrated
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/RegistrationResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+  /v1/users/{userId}/subscriptions/{authorId}:
+    post:
+      summary: Create user subscription
+      tags:
+        - User-subscriptions
+      description: Create usersubscription
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/authorIdPath'
+      responses:
+        201:
+          description: User subscriptions created
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/SubscriptionResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+    put:
+      summary: Update user subscription
+      tags:
+        - Article-ratings
+      description: Update user subscription
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+        - $ref: '#/components/parameters/authorIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatingRequest'
+      responses:
+        200:
+          description: User subscription updated
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/SubscriptionResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+  /v1/users/{userId}/subscriptions:
+    get:
+      summary: Get user subscriptions
+      tags:
+        - User-subscriptions
+      description: Get user subscriptions
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+      responses:
+        200:
+          description: Get user subscriptions
+          content:
+            application/josn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubscriptionResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+  /v1/tags:
+    post:
+      summary: Create tag
+      tags:
+        - Tags
+      description: Create tag
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagRequest'
+      responses:
+        201:
+          description: Tag created
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/TagResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+    get:
+      summary: Get tags
+      tags:
+        - Tags
+      description: Get tags
+      responses:
+        200:
+          description: Get tags
+          content:
+            application/josn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TagResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+  /v1/tags/{tagId}:
+    get:
+      summary: Get tag
+      tags:
+        - Tags
+      description: Get tag
+      parameters:
+        - $ref: '#/components/parameters/tagIdPath'
+      responses:
+        200:
+          description: Get tag
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/TagResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+components:
+
+  parameters:
+    tokenHeader:
+      name: Bearer
+      in: header
+      description: Bearer token
+      required: true
+      schema:
+        type: string
+    userIdPath:
+      name: userId
+      in: path
+      description: user id
+      required: true
+      schema:
+        type: integer
+        format: int64
+    authorIdPath:
+      name: authorId
+      in: path
+      description: user id
+      required: true
+      schema:
+        type: integer
+        format: int64
+    articleIdPath:
+      name: articleId
+      in: path
+      description: articleId
+      required: true
+      schema:
+        type: integer
+        format: int64
+    commentIdPath:
+      name: commentId
+      in: path
+      description: commentId
+      required: true
+      schema:
+        type: integer
+        format: int64
+    bookmarkIdPath:
+      name: bookmarkId
+      in: path
+      description: bookmarkId
+      required: true
+      schema:
+        type: integer
+        format: int64
+    bookmarkTypePath:
+      name: bookmarkType
+      in: path
+      description: bookmarkType
+      required: true
+      schema:
+        type: string
+    sortingParamQuery:
+      name: sortingParam
+      in: query
+      description: sorting param
+      required: true
+      schema:
+        type: string
+    sortOrderQuery:
+      name: sortOrder
+      in: query
+      description: sort order
+      required: true
+      schema:
+        type: string
+    tagIdPath:
+      name: tagId
+      in: path
+      description: tagId
+      required: true
+      schema:
+        type: integer
+        format: int64
+    userProfileIdPath:
+      name: profileId
+      in: path
+      description: profileId
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  schemas:
+    #Reponses
+    AuthenticationResponse:
+      description: AuthenticationResponse
+      required:
+        - id
+        - login
+        - token
+      properties:
+        id:
+          description: user id
+          type: integer
+          format: int64
+          example: 12
+        login:
+          description: user login
+          type: string
+          example: alex.alex@mail.ru
+        token:
+          description: Bearer jwt token
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+    BookmarkArticleResponse:
+      description: BookmarkArticleResponse
+      required:
+        - id
+        - articleResponse
+      properties:
+        id:
+          description: bookmark id
+          type: integer
+          format: int64
+          example: 123
+        articleResponse:
+          $ref: '#/components/schemas/CloseArticleResponse'
+
+    BookmarkResponse:
+      description: BookmarkResponse
+      required:
+        - userId
+        - articleId
+        - bookmarkType
+      properties:
+        userId:
+          description: user id
+          type: integer
+          format: int64
+        articleId:
+          description: article id
+          type: integer
+          format: int64
+        bookmarkType:
+          description: bookmarkType
+          type: string
+          example: FAVORITE
+    CloseArticleResponse:
+      description: CloseArticleResponse
+      required:
+        - id
+        - title
+        - status
+        - articleDescription
+        - modificationDate
+        - authorId
+        - nickname
+      properties:
+        id:
+          description: article id
+          type: integer
+          format: int64
+          example: 64
+        title:
+          description: title
+          type: string
+          example: Article title
+        status:
+          description: article status
+          type: string
+          example: PUBLISHED
+        articleDescription:
+          description: article description
+          type: string
+          example: Article description
+        publicationDate:
+          description: publicationDate
+          type: string
+          format: date
+          example: '11:12:2022'
+        modificationDate:
+          description: publicationDate
+          type: string
+          format: date
+          example: '11:12:2022'
+        authorId:
+          description: author id
+          type: integer
+          format: int64
+          example: 123
+        nickname:
+          description: nickname
+          type: string
+          example: myname
+        photo:
+          description: photo
+          type: string
+        tags:
+          description: tags
+          type: array
+          items:
+            $ref: '#/components/schemas/TagResponse'
+    CommentResponse:
+      description: CommentResponse
+      required:
+        - id
+        - message
+        - authorId
+        - receiverId
+        - articleId
+      properties:
+        id:
+          description: id
+          type: integer
+          format: int64
+          example: 123
+        message:
+          description: message
+          type: string
+          example: message comment
+        authorId:
+          description: author id
+          type: integer
+          format: int64
+          example: 123
+        receiverId:
+          description: receiver id
+          type: integer
+          format: int64
+          example: 123
+        articleId:
+          description: article id
+          type: integer
+          format: int64
+          example: 123
+    OpenArticleResponse:
+      description: CloseArticleResponse
+      required:
+        - id
+        - title
+        - body
+        - status
+        - articleDescription
+        - modificationDate
+        - authorId
+        - nickname
+      properties:
+        id:
+          description: article id
+          type: integer
+          format: int64
+          example: 64
+        title:
+          description: title
+          type: string
+          example: Article title
+        body:
+          description: body
+          type: string
+          example: Article body
+        status:
+          description: article status
+          type: string
+          example: PUBLISHED
+        articleDescription:
+          description: article description
+          type: string
+          example: Article description
+        publicationDate:
+          description: publicationDate
+          type: string
+          format: date
+          example: '11:12:2022'
+        modificationDate:
+          description: publicationDate
+          type: string
+          format: date
+          example: '11:12:2022'
+        authorId:
+          description: author id
+          type: integer
+          format: int64
+          example: 123
+        nickname:
+          description: nickname
+          type: string
+          example: myname
+        photo:
+          description: photo
+          type: string
+        tags:
+          description: tags
+          type: array
+          items:
+            $ref: '#/components/schemas/TagResponse'
+    RatingResponse:
+      description: RatingResponse
+      required:
+        - authorId
+        - articleId
+        - rating
+      properties:
+        authorId:
+          description: author id
+          type: integer
+          format: int64
+          example: 123
+        articleId:
+          description: article id
+          type: integer
+          format: int64
+          example: 123
+        rating:
+          description: rating
+          type: integer
+          format: int64
+          example: 123
+    RegistrationResponse:
+      description: RegistrationResponse
+      required:
+        - id
+        - login
+      properties:
+        id:
+          description: user id
+          type: integer
+          format: int64
+          example: 123
+        login:
+          description: user login
+          type: string
+          example: myemail@mail.ru
+    SubscriptionResponse:
+      description: SubscriptionResponse
+      required:
+        - id
+        - nickname
+      properties:
+        id:
+          description: user id
+          type: integer
+          format: int64
+          example: 123
+        firstname:
+          description: firstname
+          type: string
+          example: alex
+        lastname:
+          description: lastname
+          type: string
+          example: markovskiy
+        nickname:
+          description: nickname
+          type: string
+          example: MyNickName
+    UserResponse:
+      description: UserResponse
+      required:
+        - id
+        - login
+        - personalInfo
+      properties:
+        id:
+          description: user id
+          type: integer
+          format: int64
+          example: 123
+        login:
+          description: user login
+          type: string
+          example: login@mail.ru
+        personalInfo:
+          $ref: '#/components/schemas/PersonalInfoResponse'
+    TagResponse:
+      description: TagResponse
+      required:
+        - id
+        - name
+      properties:
+        id:
+          description: tag id
+          type: integer
+          format: int64
+          example: 123
+        name:
+          description: name
+          type: string
+          example: tagName
+    PersonalInfoResponse:
+      description: PersonalInfoResponse
+      required:
+        - nickname
+      properties:
+        firstname:
+          description: firstname
+          type: string
+          example: firstname
+        lastname:
+          description: lastname
+          type: string
+          example: lastname
+        nickname:
+          description: nickname
+          type: string
+          example: nickname
+        photo:
+          description: photo
+          type: string
+        info:
+          description: info
+          type: string
+          example: info
+        phone:
+          description: phone
+          type: string
+          example: 89841235488
+
+    #Requests
+    AuthenticationRequest:
+      description: AuthenticationRequest
+      required:
+        - login
+        - password
+      properties:
+        login:
+          description: user login
+          type: string
+          example: alex.alex@mail.ru
+        password:
+          description: user passwrod
+          type: string
+          example: 'alex123123'
+    ArticleRequest:
+      description: ArticleRequest
+      required:
+        - title
+        - body
+        - status
+        - articleDescription
+      properties:
+        title:
+          description: title
+          type: string
+          example: Article title
+        body:
+          description: body
+          type: string
+          example: Article body
+        status:
+          description: status
+          type: string
+          example: CREATED
+        tags:
+          description: tags
+          type: array
+          items:
+            type: string
+    BookmarkRequest:
+      description: BookmarkRequest
+      required:
+        - bookmarkType
+      properties:
+        bookmarkType:
+          description: bookmarkType
+          type: string
+          example: FAVORITE
+    CommentRequest:
+      description: CommentRequest
+      required:
+        - message
+        - receiverId
+      properties:
+        message:
+          description: message
+          type: string
+          example: message
+        receiverId:
+          description: receiver id
+          type: integer
+          format: int64
+          example: 123
+    RatingRequest:
+      description: RatingRequest
+      required:
+        - rating
+      properties:
+        rating:
+          description: rating
+          type: integer
+          format: int64
+          example: 10
+    RegistrationRequest:
+      description: RegistrationRequest
+      required:
+        - login
+        - password
+        - role
+        - status
+      properties:
+        login:
+          description: login
+          type: string
+          example: login@mail.ru
+        password:
+          description: password
+          type: string
+          example: password123
+        role:
+          description: role
+          type: string
+          example: USER | ADMIN
+        status:
+          description: status
+          type: string
+          example: ACTIVE | BANNED
+    SubscriptionRequest:
+      description: SubscriptionRequest
+      required:
+        - userId
+        - authorId
+      properties:
+        userId:
+          description: user id
+          type: integer
+          format: int64
+          example: 123
+        authorId:
+          description: author id
+          type: integer
+          format: int64
+          example: 123
+    TagRequest:
+      description: TagRequest
+      required:
+        - name
+      properties:
+        name:
+          description: name
+          type: string
+          example: tagName
+    UserRequest:
+      description: UserRequest
+      required:
+        - nickname
+      properties:
+        firstname:
+          description: firstname
+          type: string
+          example: firstname
+        lastname:
+          description: lastname
+          type: string
+          example: lastname
+        nickname:
+          description: nickname
+          type: string
+          example: nickname
+        photo:
+          description: photo
+          type: string
+        info:
+          description: info
+          type: string
+          example: info
+        phone:
+          description: phone
+          type: string
+          example: 89841235488
+    #Errors
+    UnauthorizedError:
+      description: Unathorized request
+      required:
+        - status
+        - code
+      properties:
+        status:
+          description: status
+          type: integer
+          format: int64
+          example: 401
+        code:
+          description: code
+          type: string
+          example: UNATHORIZED
+    ForbiddenError:
+      description: Forbidden authorities request
+      required:
+        - status
+        - code
+      properties:
+        status:
+          description: status
+          type: integer
+          format: int64
+          example: 403
+        code:
+          description: code
+          type: string
+          example: FORBIDDEN
+    NotFoundError:
+      description: Forbidden authorities request
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          description: status
+          type: integer
+          format: int64
+          example: 404
+        code:
+          description: code
+          type: string
+          example: NOT_FOUND
+        message:
+          description: info about exception
+          type: string
+          example: Article not found
+    ConflictError:
+      description: Conflict request
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          description: status
+          type: integer
+          format: int64
+          example: 409
+        code:
+          description: code
+          type: string
+          example: CONFLICT
+        message:
+          description: info about exception
+          type: string
+          example: Article conflict
+    BadRequestError:
+      description: Bad request
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          description: status
+          type: integer
+          format: int64
+          example: 400
+        code:
+          description: code
+          type: string
+          example: BAD_REQUEST
+        message:
+          description: info about exception
+          type: string
+          example: id is required

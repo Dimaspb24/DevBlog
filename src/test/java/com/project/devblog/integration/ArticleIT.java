@@ -1,4 +1,4 @@
-package com.project.devblog;
+package com.project.devblog.integration;
 
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.TagEntity;
@@ -19,8 +19,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-// @Transactional(propagation = Propagation.NOT_SUPPORTED) // для самостоятельного управления транзакциями
-public class ArticleIT extends AbstractIT {
+class ArticleIT extends AbstractIT {
 
     @Autowired
     UserRepository userRepository;
@@ -48,8 +47,8 @@ public class ArticleIT extends AbstractIT {
                 .description("test")
                 .tags(List.of(tag1, tag2))
                 .build();
-        articleRepository.save(testArticle);
 
+        articleRepository.save(testArticle);
         entityManager.flush();
 
         ArticleEntity savedArt = articleRepository.findByTitleContains("Number1").stream().findFirst().orElseThrow();

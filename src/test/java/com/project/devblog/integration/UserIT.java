@@ -1,4 +1,4 @@
-package com.project.devblog;
+package com.project.devblog.integration;
 
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.UserArticleEntity;
@@ -11,19 +11,18 @@ import com.project.devblog.repository.UserArticleRepository;
 import com.project.devblog.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserIT extends AbstractIT {
+class UserIT extends AbstractIT {
 
     @Autowired
     UserRepository userRepository;
@@ -32,15 +31,7 @@ public class UserIT extends AbstractIT {
     @Autowired
     ArticleRepository articleRepository;
     @Autowired
-    PlatformTransactionManager transactionManager;
-    @Autowired
     EntityManager entityManager;
-    TransactionTemplate transactionTemplate;
-
-    @BeforeEach
-    public void setUp() {
-        transactionTemplate = new TransactionTemplate(transactionManager);
-    }
 
     @Test
     @Transactional
@@ -65,24 +56,18 @@ public class UserIT extends AbstractIT {
     @Test
     @Transactional
     void addSubscription() {
-        transactionTemplate.executeWithoutResult(transactionStatus -> {
-            UserEntity user1 = userRepository.findById(1).orElseThrow();
-            UserEntity user2 = userRepository.findById(2).orElseThrow();
+        UserEntity user1 = userRepository.findById(1).orElseThrow();
+        UserEntity user2 = userRepository.findById(2).orElseThrow();
 
-            user1.addSubscription(user2);
+        user1.addSubscription(user2);
+        entityManager.flush();
 
-            entityManager.flush();
+        List<UserEntity> subscriptionsUser1 = user1.getSubscriptions();
+        List<UserEntity> subscribersUser2 = user2.getSubscribers();
 
-            List<UserEntity> subscriptionsUser1 = user1.getSubscriptions();
-            List<UserEntity> subscribersUser2 = user2.getSubscribers();
-
-            System.out.println("subscriptionsUser1 = " + subscriptionsUser1);
-            System.out.println("subscribersUser2 = " + subscribersUser2);
-
-            assertEquals(subscriptionsUser1.size(), subscribersUser2.size());
-            assertTrue(subscriptionsUser1.contains(user2));
-            assertTrue(subscribersUser2.contains(user1));
-        });
+        assertEquals(subscriptionsUser1.size(), subscribersUser2.size());
+        assertTrue(subscriptionsUser1.contains(user2));
+        assertTrue(subscribersUser2.contains(user1));
     }
 
     @Test
@@ -97,8 +82,8 @@ public class UserIT extends AbstractIT {
                 .rating(rating)
                 .bookmarkType(BookmarkType.FAVORITE)
                 .build();
-        user.addRelationArticle(userArticle);
 
+        user.addRelationArticle(userArticle);
         entityManager.flush();
 
         UserArticleEntity savedUserArticle = userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(user.getId(), article.getId()).orElseThrow();

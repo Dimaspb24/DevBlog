@@ -33,13 +33,13 @@ public class SubscriptionService {
         userService.save(user);
     }
 
-    public Page<UserEntity> findAllSubsriptions(Integer userId, Pageable pageable) {
+    public Page<UserEntity> findSubsriptions(Integer userId, Pageable pageable) {
         UserEntity user = userService.get(userId);
         List<UserEntity> subscriptions = user.getSubscriptions();
         return new PageImpl<>(subscriptions, pageable, subscriptions.size());
     }
 
-    public Page<UserEntity> findAllSubsribers(Integer userId, Pageable pageable) {
+    public Page<UserEntity> findSubsribers(Integer userId, Pageable pageable) {
         UserEntity user = userService.get(userId);
         List<UserEntity> subscribers = user.getSubscribers();
         return new PageImpl<>(subscribers, pageable, subscribers.size());

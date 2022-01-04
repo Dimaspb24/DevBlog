@@ -11,7 +11,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @ApiV1
 @RestController
@@ -36,15 +41,15 @@ public class SubscriptionController {
 
     @GetMapping("/users/{userId}/subscriptions")
     @ResponseStatus(HttpStatus.OK)
-    public Page<SubscriptionResponse> getAllSubsriptions(@NonNull @PathVariable Integer userId, @NonNull Pageable pageable) {
-        return subscriptionService.findAllSubsriptions(userId, pageable)
+    public Page<SubscriptionResponse> getSubsriptions(@NonNull @PathVariable Integer userId, @NonNull Pageable pageable) {
+        return subscriptionService.findSubsriptions(userId, pageable)
                 .map(this::toResponse);
     }
 
-    @GetMapping("/users/{userId}/subscriptions")
+    @GetMapping("/users/{userId}/subsribers")
     @ResponseStatus(HttpStatus.OK)
-    public Page<SubscriptionResponse> getAll(@NonNull @PathVariable Integer userId, @NonNull Pageable pageable) {
-        return subscriptionService.findAllSubsribers(userId, pageable)
+    public Page<SubscriptionResponse> getSubsribers(@NonNull @PathVariable Integer userId, @NonNull Pageable pageable) {
+        return subscriptionService.findSubsribers(userId, pageable)
                 .map(this::toResponse);
     }
 

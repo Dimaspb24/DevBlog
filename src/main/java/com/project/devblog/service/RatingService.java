@@ -5,9 +5,9 @@ import com.project.devblog.model.UserArticleEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.UserArticleRepository;
 import com.project.devblog.service.exception.CommentNotFoundException;
+import com.project.devblog.service.exception.RatingNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +33,9 @@ public class RatingService {
         return userArticleRepository.save(userArticleEntity);
     }
 
-    @Nullable
+    @NonNull
     public UserArticleEntity get(@NonNull Integer userId, @NonNull Integer articleId) {
-        return userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(userId, articleId).orElse(null);
+        return userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(userId, articleId).orElseThrow(RatingNotFoundException::new);
     }
 
     @NonNull

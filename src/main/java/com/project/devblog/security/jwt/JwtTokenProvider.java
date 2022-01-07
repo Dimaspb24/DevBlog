@@ -3,8 +3,12 @@ package com.project.devblog.security.jwt;
 import com.project.devblog.config.JwtProperties;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.jwt.exception.JwtAuthenticationException;
-import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,13 +23,11 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private JwtProperties jwtProperties;
+    private final UserDetailsService userDetailsService;
+    private final JwtProperties jwtProperties;
 
     private String secret;
     private long validityInMs;

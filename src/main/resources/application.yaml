@@ -10,6 +10,7 @@ spring:
     password: postgres
     url: jdbc:postgresql://localhost:5432/postgres
   jpa:
+    open-in-view: false
     show-sql: true
     properties:
       hibernate:
@@ -18,7 +19,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
         order_by.default_null_ordering: last
   flyway:
-    out-of-order: true
+    validate-on-migrate: false
 
 logging:
   level:

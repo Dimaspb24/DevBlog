@@ -30,7 +30,7 @@ public class ArticleSearchesController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/searches/articles")
-    public Page<CloseArticleResponse> getByTitleName(@NonNull @RequestParam(name = "title") String name,
+    public Page<CloseArticleResponse> getByTitleName(@NonNull @RequestParam(name = "titleContains") String name,
                                                      @PageableDefault Pageable pageable) {
         return articleService.getByTitleName(name, pageable)
                 .map(this::toResponse);

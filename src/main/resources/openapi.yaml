@@ -1184,8 +1184,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundError'
-components:
 
+  /v1/searches/articles:
+    get:
+      summary: Get article by name in title
+      tags:
+        - Searches
+      description: Get article by name in title
+      parameters:
+        - $ref: '#/components/parameters/titleContains'
+      responses:
+        200:
+          description: Get articles
+          content:
+            application/josn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CloseArticleResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+components:
   parameters:
     tokenHeader:
       name: Bearer
@@ -1271,6 +1300,13 @@ components:
       schema:
         type: integer
         format: int64
+    titleContains:
+      name: titleContains
+      in: query
+      description: Name is contains in article title
+      required: true
+      schema:
+        type: string
 
   schemas:
     #Reponses

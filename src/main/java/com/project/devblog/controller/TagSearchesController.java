@@ -27,8 +27,8 @@ public class TagSearchesController {
 
     @GetMapping("/searches/tags")
     @ResponseStatus(HttpStatus.OK)
-    public List<TagResponse> getByName(@NonNull @RequestParam(name = "nameContains") String name) {
-        return tagService.getByName(name).stream()
+    public List<TagResponse> getByName(@NonNull @RequestParam(name = "nameContains") String substring) {
+        return tagService.getByNameContains(substring).stream()
                 .map(this::toResponse)
                 .collect(toList());
     }

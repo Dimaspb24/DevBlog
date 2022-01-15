@@ -843,9 +843,18 @@ paths:
             application/json:
               schema:
                 properties:
-                  bool:
-                    description: is token valid
-                    type: boolean
+                  string:
+                    description: token
+                    type: string
+        401:
+          description: token is not valid
+          content:
+            application/json:
+              schema:
+                properties:
+                  string:
+                    description: token
+                    type: string
   /v1/users/{userId}/articles/{articleId}/ratings:
     post:
       summary: Create article rate
@@ -1151,7 +1160,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ForbiddenError'
-  /v1/tags/{tagId}:
+  /v1/tag/{tagId}:
     get:
       summary: Get tag
       tags:
@@ -1184,6 +1193,63 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundError'
+    delete:
+      summary: Delete tag
+      tags:
+        - Tags
+      description: Delete tag
+      parameters:
+        - $ref: '#/components/parameters/tagIdPath'
+      responses:
+        204:
+          description: Deleted tag
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+  /v1/searches/tags:
+    get:
+      summary: Get tags by substring in name
+      tags:
+        - Searches
+      description: Get tags by substring in name
+      parameters:
+        - $ref: '#/components/parameters/nameContains'
+      responses:
+        200:
+          description: Get tags
+          content:
+            application/josn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TagResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
 components:
 
   parameters:
@@ -1271,6 +1337,13 @@ components:
       schema:
         type: integer
         format: int64
+    nameContains:
+      name: nameContains
+      in: query
+      description: Substring is contains in tag name
+      required: true
+      schema:
+        type: string
 
   schemas:
     #Reponses

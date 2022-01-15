@@ -34,8 +34,8 @@ public class TagService {
     }
 
     @NonNull
-    public List<TagEntity> getByName(@NonNull String name) {
-        return tagRepository.findTagEntitiesByNameContains(name);
+    public List<TagEntity> getByNameContains(@NonNull String substring) {
+        return tagRepository.findTagEntitiesByNameContains(substring);
     }
 
     @NonNull

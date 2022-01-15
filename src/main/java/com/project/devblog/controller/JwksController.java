@@ -5,6 +5,7 @@ import com.project.devblog.security.jwt.exception.JwtAuthenticationException;
 import com.project.devblog.security.jwt.JwtTokenProvider;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +20,12 @@ public class JwksController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/checkToken")
-    public ResponseEntity<Boolean> checkValidateToken(@NonNull @RequestParam String token) {
+    public ResponseEntity<String> checkValidateToken(@NonNull @RequestParam String token) {
         try {
-            return ResponseEntity.ok(jwtTokenProvider.validateToken(token));
+            jwtTokenProvider.validateToken(token);
+            return ResponseEntity.ok(token);
         } catch (JwtAuthenticationException e) {
-            return ResponseEntity.ok(false);
+            return new ResponseEntity<>(token, HttpStatus.UNAUTHORIZED);
         }
     }
 }

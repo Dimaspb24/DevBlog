@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @ApiV1
@@ -25,7 +26,7 @@ public class TagController {
     private final TagService tagService;
 
     @PostMapping("/tags")
-    public TagResponse create(@NonNull TagRequest request) {
+    public TagResponse create(@NonNull @Valid TagRequest request) {
         return toResponse(tagService.create(request.getName()));
     }
 
@@ -41,7 +42,7 @@ public class TagController {
         return toResponse(tagService.get(tagId));
     }
 
-    @DeleteMapping("/tags/{tagId}")
+    @DeleteMapping("/tag/{tagId}")
     public void delete(@NonNull @PathVariable Integer tagId) {
         tagService.delete(tagId);
     }

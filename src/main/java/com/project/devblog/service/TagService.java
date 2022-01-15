@@ -34,6 +34,11 @@ public class TagService {
     }
 
     @NonNull
+    public List<TagEntity> getByName(@NonNull String name) {
+        return tagRepository.findTagEntitiesByNameContains(name);
+    }
+
+    @NonNull
     public List<TagEntity> createAndGetAllByName(@NonNull List<String> tags) {
         ArrayList<TagEntity> tagEntities = new ArrayList<>();
         tags.forEach(name ->

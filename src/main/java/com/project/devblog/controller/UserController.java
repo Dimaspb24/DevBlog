@@ -25,7 +25,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponse get(@NonNull @PathVariable Integer userId) {
+    public UserResponse get(@NonNull @PathVariable String userId) {
         UserEntity user = userService.get(userId);
         return toResponse(user);
     }
@@ -39,13 +39,13 @@ public class UserController {
 
     @DeleteMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@NonNull @PathVariable Integer userId) {
+    public void delete(@NonNull @PathVariable String userId) {
         userService.delete(userId);
     }
 
     @PutMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponse update(@NonNull @PathVariable Integer userId,
+    public UserResponse update(@NonNull @PathVariable String userId,
                                @RequestBody @NonNull @Valid UserRequest userRequest) {
         UserEntity user = userService.update(userId, userRequest);
         return toResponse(user);

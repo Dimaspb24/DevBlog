@@ -25,11 +25,10 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "articles")
-public class ArticleEntity extends AuditableBaseEntity<Integer> {
+public class ArticleEntity extends AuditableBaseEntity<String> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    String id;
 
     @NonNull
     String title;
@@ -56,18 +55,18 @@ public class ArticleEntity extends AuditableBaseEntity<Integer> {
     Double rating;
 
     @NonNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     UserEntity author;
 
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     List<CommentEntity> comments = new ArrayList<>();
 
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "articles_tags",
             joinColumns = @JoinColumn(name = "article_id"),
@@ -77,11 +76,12 @@ public class ArticleEntity extends AuditableBaseEntity<Integer> {
 
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
     List<UserArticleEntity> relationUsers = new ArrayList<>();
 
-    public ArticleEntity(@NonNull String title, @NonNull String body, @NonNull StatusArticle status,
+    public ArticleEntity(@NonNull String id, @NonNull String title, @NonNull String body, @NonNull StatusArticle status,
                          @NonNull String description, @NonNull UserEntity author) {
+        this.id = id;
         this.title = title;
         this.body = body;
         this.status = status;
@@ -89,8 +89,9 @@ public class ArticleEntity extends AuditableBaseEntity<Integer> {
         this.author = author;
     }
 
-    public ArticleEntity(@NonNull String title, @NonNull String body, @NonNull StatusArticle status, @NonNull String description,
+    public ArticleEntity(@NonNull String id, @NonNull String title, @NonNull String body, @NonNull StatusArticle status, @NonNull String description,
                          LocalDateTime publicationDate, @NonNull UserEntity author) {
+        this.id = id;
         this.title = title;
         this.body = body;
         this.status = status;

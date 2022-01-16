@@ -41,33 +41,33 @@ public class ArticleController {
 
     @PostMapping("/users/{userId}/articles")
     @ResponseStatus(HttpStatus.CREATED)
-    public OpenArticleResponse create(@NonNull @PathVariable Integer userId, @NonNull @Valid @RequestBody ArticleRequest request) {
+    public OpenArticleResponse create(@NonNull @PathVariable String userId, @NonNull @Valid @RequestBody ArticleRequest request) {
         return toResponse(articleService.create(userId, request.getTitle(), request.getTags(), request.getDescription(),
                 request.getBody(), StatusArticle.valueOf(request.getStatus())));
     }
 
     @GetMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
-    public OpenArticleResponse get(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId) {
+    public OpenArticleResponse get(@NonNull @PathVariable String userId, @NonNull @PathVariable String articleId) {
         return toResponse(articleService.get(userId, articleId));
     }
 
     @GetMapping("/users/{userId}/articles")
     @ResponseStatus(HttpStatus.OK)
-    public Page<CloseArticleResponse> getAll(@NonNull @PathVariable Integer userId, @PageableDefault Pageable pageable) {
+    public Page<CloseArticleResponse> getAll(@NonNull @PathVariable String userId, @PageableDefault Pageable pageable) {
         return articleService.getAll(userId, pageable)
                 .map(this::toCloseArticleResponse);
     }
 
     @DeleteMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId) {
+    public void delete(@NonNull @PathVariable String userId, @NonNull @PathVariable String articleId) {
         articleService.delete(userId, articleId);
     }
 
     @PutMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
-    public OpenArticleResponse update(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId,
+    public OpenArticleResponse update(@NonNull @PathVariable String userId, @NonNull @PathVariable String articleId,
                                       @NonNull @Valid ArticleRequest request) {
         return toResponse(articleService.update(userId, articleId, request.getTitle(), request.getTags(),
                 request.getDescription(), request.getBody(), StatusArticle.valueOf(request.getStatus())));

@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class BookmarkArticleResponse {
     @NonNull
-    Long id;
+    String id;
     @NonNull
     CloseArticleResponse articleResponse;
 }

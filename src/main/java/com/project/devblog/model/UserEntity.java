@@ -2,16 +2,32 @@ package com.project.devblog.model;
 
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.model.enums.StatusUser;
-import lombok.*;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @DynamicInsert
 @DynamicUpdate
@@ -24,11 +40,10 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "users")
-public class UserEntity extends AuditableBaseEntity<Integer> {
+public class UserEntity extends AuditableBaseEntity<String> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    String id;
     String login;
     String password;
     @Enumerated(EnumType.STRING)
@@ -83,7 +98,8 @@ public class UserEntity extends AuditableBaseEntity<Integer> {
     @OrderBy("personalInfo.nickname")
     List<UserEntity> subscriptions = new ArrayList<>();
 
-    public UserEntity(@NonNull String login, @NonNull Role role, @NonNull StatusUser status) {
+    public UserEntity(@NonNull String id, @NonNull String login, @NonNull Role role, @NonNull StatusUser status) {
+        this.id = id;
         this.login = login;
         this.role = role;
         this.status = status;

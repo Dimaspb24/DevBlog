@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 public class AuthenticationResponse {
 
     @NonNull
-    Integer id;
+    String id;
     @NonNull
     String login;
     @NonNull

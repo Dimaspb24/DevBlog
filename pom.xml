@@ -41,8 +41,8 @@
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-jose</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -90,6 +90,11 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.devskiller.friendly-id</groupId>
+            <artifactId>friendly-id</artifactId>
+            <version>1.1.0</version>
+        </dependency>
         <!--endregion-->
 
         <!--region Test-->
@@ -125,11 +130,11 @@
             <artifactId>spring-orm</artifactId>
             <version>5.1.6.RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>5.6.3.Final</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.hibernate</groupId>-->
+<!--            <artifactId>hibernate-core</artifactId>-->
+<!--            <version>5.6.3.Final</version>-->
+<!--        </dependency>-->
 
     </dependencies>
     <dependencyManagement>

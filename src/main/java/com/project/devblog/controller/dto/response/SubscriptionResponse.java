@@ -12,7 +12,7 @@ import org.springframework.lang.Nullable;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SubscriptionResponse {
     @NonNull
-    Integer id;
+    String id;
     @Nullable
     String firstname;
     @Nullable

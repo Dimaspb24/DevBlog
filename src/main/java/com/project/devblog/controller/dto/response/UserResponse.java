@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserResponse {
     @NonNull
-    Integer id;
+    String id;
     @NonNull
     String login;
     @NonNull

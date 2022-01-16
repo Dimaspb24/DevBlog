@@ -19,11 +19,10 @@ import javax.persistence.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "users_articles")
-public class UserArticleEntity extends AuditableBaseEntity<Long> {
+public class UserArticleEntity extends AuditableBaseEntity<String> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    String id;
 
     Integer rating;
 
@@ -38,13 +37,15 @@ public class UserArticleEntity extends AuditableBaseEntity<Long> {
     @JoinColumn(name = "article_id")
     ArticleEntity article;
 
-    public UserArticleEntity(Integer rating, UserEntity user, ArticleEntity article) {
+    public UserArticleEntity(@NonNull String id, Integer rating, UserEntity user, ArticleEntity article) {
+        this.id = id;
         this.rating = rating;
         this.setUser(user);
         this.setArticle(article);
     }
 
-    public UserArticleEntity(BookmarkType bookmarkType, UserEntity user, ArticleEntity article) {
+    public UserArticleEntity(@NonNull String id, BookmarkType bookmarkType, UserEntity user, ArticleEntity article) {
+        this.id = id;
         this.bookmarkType = bookmarkType;
         this.setUser(user);
         this.setArticle(article);

@@ -20,6 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String REGISTRATION_ENDPOINT = "/v1/registration";
     private static final String CHECK_TOKEN_ENDPOINT = "/v1/checkToken/**";
     private static final String TOPIC_ENDPOINT = "/v1/topic/**";
+    private static final String USER_OAUTH_REDIRECT = "/";
 
     private final JwtConfigurer jwtConfigurer;
 
@@ -34,17 +35,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
                 .authorizeRequests()
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
                 .antMatchers(REGISTRATION_ENDPOINT).permitAll()
+                .antMatchers(USER_OAUTH_REDIRECT).hasRole(Role.USER.name())
                 .antMatchers(CHECK_TOKEN_ENDPOINT).permitAll()
                 .antMatchers(USER_ENDPOINT).hasAnyRole(Role.USER.name())
                 .antMatchers(TOPIC_ENDPOINT).hasAnyRole(Role.USER.name())
                 .antMatchers(ADMIN_ENDPOINT).hasRole(Role.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
-                .apply(jwtConfigurer);
+                .apply(jwtConfigurer)
+                .and()
+                .oauth2Login();
     }
+
 }

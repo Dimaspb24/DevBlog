@@ -28,27 +28,27 @@ public class SubscriptionController {
 
     @PostMapping("/users/{userId}/subscriptions/{authorId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> subscribe(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer authorId) {
+    public ResponseEntity<Object> subscribe(@NonNull @PathVariable String userId, @NonNull @PathVariable String authorId) {
         subscriptionService.subscribe(userId, authorId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/users/{userId}/subscriptions/{authorId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void unsubscribe(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer authorId) {
+    public void unsubscribe(@NonNull @PathVariable String userId, @NonNull @PathVariable String authorId) {
         subscriptionService.unsubscribe(userId, authorId);
     }
 
     @GetMapping("/users/{userId}/subscriptions")
     @ResponseStatus(HttpStatus.OK)
-    public Page<SubscriptionResponse> getSubsriptions(@NonNull @PathVariable Integer userId, @NonNull Pageable pageable) {
+    public Page<SubscriptionResponse> getSubsriptions(@NonNull @PathVariable String userId, @NonNull Pageable pageable) {
         return subscriptionService.findSubsriptions(userId, pageable)
                 .map(this::toResponse);
     }
 
     @GetMapping("/users/{userId}/subsribers")
     @ResponseStatus(HttpStatus.OK)
-    public Page<SubscriptionResponse> getSubsribers(@NonNull @PathVariable Integer userId, @NonNull Pageable pageable) {
+    public Page<SubscriptionResponse> getSubsribers(@NonNull @PathVariable String userId, @NonNull Pageable pageable) {
         return subscriptionService.findSubsribers(userId, pageable)
                 .map(this::toResponse);
     }

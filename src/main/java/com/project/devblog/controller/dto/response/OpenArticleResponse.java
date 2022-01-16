@@ -15,7 +15,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OpenArticleResponse {
     @NonNull
-    Integer id;
+    String id;
     @NonNull
     String title;
     @NonNull
@@ -29,7 +29,7 @@ public class OpenArticleResponse {
     @NonNull
     LocalDateTime modificationDate;
     @NonNull
-    Integer authorId;
+    String authorId;
     @NonNull
     String nickname;
     @Nullable

@@ -6,6 +6,7 @@ import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.UserArticleRepository;
 import com.project.devblog.service.exception.CommentNotFoundException;
 import com.project.devblog.service.exception.RatingNotFoundException;
+import com.project.devblog.service.idgenerator.Generator;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
@@ -23,23 +24,25 @@ public class RatingService {
     private final ArticleService articleService;
     @NonNull
     private final UserService userService;
+    @NonNull
+    private final Generator idGenerator;
 
     @NonNull
-    public UserArticleEntity create(@NonNull Integer authorId, @NonNull Integer articleId, @NonNull Integer rating) {
+    public UserArticleEntity create(@NonNull String authorId, @NonNull String articleId, @NonNull Integer rating) {
         final ArticleEntity articleEntity = articleService.get(articleId, authorId);
         final UserEntity userEntity = userService.get(authorId);
-        final UserArticleEntity userArticleEntity = new UserArticleEntity(rating, userEntity, articleEntity);
+        final UserArticleEntity userArticleEntity = new UserArticleEntity(idGenerator.generateId(), rating, userEntity, articleEntity);
 
         return userArticleRepository.save(userArticleEntity);
     }
 
     @NonNull
-    public UserArticleEntity get(@NonNull Integer userId, @NonNull Integer articleId) {
+    public UserArticleEntity get(@NonNull String userId, @NonNull String articleId) {
         return userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(userId, articleId).orElseThrow(RatingNotFoundException::new);
     }
 
     @NonNull
-    public UserArticleEntity update(@NonNull Integer userId, @NonNull Integer articleId, @NonNull Integer rating) {
+    public UserArticleEntity update(@NonNull String userId, @NonNull String articleId, @NonNull Integer rating) {
         final UserArticleEntity userArticleEntity = userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(userId, articleId)
                 .orElseThrow(CommentNotFoundException::new);
         userArticleEntity.setRating(rating);

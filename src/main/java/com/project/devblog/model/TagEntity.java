@@ -26,8 +26,7 @@ import java.util.List;
 public class TagEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    String id;
 
     @NonNull
     String name;
@@ -38,7 +37,8 @@ public class TagEntity {
     @JsonIgnore
     List<ArticleEntity> articles = new ArrayList<>();
 
-    public TagEntity(@NonNull String name) {
+    public TagEntity(@NonNull String id, @NonNull String name) {
+        this.id = id;
         this.name = name;
     }
 }

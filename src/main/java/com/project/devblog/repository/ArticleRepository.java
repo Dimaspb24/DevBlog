@@ -12,15 +12,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer> {
+public interface ArticleRepository extends JpaRepository<ArticleEntity, String> {
     @NonNull
     List<ArticleEntity> findByTitleContains(@NonNull String title);
 
     @NonNull
-    Optional<ArticleEntity> findByIdAndAuthorIdAndEnabledIsTrue(@NonNull Integer articleId, @NonNull Integer authorId);
+    Optional<ArticleEntity> findByIdAndAuthorIdAndEnabledIsTrue(@NonNull String articleId, @NonNull String authorId);
 
     @NonNull
-    Page<ArticleEntity> findByAuthorIdAndEnabledIsTrue(@NonNull Integer authorId, @NonNull Pageable pageable);
+    Page<ArticleEntity> findByAuthorIdAndEnabledIsTrue(@NonNull String authorId, @NonNull Pageable pageable);
 
     @NonNull
     @Query("select a from ArticleEntity a " +

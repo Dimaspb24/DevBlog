@@ -37,12 +37,12 @@ public class TagController {
     }
 
     @GetMapping("/tag/{tagId}")
-    public TagResponse get(@NonNull @PathVariable Integer tagId) {
+    public TagResponse get(@NonNull @PathVariable String tagId) {
         return toResponse(tagService.get(tagId));
     }
 
     @DeleteMapping("/tags/{tagId}")
-    public void delete(@NonNull @PathVariable Integer tagId) {
+    public void delete(@NonNull @PathVariable String tagId) {
         tagService.delete(tagId);
     }
 

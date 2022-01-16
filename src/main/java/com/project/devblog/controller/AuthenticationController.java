@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,7 +37,7 @@ public class AuthenticationController {
 
     @PostMapping("/auth/login")
     @ResponseStatus(HttpStatus.OK)
-    public AuthenticationResponse login(@NonNull @Valid AuthenticationRequest request) {
+    public AuthenticationResponse login(@NonNull @Valid @RequestBody AuthenticationRequest request) {
         final String login = request.getLogin();
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(login, request.getPassword()));
@@ -55,7 +56,7 @@ public class AuthenticationController {
     }
 
     @NonNull
-    private AuthenticationResponse toResponse(@NonNull Integer id, @NonNull String login, @NonNull String token) {
+    private AuthenticationResponse toResponse(@NonNull String id, @NonNull String login, @NonNull String token) {
         return new AuthenticationResponse(id, login, token);
     }
 }

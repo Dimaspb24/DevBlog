@@ -9,7 +9,7 @@ import lombok.NonNull;
 public class RegistrationResponse {
 
     @NonNull
-    private final Integer id;
+    private final String id;
     @NonNull
     private final String login;
 }

@@ -10,7 +10,7 @@ spring:
 #    password: postgres
 #    url: jdbc:postgresql://localhost:5432/postgres
   jpa:
-    open-in-view: true
+    open-in-view: true # TODO: change to false it later
     show-sql: true
     properties:
       hibernate:

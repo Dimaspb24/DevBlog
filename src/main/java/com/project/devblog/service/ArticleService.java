@@ -139,6 +139,11 @@ public class ArticleService {
     }
 
     @NonNull
+    public Page<ArticleEntity> getByTitleName(@NonNull String name, @NonNull Pageable pageable) {
+        return articleRepository.findArticleEntitiesByTitleContains(name, pageable);
+    }
+
+    @NonNull
     public Page<ArticleEntity> findArticlesByTagName(@NonNull String tagName, @NonNull Pageable pageable) {
         return articleRepository.findByTagName(tagName, pageable);
     }

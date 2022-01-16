@@ -30,6 +30,10 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
     Page<ArticleEntity> findByEnabledIsTrueAndPublicationDateIsNotNull(@NonNull Pageable pageable);
 
     @NonNull
+    Page<ArticleEntity> findArticleEntitiesByTitleContains(@NonNull String name, @NonNull Pageable pageable);
+
+
+    @NonNull
     @Query("select a from TagEntity t " +
             "join t.articles a " +
             "where t.name = :tagName " +

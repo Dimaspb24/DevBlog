@@ -27,4 +27,8 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
             "where a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +
             "and a.enabled = true and a.publicationDate is not null")
     Page<ArticleEntity> findByEnabledIsTrueAndPublicationDateIsNotNull(@NonNull Pageable pageable);
+
+    @NonNull
+    Page<ArticleEntity> findArticleEntitiesByTitleContains(@NonNull String name, @NonNull Pageable pageable);
+
 }

@@ -7,18 +7,18 @@ import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.service.ArticleService;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ApiV1
 @RestController
@@ -30,9 +30,15 @@ public class ArticleSearchesController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/searches/articles")
-    public Page<CloseArticleResponse> getByTitleName(@NonNull @RequestParam(name = "titleContains") String name,
-                                                     @PageableDefault Pageable pageable) {
+    public Page<CloseArticleResponse> getByTitleName(@RequestParam(name = "titleContains") String name, Pageable pageable) {
         return articleService.getByTitleName(name, pageable)
+                .map(this::toResponse);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/searches/articlesByTag")
+    public Page<CloseArticleResponse> findArticlesByTagName(@NonNull @RequestParam(name = "tag") String tag, Pageable pageable) {
+        return articleService.findArticlesByTagName(tag, pageable)
                 .map(this::toResponse);
     }
 

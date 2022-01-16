@@ -319,7 +319,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ForbiddenError'
 
-  /v1/users/{userId}/article/{articleId}:
+  /v1/users/{userId}/articles/{articleId}:
     get:
       summary: get user article
       tags:
@@ -433,7 +433,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFoundError'
-  /v1/users/{userId}/article:
+  /v1/users/{userId}/articles:
     post:
       summary: Create user article
       tags:
@@ -499,7 +499,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ForbiddenError'
-
+  /v1/users/{userId}/articlesBySubscriptions:
+    get:
+      summary: Get all user articles
+      tags:
+        - Articles
+      description: Get all articles from subscriptions
+      parameters:
+        - $ref: '#/components/parameters/userIdPath'
+      responses:
+        200:
+          description: Get all articles from subscriptions
+          content:
+            application/josn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CloseArticleResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
   /v1/topic/articles:
     get:
       summary: Get sorted articles by rating or publicationDate
@@ -1160,7 +1188,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ForbiddenError'
-  /v1/tag/{tagId}:
+  /v1/tags/{tagId}:
     get:
       summary: Get tag
       tags:
@@ -1250,8 +1278,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ForbiddenError'
-components:
 
+  /v1/searches/articles:
+    get:
+      summary: Get article by name in title
+      tags:
+        - Searches
+      description: Get article by name in title
+      parameters:
+        - $ref: '#/components/parameters/titleContains'
+      responses:
+        200:
+          description: Get articles
+          content:
+            application/josn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CloseArticleResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+
+  /v1/searches/articlesByTag:
+    get:
+      summary: Get article by tag name
+      tags:
+        - Searches
+      description: Get article by tag name
+      parameters:
+        - $ref: '#/components/parameters/tagName'
+      responses:
+        200:
+          description: Get articles
+          content:
+            application/josn:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CloseArticleResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+
+components:
   parameters:
     tokenHeader:
       name: Bearer
@@ -1337,6 +1425,20 @@ components:
       schema:
         type: integer
         format: int64
+    titleContains:
+      name: titleContains
+      in: query
+      description: Name is contains in article title
+      required: false
+      schema:
+        type: string
+    tagName:
+      name: tagName
+      in: query
+      description: Tag contained in the article
+      required: true
+      schema:
+        type: string
     nameContains:
       name: nameContains
       in: query

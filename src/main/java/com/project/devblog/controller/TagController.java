@@ -36,13 +36,13 @@ public class TagController {
                 .collect(toList());
     }
 
-    @GetMapping("/tag/{tagId}")
+    @GetMapping("/tags/{tagId}")
     @ResponseStatus(HttpStatus.OK)
     public TagResponse get(@NonNull @PathVariable Integer tagId) {
         return toResponse(tagService.get(tagId));
     }
 
-    @DeleteMapping("/tag/{tagId}")
+    @DeleteMapping("/tags/{tagId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@NonNull @PathVariable Integer tagId) {
         tagService.delete(tagId);

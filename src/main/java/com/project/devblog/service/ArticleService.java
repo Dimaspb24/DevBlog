@@ -139,7 +139,12 @@ public class ArticleService {
     }
 
     @NonNull
-    public Page<ArticleEntity> getByTitleName(@NonNull String name, @NonNull Pageable pageable) {
+    public Page<ArticleEntity> getByTitleName(String name, @NonNull Pageable pageable) {
+        if (name == null || name.isEmpty()) {
+            Sort sortByPublicationDateAsc = Sort.by(SortingParam.PUBLICATION_DATE.getName()).ascending();
+            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortByPublicationDateAsc);
+            return articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageRequest);
+        }
         return articleRepository.findArticleEntitiesByTitleContains(name, pageable);
     }
 

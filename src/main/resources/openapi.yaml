@@ -1363,7 +1363,7 @@ components:
       name: titleContains
       in: query
       description: Name is contains in article title
-      required: true
+      required: false
       schema:
         type: string
     tagName:

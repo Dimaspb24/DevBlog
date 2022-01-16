@@ -1213,11 +1213,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFoundError'
 
-  /v1/search/articlesByTag:
+  /v1/searches/articlesByTag:
     get:
       summary: Get article by tag name
       tags:
-        - Search
+        - Searches
       description: Get article by tag name
       parameters:
         - $ref: '#/components/parameters/tagName'

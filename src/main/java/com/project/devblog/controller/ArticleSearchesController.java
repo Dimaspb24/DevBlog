@@ -29,7 +29,7 @@ public class ArticleSearchesController {
     private final ArticleService articleService;
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/search/articlesByTag")
+    @GetMapping("/searches/articlesByTag")
     public Page<CloseArticleResponse> findArticlesByTagName(@NonNull @RequestParam(name = "tag") String tag, Pageable pageable) {
         return articleService.findArticlesByTagName(tag, pageable)
                 .map(this::toResponse);

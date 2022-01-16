@@ -20,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String REGISTRATION_ENDPOINT = "/v1/registration";
     private static final String CHECK_TOKEN_ENDPOINT = "/v1/checkToken/**";
     private static final String TOPIC_ENDPOINT = "/v1/topic/**";
-    private static final String SEARCHES_ENDPOINT = "/v1/search/**";
+    private static final String SEARCHES_ENDPOINT = "/v1/searches/**";
 
     private final JwtConfigurer jwtConfigurer;
 

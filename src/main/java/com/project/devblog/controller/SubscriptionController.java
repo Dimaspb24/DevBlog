@@ -49,7 +49,7 @@ public class SubscriptionController {
     @GetMapping("/users/{userId}/subscribers")
     @ResponseStatus(HttpStatus.OK)
     public Page<SubscriptionResponse> getSubscribers(@NonNull @PathVariable String userId, @NonNull Pageable pageable) {
-        return subscriptionService.findSubsribers(userId, pageable)
+        return subscriptionService.findSubscribers(userId, pageable)
                 .map(this::toResponse);
     }
 

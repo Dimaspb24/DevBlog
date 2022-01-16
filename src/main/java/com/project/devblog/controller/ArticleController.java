@@ -42,20 +42,27 @@ public class ArticleController {
     @PostMapping("/users/{userId}/articles")
     @ResponseStatus(HttpStatus.CREATED)
     public OpenArticleResponse create(@NonNull @PathVariable Integer userId, @NonNull @Valid @RequestBody ArticleRequest request) {
-        return toResponse(articleService.create(userId, request.getTitle(), request.getTags(), request.getDescription(),
+        return toOpenArticleResponse(articleService.create(userId, request.getTitle(), request.getTags(), request.getDescription(),
                 request.getBody(), StatusArticle.valueOf(request.getStatus())));
     }
 
     @GetMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
     public OpenArticleResponse get(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId) {
-        return toResponse(articleService.get(userId, articleId));
+        return toOpenArticleResponse(articleService.get(userId, articleId));
     }
 
     @GetMapping("/users/{userId}/articles")
     @ResponseStatus(HttpStatus.OK)
     public Page<CloseArticleResponse> getAll(@NonNull @PathVariable Integer userId, @PageableDefault Pageable pageable) {
         return articleService.getAll(userId, pageable)
+                .map(this::toCloseArticleResponse);
+    }
+
+    @GetMapping("/users/{userId}/articlesBySubscriptions")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<CloseArticleResponse> findArticlesBySubscriptions(@NonNull @PathVariable Integer userId, Pageable pageable) {
+        return articleService.findArticlesBySubscriptions(userId, pageable)
                 .map(this::toCloseArticleResponse);
     }
 
@@ -69,12 +76,12 @@ public class ArticleController {
     @ResponseStatus(HttpStatus.OK)
     public OpenArticleResponse update(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId,
                                       @NonNull @Valid ArticleRequest request) {
-        return toResponse(articleService.update(userId, articleId, request.getTitle(), request.getTags(),
+        return toOpenArticleResponse(articleService.update(userId, articleId, request.getTitle(), request.getTags(),
                 request.getDescription(), request.getBody(), StatusArticle.valueOf(request.getStatus())));
     }
 
     @NonNull
-    private OpenArticleResponse toResponse(@NonNull ArticleEntity article) {
+    private OpenArticleResponse toOpenArticleResponse(@NonNull ArticleEntity article) {
         PersonalInfo personalInfo = article.getAuthor().getPersonalInfo();
         return new OpenArticleResponse(article.getId(), article.getTitle(), article.getBody(), article.getStatus().name(),
                 article.getDescription(), article.getPublicationDate(), article.getModificationDate(), article.getAuthor().getId(),

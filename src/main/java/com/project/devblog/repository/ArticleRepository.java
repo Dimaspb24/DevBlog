@@ -30,12 +30,22 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
     Page<ArticleEntity> findByEnabledIsTrueAndPublicationDateIsNotNull(@NonNull Pageable pageable);
 
     @NonNull
-    @Query("select t from TagEntity t " +
+    @Query("select a from TagEntity t " +
             "join t.articles a " +
-            "where t.name = :name " +
+            "where t.name = :tagName " +
             "and a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +
             "and a.enabled = true " +
             "and a.publicationDate is not null " +
             "order by a.publicationDate")
-    Page<ArticleEntity> findByTagName(@Param("name") String name, @NonNull Pageable pageable);
+    Page<ArticleEntity> findByTagName(@Param("tagName") String tagName, @NonNull Pageable pageable);
+
+    @Query("select a from UserEntity u " +
+            "join u.subscriptions sub " +
+            "join sub.selfArticles a " +
+            "where u.id = :userId " +
+            "and a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +
+            "and a.enabled = true " +
+            "and a.publicationDate is not null " +
+            "order by a.publicationDate")
+    Page<ArticleEntity> findBySubscriptions(@Param("userId") Integer userId, @NonNull Pageable pageable);
 }

@@ -46,9 +46,9 @@ public class SubscriptionController {
                 .map(this::toResponse);
     }
 
-    @GetMapping("/users/{userId}/subsribers")
+    @GetMapping("/users/{userId}/subscribers")
     @ResponseStatus(HttpStatus.OK)
-    public Page<SubscriptionResponse> getSubsribers(@NonNull @PathVariable Integer userId, @NonNull Pageable pageable) {
+    public Page<SubscriptionResponse> getSubscribers(@NonNull @PathVariable Integer userId, @NonNull Pageable pageable) {
         return subscriptionService.findSubsribers(userId, pageable)
                 .map(this::toResponse);
     }

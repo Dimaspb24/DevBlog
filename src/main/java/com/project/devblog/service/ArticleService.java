@@ -137,4 +137,14 @@ public class ArticleService {
         return articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(PageRequest
                 .of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(orders)));
     }
+
+    @NonNull
+    public Page<ArticleEntity> findArticlesByTagName(@NonNull String tagName, @NonNull Pageable pageable) {
+        return articleRepository.findByTagName(tagName, pageable);
+    }
+
+    @NonNull
+    public Page<ArticleEntity> findArticlesBySubscriptions(@NonNull Integer userId, @NonNull Pageable pageable) {
+        return articleRepository.findBySubscriptions(userId, pageable);
+    }
 }

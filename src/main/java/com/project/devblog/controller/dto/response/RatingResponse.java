@@ -11,9 +11,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RatingResponse {
     @NonNull
-    Integer authorId;
+    String authorId;
     @NonNull
-    Integer articleId;
+    String articleId;
     @NonNull
     Integer rating;
 }

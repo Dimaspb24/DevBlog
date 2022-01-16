@@ -33,26 +33,26 @@ class ArticleIT extends AbstractIT {
     @Autowired
     EntityManager entityManager;
 
-    @Test
-    @Transactional
-    void check_createArticleWithAuthorAndTags() {
-        UserEntity testUser1 = userRepository.findById(1).orElseThrow();
-        TagEntity tag1 = tagRepository.findById(1).orElseThrow();
-        TagEntity tag2 = tagRepository.findById(2).orElseThrow();
-        ArticleEntity testArticle = ArticleEntity.builder()
-                .author(testUser1)
-                .title("Number1")
-                .body("test")
-                .status(StatusArticle.CREATED)
-                .description("test")
-                .tags(List.of(tag1, tag2))
-                .build();
-
-        articleRepository.save(testArticle);
-        entityManager.flush();
-
-        ArticleEntity savedArt = articleRepository.findByTitleContains("Number1").stream().findFirst().orElseThrow();
-        assertEquals(testUser1, savedArt.getAuthor());
-        assertEquals(2, savedArt.getTags().size());
-    }
+//    @Test
+//    @Transactional
+//    void check_createArticleWithAuthorAndTags() {
+//        UserEntity testUser1 = userRepository.findById(1).orElseThrow();
+//        TagEntity tag1 = tagRepository.findById(1).orElseThrow();
+//        TagEntity tag2 = tagRepository.findById(2).orElseThrow();
+//        ArticleEntity testArticle = ArticleEntity.builder()
+//                .author(testUser1)
+//                .title("Number1")
+//                .body("test")
+//                .status(StatusArticle.CREATED)
+//                .description("test")
+//                .tags(List.of(tag1, tag2))
+//                .build();
+//
+//        articleRepository.save(testArticle);
+//        entityManager.flush();
+//
+//        ArticleEntity savedArt = articleRepository.findByTitleContains("Number1").stream().findFirst().orElseThrow();
+//        assertEquals(testUser1, savedArt.getAuthor());
+//        assertEquals(2, savedArt.getTags().size());
+//    }
 }

@@ -53,41 +53,41 @@ class UserIT extends AbstractIT {
         assertNotNull(userEntity.getPersonalInfo().getNickname());
     }
 
-    @Test
-    @Transactional
-    void addSubscription() {
-        UserEntity user1 = userRepository.findById(1).orElseThrow();
-        UserEntity user2 = userRepository.findById(2).orElseThrow();
+//    @Test
+//    @Transactional
+//    void addSubscription() {
+//        UserEntity user1 = userRepository.findById(1).orElseThrow();
+//        UserEntity user2 = userRepository.findById(2).orElseThrow();
+//
+//        user1.addSubscription(user2);
+//        entityManager.flush();
+//
+//        List<UserEntity> subscriptionsUser1 = user1.getSubscriptions();
+//        List<UserEntity> subscribersUser2 = user2.getSubscribers();
+//
+//        assertEquals(subscriptionsUser1.size(), subscribersUser2.size());
+//        assertTrue(subscriptionsUser1.contains(user2));
+//        assertTrue(subscribersUser2.contains(user1));
+//    }
 
-        user1.addSubscription(user2);
-        entityManager.flush();
-
-        List<UserEntity> subscriptionsUser1 = user1.getSubscriptions();
-        List<UserEntity> subscribersUser2 = user2.getSubscribers();
-
-        assertEquals(subscriptionsUser1.size(), subscribersUser2.size());
-        assertTrue(subscriptionsUser1.contains(user2));
-        assertTrue(subscribersUser2.contains(user1));
-    }
-
-    @Test
-    @Transactional
-    void addRelationArticleToUser() {
-        final int rating = 5;
-        UserEntity user = userRepository.findById(1).orElseThrow();
-        ArticleEntity article = articleRepository.findById(1).orElseThrow();
-        UserArticleEntity userArticle = UserArticleEntity.builder()
-                .user(user)
-                .article(article)
-                .rating(rating)
-                .bookmarkType(BookmarkType.FAVORITE)
-                .build();
-
-        user.addRelationArticle(userArticle);
-        entityManager.flush();
-
-        UserArticleEntity savedUserArticle = userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(user.getId(), article.getId()).orElseThrow();
-        assertEquals(rating, savedUserArticle.getRating());
-    }
+//    @Test
+//    @Transactional
+//    void addRelationArticleToUser() {
+//        final int rating = 5;
+//        UserEntity user = userRepository.findById(1).orElseThrow();
+//        ArticleEntity article = articleRepository.findById(1).orElseThrow();
+//        UserArticleEntity userArticle = UserArticleEntity.builder()
+//                .user(user)
+//                .article(article)
+//                .rating(rating)
+//                .bookmarkType(BookmarkType.FAVORITE)
+//                .build();
+//
+//        user.addRelationArticle(userArticle);
+//        entityManager.flush();
+//
+//        UserArticleEntity savedUserArticle = userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(user.getId(), article.getId()).orElseThrow();
+//        assertEquals(rating, savedUserArticle.getRating());
+//    }
 
 }

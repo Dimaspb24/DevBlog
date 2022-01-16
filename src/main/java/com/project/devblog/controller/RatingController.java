@@ -22,26 +22,27 @@ public class RatingController {
 
     @PostMapping("/users/{userId}/articles/{articleId}/ratings")
     @ResponseStatus(HttpStatus.CREATED)
-    public RatingResponse create(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId,
+    public RatingResponse create(@NonNull @PathVariable String userId, @NonNull @PathVariable String articleId,
                                  @NonNull @Valid RatingRequest request) {
         return toResponse(ratingService.create(userId, articleId, request.getRating()));
     }
 
     @GetMapping("/users/{userId}/articles/{articleId}/ratings")
     @ResponseStatus(HttpStatus.OK)
-    public RatingResponse get(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId) {
+    public RatingResponse get(@NonNull @PathVariable String userId, @NonNull @PathVariable String articleId) {
         return toResponse(ratingService.get(userId, articleId));
     }
 
     @PutMapping("/users/{userId}/articles/{articleId}/ratings")
     @ResponseStatus(HttpStatus.OK)
-    public RatingResponse update(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId,
+    public RatingResponse update(@NonNull @PathVariable String userId, @NonNull @PathVariable String articleId,
                                  @NonNull @Valid RatingRequest request) {
         return toResponse(ratingService.update(userId, articleId, request.getRating()));
     }
 
     @NonNull
     private RatingResponse toResponse(@NonNull UserArticleEntity userArticleEntity) {
-        return new RatingResponse(userArticleEntity.getUser().getId(), userArticleEntity.getArticle().getId(), userArticleEntity.getRating());
+        return new RatingResponse(userArticleEntity.getUser().getId(), userArticleEntity.getArticle().getId(),
+                userArticleEntity.getRating());
     }
 }

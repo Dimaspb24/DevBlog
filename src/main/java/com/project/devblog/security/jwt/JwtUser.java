@@ -10,7 +10,7 @@ import java.util.Collection;
 @AllArgsConstructor
 public class JwtUser implements UserDetails {
 
-    private final Integer id;
+    private final String id;
     private final String login;
     private final String password;
     private final boolean enabled;
@@ -22,7 +22,7 @@ public class JwtUser implements UserDetails {
     }
 
     @JsonIgnore
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 

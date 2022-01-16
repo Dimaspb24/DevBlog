@@ -25,11 +25,11 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "articles")
-public class ArticleEntity extends AuditableBaseEntity<Integer> {
+public class ArticleEntity extends AuditableBaseEntity<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    String id;
 
     @NonNull
     String title;
@@ -80,8 +80,9 @@ public class ArticleEntity extends AuditableBaseEntity<Integer> {
     @OneToMany(mappedBy = "article")
     List<UserArticleEntity> relationUsers = new ArrayList<>();
 
-    public ArticleEntity(@NonNull String title, @NonNull String body, @NonNull StatusArticle status,
+    public ArticleEntity(@NonNull String id, @NonNull String title, @NonNull String body, @NonNull StatusArticle status,
                          @NonNull String description, @NonNull UserEntity author) {
+        this.id = id;
         this.title = title;
         this.body = body;
         this.status = status;

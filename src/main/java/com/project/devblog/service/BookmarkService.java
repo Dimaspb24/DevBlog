@@ -12,6 +12,7 @@ import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.BookmarkType;
 import com.project.devblog.repository.UserArticleRepository;
 import com.project.devblog.service.exception.BookmarkNotFoundException;
+import com.project.devblog.service.idgenerator.Generator;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
@@ -34,9 +35,11 @@ public class BookmarkService {
     private final ArticleService articleService;
     @NonNull
     private final UserService userService;
+    @NonNull
+    private final Generator idGenerator;
 
     @NonNull
-    public BookmarkResponse create(@NonNull Integer userId, @NonNull Integer articleId, @NonNull BookmarkRequest request) {
+    public BookmarkResponse create(@NonNull String userId, @NonNull String articleId, @NonNull BookmarkRequest request) {
         BookmarkType bookmarkType = BookmarkType.valueOf(request.getBookmarkType());
 
         UserArticleEntity userArticleEntity = userArticleRepository.findByUserIdAndArticleId(userId, articleId).map(userArt -> {
@@ -45,14 +48,14 @@ public class BookmarkService {
         }).orElseGet(() -> {
             final UserEntity userEntity = userService.get(userId);
             final ArticleEntity articleEntity = articleService.findById(articleId);
-            return new UserArticleEntity(bookmarkType, userEntity, articleEntity);
+            return new UserArticleEntity(idGenerator.generateId(), bookmarkType, userEntity, articleEntity);
         });
 
         return new BookmarkResponse(userId, articleId, userArticleEntity.getBookmarkType().name());
     }
 
     @NonNull
-    public Page<BookmarkArticleResponse> findAll(Integer userId, String bookmarkType, Pageable pageable) {
+    public Page<BookmarkArticleResponse> findAll(String userId, String bookmarkType, Pageable pageable) {
         BookmarkType type = BookmarkType.valueOf(bookmarkType);
 
         Page<UserArticleEntity> userBookmarks = userArticleRepository.findByUserIdAndBookmarkType(userId, type, pageable);
@@ -75,7 +78,7 @@ public class BookmarkService {
         return new PageImpl<>(listCloseArticleResponse, pageable, listCloseArticleResponse.size());
     }
 
-    public void delete(@NonNull Long bookmarkId) {
+    public void delete(@NonNull String bookmarkId) {
         UserArticleEntity userArticleEntity = userArticleRepository.findById(bookmarkId)
                 .orElseThrow(BookmarkNotFoundException::new);
 

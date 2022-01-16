@@ -24,11 +24,11 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "users")
-public class UserEntity extends AuditableBaseEntity<Integer> {
+public class UserEntity extends AuditableBaseEntity<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    String id;
     String login;
     String password;
     @Enumerated(EnumType.STRING)
@@ -83,7 +83,8 @@ public class UserEntity extends AuditableBaseEntity<Integer> {
     @OrderBy("personalInfo.nickname")
     List<UserEntity> subscriptions = new ArrayList<>();
 
-    public UserEntity(@NonNull String login, @NonNull Role role, @NonNull StatusUser status) {
+    public UserEntity(@NonNull String id, @NonNull String login, @NonNull Role role, @NonNull StatusUser status) {
+        this.id = id;
         this.login = login;
         this.role = role;
         this.status = status;

@@ -21,6 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String CHECK_TOKEN_ENDPOINT = "/v1/checkToken/**";
     private static final String TOPIC_ENDPOINT = "/v1/topic/**";
     private static final String SEARCHES_ENDPOINT = "/v1/searches/**";
+    private static final String[] OPEN_API_ENDPOINTS = {"/api-docs/**", "/api-docs.yaml",
+            "/swagger-ui/**", "/swagger-ui.html"};
 
     private final JwtConfigurer jwtConfigurer;
 
@@ -38,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers(OPEN_API_ENDPOINTS).permitAll()
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
                 .antMatchers(REGISTRATION_ENDPOINT).permitAll()
                 .antMatchers(CHECK_TOKEN_ENDPOINT).permitAll()

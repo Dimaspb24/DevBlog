@@ -17,8 +17,8 @@ services:
     depends_on:
       - postgres
     environment:
-      SPRING_DATASOURCE_USERNAME: demouser
-      SPRING_DATASOURCE_PASSWORD: demopassword
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
     ports:
       -  "8081:8080"

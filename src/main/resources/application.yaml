@@ -2,13 +2,13 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     # for docker db
-    #    username: demouser
-    #    password: demopassword
-    #    url: jdbc:postgresql://localhost:15432/postgres
+    username: demouser
+    password: demopassword
+    url: jdbc:postgresql://localhost:15432/postgres
     # for local db
-    username: postgres
-    password: postgres
-    url: jdbc:postgresql://localhost:5432/postgres
+#    username: postgres
+#    password: postgres
+#    url: jdbc:postgresql://localhost:5432/postgres
   jpa:
     open-in-view: true # TODO: change to false it later
     show-sql: true
@@ -21,10 +21,10 @@ spring:
   flyway:
     validate-on-migrate: false
 
-logging:
-  level:
-    org.springframework.orm.jpa: DEBUG
-    org.springframework.transaction: DEBUG
+#logging:
+#  level:
+#    org.springframework.orm.jpa: DEBUG
+#    org.springframework.transaction: DEBUG
 
 jwt:
   token:

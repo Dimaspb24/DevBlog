@@ -15,4 +15,7 @@ public interface TagRepository extends JpaRepository<TagEntity, Integer> {
 
     @NonNull
     Optional<TagEntity> findByName(@NonNull String name);
+
+    @NonNull
+    List<TagEntity> findTagEntitiesByNameContains(@NonNull String substring);
 }

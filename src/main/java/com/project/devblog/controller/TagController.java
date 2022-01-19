@@ -8,12 +8,10 @@ import com.project.devblog.service.TagService;
 import static java.util.stream.Collectors.toList;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @ApiV1
@@ -25,23 +23,27 @@ public class TagController {
     private final TagService tagService;
 
     @PostMapping("/tags")
-    public TagResponse create(@NonNull TagRequest request) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public TagResponse create(@NonNull @Valid TagRequest request) {
         return toResponse(tagService.create(request.getName()));
     }
 
     @GetMapping("/tags")
+    @ResponseStatus(HttpStatus.OK)
     public List<TagResponse> getAll() {
         return tagService.getAll().stream()
                 .map(this::toResponse)
                 .collect(toList());
     }
 
-    @GetMapping("/tag/{tagId}")
+    @GetMapping("/tags/{tagId}")
+    @ResponseStatus(HttpStatus.OK)
     public TagResponse get(@NonNull @PathVariable Integer tagId) {
         return toResponse(tagService.get(tagId));
     }
 
     @DeleteMapping("/tags/{tagId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@NonNull @PathVariable Integer tagId) {
         tagService.delete(tagId);
     }

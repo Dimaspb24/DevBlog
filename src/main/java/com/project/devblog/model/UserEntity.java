@@ -36,6 +36,9 @@ public class UserEntity extends AuditableBaseEntity<Integer> {
     @Enumerated(EnumType.STRING)
     StatusUser status;
 
+    Boolean enabled;
+    String verificationCode;
+
     PersonalInfo personalInfo;
 
     @Fetch(FetchMode.SUBSELECT)

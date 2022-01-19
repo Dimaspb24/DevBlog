@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 
 @ApiV1
 @RestController
@@ -31,9 +33,7 @@ public class RegistrationController {
         if (!userService.isExists(request.getLogin())) {
             return toResponse(userService.register(
                     request.getLogin(),
-                    request.getPassword(),
-                    Role.valueOf(request.getRole()),
-                    StatusUser.valueOf(request.getStatus())));
+                    request.getPassword()));
         } else {
             throw new BadCredentialsException("Login already exists");
         }

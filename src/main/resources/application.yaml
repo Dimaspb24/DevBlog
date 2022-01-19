@@ -20,6 +20,14 @@ spring:
         order_by.default_null_ordering: last
   flyway:
     validate-on-migrate: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: idkspbcorp@gmail.com
+    password: idkspbcorp777
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
 
 logging:
   level:
@@ -30,3 +38,8 @@ jwt:
   token:
     secret: jwtdevblog
     expired: 3600000 # 1 hour
+
+mail:
+  name: IDK
+  email: idkspbcorp.com
+  url: http://localhost:8080/v1

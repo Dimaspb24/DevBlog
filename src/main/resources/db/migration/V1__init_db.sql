@@ -11,9 +11,10 @@ create table if not exists users
     photo             text      null,
     info              text      null,
     phone             text      null,
-    enabled           boolean   null     default true,
+    enabled           boolean   not null default false,
     creation_date     timestamp not null default now(),
     modification_date timestamp not null default now(),
+    verification_code text      null,
     constraint unique_nickname unique (nickname),
     constraint unique_phone unique (phone),
     constraint unique_login unique (login)

@@ -8,13 +8,17 @@ import com.project.devblog.repository.UserRepository;
 import com.project.devblog.service.exception.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -25,15 +29,26 @@ public class UserService {
     private final UserRepository userRepository;
     @NonNull
     private final BCryptPasswordEncoder passwordEncoder;
+    @NonNull
+    private final VerificationService verificationService;
 
     @NonNull
-    public UserEntity register(@NonNull String login, @NonNull String password,
-                               @NonNull Role role, @NonNull StatusUser status) {
+    public UserEntity register(@NonNull String login, @NonNull String password) {
 
-        final UserEntity userEntity = new UserEntity(login, role, status);
+        final UserEntity userEntity = new UserEntity();
+        userEntity.setLogin(login);
+        userEntity.setRole(Role.USER);
+        userEntity.setStatus(StatusUser.ACTIVE);
         userEntity.setPassword(passwordEncoder.encode(password));
 
-        return userRepository.save(userEntity);
+        userEntity.setEnabled(false);
+        userEntity.setVerificationCode(UUID.randomUUID().toString());
+
+        userRepository.save(userEntity);
+
+        verificationService.sendVerificationEmail(userEntity.getId());
+
+        return userEntity;
     }
 
     public boolean isExists(@NonNull String login) {
@@ -100,5 +115,4 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
-
 }

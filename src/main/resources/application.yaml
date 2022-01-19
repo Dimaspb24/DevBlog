@@ -2,9 +2,9 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     # for docker db
-    #    username: demouser
-    #    password: demopassword
-    #    url: jdbc:postgresql://localhost:15432/postgres
+#    username: demouser
+#    password: demopassword
+#    url: jdbc:postgresql://localhost:15432/postgres
     # for local db
     username: postgres
     password: postgres

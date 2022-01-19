@@ -2,8 +2,8 @@ import {Avatar, Box} from '@mui/material'
 
 const UserAvatar = (props) => {
     return (
-        <Box>
-            <Avatar alt="Avatar" src={props.photo} sx={{width: '8ch', height: '8ch'}}/>
+        <Box sx={{display: 'flex', justifyContent: 'center', pb: '5ch'}}>
+            <Avatar alt="Avatar" src={props.photo} sx={{width: '10ch', height: '10ch'}}/>
         </Box>
     )
 }

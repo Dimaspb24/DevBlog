@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CommentRepository extends JpaRepository<CommentEntity, String> {
+public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
     @NonNull
-    Page<CommentEntity> findAllByArticleIdAndAuthorIdAndEnabledIsTrue(@NonNull String articleId, @NonNull String authorId, @NonNull Pageable pageable);
+    Page<CommentEntity> findAllByArticleIdAndAuthorIdAndEnabledIsTrue(@NonNull Integer articleId, @NonNull String authorId, @NonNull Pageable pageable);
 
     @NonNull
-    Optional<CommentEntity> findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(@NonNull String id, @NonNull String authorId, @NonNull String articleId);
+    Optional<CommentEntity> findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(@NonNull Long commentId, @NonNull String authorId, @NonNull Integer articleId);
 }

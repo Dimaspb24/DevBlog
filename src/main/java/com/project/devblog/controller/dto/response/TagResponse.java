@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TagResponse {
     @NonNull
-    String id;
+    Integer id;
     @NonNull
     String name;
 }

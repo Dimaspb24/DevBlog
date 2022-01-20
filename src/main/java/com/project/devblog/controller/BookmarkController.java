@@ -30,7 +30,7 @@ public class BookmarkController {
     @PostMapping("/users/{userId}/articles/{articleId}/bookmarks")
     @ResponseStatus(HttpStatus.CREATED)
     public BookmarkResponse create(@NonNull @PathVariable String userId,
-                                   @NonNull @PathVariable String articleId,
+                                   @NonNull @PathVariable Integer articleId,
                                    @NonNull @Valid BookmarkRequest request) {
         return bookmarkService.create(userId, articleId, request);
     }
@@ -46,7 +46,7 @@ public class BookmarkController {
     @DeleteMapping("/users/{userId}/bookmarks/{bookmarkId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Object> delete(@NonNull @PathVariable String userId,
-                                         @NonNull @PathVariable String bookmarkId) {
+                                         @NonNull @PathVariable Long bookmarkId) {
         bookmarkService.delete(bookmarkId);
         return ResponseEntity.noContent().build();
     }

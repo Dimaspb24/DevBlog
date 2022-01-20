@@ -15,7 +15,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OpenArticleResponse {
     @NonNull
-    String id;
+    Integer id;
     @NonNull
     String title;
     @NonNull

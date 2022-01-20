@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ArticleRepository extends JpaRepository<ArticleEntity, String> {
+public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer> {
     @NonNull
     List<ArticleEntity> findByTitleContains(@NonNull String title);
 
     @NonNull
-    Optional<ArticleEntity> findByIdAndAuthorIdAndEnabledIsTrue(@NonNull String articleId, @NonNull String authorId);
+    Optional<ArticleEntity> findByIdAndAuthorIdAndEnabledIsTrue(@NonNull Integer articleId, @NonNull String authorId);
 
     @NonNull
     Page<ArticleEntity> findByAuthorIdAndEnabledIsTrue(@NonNull String authorId, @NonNull Pageable pageable);
@@ -31,7 +31,6 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, String> 
 
     @NonNull
     Page<ArticleEntity> findArticleEntitiesByTitleContains(@NonNull String name, @NonNull Pageable pageable);
-
 
     @NonNull
     @Query("select a from TagEntity t " +
@@ -51,5 +50,5 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, String> 
             "and a.enabled = true " +
             "and a.publicationDate is not null " +
             "order by a.publicationDate")
-    Page<ArticleEntity> findBySubscriptions(@Param("userId") Integer userId, @NonNull Pageable pageable);
+    Page<ArticleEntity> findBySubscriptions(@Param("userId") String userId, @NonNull Pageable pageable);
 }

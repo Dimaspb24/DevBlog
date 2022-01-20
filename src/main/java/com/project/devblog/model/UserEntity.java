@@ -27,7 +27,6 @@ import java.util.List;
 public class UserEntity extends AuditableBaseEntity<String> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     String id;
     String login;
     String password;

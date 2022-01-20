@@ -48,7 +48,7 @@ public class ArticleController {
 
     @GetMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
-    public OpenArticleResponse get(@NonNull @PathVariable String userId, @NonNull @PathVariable String articleId) {
+    public OpenArticleResponse get(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId) {
         return toOpenArticleResponse(articleService.get(userId, articleId));
     }
 
@@ -61,20 +61,20 @@ public class ArticleController {
 
     @GetMapping("/users/{userId}/articlesBySubscriptions")
     @ResponseStatus(HttpStatus.OK)
-    public Page<CloseArticleResponse> findArticlesBySubscriptions(@NonNull @PathVariable Integer userId, Pageable pageable) {
+    public Page<CloseArticleResponse> findArticlesBySubscriptions(@NonNull @PathVariable String userId, Pageable pageable) {
         return articleService.findArticlesBySubscriptions(userId, pageable)
                 .map(this::toCloseArticleResponse);
     }
 
     @DeleteMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@NonNull @PathVariable String userId, @NonNull @PathVariable String articleId) {
+    public void delete(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId) {
         articleService.delete(userId, articleId);
     }
 
     @PutMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
-    public OpenArticleResponse update(@NonNull @PathVariable String userId, @NonNull @PathVariable String articleId,
+    public OpenArticleResponse update(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
                                       @NonNull @Valid ArticleRequest request) {
         return toOpenArticleResponse(articleService.update(userId, articleId, request.getTitle(), request.getTags(),
                 request.getDescription(), request.getBody(), StatusArticle.valueOf(request.getStatus())));

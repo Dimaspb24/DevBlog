@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CommentResponse {
     @NonNull
-    String id;
+    Long id;
     @NonNull
     String message;
     @NonNull
@@ -19,5 +19,5 @@ public class CommentResponse {
     @NonNull
     String receiverId;
     @NonNull
-    String articleId;
+    Integer articleId;
 }

@@ -23,7 +23,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String GOOGLE_AUTH_REDIRECT = "/";
     private static final String SEARCHES_ENDPOINT = "/v1/searches/**";
 
-
     private final JwtConfigurer jwtConfigurer;
 
     @Bean

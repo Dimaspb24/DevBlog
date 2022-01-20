@@ -13,7 +13,7 @@ public class BookmarkResponse {
     @NonNull
     String userId;
     @NonNull
-    String articleId;
+    Integer articleId;
     @NonNull
     String bookmarkType;
 }

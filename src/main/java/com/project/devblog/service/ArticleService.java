@@ -9,7 +9,6 @@ import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.repository.ArticleRepository;
 import com.project.devblog.service.exception.ArticleConflictException;
 import com.project.devblog.service.exception.ArticleNotFoundException;
-import com.project.devblog.service.idgenerator.Generator;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
@@ -35,21 +34,19 @@ public class ArticleService {
     private final UserService userService;
     @NonNull
     private final TagService tagService;
-    @NonNull
-    private final Generator idGenerator;
 
     @NonNull
-    public ArticleEntity get(@NonNull String articleId) {
+    public ArticleEntity get(@NonNull Integer articleId) {
         return articleRepository.findById(articleId).orElseThrow(ArticleNotFoundException::new);
     }
 
     @NonNull
-    public ArticleEntity get(@NonNull String authorId, @NonNull String articleId) {
+    public ArticleEntity get(@NonNull String authorId, @NonNull Integer articleId) {
         return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(articleId, authorId).orElseThrow(ArticleNotFoundException::new);
     }
 
     @NonNull
-    public ArticleEntity findById(@NonNull String articleId) {
+    public ArticleEntity findById(@NonNull Integer articleId) {
         return articleRepository.findById(articleId).orElseThrow(ArticleNotFoundException::new);
     }
 
@@ -58,7 +55,7 @@ public class ArticleService {
                                 @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
 
         final UserEntity author = userService.get(userId);
-        final ArticleEntity articleEntity = new ArticleEntity(idGenerator.generateId(), title, body, status, description, author);
+        final ArticleEntity articleEntity = new ArticleEntity(title, body, status, description, author);
 
         if (status.name().equalsIgnoreCase(StatusArticle.PUBLISHED.name())) {
             final LocalDateTime now = LocalDateTime.now();
@@ -78,7 +75,7 @@ public class ArticleService {
         return articleRepository.findByAuthorIdAndEnabledIsTrue(userId, pageable);
     }
 
-    public void delete(@NonNull String authorId, @NonNull String articleId) {
+    public void delete(@NonNull String authorId, @NonNull Integer articleId) {
         final ArticleEntity articleEntity = get(authorId, articleId);
 
         if (Boolean.FALSE.equals(articleEntity.getEnabled())) {
@@ -91,7 +88,7 @@ public class ArticleService {
     }
 
     @NonNull
-    public ArticleEntity update(@NonNull String authorId, @NonNull String articleId, @NonNull String title, List<String> tags,
+    public ArticleEntity update(@NonNull String authorId, @NonNull Integer articleId, @NonNull String title, List<String> tags,
                                 @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
         final ArticleEntity articleEntity = get(authorId, articleId);
         final List<TagEntity> tagEntities = tagService.createAndGetAllByName(tags);
@@ -157,7 +154,7 @@ public class ArticleService {
     }
 
     @NonNull
-    public Page<ArticleEntity> findArticlesBySubscriptions(@NonNull Integer userId, @NonNull Pageable pageable) {
+    public Page<ArticleEntity> findArticlesBySubscriptions(@NonNull String userId, @NonNull Pageable pageable) {
         return articleRepository.findBySubscriptions(userId, pageable);
     }
 }

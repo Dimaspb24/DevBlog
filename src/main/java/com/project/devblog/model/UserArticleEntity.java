@@ -1,27 +1,12 @@
 package com.project.devblog.model;
 
 import com.project.devblog.model.enums.BookmarkType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import javax.persistence.*;
 
 @DynamicInsert
 @DynamicUpdate
@@ -34,11 +19,11 @@ import org.hibernate.annotations.DynamicUpdate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "users_articles")
-public class UserArticleEntity extends AuditableBaseEntity<String> {
+public class UserArticleEntity extends AuditableBaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String id;
+    Long id;
 
     Integer rating;
 
@@ -53,15 +38,13 @@ public class UserArticleEntity extends AuditableBaseEntity<String> {
     @JoinColumn(name = "article_id")
     ArticleEntity article;
 
-    public UserArticleEntity(@NonNull String id, Integer rating, UserEntity user, ArticleEntity article) {
-        this.id = id;
+    public UserArticleEntity(Integer rating, UserEntity user, ArticleEntity article) {
         this.rating = rating;
         this.setUser(user);
         this.setArticle(article);
     }
 
-    public UserArticleEntity(@NonNull String id, BookmarkType bookmarkType, UserEntity user, ArticleEntity article) {
-        this.id = id;
+    public UserArticleEntity(BookmarkType bookmarkType, UserEntity user, ArticleEntity article) {
         this.bookmarkType = bookmarkType;
         this.setUser(user);
         this.setArticle(article);

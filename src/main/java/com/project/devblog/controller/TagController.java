@@ -38,13 +38,13 @@ public class TagController {
 
     @GetMapping("/tags/{tagId}")
     @ResponseStatus(HttpStatus.OK)
-    public TagResponse get(@NonNull @PathVariable String tagId) {
+    public TagResponse get(@NonNull @PathVariable Integer tagId) {
         return toResponse(tagService.get(tagId));
     }
 
     @DeleteMapping("/tags/{tagId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@NonNull @PathVariable String tagId) {
+    public void delete(@NonNull @PathVariable Integer tagId) {
         tagService.delete(tagId);
     }
 

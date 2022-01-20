@@ -4,12 +4,13 @@ import com.project.devblog.model.TagEntity;
 import com.project.devblog.repository.TagRepository;
 import com.project.devblog.service.exception.TagNotFoundException;
 import com.project.devblog.service.idgenerator.Generator;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -21,13 +22,13 @@ public class TagService {
     private final Generator idGenerator;
 
     @NonNull
-    public TagEntity get(@NonNull String tagId) {
+    public TagEntity get(@NonNull Integer tagId) {
         return tagRepository.findById(tagId).orElseThrow(TagNotFoundException::new);
     }
 
     @NonNull
     public TagEntity create(@NonNull String name) {
-        return tagRepository.save(new TagEntity(idGenerator.generateId(), name));
+        return tagRepository.save(new TagEntity(name));
     }
 
     @NonNull
@@ -45,11 +46,11 @@ public class TagService {
         ArrayList<TagEntity> tagEntities = new ArrayList<>();
         tags.forEach(name ->
                 tagEntities.add(tagRepository.findByName(name).orElseGet(() ->
-                        tagRepository.save(new TagEntity(idGenerator.generateId(), name)))));
+                        tagRepository.save(new TagEntity(name)))));
         return tagEntities;
     }
 
-    public void delete(@NonNull String tagId) {
+    public void delete(@NonNull Integer tagId) {
         tagRepository.deleteById(tagId);
     }
 }

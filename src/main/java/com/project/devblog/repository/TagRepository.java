@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TagRepository extends JpaRepository<TagEntity, String> {
+public interface TagRepository extends JpaRepository<TagEntity, Integer> {
     @NonNull
     List<TagEntity> findAllByNameIn(@NonNull List<String> tags);
 

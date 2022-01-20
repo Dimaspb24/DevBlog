@@ -13,7 +13,7 @@ public class RatingResponse {
     @NonNull
     String authorId;
     @NonNull
-    String articleId;
+    Integer articleId;
     @NonNull
     Integer rating;
 }

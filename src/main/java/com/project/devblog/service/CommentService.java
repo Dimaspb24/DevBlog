@@ -5,7 +5,6 @@ import com.project.devblog.model.CommentEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.CommentRepository;
 import com.project.devblog.service.exception.CommentNotFoundException;
-import com.project.devblog.service.idgenerator.Generator;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
@@ -24,16 +23,14 @@ public class CommentService {
     private final ArticleService articleService;
     @NonNull
     private final UserService userService;
-    @NonNull
-    private final Generator idGenerator;
 
     @NonNull
-    public CommentEntity create(@NonNull String authorCommentId, @NonNull String articleId, @NonNull String message,
+    public CommentEntity create(@NonNull String authorCommentId, @NonNull Integer articleId, @NonNull String message,
                                 String receiverId) {
 
         final ArticleEntity articleEntity = articleService.get(authorCommentId, articleId);
         final UserEntity author = userService.get(authorCommentId);
-        final CommentEntity commentEntity = new CommentEntity(idGenerator.generateId(), message, articleEntity, author);
+        final CommentEntity commentEntity = new CommentEntity(message, articleEntity, author);
         final UserEntity receiver = (receiverId == null) ? articleEntity.getAuthor() : userService.get(receiverId);
         commentEntity.setReceiver(receiver);
 
@@ -41,17 +38,17 @@ public class CommentService {
     }
 
     @NonNull
-    public CommentEntity get(@NonNull String id, @NonNull String authorId, @NonNull String articleId) {
+    public CommentEntity get(@NonNull Long id, @NonNull String authorId, @NonNull Integer articleId) {
         return commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(id, authorId, articleId).orElseThrow(CommentNotFoundException::new);
     }
 
     @NonNull
-    public Page<CommentEntity> getAllByArticleId(@NonNull String articleId, @NonNull String authorId, @NonNull Pageable pageable) {
+    public Page<CommentEntity> getAllByArticleId(@NonNull Integer articleId, @NonNull String authorId, @NonNull Pageable pageable) {
         return commentRepository.findAllByArticleIdAndAuthorIdAndEnabledIsTrue(articleId, authorId, pageable);
     }
 
-    public void deleteComment(@NonNull String id, @NonNull String authorId, @NonNull String articleId) {
-        final ArticleEntity articleEntity = articleService.get(articleId, authorId);
+    public void deleteComment(@NonNull Long id, @NonNull String authorId, @NonNull Integer articleId) {
+        final ArticleEntity articleEntity = articleService.get(authorId, articleId);
         final CommentEntity commentEntity = get(id, authorId, articleId);
         articleEntity.getComments().remove(commentEntity);
 
@@ -60,7 +57,7 @@ public class CommentService {
     }
 
     @NonNull
-    public CommentEntity update(@NonNull String id, @NonNull String message, @NonNull String articleId, @NonNull String authorId) {
+    public CommentEntity update(@NonNull Long id, @NonNull String message, @NonNull Integer articleId, @NonNull String authorId) {
         final CommentEntity commentEntity = get(id, authorId, articleId);
         commentEntity.setMessage(message);
 

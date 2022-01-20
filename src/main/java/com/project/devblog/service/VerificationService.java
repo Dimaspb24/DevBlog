@@ -32,12 +32,12 @@ public class VerificationService {
         String toAddress = userRepository.getById(id).getLogin();
         String fromAddress = mailProperties.getEmail();
         String senderName = mailProperties.getName();
-        String subject = "Please verify your registration";
-        String content = "Dear [[name]],<br>"
-                + "Please click the link below to verify your registration:<br>"
-                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
-                + "Thank you,<br>"
-                + senderName;
+        String subject = "Подтверждение регистрации";
+        String content = "Приветствуем, [[name]]!<br>"
+                + "Для подтверждения электронной почты и завершения процесса регистрации, "
+                + "пожалуйста, пройдите по ссылке:<br>"
+                + "<h3><a href=\"[[URL]]\" target=\"_self\">Подтвердить регистрацию</a></h3>"
+                + "Если вы получили это письмо по ошибке, просто игнорируйте его.";
 
         MimeMessage message = mailSender.createMimeMessage();
 

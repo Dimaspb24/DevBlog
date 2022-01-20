@@ -4,7 +4,6 @@ create table if not exists users
     login             text      not null,
     password          text      not null,
     role              text      not null,
-    status            text      not null,
     firstname         text      null,
     lastname          text      null,
     nickname          text      not null default concat('user#', gen_random_uuid()),

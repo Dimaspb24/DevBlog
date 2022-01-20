@@ -24,7 +24,6 @@ public class VerificationController {
     @GetMapping("/verify")
     @ResponseStatus(HttpStatus.OK)
     public void verifyUser(@NonNull @RequestParam("code") String verificationCode) {
-        System.out.println(verificationCode);
         verificationService.verify(verificationCode);
     }
 }

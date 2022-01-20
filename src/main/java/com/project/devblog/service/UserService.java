@@ -3,20 +3,16 @@ package com.project.devblog.service;
 import com.project.devblog.controller.dto.request.UserRequest;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.repository.UserRepository;
 import com.project.devblog.service.exception.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import net.bytebuddy.utility.RandomString;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,15 +30,13 @@ public class UserService {
 
     @NonNull
     public UserEntity register(@NonNull String login, @NonNull String password) {
-
-        final UserEntity userEntity = new UserEntity();
-        userEntity.setLogin(login);
-        userEntity.setRole(Role.USER);
-        userEntity.setStatus(StatusUser.ACTIVE);
-        userEntity.setPassword(passwordEncoder.encode(password));
-
-        userEntity.setEnabled(false);
-        userEntity.setVerificationCode(UUID.randomUUID().toString());
+        final UserEntity userEntity = UserEntity.builder()
+                .login(login)
+                .role(Role.USER)
+                .password(passwordEncoder.encode(password))
+                .enabled(false)
+                .verificationCode(UUID.randomUUID().toString())
+                .build();
 
         userRepository.save(userEntity);
 
@@ -80,7 +74,7 @@ public class UserService {
 
     public void delete(Integer userId) {
         UserEntity user = get(userId);
-        user.setStatus(StatusUser.BANNED);
+        user.setEnabled(false);
         userRepository.save(user);
     }
 

@@ -4,8 +4,6 @@ import com.project.devblog.controller.annotation.ApiV1;
 import com.project.devblog.controller.dto.request.RegistrationRequest;
 import com.project.devblog.controller.dto.response.RegistrationResponse;
 import com.project.devblog.model.UserEntity;
-import com.project.devblog.model.enums.Role;
-import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -15,9 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
 
 @ApiV1
 @RestController

@@ -12,9 +12,6 @@ import java.util.Optional;
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Integer> {
     @NonNull
-    Page<CommentEntity> findAllByArticleIdAndAuthorIdAndEnabledIsTrue(@NonNull Integer articleId, @NonNull Integer authorId, @NonNull Pageable pageable);
-
-    @NonNull
     Page<CommentEntity> findAllByArticleIdAndEnabledIsTrue(@NonNull Integer articleId, @NonNull Pageable pageable);
 
     @NonNull

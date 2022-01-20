@@ -15,5 +15,11 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
     Page<CommentEntity> findAllByArticleIdAndAuthorIdAndEnabledIsTrue(@NonNull Integer articleId, @NonNull Integer authorId, @NonNull Pageable pageable);
 
     @NonNull
+    Page<CommentEntity> findAllByArticleIdAndEnabledIsTrue(@NonNull Integer articleId, @NonNull Pageable pageable);
+
+    @NonNull
     Optional<CommentEntity> findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(@NonNull Integer id, @NonNull Integer authorId, @NonNull Integer articleId);
+
+    @NonNull
+    Optional<CommentEntity> findByIdAndAuthorIdAndArticleId(@NonNull Integer id, @NonNull Integer authorId, @NonNull Integer articleId);
 }

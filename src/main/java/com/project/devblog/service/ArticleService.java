@@ -76,7 +76,8 @@ public class ArticleService {
     }
 
     public void enable(@NonNull Integer authorId, @NonNull Integer articleId, @NonNull Boolean enabled) {
-        final ArticleEntity articleEntity = get(authorId, articleId);
+        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(authorId, articleId)
+                .orElseThrow(ArticleNotFoundException::new);
 
         if (enabled.equals(articleEntity.getEnabled())) {
             String message = enabled ? "Article is already enabled" : "Article is already disabled";
@@ -88,7 +89,8 @@ public class ArticleService {
     }
 
     public void delete(@NonNull Integer authorId, @NonNull Integer articleId) {
-        final ArticleEntity articleEntity = get(authorId, articleId);
+        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(authorId, articleId)
+                .orElseThrow(ArticleNotFoundException::new);
         articleRepository.delete(articleEntity);
     }
 

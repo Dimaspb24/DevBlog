@@ -45,12 +45,12 @@ public class CommentService {
 
     @NonNull
     public Page<CommentEntity> getAllByArticleId(@NonNull Integer articleId, @NonNull Integer authorId, @NonNull Pageable pageable) {
-        return commentRepository.findAllByArticleIdAndAuthorIdAndEnabledIsTrue(articleId, authorId, pageable);
+        return commentRepository.findAllByArticleIdAndEnabledIsTrue(articleId, pageable);
     }
 
     public void enable(@NonNull Integer id, @NonNull Integer authorId, @NonNull Integer articleId, @NonNull Boolean enabled) {
-        final ArticleEntity articleEntity = articleService.get(articleId, authorId);
-        final CommentEntity commentEntity = get(id, authorId, articleId);
+        final CommentEntity commentEntity = commentRepository.findByIdAndAuthorIdAndArticleId(id, authorId, articleId)
+                .orElseThrow(CommentNotFoundException::new);
 
         if (enabled.equals(commentEntity.getEnabled())) {
             String message = enabled ? "Comment is already enabled" : "Comment is already disabled";
@@ -62,7 +62,8 @@ public class CommentService {
     }
 
     public void delete(@NonNull Integer id, @NonNull Integer authorId, @NonNull Integer articleId) {
-        final CommentEntity commentEntity = get(id, authorId, articleId);
+        final CommentEntity commentEntity = commentRepository.findByIdAndAuthorIdAndArticleId(id, authorId, articleId)
+                .orElseThrow(CommentNotFoundException::new);
         commentRepository.delete(commentEntity);
     }
 

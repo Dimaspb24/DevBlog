@@ -15,13 +15,13 @@ import java.util.List;
 public class OpenApiConfig {
 
     @Bean
-    public OpenAPI devBlogOpenApi(@Value("${application-description}") String appDesciption,
-                                  @Value("${application-version}") String appVersion) {
+    public OpenAPI devBlogOpenApi(@Value("${application-description}") String description,
+                                  @Value("${application-version}") String version) {
         return new OpenAPI()
                 .info(new Info()
                         .title("Application API")
-                        .description(appDesciption)
-                        .version(appVersion)
+                        .description(description)
+                        .version(version)
                         .description("Description about Dev Blog")
                         .contact(new Contact()
                                 .name("API Support")

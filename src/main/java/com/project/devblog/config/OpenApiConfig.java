@@ -12,11 +12,18 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
+//@SecurityScheme(
+//        name = "bearerAuth",
+//        type = SecuritySchemeType.HTTP,
+//        bearerFormat = "JWT",
+//        scheme = "bearer"
+//)
 public class OpenApiConfig {
 
     @Bean
     public OpenAPI devBlogOpenApi(@Value("${application-description}") String description,
                                   @Value("${application-version}") String version) {
+        final String securitySchemeName = "bearerAuth";
         return new OpenAPI()
                 .info(new Info()
                         .title("Application API")
@@ -31,6 +38,16 @@ public class OpenApiConfig {
                         .description("Local service")))
                 .externalDocs(new ExternalDocumentation()
                         .description("Dev Blog repository")
-                        .url("https://github.com/Dimaspb24/DevBlog"));
+                        .url("https://github.com/Dimaspb24/DevBlog"))
+//                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+//                .components(new Components()
+//                        .addSecuritySchemes(securitySchemeName,
+//                                new SecurityScheme()
+//                                        .name(securitySchemeName)
+//                                        .type(SecurityScheme.Type.HTTP)
+//                                        .scheme("bearer")
+//                                        .bearerFormat("JWT")
+//                        ))
+                ;
     }
 }

@@ -61,6 +61,10 @@ public class VerificationService {
     public void verify(@NonNull Integer userId, @NonNull String verificationCode) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
+        if (user.getVerificationCode() == null) {
+            throw new VerificationException("User already verified");
+        }
+
         if (!user.getVerificationCode().equals(verificationCode)) {
             throw new VerificationException("Invalid verification code");
         }

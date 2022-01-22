@@ -1,5 +1,6 @@
 package com.project.devblog.controller;
 
+import com.project.devblog.config.GoogleRedirectProperties;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.model.enums.StatusUser;
@@ -25,7 +26,11 @@ public class GoogleAuthController {
     private final UserService userService;
     @NonNull
     private final JwtTokenProvider jwtTokenProvider;
-    private final String URL = "http://%s:%s/v1/users/%s";
+    @NonNull
+    private final GoogleRedirectProperties googleRedirectProperties;
+
+    private static final String ACCESS_TOKEN = "access_token";
+    private static final String BEARER = "Bearer_";
 
     @ResponseStatus(HttpStatus.PERMANENT_REDIRECT)
     @GetMapping("/")
@@ -34,7 +39,7 @@ public class GoogleAuthController {
         final UserEntity userEntity = userService.createUser(user.getSubject(), user.getEmail(), Role.USER, StatusUser.ACTIVE, user.getGivenName(),
                 user.getFamilyName(), user.getFullName(), user.getPicture(), user.getPhoneNumber());
 
-        httpServletResponse.addCookie(new Cookie("access_token", "Bearer_" + jwtTokenProvider.createToken(userEntity.getLogin(), Role.USER)));
-        return new RedirectView(String.format(URL, "localhost", "8080", userEntity.getId()));
+        httpServletResponse.addCookie(new Cookie(ACCESS_TOKEN, BEARER + jwtTokenProvider.createToken(userEntity.getLogin(), Role.USER)));
+        return new RedirectView(String.format(googleRedirectProperties.getUrl(), userEntity.getId()));
     }
 }

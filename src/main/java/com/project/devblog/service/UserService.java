@@ -42,14 +42,14 @@ public class UserService {
     }
 
     @NonNull
-    public UserEntity createUser(@NonNull String sub, @NonNull String login, @NonNull Role role, @NonNull StatusUser status,
+    public UserEntity createUser(@NonNull String id, @NonNull String login, @NonNull Role role, @NonNull StatusUser status,
                                  @Nullable String firstname, @Nullable String lastname, @Nullable String nickname,
                                  @Nullable String photo, @Nullable String phone) {
-        final UserEntity userEntity = new UserEntity(sub, login, role, status);
+        final UserEntity userEntity = new UserEntity(id, login, role, status);
         final PersonalInfo personalInfo = new PersonalInfo(firstname, lastname, nickname, photo, null, phone, true);
         userEntity.setPersonalInfo(personalInfo);
 
-        final Optional<UserEntity> userOptional = userRepository.findById(sub);
+        final Optional<UserEntity> userOptional = userRepository.findById(id);
 
         return userOptional.orElseGet(() -> userRepository.save(userEntity));
     }

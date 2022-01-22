@@ -11,12 +11,12 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserArticleRepository extends JpaRepository<UserArticleEntity, String> {
+public interface UserArticleRepository extends JpaRepository<UserArticleEntity, Long> {
     @NonNull
-    Optional<UserArticleEntity> findByUserIdAndArticleIdAndArticleEnabledIsTrue(@NonNull String userId, @NonNull String articleId);
+    Optional<UserArticleEntity> findByUserIdAndArticleIdAndArticleEnabledIsTrue(@NonNull String userId, @NonNull Integer articleId);
 
     @NonNull
-    Optional<UserArticleEntity> findByUserIdAndArticleId(@NonNull String userId, @NonNull String articleId);
+    Optional<UserArticleEntity> findByUserIdAndArticleId(@NonNull String userId, @NonNull Integer articleId);
 
     @NonNull
     Page<UserArticleEntity> findByUserIdAndBookmarkType(@NonNull String userId, @NonNull BookmarkType bookmarkType, Pageable pageable);

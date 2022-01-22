@@ -21,7 +21,7 @@ create table if not exists users
 
 create table if not exists articles
 (
-    id                text primary key,
+    id                serial primary key,
     user_id           text      not null,
     title             text      not null,
     body              text      not null,
@@ -37,8 +37,8 @@ create table if not exists articles
 
 create table if not exists comments
 (
-    id                text primary key,
-    article_id        text      not null,
+    id                bigserial primary key,
+    article_id        int       not null,
     author_id         text      not null,
     receiver_id       text      null,
     message           text      not null,
@@ -54,15 +54,15 @@ create table if not exists comments
 
 create table if not exists tags
 (
-    id   text primary key,
+    id   serial primary key,
     name text not null,
     constraint unique_name unique (name)
 );
 
 create table if not exists articles_tags
 (
-    article_id text not null,
-    tag_id     text not null,
+    article_id int not null,
+    tag_id     int not null,
     primary key (article_id, tag_id),
     constraint id_fk_articles_tags__articles foreign key (article_id) references articles (id) on delete cascade,
     constraint id_fk_articles_tags__tags foreign key (tag_id) references tags (id) on delete cascade
@@ -79,9 +79,9 @@ create table if not exists subscribers
 
 create table if not exists users_articles
 (
-    id                text primary key,
+    id                bigserial primary key,
     user_id           text      not null,
-    article_id        text      not null,
+    article_id        int       not null,
     rating            int       null,
     bookmark_type     text      null,
     creation_date     timestamp not null default now(),

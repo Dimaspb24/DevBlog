@@ -19,11 +19,11 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "comments")
-public class CommentEntity extends AuditableBaseEntity<String> {
+public class CommentEntity extends AuditableBaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String id;
+    Long id;
 
     String message;
     Boolean enabled;
@@ -42,8 +42,7 @@ public class CommentEntity extends AuditableBaseEntity<String> {
     @JoinColumn(name = "receiver_id")
     UserEntity receiver;
 
-    public CommentEntity(@NonNull String id, @NonNull String message, @NonNull ArticleEntity article, @NonNull UserEntity authorComment) {
-        this.id = id;
+    public CommentEntity(@NonNull String message, @NonNull ArticleEntity article, @NonNull UserEntity authorComment) {
         this.message = message;
         this.setArticle(article);
         this.setAuthor(authorComment);

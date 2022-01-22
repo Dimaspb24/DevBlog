@@ -14,4 +14,6 @@ public class MailProperties {
     private String name;
     private String email;
     private String url;
+    private String subject;
+    private String content;
 }

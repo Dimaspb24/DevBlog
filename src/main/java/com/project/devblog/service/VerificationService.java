@@ -28,16 +28,12 @@ public class VerificationService {
     @NonNull
     private final MailProperties mailProperties;
 
-    public void sendVerificationEmail(@NonNull Integer id) {
-        String toAddress = userRepository.getById(id).getLogin();
+    public void sendVerificationEmail(@NonNull Integer userId) {
+        String toAddress = userRepository.getById(userId).getLogin();
         String fromAddress = mailProperties.getEmail();
         String senderName = mailProperties.getName();
-        String subject = "Подтверждение регистрации";
-        String content = "Приветствуем, [[name]]!<br>"
-                + "Для подтверждения электронной почты и завершения процесса регистрации, "
-                + "пожалуйста, пройдите по ссылке:<br>"
-                + "<h3><a href=\"[[URL]]\" target=\"_self\">Подтвердить регистрацию</a></h3>"
-                + "Если вы получили это письмо по ошибке, просто игнорируйте его.";
+        String subject = mailProperties.getSubject();
+        String content = mailProperties.getContent();
 
         MimeMessage message = mailSender.createMimeMessage();
 
@@ -49,7 +45,9 @@ public class VerificationService {
             helper.setSubject(subject);
 
             content = content.replace("[[name]]", toAddress.substring(0, toAddress.indexOf('@')));
-            String verifyURL = mailProperties.getUrl() + "/verify?code=" + userRepository.getById(id).getVerificationCode();
+            String verifyURL = mailProperties.getUrl();
+            verifyURL = verifyURL.replace("[[userId]]", userId.toString());
+            verifyURL = verifyURL.replace("[[code]]", userRepository.getById(userId).getVerificationCode());
             content = content.replace("[[URL]]", verifyURL);
 
             helper.setText(content, true);
@@ -60,8 +58,12 @@ public class VerificationService {
         mailSender.send(message);
     }
 
-    public void verify(String verificationCode) {
-        UserEntity user = userRepository.findByVerificationCode(verificationCode).orElseThrow(UserNotFoundException::new);
+    public void verify(@NonNull Integer userId, @NonNull String verificationCode) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+
+        if (!user.getVerificationCode().equals(verificationCode)) {
+            throw new VerificationException("Invalid verification code");
+        }
 
         user.setVerificationCode(null);
         user.setEnabled(true);

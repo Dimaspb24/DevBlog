@@ -34,7 +34,6 @@ public class UserService {
                 .login(login)
                 .role(Role.USER)
                 .password(passwordEncoder.encode(password))
-                .enabled(false)
                 .verificationCode(UUID.randomUUID().toString())
                 .build();
 

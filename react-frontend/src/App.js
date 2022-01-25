@@ -1,10 +1,11 @@
-import './App.css'
+import UserPersonalInfoContainer from './components/UserPersonalInfo/UserPersonalInfoContainer'
+import {Box} from '@mui/material'
 
 function App() {
     return (
-        <div className="App">
-            1
-        </div>
+        <Box>
+            <UserPersonalInfoContainer/>
+        </Box>
     )
 }
 

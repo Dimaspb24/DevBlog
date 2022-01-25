@@ -4,8 +4,6 @@ import com.project.devblog.controller.annotation.ApiV1;
 import com.project.devblog.controller.dto.request.RegistrationRequest;
 import com.project.devblog.controller.dto.response.RegistrationResponse;
 import com.project.devblog.model.UserEntity;
-import com.project.devblog.model.enums.Role;
-import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -31,9 +29,7 @@ public class RegistrationController {
         if (!userService.isExists(request.getLogin())) {
             return toResponse(userService.register(
                     request.getLogin(),
-                    request.getPassword(),
-                    Role.valueOf(request.getRole()),
-                    StatusUser.valueOf(request.getStatus())));
+                    request.getPassword()));
         } else {
             throw new BadCredentialsException("Login already exists");
         }

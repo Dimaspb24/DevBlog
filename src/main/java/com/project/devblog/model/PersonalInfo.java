@@ -19,5 +19,4 @@ public class PersonalInfo {
     String photo;
     String info;
     String phone;
-    Boolean enabled;
 }

@@ -3,7 +3,6 @@ package com.project.devblog.service;
 import com.project.devblog.controller.dto.request.UserRequest;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.repository.UserRepository;
 import com.project.devblog.service.exception.UserNotFoundException;
 import lombok.AllArgsConstructor;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -25,15 +25,23 @@ public class UserService {
     private final UserRepository userRepository;
     @NonNull
     private final BCryptPasswordEncoder passwordEncoder;
+    @NonNull
+    private final VerificationService verificationService;
 
     @NonNull
-    public UserEntity register(@NonNull String login, @NonNull String password,
-                               @NonNull Role role, @NonNull StatusUser status) {
+    public UserEntity register(@NonNull String login, @NonNull String password) {
+        final UserEntity userEntity = UserEntity.builder()
+                .login(login)
+                .role(Role.USER)
+                .password(passwordEncoder.encode(password))
+                .verificationCode(UUID.randomUUID().toString())
+                .build();
 
-        final UserEntity userEntity = new UserEntity(login, role, status);
-        userEntity.setPassword(passwordEncoder.encode(password));
+        userRepository.save(userEntity);
 
-        return userRepository.save(userEntity);
+        verificationService.sendVerificationEmail(userEntity.getId());
+
+        return userEntity;
     }
 
     public boolean isExists(@NonNull String login) {
@@ -65,7 +73,7 @@ public class UserService {
 
     public void delete(Integer userId) {
         UserEntity user = get(userId);
-        user.setStatus(StatusUser.BANNED);
+        user.setEnabled(false);
         userRepository.save(user);
     }
 
@@ -100,5 +108,4 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
-
 }

@@ -29,10 +29,10 @@ spring:
       auth: true
       starttls.enable: true
 
-logging:
-  level:
-    org.springframework.orm.jpa: DEBUG
-    org.springframework.transaction: DEBUG
+#logging:
+#  level:
+#    org.springframework.orm.jpa: DEBUG
+#    org.springframework.transaction: DEBUG
 
 jwt:
   token:

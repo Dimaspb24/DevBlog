@@ -30,13 +30,12 @@ public class JwtTokenProvider {
     private final JwtProperties jwtProperties;
 
     private String secret;
-    private long validityInMs;
+    private long expirationTime;
 
     @PostConstruct
     protected void init() {
-        secret = jwtProperties.getSecret();
-        secret = Base64.getEncoder().encodeToString(secret.getBytes());
-        validityInMs = jwtProperties.getExpired();
+        secret = Base64.getEncoder().encodeToString(jwtProperties.getSecret().getBytes());
+        expirationTime = jwtProperties.getExpired();
     }
 
     public String createToken(String login, Role role) {
@@ -44,7 +43,7 @@ public class JwtTokenProvider {
         claims.put("roles", getRoleNames(role));
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMs);
+        Date validity = new Date(now.getTime() + expirationTime);
 
         return Jwts.builder()
                 .setClaims(claims)

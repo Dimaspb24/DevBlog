@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 @ApiV1
 @RestController
@@ -21,8 +22,9 @@ public class VerificationController {
 
     @GetMapping("/users/{userId}/verify")
     @ResponseStatus(HttpStatus.OK)
-    public void verifyUser(@NonNull @PathVariable Integer userId,
-                           @NonNull @RequestParam("code") String verificationCode) {
+    public ModelAndView verifyUser(@NonNull @PathVariable Integer userId,
+                                   @NonNull @RequestParam("code") String verificationCode) {
         verificationService.verify(userId, verificationCode);
+        return new ModelAndView("verification_page");
     }
 }

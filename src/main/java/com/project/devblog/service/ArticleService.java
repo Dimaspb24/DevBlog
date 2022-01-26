@@ -75,16 +75,23 @@ public class ArticleService {
         return articleRepository.findByAuthorIdAndEnabledIsTrue(userId, pageable);
     }
 
-    public void delete(@NonNull Integer authorId, @NonNull Integer articleId) {
-        final ArticleEntity articleEntity = get(authorId, articleId);
+    public void enable(@NonNull Integer authorId, @NonNull Integer articleId, @NonNull Boolean enabled) {
+        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(authorId, articleId)
+                .orElseThrow(ArticleNotFoundException::new);
 
-        if (Boolean.FALSE.equals(articleEntity.getEnabled())) {
-            throw new ArticleConflictException();
+        if (enabled.equals(articleEntity.getEnabled())) {
+            String message = enabled ? "Article is already enabled" : "Article is already disabled";
+            throw new ArticleConflictException(message);
         }
 
-        articleEntity.setEnabled(false);
-        articleEntity.setDeletionDate(LocalDateTime.now());
+        articleEntity.setEnabled(enabled);
         articleRepository.save(articleEntity);
+    }
+
+    public void delete(@NonNull Integer authorId, @NonNull Integer articleId) {
+        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(authorId, articleId)
+                .orElseThrow(ArticleNotFoundException::new);
+        articleRepository.delete(articleEntity);
     }
 
     @NonNull

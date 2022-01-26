@@ -21,6 +21,9 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
     Optional<ArticleEntity> findByIdAndAuthorIdAndEnabledIsTrue(@NonNull Integer articleId, @NonNull Integer authorId);
 
     @NonNull
+    Optional<ArticleEntity> findByIdAndAuthorId(@NonNull Integer articleId, @NonNull Integer authorId);
+
+    @NonNull
     Page<ArticleEntity> findByAuthorIdAndEnabledIsTrue(@NonNull Integer authorId, @NonNull Pageable pageable);
 
     @NonNull
@@ -31,7 +34,6 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
 
     @NonNull
     Page<ArticleEntity> findArticleEntitiesByTitleContains(@NonNull String name, @NonNull Pageable pageable);
-
 
     @NonNull
     @Query("select a from TagEntity t " +

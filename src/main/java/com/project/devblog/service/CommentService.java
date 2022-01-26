@@ -4,6 +4,7 @@ import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.CommentEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.CommentRepository;
+import com.project.devblog.service.exception.CommentConflictException;
 import com.project.devblog.service.exception.CommentNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -44,16 +45,26 @@ public class CommentService {
 
     @NonNull
     public Page<CommentEntity> getAllByArticleId(@NonNull Integer articleId, @NonNull Integer authorId, @NonNull Pageable pageable) {
-        return commentRepository.findAllByArticleIdAndAuthorIdAndEnabledIsTrue(articleId, authorId, pageable);
+        return commentRepository.findAllByArticleIdAndEnabledIsTrue(articleId, pageable);
     }
 
-    public void deleteComment(@NonNull Integer id, @NonNull Integer authorId, @NonNull Integer articleId) {
-        final ArticleEntity articleEntity = articleService.get(articleId, authorId);
-        final CommentEntity commentEntity = get(id, authorId, articleId);
-        articleEntity.getComments().remove(commentEntity);
+    public void enable(@NonNull Integer id, @NonNull Integer authorId, @NonNull Integer articleId, @NonNull Boolean enabled) {
+        final CommentEntity commentEntity = commentRepository.findByIdAndAuthorIdAndArticleId(id, authorId, articleId)
+                .orElseThrow(CommentNotFoundException::new);
 
-        commentEntity.setEnabled(false);
+        if (enabled.equals(commentEntity.getEnabled())) {
+            String message = enabled ? "Comment is already enabled" : "Comment is already disabled";
+            throw new CommentConflictException(message);
+        }
+
+        commentEntity.setEnabled(enabled);
         commentRepository.save(commentEntity);
+    }
+
+    public void delete(@NonNull Integer id, @NonNull Integer authorId, @NonNull Integer articleId) {
+        final CommentEntity commentEntity = commentRepository.findByIdAndAuthorIdAndArticleId(id, authorId, articleId)
+                .orElseThrow(CommentNotFoundException::new);
+        commentRepository.delete(commentEntity);
     }
 
     @NonNull

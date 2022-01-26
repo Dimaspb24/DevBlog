@@ -2,9 +2,9 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     # for docker db
-    #    username: demouser
-    #    password: demopassword
-    #    url: jdbc:postgresql://localhost:15432/postgres
+#    username: demouser
+#    password: demopassword
+#    url: jdbc:postgresql://localhost:15432/postgres
     # for local db
     username: postgres
     password: postgres
@@ -20,6 +20,14 @@ spring:
         order_by.default_null_ordering: last
   flyway:
     validate-on-migrate: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: idkspbcorp@gmail.com
+    password: idkspbcorp777
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
   security:
     oauth2:
       client:
@@ -29,10 +37,11 @@ spring:
             clientSecret:
             scope: 'email,profile,openid'
 
-logging:
-  level:
-    org.springframework.orm.jpa: DEBUG
-    org.springframework.transaction: DEBUG
+#logging:
+#  level:
+#    org.springframework.orm.jpa: DEBUG
+#    org.springframework.transaction: DEBUG
+
 jwt:
   token:
     secret: jwtdevblog
@@ -42,3 +51,14 @@ app:
   google:
     redirect:
       url: http://localhost:8080/v1/users/%s
+mail:
+  name: IDK
+  email: idkspbcorp.com
+  url: http://localhost:8080/v1/users/[[userId]]/verify?code=[[code]]
+  subject: Подтверждение регистрации
+  content: >-
+    Приветствуем, [[name]]!<br>
+    Для подтверждения электронной почты и завершения процесса регистрации,
+    пожалуйста, пройдите по ссылке:<br>
+    <h3><a href="[[URL]]" target="_self">Подтвердить регистрацию</a></h3>
+    Если вы получили это письмо по ошибке, просто игнорируйте его.

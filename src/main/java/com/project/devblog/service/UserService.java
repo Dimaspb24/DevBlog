@@ -4,12 +4,9 @@ import com.project.devblog.controller.dto.request.UserRequest;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.repository.UserRepository;
 import com.project.devblog.service.exception.UserNotFoundException;
 import com.project.devblog.service.idgenerator.Generator;
-import java.util.List;
-import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
@@ -18,6 +15,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -32,21 +33,31 @@ public class UserService {
     private final Generator idGenerator;
 
     @NonNull
-    public UserEntity register(@NonNull String login, @NonNull String password,
-                               @NonNull Role role, @NonNull StatusUser status) {
+    private final VerificationService verificationService;
 
-        final UserEntity userEntity = new UserEntity(idGenerator.generateId(), login, role, status);
-        userEntity.setPassword(passwordEncoder.encode(password));
+    @NonNull
+    public UserEntity register(@NonNull String login, @NonNull String password) {
+        String userId = idGenerator.generateId();
+        final UserEntity userEntity = UserEntity.builder()
+                .id(userId)
+                .login(login)
+                .role(Role.USER)
+                .password(passwordEncoder.encode(password))
+                .verificationCode(UUID.randomUUID().toString())
+                .build();
 
-        return userRepository.save(userEntity);
+        UserEntity savedUser = userRepository.save(userEntity);
+
+        verificationService.sendVerificationEmail(userEntity.getId());
+        return savedUser;
     }
 
     @NonNull
-    public UserEntity createUser(@NonNull String id, @NonNull String login, @NonNull Role role, @NonNull StatusUser status,
+    public UserEntity createUser(@NonNull String id, @NonNull String login, @NonNull Role role, @NonNull Boolean enabled,
                                  @Nullable String firstname, @Nullable String lastname, @Nullable String nickname,
                                  @Nullable String photo, @Nullable String phone) {
-        final UserEntity userEntity = new UserEntity(id, login, role, status);
-        final PersonalInfo personalInfo = new PersonalInfo(firstname, lastname, nickname, photo, null, phone, true);
+        final UserEntity userEntity = new UserEntity(id, login, role, enabled);
+        final PersonalInfo personalInfo = new PersonalInfo(firstname, lastname, nickname, photo, null, phone);
         userEntity.setPersonalInfo(personalInfo);
 
         final Optional<UserEntity> userOptional = userRepository.findById(id);
@@ -83,7 +94,7 @@ public class UserService {
 
     public void delete(String userId) {
         UserEntity user = get(userId);
-        user.setStatus(StatusUser.BANNED);
+        user.setEnabled(false);
         userRepository.save(user);
     }
 
@@ -118,5 +129,4 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
-
 }

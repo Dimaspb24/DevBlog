@@ -48,7 +48,14 @@ public class CommentController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
                        @NonNull @PathVariable Long commentId) {
-        commentService.deleteComment(commentId, userId, articleId);
+        commentService.delete(commentId, userId, articleId);
+    }
+
+    @PatchMapping("/users/{userId}/articles/{articleId}/comments/{commentId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void enable(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
+                       @NonNull @PathVariable Long commentId, @NonNull @Valid @RequestParam Boolean enabled) {
+        commentService.enable(commentId, userId, articleId, enabled);
     }
 
     @PutMapping("/users/{userId}/articles/{articleId}/comments/{commentId}")

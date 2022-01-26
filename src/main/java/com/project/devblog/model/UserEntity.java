@@ -1,7 +1,6 @@
 package com.project.devblog.model;
 
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.model.enums.StatusUser;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
@@ -32,8 +31,9 @@ public class UserEntity extends AuditableBaseEntity<String> {
     String password;
     @Enumerated(EnumType.STRING)
     Role role;
-    @Enumerated(EnumType.STRING)
-    StatusUser status;
+
+    Boolean enabled;
+    String verificationCode;
 
     PersonalInfo personalInfo;
 
@@ -82,11 +82,17 @@ public class UserEntity extends AuditableBaseEntity<String> {
     @OrderBy("personalInfo.nickname")
     List<UserEntity> subscriptions = new ArrayList<>();
 
-    public UserEntity(@NonNull String id, @NonNull String login, @NonNull Role role, @NonNull StatusUser status) {
+    public UserEntity(@NonNull String id, @NonNull String login, @NonNull Role role) {
         this.id = id;
         this.login = login;
         this.role = role;
-        this.status = status;
+    }
+
+    public UserEntity(String id, String login, Role role, Boolean enabled) {
+        this.id = id;
+        this.login = login;
+        this.role = role;
+        this.enabled = enabled;
     }
 
     /*-----------------------------------FOR_MANY_TO_MANY_SUBSCRIBERS--------------------------------*/

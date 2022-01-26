@@ -2,7 +2,7 @@ package com.project.devblog.security.jwt;
 
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.model.enums.StatusUser;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,7 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class JwtUserFactory {
 
     public static JwtUser create(UserEntity user) {
@@ -18,7 +18,7 @@ public final class JwtUserFactory {
                 user.getId(),
                 user.getLogin(),
                 user.getPassword(),
-                user.getStatus().equals(StatusUser.ACTIVE),
+                user.getEnabled(),
                 mapToGrantedAuthorities(user.getRole())
         );
     }

@@ -27,8 +27,6 @@ public class CommentEntity extends AuditableBaseEntity<Long> {
 
     String message;
     Boolean enabled;
-    @Column(name = "deletion_date")
-    LocalDateTime deletionDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")

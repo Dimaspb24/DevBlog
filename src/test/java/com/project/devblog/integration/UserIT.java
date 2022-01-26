@@ -5,7 +5,6 @@ import com.project.devblog.model.UserArticleEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.BookmarkType;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.model.enums.StatusUser;
 import com.project.devblog.repository.ArticleRepository;
 import com.project.devblog.repository.UserArticleRepository;
 import com.project.devblog.repository.UserRepository;
@@ -41,7 +40,6 @@ class UserIT extends AbstractIT {
                 .login(login)
                 .password("123456789")
                 .role(Role.USER)
-                .status(StatusUser.ACTIVE)
                 .build();
         userRepository.save(testUser);
 

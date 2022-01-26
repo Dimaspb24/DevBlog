@@ -1,5 +1,4 @@
-application-version: v1
-application-description: Dev Blog application
+api-version: v1
 
 spring:
   datasource:

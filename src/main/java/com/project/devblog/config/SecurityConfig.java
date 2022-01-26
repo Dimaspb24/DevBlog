@@ -15,45 +15,47 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String GOOGLE_AUTH_REDIRECT = "/";
-    private static final String REGISTRATION_ENDPOINT = "/v1/registration";
-    private static final String LOGIN_ENDPOINT = "/v1/auth/**";
-    private static final String USER_ENDPOINT = "/v1/user/**";
-    private static final String TOPIC_ENDPOINT = "/v1/topic/**";
-    private static final String SEARCHES_ENDPOINT = "/v1/searches/**";
-    private static final String CHECK_TOKEN_ENDPOINT = "/v1/checkToken/**";
-    private static final String VERIFY_ENDPOINT = "/v1/users/**/verify";
-    private static final String[] OPEN_API_ENDPOINTS = {"/api-docs/**", "/api-docs.yaml",
-            "/swagger-ui/**", "/swagger-ui.html"};
+    private static final String[] DOMAIN_USERS_URLS = {
+            "/v1/user/**",
+            "/v1/topic/**",
+            "/v1/searches/**"
+    };
+    private static final String[] DOMAIN_PUBLIC_URLS = {
+            "/v1/auth/**",
+            "/v1/registration",
+            "/v1/checkToken/**",
+            "/v1/users/**/verify"
+    };
+    private static final String[] OPEN_API_ENDPOINTS = {
+            "/api-docs/**",
+            "/api-docs.yaml",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
 
     private final JwtConfigurer jwtConfigurer;
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .httpBasic().disable()
+        http.httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
                 .authorizeRequests()
                 .antMatchers(OPEN_API_ENDPOINTS).permitAll()
-                .antMatchers(LOGIN_ENDPOINT).permitAll()
-                .antMatchers(REGISTRATION_ENDPOINT).permitAll()
-                .antMatchers(VERIFY_ENDPOINT).permitAll()
-                .antMatchers(CHECK_TOKEN_ENDPOINT).permitAll()
+                .antMatchers(DOMAIN_PUBLIC_URLS).permitAll()
                 .antMatchers(GOOGLE_AUTH_REDIRECT).hasRole(Role.USER.name())
-                .antMatchers(USER_ENDPOINT).hasAnyRole(Role.USER.name())
-                .antMatchers(TOPIC_ENDPOINT).hasAnyRole(Role.USER.name())
-                .antMatchers(SEARCHES_ENDPOINT).hasAnyRole(Role.USER.name())
+                .antMatchers(DOMAIN_USERS_URLS).hasRole(Role.USER.name())
                 .anyRequest().authenticated()
                 .and()
                 .apply(jwtConfigurer)
                 .and()
                 .oauth2Login();
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }

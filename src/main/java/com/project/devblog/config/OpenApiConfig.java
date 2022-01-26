@@ -1,9 +1,14 @@
 package com.project.devblog.config;
 
+import com.project.devblog.constant.OpenApiConstant;
+import static com.project.devblog.constant.OpenApiConstant.*;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,42 +17,52 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
-//@SecurityScheme(
-//        name = "bearerAuth",
-//        type = SecuritySchemeType.HTTP,
-//        bearerFormat = "JWT",
-//        scheme = "bearer"
-//)
 public class OpenApiConfig {
 
     @Bean
-    public OpenAPI devBlogOpenApi(@Value("${application-description}") String description,
-                                  @Value("${application-version}") String version) {
-        final String securitySchemeName = "bearerAuth";
+    public OpenAPI devBlogOpenApi(@Value("${api-version}") String apiVersion) {
         return new OpenAPI()
-                .info(new Info()
-                        .title("Application API")
-                        .description(description)
-                        .version(version)
-                        .description("Description about Dev Blog")
-                        .contact(new Contact()
-                                .name("API Support")
-                                .email("diman5178@gmail.com")))
-                .servers(List.of(new Server()
-                        .url("http://localhost:8080")
-                        .description("Local service")))
-                .externalDocs(new ExternalDocumentation()
-                        .description("Dev Blog repository")
-                        .url("https://github.com/Dimaspb24/DevBlog"))
-//                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
-//                .components(new Components()
-//                        .addSecuritySchemes(securitySchemeName,
-//                                new SecurityScheme()
-//                                        .name(securitySchemeName)
-//                                        .type(SecurityScheme.Type.HTTP)
-//                                        .scheme("bearer")
-//                                        .bearerFormat("JWT")
-//                        ))
-                ;
+                .info(getInfo(apiVersion))
+                .servers(List.of(getLocalService()))
+                .externalDocs(getDocumentation())
+                .addSecurityItem(new SecurityRequirement().addList(BEARER_SECURITY_SCHEME))
+                .components(new Components()
+                        .addSecuritySchemes(BEARER_SECURITY_SCHEME, getSecuritySchemeJWT()));
+    }
+
+    private SecurityScheme getSecuritySchemeJWT() {
+        return new SecurityScheme()
+                .name(BEARER_SECURITY_SCHEME)
+                .scheme(SCHEME_NAME)
+                .bearerFormat(BEARER_FORMAT)
+                .type(SecurityScheme.Type.HTTP)
+                .in(SecurityScheme.In.HEADER);
+    }
+
+    private ExternalDocumentation getDocumentation() {
+        return new ExternalDocumentation()
+                .url(URL_DOC)
+                .description(DESCRIPTION_DOC);
+    }
+
+    private Server getLocalService() {
+        return new Server()
+                .url(URL_LOCAL_SERVER)
+                .description(DESCRIPTION_LOCAL_SERVER);
+    }
+
+    private Info getInfo(String version) {
+        return new Info()
+                .version(version)
+                .title(API_TITLE)
+                .description(API_DESCRIPTION)
+                .description(OpenApiConstant.API_DESCRIPTION)
+                .contact(getContact());
+    }
+
+    private Contact getContact() {
+        return new Contact()
+                .name(CONTACT_NAME)
+                .email(CONTACT_EMAIL);
     }
 }

@@ -3,8 +3,6 @@ package com.project.devblog.service;
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.model.UserEntity;
-import com.project.devblog.model.enums.SortOrder;
-import com.project.devblog.model.enums.SortingParam;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.repository.ArticleRepository;
 import com.project.devblog.service.exception.ArticleConflictException;
@@ -12,15 +10,11 @@ import com.project.devblog.service.exception.ArticleNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -115,42 +109,14 @@ public class ArticleService {
     }
 
     @NonNull
-    public Page<ArticleEntity> getSortedListByPublicationDate(@NonNull SortOrder sortOrder, @NonNull Pageable pageable) {
-        Sort sort;
-        if (sortOrder.equals(SortOrder.ASCENDING)) {
-            sort = Sort.by(SortingParam.PUBLICATION_DATE.getName()).ascending();
-        } else {
-            sort = Sort.by(SortingParam.PUBLICATION_DATE.getName()).descending();
-        }
-
-        return articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(PageRequest
-                .of(pageable.getPageNumber(), pageable.getPageSize(), sort));
-    }
-
-    @NonNull
-    public Page<ArticleEntity> getSortedListByRating(@NonNull SortOrder sortOrder, @NonNull Pageable pageable) {
-        final Sort.Order orderByPublicationDateDesc =
-                new Sort.Order(Sort.Direction.DESC, SortingParam.PUBLICATION_DATE.getName());
-        Sort.Order orderByRating;
-
-        if (sortOrder.equals(SortOrder.ASCENDING)) {
-            orderByRating = new Sort.Order(Sort.Direction.ASC, SortingParam.RATING.getName());
-        } else {
-            orderByRating = new Sort.Order(Sort.Direction.DESC, SortingParam.RATING.getName());
-        }
-
-        final List<Sort.Order> orders = new ArrayList<>(Arrays.asList(orderByRating, orderByPublicationDateDesc));
-
-        return articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(PageRequest
-                .of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(orders)));
+    public Page<ArticleEntity> getArticlesBySort(@NonNull Pageable pageable) {
+        return articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageable);
     }
 
     @NonNull
     public Page<ArticleEntity> getByTitleName(String name, @NonNull Pageable pageable) {
         if (name == null || name.isEmpty()) {
-            Sort sortByPublicationDateAsc = Sort.by(SortingParam.PUBLICATION_DATE.getName()).ascending();
-            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortByPublicationDateAsc);
-            return articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageRequest);
+            return articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageable);
         }
         return articleRepository.findArticleEntitiesByTitleContains(name, pageable);
     }

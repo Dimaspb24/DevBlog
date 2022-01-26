@@ -776,22 +776,6 @@ paths:
         - article-sorting-controller
       operationId: sorting
       parameters:
-        - name: sortingParam
-          in: query
-          required: true
-          schema:
-            type: string
-            enum:
-              - PUBLICATION_DATE
-              - RATING
-        - name: sortOrder
-          in: query
-          required: true
-          schema:
-            type: string
-            enum:
-              - ASCENDING
-              - DESCENDING
         - name: pageable
           in: query
           required: true
@@ -1035,7 +1019,7 @@ components:
         body:
           type: string
         status:
-          pattern: (PUBLISHED)|(CREATED)|(REMOVED)
+          pattern: (PUBLISHED)|(CREATED)
           type: string
         description:
           type: string
@@ -1209,14 +1193,12 @@ components:
     PageUserResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
-        sort:
-          $ref: '#/components/schemas/Sort'
+        totalPages:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
@@ -1236,26 +1218,28 @@ components:
         number:
           type: integer
           format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
         empty:
           type: boolean
     PageableObject:
       type: object
       properties:
-        sort:
-          $ref: '#/components/schemas/Sort'
-        pageNumber:
-          type: integer
-          format: int32
         pageSize:
           type: integer
           format: int32
-        paged:
-          type: boolean
+        pageNumber:
+          type: integer
+          format: int32
         unpaged:
+          type: boolean
+        paged:
           type: boolean
         offset:
           type: integer
           format: int64
+        sort:
+          $ref: '#/components/schemas/Sort'
     Sort:
       type: object
       properties:
@@ -1366,14 +1350,12 @@ components:
     PageSubscriptionResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
-        sort:
-          $ref: '#/components/schemas/Sort'
+        totalPages:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
@@ -1393,6 +1375,8 @@ components:
         number:
           type: integer
           format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
         empty:
           type: boolean
     SubscriptionResponse:
@@ -1445,14 +1429,12 @@ components:
     PageBookmarkArticleResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
-        sort:
-          $ref: '#/components/schemas/Sort'
+        totalPages:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
@@ -1472,19 +1454,19 @@ components:
         number:
           type: integer
           format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
         empty:
           type: boolean
     PageCloseArticleResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
-        sort:
-          $ref: '#/components/schemas/Sort'
+        totalPages:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
@@ -1504,19 +1486,19 @@ components:
         number:
           type: integer
           format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
         empty:
           type: boolean
     PageCommentResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
-        sort:
-          $ref: '#/components/schemas/Sort'
+        totalPages:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
@@ -1536,33 +1518,35 @@ components:
         number:
           type: integer
           format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
         empty:
           type: boolean
     ApplicationContext:
       type: object
       properties:
-        displayName:
-          type: string
-        autowireCapableBeanFactory:
-          $ref: '#/components/schemas/AutowireCapableBeanFactory'
-        applicationName:
-          type: string
         startupDate:
           type: integer
           format: int64
+        applicationName:
+          type: string
+        autowireCapableBeanFactory:
+          $ref: '#/components/schemas/AutowireCapableBeanFactory'
         parent:
           $ref: '#/components/schemas/ApplicationContext'
         id:
           type: string
+        displayName:
+          type: string
         environment:
           $ref: '#/components/schemas/Environment'
+        beanDefinitionCount:
+          type: integer
+          format: int32
         beanDefinitionNames:
           type: array
           items:
             type: string
-        beanDefinitionCount:
-          type: integer
-          format: int32
         parentBeanFactory:
           $ref: '#/components/schemas/BeanFactory'
         classLoader:
@@ -1604,10 +1588,6 @@ components:
                             properties:
                               name:
                                 type: string
-                              specificationTitle:
-                                type: string
-                              implementationTitle:
-                                type: string
                               specificationVersion:
                                 type: string
                               specificationVendor:
@@ -1626,6 +1606,10 @@ components:
                                   type: object
                               sealed:
                                 type: boolean
+                              specificationTitle:
+                                type: string
+                              implementationTitle:
+                                type: string
                     annotations:
                       type: array
                       items:
@@ -1653,10 +1637,6 @@ components:
                     properties:
                       name:
                         type: string
-                      specificationTitle:
-                        type: string
-                      implementationTitle:
-                        type: string
                       specificationVersion:
                         type: string
                       specificationVendor:
@@ -1675,6 +1655,10 @@ components:
                           type: object
                       sealed:
                         type: boolean
+                      specificationTitle:
+                        type: string
+                      implementationTitle:
+                        type: string
             name:
               type: string
             unnamedModule:
@@ -1708,10 +1692,6 @@ components:
                         properties:
                           name:
                             type: string
-                          specificationTitle:
-                            type: string
-                          implementationTitle:
-                            type: string
                           specificationVersion:
                             type: string
                           specificationVendor:
@@ -1730,6 +1710,10 @@ components:
                               type: object
                           sealed:
                             type: boolean
+                          specificationTitle:
+                            type: string
+                          implementationTitle:
+                            type: string
                 annotations:
                   type: array
                   items:
@@ -1757,10 +1741,6 @@ components:
                 properties:
                   name:
                     type: string
-                  specificationTitle:
-                    type: string
-                  implementationTitle:
-                    type: string
                   specificationVersion:
                     type: string
                   specificationVendor:
@@ -1779,6 +1759,10 @@ components:
                       type: object
                   sealed:
                     type: boolean
+                  specificationTitle:
+                    type: string
+                  implementationTitle:
+                    type: string
     AutowireCapableBeanFactory:
       type: object
     BeanFactory:
@@ -1802,14 +1786,27 @@ components:
         servletContext:
           type: object
           properties:
-            majorVersion:
-              type: integer
-              format: int32
-            minorVersion:
-              type: integer
-              format: int32
             contextPath:
               type: string
+            sessionTimeout:
+              type: integer
+              format: int32
+            servlets:
+              type: object
+              deprecated: true
+            attributeNames:
+              type: object
+            servletNames:
+              type: object
+              deprecated: true
+            serverInfo:
+              type: string
+            effectiveMajorVersion:
+              type: integer
+              format: int32
+            effectiveMinorVersion:
+              type: integer
+              format: int32
             filterRegistrations:
               type: object
               additionalProperties:
@@ -1831,17 +1828,17 @@ components:
                     type: string
                   className:
                     type: string
-            requestCharacterEncoding:
-              type: string
-            responseCharacterEncoding:
-              type: string
-            effectiveMinorVersion:
-              type: integer
-              format: int32
-            effectiveMajorVersion:
-              type: integer
-              format: int32
-            effectiveSessionTrackingModes:
+            sessionTrackingModes:
+              uniqueItems: true
+              type: array
+              writeOnly: true
+              items:
+                type: string
+                enum:
+                  - COOKIE
+                  - URL
+                  - SSL
+            defaultSessionTrackingModes:
               uniqueItems: true
               type: array
               items:
@@ -1850,10 +1847,52 @@ components:
                   - COOKIE
                   - URL
                   - SSL
-            sessionTrackingModes:
+            initParameterNames:
+              type: object
+            servletContextName:
+              type: string
+            servletRegistrations:
+              type: object
+              additionalProperties:
+                type: object
+                properties:
+                  runAsRole:
+                    type: string
+                  mappings:
+                    type: array
+                    items:
+                      type: string
+                  initParameters:
+                    type: object
+                    additionalProperties:
+                      type: string
+                  name:
+                    type: string
+                  className:
+                    type: string
+            sessionCookieConfig:
+              type: object
+              properties:
+                comment:
+                  type: string
+                domain:
+                  type: string
+                maxAge:
+                  type: integer
+                  format: int32
+                secure:
+                  type: boolean
+                httpOnly:
+                  type: boolean
+                path:
+                  type: string
+                name:
+                  type: string
+            virtualServerName:
+              type: string
+            effectiveSessionTrackingModes:
               uniqueItems: true
               type: array
-              writeOnly: true
               items:
                 type: string
                 enum:
@@ -1868,109 +1907,48 @@ components:
                   items:
                     type: object
                     properties:
-                      buffer:
-                        type: string
                       defaultContentType:
                         type: string
                       urlPatterns:
                         type: array
                         items:
                           type: string
-                      deferredSyntaxAllowedAsLiteral:
-                        type: string
                       scriptingInvalid:
+                        type: string
+                      deferredSyntaxAllowedAsLiteral:
                         type: string
                       trimDirectiveWhitespaces:
                         type: string
                       errorOnUndeclaredNamespace:
                         type: string
-                      pageEncoding:
-                        type: string
-                      elIgnored:
-                        type: string
                       includePreludes:
                         type: array
                         items:
                           type: string
+                      pageEncoding:
+                        type: string
+                      elIgnored:
+                        type: string
                       isXml:
                         type: string
                       includeCodas:
                         type: array
                         items:
                           type: string
+                      buffer:
+                        type: string
                 taglibs:
                   type: array
                   items:
                     type: object
                     properties:
-                      taglibLocation:
-                        type: string
                       taglibURI:
                         type: string
-            defaultSessionTrackingModes:
-              uniqueItems: true
-              type: array
-              items:
-                type: string
-                enum:
-                  - COOKIE
-                  - URL
-                  - SSL
-            initParameterNames:
-              type: object
-            virtualServerName:
+                      taglibLocation:
+                        type: string
+            responseCharacterEncoding:
               type: string
-            sessionCookieConfig:
-              type: object
-              properties:
-                maxAge:
-                  type: integer
-                  format: int32
-                domain:
-                  type: string
-                comment:
-                  type: string
-                secure:
-                  type: boolean
-                path:
-                  type: string
-                httpOnly:
-                  type: boolean
-                name:
-                  type: string
-            servletContextName:
-              type: string
-            servletRegistrations:
-              type: object
-              additionalProperties:
-                type: object
-                properties:
-                  mappings:
-                    type: array
-                    items:
-                      type: string
-                  runAsRole:
-                    type: string
-                  initParameters:
-                    type: object
-                    additionalProperties:
-                      type: string
-                  name:
-                    type: string
-                  className:
-                    type: string
-            attributeNames:
-              type: object
-            sessionTimeout:
-              type: integer
-              format: int32
-            servletNames:
-              type: object
-              deprecated: true
-            servlets:
-              type: object
-              deprecated: true
-            serverInfo:
+            requestCharacterEncoding:
               type: string
             classLoader:
               type: object
@@ -1988,10 +1966,6 @@ components:
                     type: object
                     properties:
                       name:
-                        type: string
-                      specificationTitle:
-                        type: string
-                      implementationTitle:
                         type: string
                       specificationVersion:
                         type: string
@@ -2011,6 +1985,16 @@ components:
                           type: object
                       sealed:
                         type: boolean
+                      specificationTitle:
+                        type: string
+                      implementationTitle:
+                        type: string
+            majorVersion:
+              type: integer
+              format: int32
+            minorVersion:
+              type: integer
+              format: int32
           writeOnly: true
         contentType:
           type: string

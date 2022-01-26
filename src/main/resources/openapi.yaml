@@ -3,7 +3,7 @@ info:
   title: Application API
   description: Description about Dev Blog
   contact:
-    name: Dmitriy Bogdanov
+    name: API Support
     email: diman5178@gmail.com
   version: v1
 externalDocs:
@@ -29,8 +29,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
       responses:
         "200":
           description: OK
@@ -47,8 +46,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
       requestBody:
         content:
           application/json:
@@ -71,8 +69,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
       responses:
         "204":
           description: No Content
@@ -86,8 +83,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: articleId
           in: path
           required: true
@@ -101,8 +97,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/OpenArticleResponse'
-      security:
-        - security_auth: [ ]
     put:
       tags:
         - article-controller
@@ -112,8 +106,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: articleId
           in: path
           required: true
@@ -132,8 +125,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/OpenArticleResponse'
-      security:
-        - security_auth: [ ]
     delete:
       tags:
         - article-controller
@@ -143,8 +134,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: articleId
           in: path
           required: true
@@ -154,8 +144,30 @@ paths:
       responses:
         "204":
           description: No Content
-      security:
-        - security_auth: [ ]
+    patch:
+      tags:
+        - article-controller
+      operationId: enable
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: enabled
+          in: query
+          required: true
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: OK
   /v1/users/{userId}/articles/{articleId}/ratings:
     get:
       tags:
@@ -166,8 +178,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: articleId
           in: path
           required: true
@@ -190,8 +201,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: articleId
           in: path
           required: true
@@ -219,8 +229,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: articleId
           in: path
           required: true
@@ -249,8 +258,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: articleId
           in: path
           required: true
@@ -262,7 +270,7 @@ paths:
           required: true
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         "200":
           description: OK
@@ -279,14 +287,13 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: commentId
           in: path
           required: true
           schema:
             type: integer
-            format: int32
+            format: int64
         - name: articleId
           in: path
           required: true
@@ -314,8 +321,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: articleId
           in: path
           required: true
@@ -327,10 +333,40 @@ paths:
           required: true
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         "204":
           description: No Content
+    patch:
+      tags:
+        - comment-controller
+      operationId: enable_1
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: enabled
+          in: query
+          required: true
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: OK
   /v1/users/{userId}/subscriptions/{authorId}:
     post:
       tags:
@@ -341,14 +377,12 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: authorId
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
       responses:
         "201":
           description: Created
@@ -365,14 +399,12 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: authorId
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
       responses:
         "204":
           description: No Content
@@ -386,8 +418,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: pageable
           in: query
           required: true
@@ -400,8 +431,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/PageCloseArticleResponse'
-      security:
-        - security_auth: [ ]
     post:
       tags:
         - article-controller
@@ -411,8 +440,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
       requestBody:
         content:
           application/json:
@@ -426,8 +454,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/OpenArticleResponse'
-      security:
-        - security_auth: [ ]
   /v1/users/{userId}/articles/{articleId}/comments:
     get:
       tags:
@@ -438,8 +464,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: articleId
           in: path
           required: true
@@ -467,8 +492,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: articleId
           in: path
           required: true
@@ -497,8 +521,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: articleId
           in: path
           required: true
@@ -557,6 +580,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RegistrationRequest'
+        required: true
       responses:
         "200":
           description: OK
@@ -600,6 +624,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AuthenticationRequest'
+        required: true
       responses:
         "200":
           description: OK
@@ -625,18 +650,40 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/PageUserResponse'
-  /v1/users/{userId}/subscriptions:
+  /v1/users/{userId}/verify:
     get:
       tags:
-        - subscription-controller
-      operationId: getSubsriptions
+        - verification-controller
+      operationId: verifyUser
       parameters:
         - name: userId
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ModelAndView'
+  /v1/users/{userId}/subscriptions:
+    get:
+      tags:
+        - subscription-controller
+      operationId: getSubscriptions
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
         - name: pageable
           in: query
           required: true
@@ -659,8 +706,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: pageable
           in: query
           required: true
@@ -683,8 +729,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: bookmarkType
           in: path
           required: true
@@ -712,8 +757,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: pageable
           in: query
           required: true
@@ -726,8 +770,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/PageCloseArticleResponse'
-      security:
-        - security_auth: [ ]
   /v1/topic/articles:
     get:
       tags:
@@ -861,6 +903,18 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/PageCloseArticleResponse'
+  /:
+    get:
+      tags:
+        - google-auth-controller
+      operationId: login_1
+      responses:
+        "308":
+          description: Permanent Redirect
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RedirectView'
   /v1/users/{userId}/bookmarks/{bookmarkId}:
     delete:
       tags:
@@ -959,14 +1013,11 @@ components:
           type: string
         phone:
           type: string
-        enabled:
-          type: boolean
     UserResponse:
       type: object
       properties:
         id:
-          type: integer
-          format: int32
+          type: string
         login:
           type: string
         personalInfo:
@@ -1015,8 +1066,7 @@ components:
           type: string
           format: date-time
         authorId:
-          type: integer
-          format: int32
+          type: string
         nickname:
           type: string
         photo:
@@ -1047,8 +1097,7 @@ components:
       type: object
       properties:
         authorId:
-          type: integer
-          format: int32
+          type: string
         articleId:
           type: integer
           format: int32
@@ -1063,22 +1112,19 @@ components:
         message:
           type: string
         receiverId:
-          type: integer
-          format: int32
+          type: string
     CommentResponse:
       type: object
       properties:
         id:
           type: integer
-          format: int32
+          format: int64
         message:
           type: string
         authorId:
-          type: integer
-          format: int32
+          type: string
         receiverId:
-          type: integer
-          format: int32
+          type: string
         articleId:
           type: integer
           format: int32
@@ -1094,8 +1140,7 @@ components:
       type: object
       properties:
         userId:
-          type: integer
-          format: int32
+          type: string
         articleId:
           type: integer
           format: int32
@@ -1114,26 +1159,17 @@ components:
       required:
         - login
         - password
-        - role
-        - status
       type: object
       properties:
         login:
           type: string
         password:
           type: string
-        role:
-          pattern: (USER)|(ADMIN)
-          type: string
-        status:
-          pattern: (ACTIVE)|(BANNED)
-          type: string
     RegistrationResponse:
       type: object
       properties:
         id:
-          type: integer
-          format: int32
+          type: string
         login:
           type: string
     AuthenticationRequest:
@@ -1150,8 +1186,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int32
+          type: string
         login:
           type: string
         token:
@@ -1180,9 +1215,17 @@ components:
         totalElements:
           type: integer
           format: int64
-        number:
+        sort:
+          $ref: '#/components/schemas/Sort'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
           type: integer
           format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         size:
           type: integer
           format: int32
@@ -1190,25 +1233,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserResponse'
-        sort:
-          $ref: '#/components/schemas/Sort'
-        numberOfElements:
+        number:
           type: integer
           format: int32
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
-        first:
-          type: boolean
-        last:
-          type: boolean
         empty:
           type: boolean
     PageableObject:
       type: object
       properties:
-        offset:
-          type: integer
-          format: int64
         sort:
           $ref: '#/components/schemas/Sort'
         pageNumber:
@@ -1217,19 +1249,120 @@ components:
         pageSize:
           type: integer
           format: int32
-        unpaged:
-          type: boolean
         paged:
           type: boolean
+        unpaged:
+          type: boolean
+        offset:
+          type: integer
+          format: int64
     Sort:
       type: object
       properties:
-        empty:
-          type: boolean
         sorted:
           type: boolean
         unsorted:
           type: boolean
+        empty:
+          type: boolean
+    ModelAndView:
+      type: object
+      properties:
+        view:
+          $ref: '#/components/schemas/View'
+        model:
+          type: object
+          additionalProperties:
+            type: object
+        status:
+          type: string
+          enum:
+            - 100 CONTINUE
+            - 101 SWITCHING_PROTOCOLS
+            - 102 PROCESSING
+            - 103 CHECKPOINT
+            - 200 OK
+            - 201 CREATED
+            - 202 ACCEPTED
+            - 203 NON_AUTHORITATIVE_INFORMATION
+            - 204 NO_CONTENT
+            - 205 RESET_CONTENT
+            - 206 PARTIAL_CONTENT
+            - 207 MULTI_STATUS
+            - 208 ALREADY_REPORTED
+            - 226 IM_USED
+            - 300 MULTIPLE_CHOICES
+            - 301 MOVED_PERMANENTLY
+            - 302 FOUND
+            - 302 MOVED_TEMPORARILY
+            - 303 SEE_OTHER
+            - 304 NOT_MODIFIED
+            - 305 USE_PROXY
+            - 307 TEMPORARY_REDIRECT
+            - 308 PERMANENT_REDIRECT
+            - 400 BAD_REQUEST
+            - 401 UNAUTHORIZED
+            - 402 PAYMENT_REQUIRED
+            - 403 FORBIDDEN
+            - 404 NOT_FOUND
+            - 405 METHOD_NOT_ALLOWED
+            - 406 NOT_ACCEPTABLE
+            - 407 PROXY_AUTHENTICATION_REQUIRED
+            - 408 REQUEST_TIMEOUT
+            - 409 CONFLICT
+            - 410 GONE
+            - 411 LENGTH_REQUIRED
+            - 412 PRECONDITION_FAILED
+            - 413 PAYLOAD_TOO_LARGE
+            - 413 REQUEST_ENTITY_TOO_LARGE
+            - 414 URI_TOO_LONG
+            - 414 REQUEST_URI_TOO_LONG
+            - 415 UNSUPPORTED_MEDIA_TYPE
+            - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+            - 417 EXPECTATION_FAILED
+            - 418 I_AM_A_TEAPOT
+            - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+            - 420 METHOD_FAILURE
+            - 421 DESTINATION_LOCKED
+            - 422 UNPROCESSABLE_ENTITY
+            - 423 LOCKED
+            - 424 FAILED_DEPENDENCY
+            - 425 TOO_EARLY
+            - 426 UPGRADE_REQUIRED
+            - 428 PRECONDITION_REQUIRED
+            - 429 TOO_MANY_REQUESTS
+            - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+            - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+            - 500 INTERNAL_SERVER_ERROR
+            - 501 NOT_IMPLEMENTED
+            - 502 BAD_GATEWAY
+            - 503 SERVICE_UNAVAILABLE
+            - 504 GATEWAY_TIMEOUT
+            - 505 HTTP_VERSION_NOT_SUPPORTED
+            - 506 VARIANT_ALSO_NEGOTIATES
+            - 507 INSUFFICIENT_STORAGE
+            - 508 LOOP_DETECTED
+            - 509 BANDWIDTH_LIMIT_EXCEEDED
+            - 510 NOT_EXTENDED
+            - 511 NETWORK_AUTHENTICATION_REQUIRED
+        viewName:
+          type: string
+        modelMap:
+          type: object
+          properties:
+            empty:
+              type: boolean
+          additionalProperties:
+            type: object
+        reference:
+          type: boolean
+        empty:
+          type: boolean
+    View:
+      type: object
+      properties:
+        contentType:
+          type: string
     PageSubscriptionResponse:
       type: object
       properties:
@@ -1239,9 +1372,17 @@ components:
         totalElements:
           type: integer
           format: int64
-        number:
+        sort:
+          $ref: '#/components/schemas/Sort'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
           type: integer
           format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         size:
           type: integer
           format: int32
@@ -1249,25 +1390,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SubscriptionResponse'
-        sort:
-          $ref: '#/components/schemas/Sort'
-        numberOfElements:
+        number:
           type: integer
           format: int32
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
-        first:
-          type: boolean
-        last:
-          type: boolean
         empty:
           type: boolean
     SubscriptionResponse:
       type: object
       properties:
         id:
-          type: integer
-          format: int32
+          type: string
         firstname:
           type: string
         lastname:
@@ -1301,8 +1433,7 @@ components:
           type: string
           format: date-time
         authorId:
-          type: integer
-          format: int32
+          type: string
         nickname:
           type: string
         photo:
@@ -1320,9 +1451,17 @@ components:
         totalElements:
           type: integer
           format: int64
-        number:
+        sort:
+          $ref: '#/components/schemas/Sort'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
           type: integer
           format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         size:
           type: integer
           format: int32
@@ -1330,17 +1469,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BookmarkArticleResponse'
-        sort:
-          $ref: '#/components/schemas/Sort'
-        numberOfElements:
+        number:
           type: integer
           format: int32
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
-        first:
-          type: boolean
-        last:
-          type: boolean
         empty:
           type: boolean
     PageCloseArticleResponse:
@@ -1352,9 +1483,17 @@ components:
         totalElements:
           type: integer
           format: int64
-        number:
+        sort:
+          $ref: '#/components/schemas/Sort'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
           type: integer
           format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         size:
           type: integer
           format: int32
@@ -1362,17 +1501,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CloseArticleResponse'
-        sort:
-          $ref: '#/components/schemas/Sort'
-        numberOfElements:
+        number:
           type: integer
           format: int32
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
-        first:
-          type: boolean
-        last:
-          type: boolean
         empty:
           type: boolean
     PageCommentResponse:
@@ -1384,9 +1515,17 @@ components:
         totalElements:
           type: integer
           format: int64
-        number:
+        sort:
+          $ref: '#/components/schemas/Sort'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
           type: integer
           format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         size:
           type: integer
           format: int32
@@ -1394,19 +1533,617 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CommentResponse'
-        sort:
-          $ref: '#/components/schemas/Sort'
-        numberOfElements:
+        number:
           type: integer
           format: int32
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
-        first:
-          type: boolean
-        last:
-          type: boolean
         empty:
           type: boolean
+    ApplicationContext:
+      type: object
+      properties:
+        displayName:
+          type: string
+        autowireCapableBeanFactory:
+          $ref: '#/components/schemas/AutowireCapableBeanFactory'
+        applicationName:
+          type: string
+        startupDate:
+          type: integer
+          format: int64
+        parent:
+          $ref: '#/components/schemas/ApplicationContext'
+        id:
+          type: string
+        environment:
+          $ref: '#/components/schemas/Environment'
+        beanDefinitionNames:
+          type: array
+          items:
+            type: string
+        beanDefinitionCount:
+          type: integer
+          format: int32
+        parentBeanFactory:
+          $ref: '#/components/schemas/BeanFactory'
+        classLoader:
+          type: object
+          properties:
+            parent:
+              type: object
+              properties:
+                name:
+                  type: string
+                unnamedModule:
+                  type: object
+                  properties:
+                    layer:
+                      type: object
+                    name:
+                      type: string
+                    descriptor:
+                      type: object
+                      properties:
+                        open:
+                          type: boolean
+                        automatic:
+                          type: boolean
+                    classLoader:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        defaultAssertionStatus:
+                          type: boolean
+                          writeOnly: true
+                        registeredAsParallelCapable:
+                          type: boolean
+                        definedPackages:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              specificationTitle:
+                                type: string
+                              implementationTitle:
+                                type: string
+                              specificationVersion:
+                                type: string
+                              specificationVendor:
+                                type: string
+                              implementationVersion:
+                                type: string
+                              implementationVendor:
+                                type: string
+                              annotations:
+                                type: array
+                                items:
+                                  type: object
+                              declaredAnnotations:
+                                type: array
+                                items:
+                                  type: object
+                              sealed:
+                                type: boolean
+                    annotations:
+                      type: array
+                      items:
+                        type: object
+                    declaredAnnotations:
+                      type: array
+                      items:
+                        type: object
+                    named:
+                      type: boolean
+                    packages:
+                      uniqueItems: true
+                      type: array
+                      items:
+                        type: string
+                defaultAssertionStatus:
+                  type: boolean
+                  writeOnly: true
+                registeredAsParallelCapable:
+                  type: boolean
+                definedPackages:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      specificationTitle:
+                        type: string
+                      implementationTitle:
+                        type: string
+                      specificationVersion:
+                        type: string
+                      specificationVendor:
+                        type: string
+                      implementationVersion:
+                        type: string
+                      implementationVendor:
+                        type: string
+                      annotations:
+                        type: array
+                        items:
+                          type: object
+                      declaredAnnotations:
+                        type: array
+                        items:
+                          type: object
+                      sealed:
+                        type: boolean
+            name:
+              type: string
+            unnamedModule:
+              type: object
+              properties:
+                layer:
+                  type: object
+                name:
+                  type: string
+                descriptor:
+                  type: object
+                  properties:
+                    open:
+                      type: boolean
+                    automatic:
+                      type: boolean
+                classLoader:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    defaultAssertionStatus:
+                      type: boolean
+                      writeOnly: true
+                    registeredAsParallelCapable:
+                      type: boolean
+                    definedPackages:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          specificationTitle:
+                            type: string
+                          implementationTitle:
+                            type: string
+                          specificationVersion:
+                            type: string
+                          specificationVendor:
+                            type: string
+                          implementationVersion:
+                            type: string
+                          implementationVendor:
+                            type: string
+                          annotations:
+                            type: array
+                            items:
+                              type: object
+                          declaredAnnotations:
+                            type: array
+                            items:
+                              type: object
+                          sealed:
+                            type: boolean
+                annotations:
+                  type: array
+                  items:
+                    type: object
+                declaredAnnotations:
+                  type: array
+                  items:
+                    type: object
+                named:
+                  type: boolean
+                packages:
+                  uniqueItems: true
+                  type: array
+                  items:
+                    type: string
+            defaultAssertionStatus:
+              type: boolean
+              writeOnly: true
+            registeredAsParallelCapable:
+              type: boolean
+            definedPackages:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  specificationTitle:
+                    type: string
+                  implementationTitle:
+                    type: string
+                  specificationVersion:
+                    type: string
+                  specificationVendor:
+                    type: string
+                  implementationVersion:
+                    type: string
+                  implementationVendor:
+                    type: string
+                  annotations:
+                    type: array
+                    items:
+                      type: object
+                  declaredAnnotations:
+                    type: array
+                    items:
+                      type: object
+                  sealed:
+                    type: boolean
+    AutowireCapableBeanFactory:
+      type: object
+    BeanFactory:
+      type: object
+    Environment:
+      type: object
+      properties:
+        activeProfiles:
+          type: array
+          items:
+            type: string
+        defaultProfiles:
+          type: array
+          items:
+            type: string
+    RedirectView:
+      type: object
+      properties:
+        applicationContext:
+          $ref: '#/components/schemas/ApplicationContext'
+        servletContext:
+          type: object
+          properties:
+            majorVersion:
+              type: integer
+              format: int32
+            minorVersion:
+              type: integer
+              format: int32
+            contextPath:
+              type: string
+            filterRegistrations:
+              type: object
+              additionalProperties:
+                type: object
+                properties:
+                  servletNameMappings:
+                    type: array
+                    items:
+                      type: string
+                  urlPatternMappings:
+                    type: array
+                    items:
+                      type: string
+                  initParameters:
+                    type: object
+                    additionalProperties:
+                      type: string
+                  name:
+                    type: string
+                  className:
+                    type: string
+            requestCharacterEncoding:
+              type: string
+            responseCharacterEncoding:
+              type: string
+            effectiveMinorVersion:
+              type: integer
+              format: int32
+            effectiveMajorVersion:
+              type: integer
+              format: int32
+            effectiveSessionTrackingModes:
+              uniqueItems: true
+              type: array
+              items:
+                type: string
+                enum:
+                  - COOKIE
+                  - URL
+                  - SSL
+            sessionTrackingModes:
+              uniqueItems: true
+              type: array
+              writeOnly: true
+              items:
+                type: string
+                enum:
+                  - COOKIE
+                  - URL
+                  - SSL
+            jspConfigDescriptor:
+              type: object
+              properties:
+                jspPropertyGroups:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      buffer:
+                        type: string
+                      defaultContentType:
+                        type: string
+                      urlPatterns:
+                        type: array
+                        items:
+                          type: string
+                      deferredSyntaxAllowedAsLiteral:
+                        type: string
+                      scriptingInvalid:
+                        type: string
+                      trimDirectiveWhitespaces:
+                        type: string
+                      errorOnUndeclaredNamespace:
+                        type: string
+                      pageEncoding:
+                        type: string
+                      elIgnored:
+                        type: string
+                      includePreludes:
+                        type: array
+                        items:
+                          type: string
+                      isXml:
+                        type: string
+                      includeCodas:
+                        type: array
+                        items:
+                          type: string
+                taglibs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      taglibLocation:
+                        type: string
+                      taglibURI:
+                        type: string
+            defaultSessionTrackingModes:
+              uniqueItems: true
+              type: array
+              items:
+                type: string
+                enum:
+                  - COOKIE
+                  - URL
+                  - SSL
+            initParameterNames:
+              type: object
+            virtualServerName:
+              type: string
+            sessionCookieConfig:
+              type: object
+              properties:
+                maxAge:
+                  type: integer
+                  format: int32
+                domain:
+                  type: string
+                comment:
+                  type: string
+                secure:
+                  type: boolean
+                path:
+                  type: string
+                httpOnly:
+                  type: boolean
+                name:
+                  type: string
+            servletContextName:
+              type: string
+            servletRegistrations:
+              type: object
+              additionalProperties:
+                type: object
+                properties:
+                  mappings:
+                    type: array
+                    items:
+                      type: string
+                  runAsRole:
+                    type: string
+                  initParameters:
+                    type: object
+                    additionalProperties:
+                      type: string
+                  name:
+                    type: string
+                  className:
+                    type: string
+            attributeNames:
+              type: object
+            sessionTimeout:
+              type: integer
+              format: int32
+            servletNames:
+              type: object
+              deprecated: true
+            servlets:
+              type: object
+              deprecated: true
+            serverInfo:
+              type: string
+            classLoader:
+              type: object
+              properties:
+                name:
+                  type: string
+                defaultAssertionStatus:
+                  type: boolean
+                  writeOnly: true
+                registeredAsParallelCapable:
+                  type: boolean
+                definedPackages:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      specificationTitle:
+                        type: string
+                      implementationTitle:
+                        type: string
+                      specificationVersion:
+                        type: string
+                      specificationVendor:
+                        type: string
+                      implementationVersion:
+                        type: string
+                      implementationVendor:
+                        type: string
+                      annotations:
+                        type: array
+                        items:
+                          type: object
+                      declaredAnnotations:
+                        type: array
+                        items:
+                          type: object
+                      sealed:
+                        type: boolean
+          writeOnly: true
+        contentType:
+          type: string
+        requestContextAttribute:
+          type: string
+        staticAttributes:
+          type: object
+          additionalProperties:
+            type: object
+        exposePathVariables:
+          type: boolean
+        exposeContextBeansAsAttributes:
+          type: boolean
+          writeOnly: true
+        exposedContextBeanNames:
+          type: array
+          writeOnly: true
+          items:
+            type: string
+        beanName:
+          type: string
+        url:
+          type: string
+        contextRelative:
+          type: boolean
+          writeOnly: true
+        http10Compatible:
+          type: boolean
+          writeOnly: true
+        exposeModelAttributes:
+          type: boolean
+          writeOnly: true
+        encodingScheme:
+          type: string
+          writeOnly: true
+        statusCode:
+          type: string
+          writeOnly: true
+          enum:
+            - 100 CONTINUE
+            - 101 SWITCHING_PROTOCOLS
+            - 102 PROCESSING
+            - 103 CHECKPOINT
+            - 200 OK
+            - 201 CREATED
+            - 202 ACCEPTED
+            - 203 NON_AUTHORITATIVE_INFORMATION
+            - 204 NO_CONTENT
+            - 205 RESET_CONTENT
+            - 206 PARTIAL_CONTENT
+            - 207 MULTI_STATUS
+            - 208 ALREADY_REPORTED
+            - 226 IM_USED
+            - 300 MULTIPLE_CHOICES
+            - 301 MOVED_PERMANENTLY
+            - 302 FOUND
+            - 302 MOVED_TEMPORARILY
+            - 303 SEE_OTHER
+            - 304 NOT_MODIFIED
+            - 305 USE_PROXY
+            - 307 TEMPORARY_REDIRECT
+            - 308 PERMANENT_REDIRECT
+            - 400 BAD_REQUEST
+            - 401 UNAUTHORIZED
+            - 402 PAYMENT_REQUIRED
+            - 403 FORBIDDEN
+            - 404 NOT_FOUND
+            - 405 METHOD_NOT_ALLOWED
+            - 406 NOT_ACCEPTABLE
+            - 407 PROXY_AUTHENTICATION_REQUIRED
+            - 408 REQUEST_TIMEOUT
+            - 409 CONFLICT
+            - 410 GONE
+            - 411 LENGTH_REQUIRED
+            - 412 PRECONDITION_FAILED
+            - 413 PAYLOAD_TOO_LARGE
+            - 413 REQUEST_ENTITY_TOO_LARGE
+            - 414 URI_TOO_LONG
+            - 414 REQUEST_URI_TOO_LONG
+            - 415 UNSUPPORTED_MEDIA_TYPE
+            - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+            - 417 EXPECTATION_FAILED
+            - 418 I_AM_A_TEAPOT
+            - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+            - 420 METHOD_FAILURE
+            - 421 DESTINATION_LOCKED
+            - 422 UNPROCESSABLE_ENTITY
+            - 423 LOCKED
+            - 424 FAILED_DEPENDENCY
+            - 425 TOO_EARLY
+            - 426 UPGRADE_REQUIRED
+            - 428 PRECONDITION_REQUIRED
+            - 429 TOO_MANY_REQUESTS
+            - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+            - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+            - 500 INTERNAL_SERVER_ERROR
+            - 501 NOT_IMPLEMENTED
+            - 502 BAD_GATEWAY
+            - 503 SERVICE_UNAVAILABLE
+            - 504 GATEWAY_TIMEOUT
+            - 505 HTTP_VERSION_NOT_SUPPORTED
+            - 506 VARIANT_ALSO_NEGOTIATES
+            - 507 INSUFFICIENT_STORAGE
+            - 508 LOOP_DETECTED
+            - 509 BANDWIDTH_LIMIT_EXCEEDED
+            - 510 NOT_EXTENDED
+            - 511 NETWORK_AUTHENTICATION_REQUIRED
+        expandUriTemplateVariables:
+          type: boolean
+          writeOnly: true
+        propagateQueryParams:
+          type: boolean
+          writeOnly: true
+        hosts:
+          type: array
+          items:
+            type: string
+        redirectView:
+          type: boolean
+        propagateQueryProperties:
+          type: boolean
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+          writeOnly: true
+        attributesMap:
+          type: object
+          additionalProperties:
+            type: object
+        attributesCSV:
+          type: string
+          writeOnly: true
     Link:
       type: object
       properties:

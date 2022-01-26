@@ -14,17 +14,18 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
-        <testcontainers.version>1.16.0</testcontainers.version>
-        <springdoc.openapi>1.6.4</springdoc.openapi>
-        <spring.data.commons>2.6.0</spring.data.commons>
-        <flyway.core>8.4.0</flyway.core>
-        <jjwt>0.9.1</jjwt>
-        <tomcat.dbcp>9.0.1</tomcat.dbcp>
-        <springdoc.openapi.maven.plugin>1.3</springdoc.openapi.maven.plugin>
-
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <jjwt>0.9.1</jjwt>
+        <friendly.id>1.1.0</friendly.id>
+        <flyway.core>8.4.0</flyway.core>
+        <tomcat.dbcp>9.0.1</tomcat.dbcp>
+        <springdoc.openapi>1.6.4</springdoc.openapi>
+        <spring.data.commons>2.6.0</spring.data.commons>
+        <testcontainers.version>1.16.0</testcontainers.version>
+        <springdoc.openapi.maven.plugin>1.3</springdoc.openapi.maven.plugin>
     </properties>
 
     <dependencies>
@@ -104,7 +105,7 @@
         <dependency>
             <groupId>com.devskiller.friendly-id</groupId>
             <artifactId>friendly-id</artifactId>
-            <version>1.1.0</version>
+            <version>${friendly.id}</version>
         </dependency>
         <!--endregion-->
 

@@ -11,13 +11,13 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CommentResponse {
     @NonNull
-    Integer id;
+    Long id;
     @NonNull
     String message;
     @NonNull
-    Integer authorId;
+    String authorId;
     @NonNull
-    Integer receiverId;
+    String receiverId;
     @NonNull
     Integer articleId;
 }

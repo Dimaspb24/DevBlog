@@ -24,21 +24,21 @@ public class CommentController {
 
     @PostMapping("/users/{userId}/articles/{articleId}/comments")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentResponse create(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId,
+    public CommentResponse create(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
                                   @NonNull @Valid CommentRequest request) {
         return toResponse(commentService.create(userId, articleId, request.getMessage(), request.getReceiverId()));
     }
 
     @GetMapping("/users/{userId}/articles/{articleId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.OK)
-    public CommentResponse get(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId,
-                               @NonNull @PathVariable Integer commentId) {
+    public CommentResponse get(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
+                               @NonNull @PathVariable Long commentId) {
         return toResponse(commentService.get(commentId, userId, articleId));
     }
 
     @GetMapping("/users/{userId}/articles/{articleId}/comments")
     @ResponseStatus(HttpStatus.OK)
-    public Page<CommentResponse> getAll(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId,
+    public Page<CommentResponse> getAll(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
                                         @NonNull Pageable pageable) {
         return commentService.getAllByArticleId(articleId, userId, pageable)
                 .map(this::toResponse);
@@ -46,14 +46,21 @@ public class CommentController {
 
     @DeleteMapping("/users/{userId}/articles/{articleId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId,
-                       @NonNull @PathVariable Integer commentId) {
-        commentService.deleteComment(commentId, userId, articleId);
+    public void delete(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
+                       @NonNull @PathVariable Long commentId) {
+        commentService.delete(commentId, userId, articleId);
+    }
+
+    @PatchMapping("/users/{userId}/articles/{articleId}/comments/{commentId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void enable(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
+                       @NonNull @PathVariable Long commentId, @NonNull @Valid @RequestParam Boolean enabled) {
+        commentService.enable(commentId, userId, articleId, enabled);
     }
 
     @PutMapping("/users/{userId}/articles/{articleId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.OK)
-    public CommentResponse update(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer commentId,
+    public CommentResponse update(@NonNull @PathVariable String userId, @NonNull @PathVariable Long commentId,
                                   @NonNull @PathVariable Integer articleId, @NonNull @Valid CommentRequest request) {
         return toResponse(commentService.update(commentId, request.getMessage(), articleId, userId));
     }

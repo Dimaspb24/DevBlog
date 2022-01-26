@@ -15,5 +15,5 @@ public class CommentRequest {
     @NotBlank(message = "Message is required")
     String message;
     @Nullable
-    Integer receiverId;
+    String receiverId;
 }

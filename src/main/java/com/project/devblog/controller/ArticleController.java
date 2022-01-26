@@ -16,14 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
@@ -41,40 +34,47 @@ public class ArticleController {
 
     @PostMapping("/users/{userId}/articles")
     @ResponseStatus(HttpStatus.CREATED)
-    public OpenArticleResponse create(@NonNull @PathVariable Integer userId, @NonNull @Valid @RequestBody ArticleRequest request) {
+    public OpenArticleResponse create(@NonNull @PathVariable String userId, @NonNull @Valid @RequestBody ArticleRequest request) {
         return toOpenArticleResponse(articleService.create(userId, request.getTitle(), request.getTags(), request.getDescription(),
                 request.getBody(), StatusArticle.valueOf(request.getStatus())));
     }
 
     @GetMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
-    public OpenArticleResponse get(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId) {
+    public OpenArticleResponse get(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId) {
         return toOpenArticleResponse(articleService.get(userId, articleId));
     }
 
     @GetMapping("/users/{userId}/articles")
     @ResponseStatus(HttpStatus.OK)
-    public Page<CloseArticleResponse> getAll(@NonNull @PathVariable Integer userId, @PageableDefault Pageable pageable) {
+    public Page<CloseArticleResponse> getAll(@NonNull @PathVariable String userId, @PageableDefault Pageable pageable) {
         return articleService.getAll(userId, pageable)
                 .map(this::toCloseArticleResponse);
     }
 
     @GetMapping("/users/{userId}/articlesBySubscriptions")
     @ResponseStatus(HttpStatus.OK)
-    public Page<CloseArticleResponse> findArticlesBySubscriptions(@NonNull @PathVariable Integer userId, Pageable pageable) {
+    public Page<CloseArticleResponse> findArticlesBySubscriptions(@NonNull @PathVariable String userId, Pageable pageable) {
         return articleService.findArticlesBySubscriptions(userId, pageable)
                 .map(this::toCloseArticleResponse);
     }
 
     @DeleteMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId) {
+    public void delete(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId) {
         articleService.delete(userId, articleId);
+    }
+
+    @PatchMapping("/users/{userId}/articles/{articleId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void enable(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
+                       @NonNull @Valid @RequestParam Boolean enabled) {
+        articleService.enable(userId, articleId, enabled);
     }
 
     @PutMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
-    public OpenArticleResponse update(@NonNull @PathVariable Integer userId, @NonNull @PathVariable Integer articleId,
+    public OpenArticleResponse update(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
                                       @NonNull @Valid ArticleRequest request) {
         return toOpenArticleResponse(articleService.update(userId, articleId, request.getTitle(), request.getTags(),
                 request.getDescription(), request.getBody(), StatusArticle.valueOf(request.getStatus())));

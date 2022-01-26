@@ -49,9 +49,6 @@ public class ArticleEntity extends AuditableBaseEntity<Integer> {
     @Column(name = "publication_date")
     LocalDateTime publicationDate;
 
-    @Column(name = "deletion_date")
-    LocalDateTime deletionDate;
-
     @Formula("(select avg(ua.rating) from users_articles ua where ua.article_id = id)")
     Double rating;
 

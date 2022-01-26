@@ -27,7 +27,7 @@ public class CloseArticleResponse {
     @NonNull
     LocalDateTime modificationDate;
     @NonNull
-    Integer authorId;
+    String authorId;
     @NonNull
     String nickname;
     @Nullable

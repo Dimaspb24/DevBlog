@@ -36,7 +36,7 @@ public class BookmarkService {
     private final UserService userService;
 
     @NonNull
-    public BookmarkResponse create(@NonNull Integer userId, @NonNull Integer articleId, @NonNull BookmarkRequest request) {
+    public BookmarkResponse create(@NonNull String userId, @NonNull Integer articleId, @NonNull BookmarkRequest request) {
         BookmarkType bookmarkType = BookmarkType.valueOf(request.getBookmarkType());
 
         UserArticleEntity userArticleEntity = userArticleRepository.findByUserIdAndArticleId(userId, articleId).map(userArt -> {
@@ -52,7 +52,7 @@ public class BookmarkService {
     }
 
     @NonNull
-    public Page<BookmarkArticleResponse> findAll(Integer userId, String bookmarkType, Pageable pageable) {
+    public Page<BookmarkArticleResponse> findAll(String userId, String bookmarkType, Pageable pageable) {
         BookmarkType type = BookmarkType.valueOf(bookmarkType);
 
         Page<UserArticleEntity> userBookmarks = userArticleRepository.findByUserIdAndBookmarkType(userId, type, pageable);

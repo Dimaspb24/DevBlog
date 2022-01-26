@@ -26,8 +26,8 @@ public class CommentService {
     private final UserService userService;
 
     @NonNull
-    public CommentEntity create(@NonNull Integer authorCommentId, @NonNull Integer articleId, @NonNull String message,
-                                Integer receiverId) {
+    public CommentEntity create(@NonNull String authorCommentId, @NonNull Integer articleId, @NonNull String message,
+                                String receiverId) {
 
         final ArticleEntity articleEntity = articleService.get(authorCommentId, articleId);
         final UserEntity author = userService.get(authorCommentId);
@@ -39,16 +39,16 @@ public class CommentService {
     }
 
     @NonNull
-    public CommentEntity get(@NonNull Integer id, @NonNull Integer authorId, @NonNull Integer articleId) {
+    public CommentEntity get(@NonNull Long id, @NonNull String authorId, @NonNull Integer articleId) {
         return commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(id, authorId, articleId).orElseThrow(CommentNotFoundException::new);
     }
 
     @NonNull
-    public Page<CommentEntity> getAllByArticleId(@NonNull Integer articleId, @NonNull Integer authorId, @NonNull Pageable pageable) {
+    public Page<CommentEntity> getAllByArticleId(@NonNull Integer articleId, @NonNull String authorId, @NonNull Pageable pageable) {
         return commentRepository.findAllByArticleIdAndEnabledIsTrue(articleId, pageable);
     }
 
-    public void enable(@NonNull Integer id, @NonNull Integer authorId, @NonNull Integer articleId, @NonNull Boolean enabled) {
+    public void enable(@NonNull Long id, @NonNull String authorId, @NonNull Integer articleId, @NonNull Boolean enabled) {
         final CommentEntity commentEntity = commentRepository.findByIdAndAuthorIdAndArticleId(id, authorId, articleId)
                 .orElseThrow(CommentNotFoundException::new);
 
@@ -61,14 +61,14 @@ public class CommentService {
         commentRepository.save(commentEntity);
     }
 
-    public void delete(@NonNull Integer id, @NonNull Integer authorId, @NonNull Integer articleId) {
+    public void delete(@NonNull Long id, @NonNull String authorId, @NonNull Integer articleId) {
         final CommentEntity commentEntity = commentRepository.findByIdAndAuthorIdAndArticleId(id, authorId, articleId)
                 .orElseThrow(CommentNotFoundException::new);
         commentRepository.delete(commentEntity);
     }
 
     @NonNull
-    public CommentEntity update(@NonNull Integer id, @NonNull String message, @NonNull Integer articleId, @NonNull Integer authorId) {
+    public CommentEntity update(@NonNull Long id, @NonNull String message, @NonNull Integer articleId, @NonNull String authorId) {
         final CommentEntity commentEntity = get(id, authorId, articleId);
         commentEntity.setMessage(message);
 

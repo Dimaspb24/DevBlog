@@ -10,7 +10,7 @@ spring:
     password: postgres
     url: jdbc:postgresql://localhost:5432/postgres
   jpa:
-    open-in-view: true # TODO: change to false it later
+    open-in-view: true # TODO: change to false later
     show-sql: true
     properties:
       hibernate:
@@ -28,6 +28,14 @@ spring:
     properties.mail.smtp:
       auth: true
       starttls.enable: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId:
+            clientSecret:
+            scope: 'email,profile,openid'
 
 #logging:
 #  level:
@@ -39,6 +47,10 @@ jwt:
     secret: jwtdevblog
     expired: 3600000 # 1 hour
 
+app:
+  google:
+    redirect:
+      url: http://localhost:8080/v1/users/%s
 mail:
   name: IDK
   email: idkspbcorp.com

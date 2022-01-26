@@ -29,7 +29,7 @@ public class BookmarkController {
 
     @PostMapping("/users/{userId}/articles/{articleId}/bookmarks")
     @ResponseStatus(HttpStatus.CREATED)
-    public BookmarkResponse create(@NonNull @PathVariable Integer userId,
+    public BookmarkResponse create(@NonNull @PathVariable String userId,
                                    @NonNull @PathVariable Integer articleId,
                                    @NonNull @Valid BookmarkRequest request) {
         return bookmarkService.create(userId, articleId, request);
@@ -37,7 +37,7 @@ public class BookmarkController {
 
     @GetMapping("/users/{userId}/bookmarks/{bookmarkType}")
     @ResponseStatus(HttpStatus.OK)
-    public Page<BookmarkArticleResponse> getAll(@NonNull @PathVariable Integer userId,
+    public Page<BookmarkArticleResponse> getAll(@NonNull @PathVariable String userId,
                                                 @NonNull @PathVariable String bookmarkType,
                                                 @NonNull Pageable pageable) {
         return bookmarkService.findAll(userId, bookmarkType, pageable);

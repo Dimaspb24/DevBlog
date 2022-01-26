@@ -19,11 +19,11 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "comments")
-public class CommentEntity extends AuditableBaseEntity<Integer> {
+public class CommentEntity extends AuditableBaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    Long id;
 
     String message;
     Boolean enabled;

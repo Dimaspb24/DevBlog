@@ -28,7 +28,7 @@ public class VerificationService {
     @NonNull
     private final MailProperties mailProperties;
 
-    public void sendVerificationEmail(@NonNull Integer userId) {
+    public void sendVerificationEmail(@NonNull String userId) {
         String toAddress = userRepository.getById(userId).getLogin();
         String fromAddress = mailProperties.getEmail();
         String senderName = mailProperties.getName();
@@ -46,7 +46,7 @@ public class VerificationService {
 
             content = content.replace("[[name]]", toAddress.substring(0, toAddress.indexOf('@')));
             String verifyURL = mailProperties.getUrl();
-            verifyURL = verifyURL.replace("[[userId]]", userId.toString());
+            verifyURL = verifyURL.replace("[[userId]]", userId);
             verifyURL = verifyURL.replace("[[code]]", userRepository.getById(userId).getVerificationCode());
             content = content.replace("[[URL]]", verifyURL);
 
@@ -58,7 +58,7 @@ public class VerificationService {
         mailSender.send(message);
     }
 
-    public void verify(@NonNull Integer userId, @NonNull String verificationCode) {
+    public void verify(@NonNull String userId, @NonNull String verificationCode) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         if (user.getVerificationCode() == null) {

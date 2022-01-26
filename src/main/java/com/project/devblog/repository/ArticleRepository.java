@@ -18,13 +18,13 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
     List<ArticleEntity> findByTitleContains(@NonNull String title);
 
     @NonNull
-    Optional<ArticleEntity> findByIdAndAuthorIdAndEnabledIsTrue(@NonNull Integer articleId, @NonNull Integer authorId);
+    Optional<ArticleEntity> findByIdAndAuthorIdAndEnabledIsTrue(@NonNull Integer articleId, @NonNull String authorId);
 
     @NonNull
-    Optional<ArticleEntity> findByIdAndAuthorId(@NonNull Integer articleId, @NonNull Integer authorId);
+    Optional<ArticleEntity> findByIdAndAuthorId(@NonNull Integer articleId, @NonNull String authorId);
 
     @NonNull
-    Page<ArticleEntity> findByAuthorIdAndEnabledIsTrue(@NonNull Integer authorId, @NonNull Pageable pageable);
+    Page<ArticleEntity> findByAuthorIdAndEnabledIsTrue(@NonNull String authorId, @NonNull Pageable pageable);
 
     @NonNull
     @Query("select a from ArticleEntity a " +
@@ -53,5 +53,5 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
             "and a.enabled = true " +
             "and a.publicationDate is not null " +
             "order by a.publicationDate")
-    Page<ArticleEntity> findBySubscriptions(@Param("userId") Integer userId, @NonNull Pageable pageable);
+    Page<ArticleEntity> findBySubscriptions(@Param("userId") String userId, @NonNull Pageable pageable);
 }

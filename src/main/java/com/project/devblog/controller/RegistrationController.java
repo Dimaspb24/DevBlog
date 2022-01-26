@@ -10,6 +10,7 @@ import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,7 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     @ResponseStatus(HttpStatus.OK)
-    public RegistrationResponse registration(@NonNull @Valid RegistrationRequest request) {
+    public RegistrationResponse registration(@NonNull @Valid @RequestBody RegistrationRequest request) {
         if (!userService.isExists(request.getLogin())) {
             return toResponse(userService.register(
                     request.getLogin(),

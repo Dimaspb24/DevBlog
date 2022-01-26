@@ -41,7 +41,7 @@ public class ArticleService {
     }
 
     @NonNull
-    public ArticleEntity get(@NonNull Integer authorId, @NonNull Integer articleId) {
+    public ArticleEntity get(@NonNull String authorId, @NonNull Integer articleId) {
         return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(articleId, authorId).orElseThrow(ArticleNotFoundException::new);
     }
 
@@ -51,7 +51,7 @@ public class ArticleService {
     }
 
     @NonNull
-    public ArticleEntity create(@NonNull Integer userId, @NonNull String title, List<String> tags,
+    public ArticleEntity create(@NonNull String userId, @NonNull String title, List<String> tags,
                                 @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
 
         final UserEntity author = userService.get(userId);
@@ -71,12 +71,12 @@ public class ArticleService {
     }
 
     @NonNull
-    public Page<ArticleEntity> getAll(@NonNull Integer userId, @NonNull Pageable pageable) {
+    public Page<ArticleEntity> getAll(@NonNull String userId, @NonNull Pageable pageable) {
         return articleRepository.findByAuthorIdAndEnabledIsTrue(userId, pageable);
     }
 
-    public void enable(@NonNull Integer authorId, @NonNull Integer articleId, @NonNull Boolean enabled) {
-        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(authorId, articleId)
+    public void enable(@NonNull String authorId, @NonNull Integer articleId, @NonNull Boolean enabled) {
+        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId)
                 .orElseThrow(ArticleNotFoundException::new);
 
         if (enabled.equals(articleEntity.getEnabled())) {
@@ -88,14 +88,14 @@ public class ArticleService {
         articleRepository.save(articleEntity);
     }
 
-    public void delete(@NonNull Integer authorId, @NonNull Integer articleId) {
-        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(authorId, articleId)
+    public void delete(@NonNull String authorId, @NonNull Integer articleId) {
+        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId)
                 .orElseThrow(ArticleNotFoundException::new);
         articleRepository.delete(articleEntity);
     }
 
     @NonNull
-    public ArticleEntity update(@NonNull Integer authorId, @NonNull Integer articleId, @NonNull String title, List<String> tags,
+    public ArticleEntity update(@NonNull String authorId, @NonNull Integer articleId, @NonNull String title, List<String> tags,
                                 @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
         final ArticleEntity articleEntity = get(authorId, articleId);
         final List<TagEntity> tagEntities = tagService.createAndGetAllByName(tags);
@@ -161,7 +161,7 @@ public class ArticleService {
     }
 
     @NonNull
-    public Page<ArticleEntity> findArticlesBySubscriptions(@NonNull Integer userId, @NonNull Pageable pageable) {
+    public Page<ArticleEntity> findArticlesBySubscriptions(@NonNull String userId, @NonNull Pageable pageable) {
         return articleRepository.findBySubscriptions(userId, pageable);
     }
 }

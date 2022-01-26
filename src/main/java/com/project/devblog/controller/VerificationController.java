@@ -22,7 +22,7 @@ public class VerificationController {
 
     @GetMapping("/users/{userId}/verify")
     @ResponseStatus(HttpStatus.OK)
-    public ModelAndView verifyUser(@NonNull @PathVariable Integer userId,
+    public ModelAndView verifyUser(@NonNull @PathVariable String userId,
                                    @NonNull @RequestParam("code") String verificationCode) {
         verificationService.verify(userId, verificationCode);
         return new ModelAndView("verification_page");

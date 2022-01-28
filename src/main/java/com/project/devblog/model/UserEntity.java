@@ -88,9 +88,10 @@ public class UserEntity extends AuditableBaseEntity<String> {
         this.role = role;
     }
 
-    public UserEntity(String id, String login, Role role, Boolean enabled) {
+    public UserEntity(String id, String login, String password, Role role, Boolean enabled) {
         this.id = id;
         this.login = login;
+        this.password = password;
         this.role = role;
         this.enabled = enabled;
     }

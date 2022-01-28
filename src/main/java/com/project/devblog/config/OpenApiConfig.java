@@ -27,13 +27,14 @@ public class OpenApiConfig {
                 .externalDocs(getDocumentation())
                 .addSecurityItem(new SecurityRequirement().addList(BEARER_SECURITY_SCHEME))
                 .components(new Components()
-                        .addSecuritySchemes(BEARER_SECURITY_SCHEME, getSecuritySchemeJWT()));
+                        .addSecuritySchemes(BEARER_SECURITY_SCHEME, getSecuritySchemeJWT())
+                );
     }
 
     private SecurityScheme getSecuritySchemeJWT() {
         return new SecurityScheme()
                 .name(BEARER_SECURITY_SCHEME)
-                .scheme(SCHEME_NAME)
+                .scheme(BEARER_SCHEME_NAME)
                 .bearerFormat(BEARER_FORMAT)
                 .type(SecurityScheme.Type.HTTP)
                 .in(SecurityScheme.In.HEADER);

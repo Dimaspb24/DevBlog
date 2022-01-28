@@ -8,8 +8,8 @@ public class OpenApiConstant {
     public static final String API_DESCRIPTION = "Dev Blog application";
     public static final String API_TITLE = "Application API";
 
-    public static final String BEARER_SECURITY_SCHEME = "bearerAuth";
-    public static final String SCHEME_NAME = "bearer";
+    public static final String BEARER_SECURITY_SCHEME = "bearerAuthScheme";
+    public static final String BEARER_SCHEME_NAME = "bearer";
     public static final String BEARER_FORMAT = "JWT";
 
     public static final String DESCRIPTION_DOC = "Dev Blog repository";

@@ -1,11 +1,11 @@
 package com.project.devblog.service;
 
 import com.project.devblog.controller.dto.request.UserRequest;
+import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.repository.UserRepository;
-import com.project.devblog.service.exception.UserNotFoundException;
 import com.project.devblog.service.idgenerator.Generator;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -83,12 +83,14 @@ public class UserService {
 
     @NonNull
     public UserEntity findByLogin(@NonNull String login) {
-        return userRepository.findByLogin(login).orElseThrow(UserNotFoundException::new);
+        return userRepository.findByLogin(login).orElseThrow(() ->
+                new NotFoundException(UserEntity.class, "login", login));
     }
 
     @NonNull
     public UserEntity get(@NonNull String id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return userRepository.findById(id).orElseThrow(() ->
+                new NotFoundException(UserEntity.class, id));
     }
 
     public void delete(String userId) {

@@ -5,21 +5,22 @@ import com.project.devblog.controller.dto.request.TagRequest;
 import com.project.devblog.controller.dto.response.TagResponse;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.service.TagService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import static java.util.stream.Collectors.toList;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+@Tag(name = "Tag")
 @ApiV1
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TagController {
 
-    @NonNull
     private final TagService tagService;
 
     @PostMapping("/tags")

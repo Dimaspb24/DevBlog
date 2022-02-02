@@ -22,7 +22,7 @@
         <friendly.id>1.1.0</friendly.id>
         <flyway.core>8.4.0</flyway.core>
         <tomcat.dbcp>9.0.1</tomcat.dbcp>
-        <springdoc.openapi>1.6.4</springdoc.openapi>
+        <springdoc.openapi>1.6.5</springdoc.openapi>
         <spring.data.commons>2.6.0</spring.data.commons>
         <testcontainers.version>1.16.0</testcontainers.version>
         <springdoc.openapi.maven.plugin>1.3</springdoc.openapi.maven.plugin>

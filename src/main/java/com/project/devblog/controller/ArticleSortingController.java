@@ -7,8 +7,9 @@ import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.service.ArticleService;
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
@@ -20,15 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Article sort")
 @ApiV1
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ArticleSortingController {
 
-    @NonNull
     private final ArticleService articleService;
 
-    @GetMapping("/topic/articles")
+    @GetMapping("/sorting/articles")
     @ResponseStatus(HttpStatus.OK)
     public Page<CloseArticleResponse> sorting(@SortDefault(sort = "publicationDate") Pageable pageable) {
         return articleService.getArticlesBySort(pageable).map(this::toResponse);

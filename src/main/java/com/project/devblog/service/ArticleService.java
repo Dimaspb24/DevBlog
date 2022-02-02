@@ -1,12 +1,11 @@
 package com.project.devblog.service;
 
+import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.repository.ArticleRepository;
-import com.project.devblog.service.exception.ArticleConflictException;
-import com.project.devblog.service.exception.ArticleNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
@@ -31,17 +30,20 @@ public class ArticleService {
 
     @NonNull
     public ArticleEntity get(@NonNull Integer articleId) {
-        return articleRepository.findById(articleId).orElseThrow(ArticleNotFoundException::new);
+        return articleRepository.findById(articleId)
+                .orElseThrow(() -> new NotFoundException(ArticleEntity.class, articleId.toString()));
     }
 
     @NonNull
     public ArticleEntity get(@NonNull String authorId, @NonNull Integer articleId) {
-        return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(articleId, authorId).orElseThrow(ArticleNotFoundException::new);
+        return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(articleId, authorId).orElseThrow(() ->
+                new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
     }
 
     @NonNull
     public ArticleEntity findById(@NonNull Integer articleId) {
-        return articleRepository.findById(articleId).orElseThrow(ArticleNotFoundException::new);
+        return articleRepository.findById(articleId)
+                .orElseThrow(() -> new NotFoundException(ArticleEntity.class, articleId.toString()));
     }
 
     @NonNull
@@ -70,21 +72,16 @@ public class ArticleService {
     }
 
     public void enable(@NonNull String authorId, @NonNull Integer articleId, @NonNull Boolean enabled) {
-        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId)
-                .orElseThrow(ArticleNotFoundException::new);
-
-        if (enabled.equals(articleEntity.getEnabled())) {
-            String message = enabled ? "Article is already enabled" : "Article is already disabled";
-            throw new ArticleConflictException(message);
-        }
+        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId).orElseThrow(() ->
+                new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
 
         articleEntity.setEnabled(enabled);
         articleRepository.save(articleEntity);
     }
 
     public void delete(@NonNull String authorId, @NonNull Integer articleId) {
-        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId)
-                .orElseThrow(ArticleNotFoundException::new);
+        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId).orElseThrow(() ->
+                new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
         articleRepository.delete(articleEntity);
     }
 

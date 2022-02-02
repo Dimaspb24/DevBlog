@@ -1,4 +1,4 @@
-package com.project.devblog.security.jwt;
+package com.project.devblog.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

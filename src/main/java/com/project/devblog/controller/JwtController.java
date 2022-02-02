@@ -1,19 +1,21 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.controller.annotation.ApiV1;
-import com.project.devblog.security.jwt.JwtTokenProvider;
-import com.project.devblog.security.jwt.exception.JwtAuthenticationException;
-import lombok.AllArgsConstructor;
+import com.project.devblog.exception.JwtAuthenticationException;
+import com.project.devblog.security.JwtTokenProvider;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Jwt token check")
 @ApiV1
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class JwtController {
 
     private final JwtTokenProvider jwtTokenProvider;

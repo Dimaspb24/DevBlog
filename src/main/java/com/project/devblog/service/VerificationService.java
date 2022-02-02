@@ -1,10 +1,10 @@
 package com.project.devblog.service;
 
 import com.project.devblog.config.MailProperties;
+import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.UserRepository;
-import com.project.devblog.service.exception.UserNotFoundException;
-import com.project.devblog.service.exception.VerificationException;
+import com.project.devblog.exception.VerificationException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -59,7 +59,8 @@ public class VerificationService {
     }
 
     public void verify(@NonNull String userId, @NonNull String verificationCode) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        UserEntity user = userRepository.findById(userId).orElseThrow(() ->
+                new NotFoundException(UserEntity.class, userId));
 
         if (user.getVerificationCode() == null) {
             throw new VerificationException("User already verified");

@@ -2,8 +2,9 @@ package com.project.devblog.controller;
 
 import com.project.devblog.controller.annotation.ApiV1;
 import com.project.devblog.service.VerificationService;
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,12 +13,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+@Tag(name = "Verification")
 @ApiV1
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class VerificationController {
 
-    @NonNull
     private final VerificationService verificationService;
 
     @GetMapping("/users/{userId}/verify")

@@ -10,8 +10,10 @@ import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.service.ArticleService;
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -24,12 +26,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Tag(name = "Article")
 @ApiV1
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ArticleController {
 
-    @NonNull
     private final ArticleService articleService;
 
     @PostMapping("/users/{userId}/articles")
@@ -65,6 +67,7 @@ public class ArticleController {
         articleService.delete(userId, articleId);
     }
 
+    @Operation(summary = "Hide or show the article")
     @PatchMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
     public void enable(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,

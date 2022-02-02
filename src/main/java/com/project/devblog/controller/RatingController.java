@@ -5,19 +5,20 @@ import com.project.devblog.controller.dto.request.RatingRequest;
 import com.project.devblog.controller.dto.response.RatingResponse;
 import com.project.devblog.model.UserArticleEntity;
 import com.project.devblog.service.RatingService;
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Tag(name = "Rating")
 @ApiV1
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RatingController {
 
-    @NonNull
     private final RatingService ratingService;
 
     @PostMapping("/users/{userId}/articles/{articleId}/ratings")

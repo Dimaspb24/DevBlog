@@ -35,19 +35,29 @@ spring:
       client:
         registration:
           google:
-            clientId:
-            clientSecret:
+            clientId: 295125751349-7dp9n0ts4gqalikl3srd4b54ul9mv83s.apps.googleusercontent.com
+            clientSecret: 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
             scope: 'email,profile,openid'
 
-#logging:
-#  level:
+  # For Handling NoHandlerFoundException
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
+logging:
+  level:
+    org:
+      apache:
+        tomcat: INFO
 #    org.springframework.orm.jpa: DEBUG
 #    org.springframework.transaction: DEBUG
 
 jwt:
   token:
     secret: jwtdevblog
-    expired: 3600000 # 1 hour
+    expired: 60 # minute
 
 app:
   google:

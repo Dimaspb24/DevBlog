@@ -1,11 +1,10 @@
 package com.project.devblog.service;
 
+import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.CommentEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.CommentRepository;
-import com.project.devblog.service.exception.CommentConflictException;
-import com.project.devblog.service.exception.CommentNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
@@ -40,7 +39,8 @@ public class CommentService {
 
     @NonNull
     public CommentEntity get(@NonNull Long id, @NonNull String authorId, @NonNull Integer articleId) {
-        return commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(id, authorId, articleId).orElseThrow(CommentNotFoundException::new);
+        return commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(id, authorId, articleId).orElseThrow(() ->
+                new NotFoundException(CommentEntity.class, id.toString()));
     }
 
     @NonNull
@@ -50,12 +50,7 @@ public class CommentService {
 
     public void enable(@NonNull Long id, @NonNull String authorId, @NonNull Integer articleId, @NonNull Boolean enabled) {
         final CommentEntity commentEntity = commentRepository.findByIdAndAuthorIdAndArticleId(id, authorId, articleId)
-                .orElseThrow(CommentNotFoundException::new);
-
-        if (enabled.equals(commentEntity.getEnabled())) {
-            String message = enabled ? "Comment is already enabled" : "Comment is already disabled";
-            throw new CommentConflictException(message);
-        }
+                .orElseThrow(() -> new NotFoundException(CommentEntity.class, id.toString()));
 
         commentEntity.setEnabled(enabled);
         commentRepository.save(commentEntity);
@@ -63,7 +58,7 @@ public class CommentService {
 
     public void delete(@NonNull Long id, @NonNull String authorId, @NonNull Integer articleId) {
         final CommentEntity commentEntity = commentRepository.findByIdAndAuthorIdAndArticleId(id, authorId, articleId)
-                .orElseThrow(CommentNotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(CommentEntity.class, id.toString()));
         commentRepository.delete(commentEntity);
     }
 

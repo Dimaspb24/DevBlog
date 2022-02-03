@@ -10,6 +10,8 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
+import static java.lang.String.format;
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +21,20 @@ import java.util.List;
 @Configuration
 public class OpenApiConfig {
 
+    @Value("${api-version}")
+    private String apiVersion;
+
     @Bean
-    public OpenAPI devBlogOpenApi(@Value("${api-version}") String apiVersion) {
+    public GroupedOpenApi apiGroup() {
+        return GroupedOpenApi
+                .builder()
+                .group(format("Api %s", apiVersion))
+                .pathsToMatch(format("/%s/**", apiVersion))
+                .build();
+    }
+
+    @Bean
+    public OpenAPI devBlogOpenApi() {
         return new OpenAPI()
                 .info(getInfo(apiVersion))
                 .servers(List.of(getLocalService()))

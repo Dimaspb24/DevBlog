@@ -5,22 +5,22 @@ import com.project.devblog.controller.dto.request.UserRequest;
 import com.project.devblog.controller.dto.response.UserResponse;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.service.UserService;
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Tag(name = "User")
 @ApiV1
-@AllArgsConstructor
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
-    @NonNull
     private final UserService userService;
 
     @GetMapping("/users/{userId}")

@@ -5,13 +5,13 @@ import com.project.devblog.controller.dto.response.BookmarkArticleResponse;
 import com.project.devblog.controller.dto.response.BookmarkResponse;
 import com.project.devblog.controller.dto.response.CloseArticleResponse;
 import com.project.devblog.controller.dto.response.TagResponse;
+import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserArticleEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.BookmarkType;
 import com.project.devblog.repository.UserArticleRepository;
-import com.project.devblog.service.exception.BookmarkNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
@@ -77,7 +77,7 @@ public class BookmarkService {
 
     public void delete(@NonNull Long bookmarkId) {
         UserArticleEntity userArticleEntity = userArticleRepository.findById(bookmarkId)
-                .orElseThrow(BookmarkNotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(UserArticleEntity.class, bookmarkId.toString()));
 
         userArticleEntity.setBookmarkType(null);
         userArticleRepository.save(userArticleEntity);

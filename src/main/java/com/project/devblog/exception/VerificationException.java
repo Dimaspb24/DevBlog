@@ -1,4 +1,4 @@
-package com.project.devblog.service.exception;
+package com.project.devblog.exception;
 
 public class VerificationException extends RuntimeException{
 

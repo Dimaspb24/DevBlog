@@ -1,4 +1,4 @@
-package com.project.devblog.security.jwt;
+package com.project.devblog.security;
 
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.service.UserService;

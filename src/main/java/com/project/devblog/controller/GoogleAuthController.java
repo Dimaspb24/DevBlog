@@ -3,10 +3,11 @@ package com.project.devblog.controller;
 import com.project.devblog.config.GoogleRedirectProperties;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.security.jwt.JwtTokenProvider;
+import com.project.devblog.security.JwtTokenProvider;
 import com.project.devblog.service.UserService;
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -18,15 +19,13 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+@Tag(name = "Google authentication")
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class GoogleAuthController {
 
-    @NonNull
     private final UserService userService;
-    @NonNull
     private final JwtTokenProvider jwtTokenProvider;
-    @NonNull
     private final GoogleRedirectProperties googleRedirectProperties;
 
     private static final String ACCESS_TOKEN = "access_token";

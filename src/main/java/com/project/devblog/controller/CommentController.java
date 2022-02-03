@@ -5,8 +5,10 @@ import com.project.devblog.controller.dto.request.CommentRequest;
 import com.project.devblog.controller.dto.response.CommentResponse;
 import com.project.devblog.model.CommentEntity;
 import com.project.devblog.service.CommentService;
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -14,12 +16,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Tag(name = "Comment")
 @ApiV1
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CommentController {
 
-    @NonNull
     private final CommentService commentService;
 
     @PostMapping("/users/{userId}/articles/{articleId}/comments")
@@ -51,6 +53,7 @@ public class CommentController {
         commentService.delete(commentId, userId, articleId);
     }
 
+    @Operation(summary = "Hide or show the comment")
     @PatchMapping("/users/{userId}/articles/{articleId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.OK)
     public void enable(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,

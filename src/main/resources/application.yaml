@@ -1,3 +1,5 @@
+api-version: v1
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -37,15 +39,25 @@ spring:
             clientSecret:
             scope: 'email,profile,openid'
 
+  # For Handling NoHandlerFoundException
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
 #logging:
 #  level:
+#    org:
+#      apache:
+#        tomcat: INFO
 #    org.springframework.orm.jpa: DEBUG
 #    org.springframework.transaction: DEBUG
 
 jwt:
   token:
     secret: jwtdevblog
-    expired: 3600000 # 1 hour
+    expired: 60 # minute
 
 app:
   google:
@@ -62,3 +74,8 @@ mail:
     пожалуйста, пройдите по ссылке:<br>
     <h3><a href="[[URL]]" target="_self">Подтвердить регистрацию</a></h3>
     Если вы получили это письмо по ошибке, просто игнорируйте его.
+
+springdoc:
+  show-actuator: true
+  api-docs:
+    path: /api-docs

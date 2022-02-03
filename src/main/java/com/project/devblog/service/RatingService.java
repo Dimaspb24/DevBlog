@@ -1,11 +1,10 @@
 package com.project.devblog.service;
 
+import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.UserArticleEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.UserArticleRepository;
-import com.project.devblog.service.exception.CommentNotFoundException;
-import com.project.devblog.service.exception.RatingNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
@@ -35,13 +34,14 @@ public class RatingService {
 
     @NonNull
     public UserArticleEntity get(@NonNull String userId, @NonNull Integer articleId) {
-        return userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(userId, articleId).orElseThrow(RatingNotFoundException::new);
+        return userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(userId, articleId).orElseThrow(() ->
+                new NotFoundException(UserArticleEntity.class, "userId", userId, "articleId", articleId.toString()));
     }
 
     @NonNull
     public UserArticleEntity update(@NonNull String userId, @NonNull Integer articleId, @NonNull Integer rating) {
         final UserArticleEntity userArticleEntity = userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(userId, articleId)
-                .orElseThrow(CommentNotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(UserArticleEntity.class, "userId", userId, "articleId", articleId.toString()));
         userArticleEntity.setRating(rating);
 
         return userArticleRepository.save(userArticleEntity);

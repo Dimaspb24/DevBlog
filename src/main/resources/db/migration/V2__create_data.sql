@@ -1,16 +1,100 @@
-insert into users (login, password, role, enabled)
-values ('mail1@mail.ru', '$2y$04$GaHcCUVQtr9/g6Xwx3nymeg6LP719sAdEQ69E7TCJbcPY9ipqg882', 'USER', true),
-       ('mail2@mail.ru', '$2y$04$SSAXMnznzwi7u.3HgzEnQuF6I.AX8VVn.5xWAuI2L3.Jd220JfbVi', 'USER', true),
-       ('mail3@mail.ru', '$2y$04$Wt02LMPyc2gXIz8ieNPsYuKnWRcMF0fdUg.oAC0O730Mh030UibaW', 'USER', true);
+insert into users (id, login, password, role, enabled, firstname, lastname, nickname, phone)
+values ('1', 'mail1@mail.ru', '$2a$12$UMR/uPkgKgh7bqWv.Mq2l.TNLahQLmb4zHAwmFmmNgdyZHNXciNhe', 'USER', true, 'Иосиф',
+        'Сталин', 'Вождь', '89999999999'),
+       ('2', 'mail2@mail.ru', '$2a$12$YJIjbu9U/Z4/qMuK1.OPquLc4M8U5v10iIRmQPpiD6JIyD3V/X8ia', 'USER', true, 'Дмитрий',
+        'Смирнов', 'Чел', '89878789879'),
+       ('3', 'mail3@mail.ru', '$2a$12$C68.hcvWF6IGz12xmei2le39YzCZZWs93EqPyfedeVM1eIkR9U/22', 'USER', true, 'Алексей',
+        'Афанасьев', 'Шрэк', '85555555555'),
+       ('4', 'mail4@mail.ru', '$2a$12$OxKKjpzg2sa1uZwpTYX4b.gdpieXi/8tjWXeBqVe4B72vCJFiCdX2', 'USER', true, 'Семён',
+        'Антуфьев', 'Чувак', '87536584648'),
+       ('5', 'mail5@mail.ru', '$2a$12$VUthC/o/Iqk4hQ5med3yb.iek/2gr1h519sS.ky/GrznZHOmcsoN.', 'USER', true, 'Даниил',
+        'Беседин', 'Frontend master', '87563648576'),
+       ('6', 'mail6@mail.ru', '$2a$12$pyg9ZqA1mPXeXroylVABk.p.OVqzN3EJwfsu5KhNgpAH6ltWr7cke', 'USER', true, 'Иисус',
+        'Христос', 'Святой', '886759987675');
+insert into users (id, login, password, role, enabled)
+values ('7', 'mail7@mail.ru', '$2a$12$DH2sZpGNuh5QwebSUMnoHu1lGr93SLXdbpQnKJDcJ9fNLNNxOLxb6', 'USER', true),
+       ('8', 'mail8@mail.ru', '$2a$12$xssrjunPTqqO1JrfvE14s.UbdISqgQKJy4fu/tO9Hqb.YZM1h8Uie', 'USER', true),
+       ('9', 'mail9@mail.ru', '$2a$12$zjkfNpYaXQqkxnK2QMlP7OFu77U8IjbPTqioOUc59Gnu2fyaAu5Hi', 'USER', true),
+       ('10', 'mail10@mail.ru', '$2a$12$2xAmiPGAybXLZ3Pb4MtvZ.MGzjJ0QO1cFkPh8.p4MVvTQuao8Fk8O', 'USER', false);
 
+insert into subscribers (user_id, subscriber_id)
+values (1, 2),
+       (1, 3),
+       (1, 5),
+       (3, 5),
+       (3, 8),
+       (3, 9),
+       (3, 4),
+       (4, 6),
+       (4, 8),
+       (4, 9),
+       (4, 5),
+       (5, 7),
+       (5, 6),
+       (6, 2),
+       (6, 1),
+       (7, 6),
+       (7, 5),
+       (8, 1),
+       (8, 2),
+       (8, 3),
+       (8, 4),
+       (8, 5),
+       (8, 6),
+       (8, 7),
+       (8, 9),
+       (9, 2),
+       (9, 8),
+       (9, 5);
 
-insert into articles (user_id, title, body, status, description)
-values (1, 'test title 1', 'test body 1', 'CREATED', 'test description'),
-       (2, 'test title 2', 'test body 2', 'CREATED', 'test description'),
-       (2, 'test title 2', 'test body 2', 'CREATED', 'test description'),
-       (3, 'test title 3', 'test body 3', 'CREATED', 'test description'),
-       (3, 'test title 3', 'test body 3', 'CREATED', 'test description'),
-       (3, 'test title 3', 'test body 3', 'CREATED', 'test description');
+insert into articles (user_id, title, body, status, description, publication_date)
+values (1, 'Title 1.1', 'test body 1', 'CREATED', 'description', null),
+       (2, 'Title 2.1', 'test body 1', 'CREATED', 'description', null),
+       (2, 'Title 2.2', 'test body 2', 'CREATED', 'description', null),
+       (3, 'Title 3.1', 'test body 1', 'CREATED', 'description', null),
+       (3, 'Title 3.2', 'test body 2', 'CREATED', 'description', null),
+       (3, 'Title 3.3', 'test body 3', 'PUBLISHED', 'description', timestamp '2022-01-30 10:08:35'),
+       (4, 'Title 4.1', 'test body 1', 'CREATED', 'description', null),
+       (4, 'Title 4.2', 'test body 2', 'PUBLISHED', 'description', timestamp '2021-12-30 12:08:35'),
+       (5, 'Title 5.1', 'test body 1', 'PUBLISHED', 'description', timestamp '2022-01-05 10:30:35'),
+       (6, 'Title 6.1', 'test body 1', 'CREATED', 'description', null),
+       (6, 'Title 6.2', 'test body 2', 'CREATED', 'description', null),
+       (6, 'Title 6.3', 'test body 3', 'PUBLISHED', 'description', timestamp '2022-01-15 15:08:35');
+insert into articles (user_id, title, body, status, description, enabled, publication_date)
+values (6, 'Title 6.4', 'test body 4', 'CREATED', 'description', false, null),
+       (7, 'Title 7.1', 'test body 1', 'PUBLISHED', 'description', false, timestamp '2021-11-25 10:08:35'),
+       (7, 'Title 7.2', 'test body 2', 'PUBLISHED', 'description', false, timestamp '2022-01-21 23:08:35'),
+       (9, 'Title 9.1', 'test body 1', 'PUBLISHED', 'description', false, timestamp '2022-01-24 11:08:35'),
+       (9, 'Title 9.2', 'test body 2', 'CREATED', 'description', true, null);
+
+insert into users_articles (user_id, article_id, rating, bookmark_type)
+values ('1', 8, 8, 'FAVORITE'),
+       ('1', 7, 6, 'BOOKMARK'),
+       ('1', 5, 5, 'BOOKMARK'),
+       ('2', 1, 2, 'FAVORITE'),
+       ('2', 5, 10, 'BOOKMARK'),
+       ('3', 2, 8, 'FAVORITE'),
+       ('4', 11, 9, 'BOOKMARK'),
+       ('4', 12, 7, 'BOOKMARK'),
+       ('4', 3, 6, 'FAVORITE');
+insert into users_articles (user_id, article_id, rating)
+values ('1', 9, 3),
+       ('3', 3, 4),
+       ('5', 5, 5),
+       ('6', 6, 6),
+       ('7', 5, 7),
+       ('7', 4, 8),
+       ('8', 3, 9);
+insert into users_articles (user_id, article_id, bookmark_type)
+values ('1', 10, 'FAVORITE'),
+       ('2', 7, 'BOOKMARK'),
+       ('2', 8, 'FAVORITE'),
+       ('6', 2, 'FAVORITE'),
+       ('8', 2, 'BOOKMARK'),
+       ('9', 1, 'BOOKMARK'),
+       ('9', 4, 'BOOKMARK'),
+       ('9', 5, 'FAVORITE'),
+       ('9', 2, 'FAVORITE');
 
 insert into tags (name)
 values ('software'),
@@ -23,3 +107,25 @@ values ('software'),
        ('ACID'),
        ('transactional'),
        ('DAO');
+
+insert into articles_tags (article_id, tag_id)
+values (1, 1),
+       (1, 2),
+       (1, 8),
+       (2, 2),
+       (2, 10),
+       (2, 7),
+       (2, 3),
+       (3, 1),
+       (3, 6),
+       (4, 2),
+       (4, 6),
+       (5, 4),
+       (5, 5),
+       (5, 10),
+       (6, 8),
+       (7, 4),
+       (8, 8),
+       (8, 10),
+       (9, 2),
+       (9, 3);

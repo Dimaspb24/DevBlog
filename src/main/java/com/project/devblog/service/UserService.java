@@ -1,14 +1,14 @@
 package com.project.devblog.service;
 
 import com.project.devblog.controller.dto.request.UserRequest;
+import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.repository.UserRepository;
-import com.project.devblog.service.exception.UserNotFoundException;
 import com.project.devblog.service.idgenerator.Generator;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class UserService {
 
@@ -31,7 +31,6 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     @NonNull
     private final Generator idGenerator;
-
     @NonNull
     private final VerificationService verificationService;
 
@@ -56,7 +55,7 @@ public class UserService {
     public UserEntity createUser(@NonNull String id, @NonNull String login, @NonNull Role role, @NonNull Boolean enabled,
                                  @Nullable String firstname, @Nullable String lastname, @Nullable String nickname,
                                  @Nullable String photo, @Nullable String phone) {
-        final UserEntity userEntity = new UserEntity(id, login, role, enabled);
+        final UserEntity userEntity = new UserEntity(id, login, passwordEncoder.encode(UUID.randomUUID().toString()), role, enabled);
         final PersonalInfo personalInfo = new PersonalInfo(firstname, lastname, nickname, photo, null, phone);
         userEntity.setPersonalInfo(personalInfo);
 
@@ -84,12 +83,14 @@ public class UserService {
 
     @NonNull
     public UserEntity findByLogin(@NonNull String login) {
-        return userRepository.findByLogin(login).orElseThrow(UserNotFoundException::new);
+        return userRepository.findByLogin(login).orElseThrow(() ->
+                new NotFoundException(UserEntity.class, "login", login));
     }
 
     @NonNull
     public UserEntity get(@NonNull String id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return userRepository.findById(id).orElseThrow(() ->
+                new NotFoundException(UserEntity.class, id));
     }
 
     public void delete(String userId) {

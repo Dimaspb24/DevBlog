@@ -5,6 +5,8 @@ import com.project.devblog.model.TagEntity;
 import com.project.devblog.repository.TagRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +21,7 @@ public class TagService {
     private final TagRepository tagRepository;
 
     @NonNull
-    public TagEntity get(@NonNull Integer tagId) {
+    public TagEntity find(@NonNull Integer tagId) {
         return tagRepository.findById(tagId).orElseThrow(() ->
                 new NotFoundException(TagEntity.class, tagId.toString()));
     }
@@ -30,13 +32,13 @@ public class TagService {
     }
 
     @NonNull
-    public List<TagEntity> getAll() {
-        return tagRepository.findAll();
+    public Page<TagEntity> findAll(Pageable pageable) {
+        return tagRepository.findAll(pageable);
     }
 
     @NonNull
-    public List<TagEntity> getByNameContains(@NonNull String substring) {
-        return tagRepository.findTagEntitiesByNameContains(substring);
+    public Page<TagEntity> findByNameContains(@NonNull String tagNameContains, Pageable pageable) {
+        return tagRepository.findTagEntitiesByNameContains(tagNameContains, pageable);
     }
 
     @NonNull

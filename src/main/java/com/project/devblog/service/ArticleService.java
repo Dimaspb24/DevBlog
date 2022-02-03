@@ -29,13 +29,13 @@ public class ArticleService {
     private final TagService tagService;
 
     @NonNull
-    public ArticleEntity get(@NonNull Integer articleId) {
+    public ArticleEntity find(@NonNull Integer articleId) {
         return articleRepository.findById(articleId)
                 .orElseThrow(() -> new NotFoundException(ArticleEntity.class, articleId.toString()));
     }
 
     @NonNull
-    public ArticleEntity get(@NonNull String authorId, @NonNull Integer articleId) {
+    public ArticleEntity find(@NonNull String authorId, @NonNull Integer articleId) {
         return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(articleId, authorId).orElseThrow(() ->
                 new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
     }
@@ -50,7 +50,7 @@ public class ArticleService {
     public ArticleEntity create(@NonNull String userId, @NonNull String title, List<String> tags,
                                 @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
 
-        final UserEntity author = userService.get(userId);
+        final UserEntity author = userService.find(userId);
         final ArticleEntity articleEntity = new ArticleEntity(title, body, status, description, author);
 
         if (status.name().equalsIgnoreCase(StatusArticle.PUBLISHED.name())) {
@@ -67,7 +67,7 @@ public class ArticleService {
     }
 
     @NonNull
-    public Page<ArticleEntity> getAll(@NonNull String userId, @NonNull Pageable pageable) {
+    public Page<ArticleEntity> findAll(@NonNull String userId, @NonNull Pageable pageable) {
         return articleRepository.findByAuthorIdAndEnabledIsTrue(userId, pageable);
     }
 
@@ -88,7 +88,7 @@ public class ArticleService {
     @NonNull
     public ArticleEntity update(@NonNull String authorId, @NonNull Integer articleId, @NonNull String title, List<String> tags,
                                 @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
-        final ArticleEntity articleEntity = get(authorId, articleId);
+        final ArticleEntity articleEntity = find(authorId, articleId);
         final List<TagEntity> tagEntities = tagService.createAndGetAllByName(tags);
 
         articleEntity.setTitle(title);
@@ -106,7 +106,7 @@ public class ArticleService {
     }
 
     @NonNull
-    public Page<ArticleEntity> getArticlesBySort(@NonNull Pageable pageable) {
+    public Page<ArticleEntity> find(@NonNull Pageable pageable) {
         return articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageable);
     }
 

@@ -1,4 +1,4 @@
-package com.project.devblog.controller;
+package com.project.devblog.controller.authcontroller;
 
 import com.project.devblog.config.GoogleRedirectProperties;
 import com.project.devblog.model.UserEntity;

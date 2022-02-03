@@ -88,19 +88,19 @@ public class UserService {
     }
 
     @NonNull
-    public UserEntity get(@NonNull String id) {
+    public UserEntity find(@NonNull String id) {
         return userRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(UserEntity.class, id));
     }
 
     public void delete(String userId) {
-        UserEntity user = get(userId);
+        UserEntity user = find(userId);
         user.setEnabled(false);
         userRepository.save(user);
     }
 
     public UserEntity update(String userId, UserRequest userRequest) {
-        UserEntity user = get(userId);
+        UserEntity user = find(userId);
 
         String firstname = userRequest.getFirstname();
         if (firstname != null && !firstname.isEmpty()) {

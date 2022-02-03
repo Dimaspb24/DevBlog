@@ -28,23 +28,23 @@ public class CommentService {
     public CommentEntity create(@NonNull String authorCommentId, @NonNull Integer articleId, @NonNull String message,
                                 String receiverId) {
 
-        final ArticleEntity articleEntity = articleService.get(authorCommentId, articleId);
-        final UserEntity author = userService.get(authorCommentId);
+        final ArticleEntity articleEntity = articleService.find(authorCommentId, articleId);
+        final UserEntity author = userService.find(authorCommentId);
         final CommentEntity commentEntity = new CommentEntity(message, articleEntity, author);
-        final UserEntity receiver = (receiverId == null) ? articleEntity.getAuthor() : userService.get(receiverId);
+        final UserEntity receiver = (receiverId == null) ? articleEntity.getAuthor() : userService.find(receiverId);
         commentEntity.setReceiver(receiver);
 
         return commentRepository.save(commentEntity);
     }
 
     @NonNull
-    public CommentEntity get(@NonNull Long id, @NonNull String authorId, @NonNull Integer articleId) {
+    public CommentEntity find(@NonNull Long id, @NonNull String authorId, @NonNull Integer articleId) {
         return commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(id, authorId, articleId).orElseThrow(() ->
                 new NotFoundException(CommentEntity.class, id.toString()));
     }
 
     @NonNull
-    public Page<CommentEntity> getAllByArticleId(@NonNull Integer articleId, @NonNull String authorId, @NonNull Pageable pageable) {
+    public Page<CommentEntity> findAllByArticleId(@NonNull Integer articleId, @NonNull String authorId, @NonNull Pageable pageable) {
         return commentRepository.findAllByArticleIdAndEnabledIsTrue(articleId, pageable);
     }
 
@@ -64,7 +64,7 @@ public class CommentService {
 
     @NonNull
     public CommentEntity update(@NonNull Long id, @NonNull String message, @NonNull Integer articleId, @NonNull String authorId) {
-        final CommentEntity commentEntity = get(id, authorId, articleId);
+        final CommentEntity commentEntity = find(id, authorId, articleId);
         commentEntity.setMessage(message);
 
         return commentRepository.save(commentEntity);

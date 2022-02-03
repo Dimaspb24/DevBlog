@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name = "Bookmark")
+@Tag(name = "User bookmarks")
 @ApiV1
 @RestController
 @RequiredArgsConstructor
-public class BookmarkController {
+public class UserBookmarkController {
 
     private final BookmarkService bookmarkService;
 
@@ -32,12 +32,19 @@ public class BookmarkController {
         return bookmarkService.create(userId, articleId, request);
     }
 
+    @GetMapping("/users/{userId}/bookmarks")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<BookmarkArticleResponse> findAll(@NonNull @PathVariable String userId,
+                                                 @NonNull Pageable pageable) {
+        return bookmarkService.findAll(userId, pageable);
+    }
+
     @GetMapping("/users/{userId}/bookmarks/{bookmarkType}")
     @ResponseStatus(HttpStatus.OK)
-    public Page<BookmarkArticleResponse> getAll(@NonNull @PathVariable String userId,
-                                                @NonNull @PathVariable String bookmarkType,
-                                                @NonNull Pageable pageable) {
-        return bookmarkService.findAll(userId, bookmarkType, pageable);
+    public Page<BookmarkArticleResponse> findAllByType(@NonNull @PathVariable String userId,
+                                                       @NonNull @PathVariable String bookmarkType,
+                                                       @NonNull Pageable pageable) {
+        return bookmarkService.findAllByType(userId, bookmarkType, pageable);
     }
 
     @DeleteMapping("/users/{userId}/bookmarks/{bookmarkId}")

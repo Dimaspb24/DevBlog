@@ -14,11 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Subscription")
+@Tag(name = "User subscription")
 @ApiV1
 @RestController
 @RequiredArgsConstructor
-public class SubscriptionController {
+public class UserSubscriptionController {
 
     private final SubscriptionService subscriptionService;
 
@@ -37,14 +37,14 @@ public class SubscriptionController {
 
     @GetMapping("/users/{userId}/subscriptions")
     @ResponseStatus(HttpStatus.OK)
-    public Page<SubscriptionResponse> getSubscriptions(@NonNull @PathVariable String userId, @NonNull Pageable pageable) {
+    public Page<SubscriptionResponse> findSubscriptions(@NonNull @PathVariable String userId, @NonNull Pageable pageable) {
         return subscriptionService.findSubscriptions(userId, pageable)
                 .map(this::toResponse);
     }
 
     @GetMapping("/users/{userId}/subscribers")
     @ResponseStatus(HttpStatus.OK)
-    public Page<SubscriptionResponse> getSubscribers(@NonNull @PathVariable String userId, @NonNull Pageable pageable) {
+    public Page<SubscriptionResponse> findSubscribers(@NonNull @PathVariable String userId, @NonNull Pageable pageable) {
         return subscriptionService.findSubscribers(userId, pageable)
                 .map(this::toResponse);
     }

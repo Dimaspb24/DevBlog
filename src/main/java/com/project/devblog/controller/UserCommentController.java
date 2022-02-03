@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name = "Comment")
+@Tag(name = "User comments")
 @ApiV1
 @RestController
 @RequiredArgsConstructor
-public class CommentController {
+public class UserCommentController {
 
     private final CommentService commentService;
 
@@ -33,16 +33,16 @@ public class CommentController {
 
     @GetMapping("/users/{userId}/articles/{articleId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.OK)
-    public CommentResponse get(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
-                               @NonNull @PathVariable Long commentId) {
-        return toResponse(commentService.get(commentId, userId, articleId));
+    public CommentResponse find(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
+                                @NonNull @PathVariable Long commentId) {
+        return toResponse(commentService.find(commentId, userId, articleId));
     }
 
     @GetMapping("/users/{userId}/articles/{articleId}/comments")
     @ResponseStatus(HttpStatus.OK)
-    public Page<CommentResponse> getAll(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
-                                        @NonNull Pageable pageable) {
-        return commentService.getAllByArticleId(articleId, userId, pageable)
+    public Page<CommentResponse> findAll(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
+                                         @NonNull Pageable pageable) {
+        return commentService.findAllByArticleId(articleId, userId, pageable)
                 .map(this::toResponse);
     }
 

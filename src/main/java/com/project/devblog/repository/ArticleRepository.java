@@ -14,28 +14,21 @@ import java.util.Optional;
 
 @Repository
 public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer> {
-    @NonNull
     List<ArticleEntity> findByTitleContains(@NonNull String title);
 
-    @NonNull
     Optional<ArticleEntity> findByIdAndAuthorIdAndEnabledIsTrue(@NonNull Integer articleId, @NonNull String authorId);
 
-    @NonNull
     Optional<ArticleEntity> findByIdAndAuthorId(@NonNull Integer articleId, @NonNull String authorId);
 
-    @NonNull
     Page<ArticleEntity> findByAuthorIdAndEnabledIsTrue(@NonNull String authorId, @NonNull Pageable pageable);
 
-    @NonNull
     @Query("select a from ArticleEntity a " +
             "where a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +
             "and a.enabled = true and a.publicationDate is not null")
     Page<ArticleEntity> findByEnabledIsTrueAndPublicationDateIsNotNull(@NonNull Pageable pageable);
 
-    @NonNull
     Page<ArticleEntity> findArticleEntitiesByTitleContains(@NonNull String name, @NonNull Pageable pageable);
 
-    @NonNull
     @Query("select a from TagEntity t " +
             "join t.articles a " +
             "where t.name = :tagName " +
@@ -43,7 +36,7 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
             "and a.enabled = true " +
             "and a.publicationDate is not null " +
             "order by a.publicationDate")
-    Page<ArticleEntity> findByTagName(@Param("tagName") String tagName, @NonNull Pageable pageable);
+    Page<ArticleEntity> findByTagName(@NonNull @Param("tagName") String tagName, @NonNull Pageable pageable);
 
     @Query("select a from UserEntity u " +
             "join u.subscriptions sub " +
@@ -53,5 +46,5 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
             "and a.enabled = true " +
             "and a.publicationDate is not null " +
             "order by a.publicationDate")
-    Page<ArticleEntity> findBySubscriptions(@Param("userId") String userId, @NonNull Pageable pageable);
+    Page<ArticleEntity> findBySubscriptions(@NonNull @Param("userId") String userId, @NonNull Pageable pageable);
 }

@@ -25,14 +25,14 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponse get(@NonNull @PathVariable String userId) {
-        UserEntity user = userService.get(userId);
+    public UserResponse find(@NonNull @PathVariable String userId) {
+        UserEntity user = userService.find(userId);
         return toResponse(user);
     }
 
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
-    public Page<UserResponse> getAll(@NonNull Pageable pageable) {
+    public Page<UserResponse> findAll(@NonNull Pageable pageable) {
         return userService.findAll(pageable)
                 .map(this::toResponse);
     }

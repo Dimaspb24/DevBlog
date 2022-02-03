@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name = "Rating")
+@Tag(name = "User rating of articles")
 @ApiV1
 @RestController
 @RequiredArgsConstructor
-public class RatingController {
+public class UserArticleRatingController {
 
     private final RatingService ratingService;
 
@@ -30,8 +30,8 @@ public class RatingController {
 
     @GetMapping("/users/{userId}/articles/{articleId}/ratings")
     @ResponseStatus(HttpStatus.OK)
-    public RatingResponse get(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId) {
-        return toResponse(ratingService.get(userId, articleId));
+    public RatingResponse find(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId) {
+        return toResponse(ratingService.find(userId, articleId));
     }
 
     @PutMapping("/users/{userId}/articles/{articleId}/ratings")

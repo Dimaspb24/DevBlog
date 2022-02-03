@@ -1,4 +1,4 @@
-package com.project.devblog.controller;
+package com.project.devblog.controller.authcontroller;
 
 import com.project.devblog.controller.annotation.ApiV1;
 import com.project.devblog.controller.dto.request.AuthenticationRequest;

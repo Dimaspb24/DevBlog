@@ -6,16 +6,17 @@ import com.project.devblog.controller.dto.response.TagResponse;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.service.TagService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import static java.util.stream.Collectors.toList;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.Objects;
 
-@Tag(name = "Tag")
+@Tag(name = "Tags")
 @ApiV1
 @RestController
 @RequiredArgsConstructor
@@ -31,16 +32,18 @@ public class TagController {
 
     @GetMapping("/tags")
     @ResponseStatus(HttpStatus.OK)
-    public List<TagResponse> getAll() {
-        return tagService.getAll().stream()
-                .map(this::toResponse)
-                .collect(toList());
+    public Page<TagResponse> findAll(@RequestParam(name = "nameContains", required = false) String tagNameContains,
+                                     @NonNull Pageable pageable) {
+        if (Objects.isNull(tagNameContains)) {
+            return tagService.findAll(pageable).map(this::toResponse);
+        }
+        return tagService.findByNameContains(tagNameContains, pageable).map(this::toResponse);
     }
 
     @GetMapping("/tags/{tagId}")
     @ResponseStatus(HttpStatus.OK)
-    public TagResponse get(@NonNull @PathVariable Integer tagId) {
-        return toResponse(tagService.get(tagId));
+    public TagResponse find(@NonNull @PathVariable Integer tagId) {
+        return toResponse(tagService.find(tagId));
     }
 
     @DeleteMapping("/tags/{tagId}")

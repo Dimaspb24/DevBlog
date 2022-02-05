@@ -111,7 +111,7 @@ public class ArticleService {
     }
 
     @NonNull
-    public Page<ArticleEntity> getByTitleName(String name, @NonNull Pageable pageable) {
+    public Page<ArticleEntity> findByTitleContains(String name, @NonNull Pageable pageable) {
         if (name == null || name.isEmpty()) {
             return articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageable);
         }
@@ -121,6 +121,11 @@ public class ArticleService {
     @NonNull
     public Page<ArticleEntity> findArticlesByTagName(@NonNull String tagName, @NonNull Pageable pageable) {
         return articleRepository.findByTagName(tagName, pageable);
+    }
+
+    @NonNull
+    public Page<ArticleEntity> findArticlesByTagNameAndTitleContains(@NonNull String tagName, @NonNull String titleContains, @NonNull Pageable pageable) {
+        return articleRepository.findByTagNameAndTitleContains(tagName, titleContains, pageable);
     }
 
     @NonNull

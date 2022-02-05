@@ -33,19 +33,21 @@ public class ArticleController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/articles")
-    public Page<CloseArticleResponse> findAll(@RequestParam(name = "titleContains", required = false) String name,
+    public Page<CloseArticleResponse> findAll(@RequestParam(name = "titleContains", required = false) String titleContains,
+                                              @RequestParam(name = "tagName", required = false) String tagName,
                                               @SortDefault(sort = "publicationDate") Pageable pageable) {
-        if (Objects.isNull(name)) {
-            return articleService.find(pageable).map(this::toResponse);
+        Page<ArticleEntity> articleEntities;
+        if (Objects.isNull(titleContains) && Objects.isNull(tagName)) {
+            articleEntities = articleService.find(pageable);
+        } else if (Objects.nonNull(titleContains) && Objects.nonNull(tagName)) {
+            articleEntities = articleService.findArticlesByTagNameAndTitleContains(tagName, titleContains, pageable);
+        } else if (Objects.nonNull(titleContains)) {
+            articleEntities = articleService.findByTitleContains(titleContains, pageable);
+        } else {
+            articleEntities = articleService.findArticlesByTagName(tagName, pageable);
         }
-        return articleService.getByTitleName(name, pageable).map(this::toResponse);
-    }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/articlesByTagName")
-    public Page<CloseArticleResponse> findByTagName(@NonNull @RequestParam(name = "tagName") String tagName, Pageable pageable) {
-        return articleService.findArticlesByTagName(tagName, pageable)
-                .map(this::toResponse);
+        return articleEntities.map(this::toResponse);
     }
 
     @NonNull

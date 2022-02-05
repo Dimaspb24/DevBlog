@@ -38,6 +38,18 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
             "order by a.publicationDate")
     Page<ArticleEntity> findByTagName(@NonNull @Param("tagName") String tagName, @NonNull Pageable pageable);
 
+    @Query("select a from TagEntity t " +
+            "join t.articles a " +
+            "where t.name = :tagName " +
+            "and lower(a.title) like lower(concat('%', :titleContains, '%'))  " +
+            "and a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +
+            "and a.enabled = true " +
+            "and a.publicationDate is not null " +
+            "order by a.publicationDate")
+    Page<ArticleEntity> findByTagNameAndTitleContains(@NonNull @Param("tagName") String tagName,
+                                                      @NonNull @Param("titleContains") String titleContains,
+                                                      @NonNull Pageable pageable);
+
     @Query("select a from UserEntity u " +
             "join u.subscriptions sub " +
             "join sub.selfArticles a " +

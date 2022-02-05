@@ -1,11 +1,11 @@
 package com.project.devblog.security;
 
-import com.project.devblog.config.JwtProperties;
 import com.project.devblog.model.enums.Role;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import static java.util.Optional.ofNullable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,15 +28,15 @@ public class JwtTokenProvider {
     private static final String ROLES = "roles";
 
     private final UserDetailsService userDetailsService;
-    private final JwtProperties jwtProperties;
 
+    @Value("${jwt.token.secret}")
     private String secret;
+    @Value("${jwt.token.expired}")
     private long expirationTime;
 
     @PostConstruct
     protected void init() {
-        secret = Base64.getEncoder().encodeToString(jwtProperties.getSecret().getBytes());
-        expirationTime = jwtProperties.getExpired();
+        secret = Base64.getEncoder().encodeToString(secret.getBytes());
     }
 
     public String createToken(String login, Role role) {

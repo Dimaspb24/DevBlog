@@ -1,6 +1,5 @@
 package com.project.devblog.controller.authcontroller;
 
-import com.project.devblog.config.GoogleRedirectProperties;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
@@ -8,6 +7,7 @@ import com.project.devblog.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -26,10 +26,12 @@ public class GoogleAuthController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final GoogleRedirectProperties googleRedirectProperties;
 
     private static final String ACCESS_TOKEN = "access_token";
     private static final String BEARER = "Bearer_";
+
+    @Value("${app.google.redirect.url}")
+    private String url;
 
     @ResponseStatus(HttpStatus.PERMANENT_REDIRECT)
     @GetMapping("/")
@@ -39,6 +41,6 @@ public class GoogleAuthController {
                 user.getFamilyName(), user.getFullName(), user.getPicture(), user.getPhoneNumber());
 
         httpServletResponse.addCookie(new Cookie(ACCESS_TOKEN, BEARER + jwtTokenProvider.createToken(userEntity.getLogin(), Role.USER)));
-        return new RedirectView(String.format(googleRedirectProperties.getUrl(), userEntity.getId()));
+        return new RedirectView(String.format(url, userEntity.getId()));
     }
 }

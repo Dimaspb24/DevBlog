@@ -13,8 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 @Tag(name = "User")
 @ApiV1
 @RestController
@@ -26,8 +24,7 @@ public class UserController {
     @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public UserResponse find(@NonNull @PathVariable String userId) {
-        UserEntity user = userService.find(userId);
-        return toResponse(user);
+        return toResponse(userService.find(userId));
     }
 
     @GetMapping("/users")
@@ -43,12 +40,11 @@ public class UserController {
         userService.delete(userId);
     }
 
-    @PutMapping("/users/{userId}")
+    @PatchMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public UserResponse update(@NonNull @PathVariable String userId,
-                               @RequestBody @NonNull @Valid UserRequest userRequest) {
-        UserEntity user = userService.update(userId, userRequest);
-        return toResponse(user);
+                               @RequestBody @NonNull UserRequest userRequest) {
+        return toResponse(userService.update(userId, userRequest));
     }
 
     @NonNull

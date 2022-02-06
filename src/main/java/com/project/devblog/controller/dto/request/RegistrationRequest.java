@@ -14,7 +14,6 @@ import javax.validation.constraints.NotBlank;
 public class RegistrationRequest {
 
     @Email(regexp = ".+@.+\\..+", message = "Please provide a valid email address")
-    @NotBlank(message = "Login is required")
     String login;
     @NotBlank(message = "Password is required")
     String password;

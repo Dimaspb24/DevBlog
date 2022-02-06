@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,10 +52,15 @@ public class BookmarkService {
     }
 
     @NonNull
-    public Page<BookmarkArticleResponse> findAllByType(@NonNull String userId, @NonNull String bookmarkType, @NonNull Pageable pageable) {
-        BookmarkType type = BookmarkType.valueOf(bookmarkType);
-        return userArticleRepository.findByUserIdAndBookmarkType(userId, type, pageable)
-                .map(this::getBookmarkArticleResponses);
+    public Page<BookmarkArticleResponse> findAll(@NonNull String userId, String bookmarkType, Pageable pageable) {
+        if (Objects.isNull(bookmarkType)) {
+            return userArticleRepository.findByUserId(userId, pageable).
+                    map(this::getBookmarkArticleResponses);
+        } else {
+            BookmarkType type = BookmarkType.valueOf(bookmarkType);
+            return userArticleRepository.findByUserIdAndBookmarkType(userId, type, pageable)
+                    .map(this::getBookmarkArticleResponses);
+        }
     }
 
     public void delete(@NonNull Long bookmarkId) {
@@ -65,11 +71,6 @@ public class BookmarkService {
         userArticleRepository.save(userArticleEntity);
     }
 
-    public Page<BookmarkArticleResponse> findAll(String userId, Pageable pageable) {
-        return userArticleRepository.findByUserId(userId, pageable).
-                map(this::getBookmarkArticleResponses);
-    }
-
     private BookmarkArticleResponse getBookmarkArticleResponses(UserArticleEntity userArticleEntity) {
         ArticleEntity article = userArticleEntity.getArticle();
         List<TagResponse> listTags = article.getTags().stream()
@@ -78,9 +79,13 @@ public class BookmarkService {
         UserEntity author = article.getAuthor();
         PersonalInfo personalInfo = author.getPersonalInfo();
         CloseArticleResponse closeArticleResponse = new CloseArticleResponse(article.getId(), article.getTitle(), article.getStatus().name(),
-                article.getDescription(), article.getPublicationDate(), article.getModificationDate(),
+                article.getDescription(), article.getRating(), article.getPublicationDate(), article.getModificationDate(),
                 author.getId(), personalInfo.getNickname(), personalInfo.getPhoto(), listTags);
 
-        return new BookmarkArticleResponse(userArticleEntity.getId(), closeArticleResponse);
+        return new BookmarkArticleResponse(
+                userArticleEntity.getId(),
+                userArticleEntity.getRating(),
+                userArticleEntity.getBookmarkType().toString(),
+                closeArticleResponse);
     }
 }

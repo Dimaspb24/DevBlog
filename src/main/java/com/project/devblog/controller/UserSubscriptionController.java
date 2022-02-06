@@ -2,6 +2,7 @@ package com.project.devblog.controller;
 
 import com.project.devblog.controller.annotation.ApiV1;
 import com.project.devblog.controller.dto.response.CloseArticleResponse;
+import com.project.devblog.controller.dto.response.SubscriberResponse;
 import com.project.devblog.controller.dto.response.SubscriptionResponse;
 import com.project.devblog.controller.dto.response.TagResponse;
 import com.project.devblog.model.ArticleEntity;
@@ -59,7 +60,7 @@ public class UserSubscriptionController {
     public Page<SubscriptionResponse> findSubscriptions(@NonNull @PathVariable String userId,
                                                         Pageable pageable) {
         return subscriptionService.findSubscriptions(userId, pageable)
-                .map(this::toResponse);
+                .map(this::toSubscriptionResponse);
     }
 
     @GetMapping("/users/{userId}/subscriptions/articles")
@@ -72,20 +73,26 @@ public class UserSubscriptionController {
 
     @GetMapping("/users/{userId}/subscribers")
     @ResponseStatus(HttpStatus.OK)
-    public Page<SubscriptionResponse> findSubscribers(@NonNull @PathVariable String userId,
-                                                      Pageable pageable) {
+    public Page<SubscriberResponse> findSubscribers(@NonNull @PathVariable String userId,
+                                                    Pageable pageable) {
         return subscriptionService.findSubscribers(userId, pageable)
-                .map(this::toResponse);
+                .map(this::toSubscriberResponse);
     }
 
     @NonNull
-    private SubscriptionResponse toResponse(@NonNull UserEntity user) {
+    private SubscriptionResponse toSubscriptionResponse(@NonNull UserEntity user) {
         PersonalInfo personalInfo = user.getPersonalInfo();
         return new SubscriptionResponse(
                 user.getId(),
                 personalInfo.getFirstname(),
                 personalInfo.getLastname(),
                 personalInfo.getNickname());
+    }
+
+    @NonNull
+    private SubscriberResponse toSubscriberResponse(@NonNull UserEntity user) {
+        PersonalInfo personalInfo = user.getPersonalInfo();
+        return new SubscriberResponse(user.getId(), personalInfo.getNickname());
     }
 
     @NonNull
@@ -96,6 +103,7 @@ public class UserSubscriptionController {
                 article.getTitle(),
                 article.getStatus().name(),
                 article.getDescription(),
+                article.getRating(),
                 article.getPublicationDate(),
                 article.getModificationDate(),
                 article.getAuthor().getId(),

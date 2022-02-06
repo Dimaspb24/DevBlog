@@ -32,7 +32,7 @@ public class UserEntity extends AuditableBaseEntity<String> {
     @Enumerated(EnumType.STRING)
     Role role;
 
-    Boolean enabled;
+    boolean enabled;
     String verificationCode;
 
     PersonalInfo personalInfo;
@@ -82,12 +82,6 @@ public class UserEntity extends AuditableBaseEntity<String> {
     @OrderBy("personalInfo.nickname")
     List<UserEntity> subscriptions = new ArrayList<>();
 
-    public UserEntity(@NonNull String id, @NonNull String login, @NonNull Role role) {
-        this.id = id;
-        this.login = login;
-        this.role = role;
-    }
-
     public UserEntity(String id, String login, String password, Role role, Boolean enabled) {
         this.id = id;
         this.login = login;
@@ -104,15 +98,4 @@ public class UserEntity extends AuditableBaseEntity<String> {
     public void removeSubscription(UserEntity subscriber) {
         subscriptions.remove(subscriber);
     }
-
-    /*-----------------------------------FOR_MANY_TO_MANY_USER_ARTICLE--------------------------------*/
-    public void addRelationArticle(UserArticleEntity userArticle) {
-        relationArticles.add(userArticle);
-        userArticle.setUser(this);
-    }
-
-    public void removeRelationArticle(UserArticleEntity userArticle) {
-        relationArticles.remove(userArticle);
-    }
-
 }

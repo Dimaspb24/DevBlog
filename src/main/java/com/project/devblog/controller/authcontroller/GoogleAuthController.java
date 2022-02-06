@@ -3,6 +3,8 @@ package com.project.devblog.controller.authcontroller;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
+import static com.project.devblog.security.JwtTokenProvider.AUTH_HEADER_KEY;
+import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import com.project.devblog.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @Tag(name = "Google authentication")
@@ -26,9 +27,6 @@ public class GoogleAuthController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
-
-    private static final String ACCESS_TOKEN = "access_token";
-    private static final String BEARER = "Bearer_";
 
     @Value("${app.google.redirect.url}")
     private String url;
@@ -40,7 +38,7 @@ public class GoogleAuthController {
         final UserEntity userEntity = userService.createUser(user.getSubject(), user.getEmail(), Role.USER, true, user.getGivenName(),
                 user.getFamilyName(), user.getFullName(), user.getPicture(), user.getPhoneNumber());
 
-        httpServletResponse.addCookie(new Cookie(ACCESS_TOKEN, BEARER + jwtTokenProvider.createToken(userEntity.getLogin(), Role.USER)));
+        httpServletResponse.addHeader(AUTH_HEADER_KEY, TOKEN_PREFIX + jwtTokenProvider.createToken(userEntity.getLogin(), Role.USER));
         return new RedirectView(String.format(url, userEntity.getId()));
     }
 }

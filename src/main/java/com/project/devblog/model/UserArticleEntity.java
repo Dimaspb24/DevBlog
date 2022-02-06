@@ -56,7 +56,7 @@ public class UserArticleEntity extends AuditableBaseEntity<Long> {
         user.getRelationArticles().add(this);
     }
 
-    /*-----------------------------------FOR_MANY_TO_ONE_ARTICLE--------------------------------*/
+    /*-----------------------------------FOR_MANY_TO_ONE_ARTICLE-----------------------------*/
     public void setArticle(ArticleEntity article) {
         this.article = article;
         article.getRelationUsers().add(this);

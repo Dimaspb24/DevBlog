@@ -35,6 +35,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import org.springframework.web.util.WebUtils;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NonUniqueResultException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import java.util.Objects;
@@ -139,6 +140,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ApiError apiError = new ApiError(BAD_REQUEST);
         apiError.setMessage("Validation error");
         apiError.addValidationErrors(ex.getConstraintViolations());
+        return toResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(NonUniqueResultException.class)
+    @ResponseStatus(BAD_REQUEST)
+    protected ResponseEntity<ApiError> handleNonUniqueResultException(NonUniqueResultException ex,
+                                                                      HttpServletRequest request) {
+        log.error("NonUniqueResultException {}\n", request.getRequestURI(), ex);
+
+        ApiError apiError = new ApiError(BAD_REQUEST, ex.getMessage(), ex);
         return toResponseEntity(apiError);
     }
 

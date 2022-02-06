@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -32,21 +33,19 @@ public class TagService {
     }
 
     @NonNull
-    public Page<TagEntity> findAll(Pageable pageable) {
+    public Page<TagEntity> findAll(String tagNameContains, Pageable pageable) {
+        if (Objects.nonNull(tagNameContains) && !tagNameContains.isEmpty()) {
+            return tagRepository.findTagEntitiesByNameContains(tagNameContains, pageable);
+        }
         return tagRepository.findAll(pageable);
-    }
-
-    @NonNull
-    public Page<TagEntity> findByNameContains(@NonNull String tagNameContains, Pageable pageable) {
-        return tagRepository.findTagEntitiesByNameContains(tagNameContains, pageable);
     }
 
     @NonNull
     public List<TagEntity> createAndGetAllByName(@NonNull List<String> tags) {
         ArrayList<TagEntity> tagEntities = new ArrayList<>();
-        tags.forEach(name ->
-                tagEntities.add(tagRepository.findByName(name).orElseGet(() ->
-                        tagRepository.save(new TagEntity(name)))));
+        tags.forEach(name -> tagEntities.add(tagRepository
+                .findByName(name)
+                .orElseGet(() -> tagRepository.save(new TagEntity(name)))));
         return tagEntities;
     }
 

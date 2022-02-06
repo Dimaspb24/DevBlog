@@ -11,8 +11,9 @@ import org.springframework.lang.Nullable;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SubscriptionResponse {
+
     @NonNull
-    String id;
+    String authorId;
     @Nullable
     String firstname;
     @Nullable

@@ -57,8 +57,9 @@ public class ArticleController {
         return new CommentResponse(
                 comment.getId(),
                 comment.getMessage(),
-                comment.getAuthor().getId(),
-                comment.getReceiver().getId(),
+                comment.getAuthor().getPersonalInfo().getNickname(),
+                comment.getReceiver().getPersonalInfo().getNickname(),
+                comment.getCreationDate(),
                 comment.getArticle().getId());
     }
 
@@ -70,6 +71,7 @@ public class ArticleController {
                 article.getTitle(),
                 article.getStatus().name(),
                 article.getDescription(),
+                article.getRating(),
                 article.getPublicationDate(),
                 article.getModificationDate(),
                 article.getAuthor().getId(),

@@ -9,25 +9,23 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer> {
-    List<ArticleEntity> findByTitleContains(@NonNull String title);
 
     Optional<ArticleEntity> findByIdAndAuthorIdAndEnabledIsTrue(@NonNull Integer articleId, @NonNull String authorId);
 
     Optional<ArticleEntity> findByIdAndAuthorId(@NonNull Integer articleId, @NonNull String authorId);
 
-    Page<ArticleEntity> findByAuthorIdAndEnabledIsTrue(@NonNull String authorId, @NonNull Pageable pageable);
+    Page<ArticleEntity> findByAuthorIdAndEnabledIsTrue(@NonNull String authorId, Pageable pageable);
 
     @Query("select a from ArticleEntity a " +
             "where a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +
             "and a.enabled = true and a.publicationDate is not null")
     Page<ArticleEntity> findByEnabledIsTrueAndPublicationDateIsNotNull(@NonNull Pageable pageable);
 
-    Page<ArticleEntity> findArticleEntitiesByTitleContains(@NonNull String name, @NonNull Pageable pageable);
+    Page<ArticleEntity> findByEnabledIsTrueAndTitleContains(@NonNull String name, Pageable pageable);
 
     @Query("select a from TagEntity t " +
             "join t.articles a " +
@@ -36,7 +34,7 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
             "and a.enabled = true " +
             "and a.publicationDate is not null " +
             "order by a.publicationDate")
-    Page<ArticleEntity> findByTagName(@NonNull @Param("tagName") String tagName, @NonNull Pageable pageable);
+    Page<ArticleEntity> findByTagName(@NonNull @Param("tagName") String tagName, Pageable pageable);
 
     @Query("select a from TagEntity t " +
             "join t.articles a " +
@@ -48,7 +46,7 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
             "order by a.publicationDate")
     Page<ArticleEntity> findByTagNameAndTitleContains(@NonNull @Param("tagName") String tagName,
                                                       @NonNull @Param("titleContains") String titleContains,
-                                                      @NonNull Pageable pageable);
+                                                      Pageable pageable);
 
     @Query("select a from UserEntity u " +
             "join u.subscriptions sub " +
@@ -58,5 +56,5 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
             "and a.enabled = true " +
             "and a.publicationDate is not null " +
             "order by a.publicationDate")
-    Page<ArticleEntity> findBySubscriptions(@NonNull @Param("userId") String userId, @NonNull Pageable pageable);
+    Page<ArticleEntity> findBySubscriptions(@NonNull @Param("userId") String userId, Pageable pageable);
 }

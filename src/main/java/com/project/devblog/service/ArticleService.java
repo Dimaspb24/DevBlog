@@ -30,12 +30,6 @@ public class ArticleService {
     private final TagService tagService;
 
     @NonNull
-    public ArticleEntity find(@NonNull Integer articleId) {
-        return articleRepository.findById(articleId)
-                .orElseThrow(() -> new NotFoundException(ArticleEntity.class, articleId.toString()));
-    }
-
-    @NonNull
     public ArticleEntity find(@NonNull String authorId, @NonNull Integer articleId) {
         return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(articleId, authorId).orElseThrow(() ->
                 new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
@@ -54,14 +48,12 @@ public class ArticleService {
         final UserEntity author = userService.find(userId);
         final ArticleEntity articleEntity = new ArticleEntity(title, body, status, description, author);
 
-        if (status.name().equalsIgnoreCase(StatusArticle.PUBLISHED.name())) {
-            final LocalDateTime now = LocalDateTime.now();
-            articleEntity.setPublicationDate(now);
+        if (status.toString().equalsIgnoreCase(StatusArticle.PUBLISHED.toString())) {
+            articleEntity.setPublicationDate(LocalDateTime.now());
         }
 
         if (tags != null) {
-            final List<TagEntity> tagEntities = tagService.createAndGetAllByName(tags);
-            articleEntity.setTags(tagEntities);
+            articleEntity.setTags(tagService.createAndGetAllByName(tags));
         }
 
         return articleRepository.save(articleEntity);
@@ -96,37 +88,12 @@ public class ArticleService {
         articleEntity.setTags(tagEntities);
         articleEntity.setDescription(description);
         articleEntity.setBody(body);
-
+        articleEntity.setStatus(status);
         if (status == StatusArticle.PUBLISHED && articleEntity.getStatus() != StatusArticle.PUBLISHED) {
             articleEntity.setPublicationDate(LocalDateTime.now());
         }
 
-        articleEntity.setStatus(status);
-
         return articleRepository.save(articleEntity);
-    }
-
-    @NonNull
-    public Page<ArticleEntity> find(@NonNull Pageable pageable) {
-        return articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageable);
-    }
-
-    @NonNull
-    public Page<ArticleEntity> findByTitleContains(String name, @NonNull Pageable pageable) {
-        if (name.isEmpty()) {
-            return articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageable);
-        }
-        return articleRepository.findArticleEntitiesByTitleContains(name, pageable);
-    }
-
-    @NonNull
-    public Page<ArticleEntity> findArticlesByTagName(@NonNull String tagName, @NonNull Pageable pageable) {
-        return articleRepository.findByTagName(tagName, pageable);
-    }
-
-    @NonNull
-    public Page<ArticleEntity> findArticlesByTagNameAndTitleContains(@NonNull String tagName, @NonNull String titleContains, @NonNull Pageable pageable) {
-        return articleRepository.findByTagNameAndTitleContains(tagName, titleContains, pageable);
     }
 
     @NonNull
@@ -138,13 +105,13 @@ public class ArticleService {
     public Page<ArticleEntity> findAll(String titleContains, String tagName, Pageable pageable) {
         Page<ArticleEntity> articleEntities;
         if (Objects.isNull(titleContains) && Objects.isNull(tagName)) {
-            articleEntities = find(pageable);
+            articleEntities = articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageable);
         } else if (Objects.nonNull(titleContains) && Objects.nonNull(tagName)) {
-            articleEntities = findArticlesByTagNameAndTitleContains(tagName, titleContains, pageable);
+            articleEntities = articleRepository.findByTagNameAndTitleContains(tagName, titleContains, pageable);
         } else if (Objects.nonNull(titleContains)) {
-            articleEntities = findByTitleContains(titleContains, pageable);
+            articleEntities = articleRepository.findByEnabledIsTrueAndTitleContains(titleContains, pageable);
         } else {
-            articleEntities = findArticlesByTagName(tagName, pageable);
+            articleEntities = articleRepository.findByTagName(tagName, pageable);
         }
         return articleEntities;
     }

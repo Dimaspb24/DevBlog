@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Objects;
 
 @Tag(name = "Tags")
 @ApiV1
@@ -34,10 +33,8 @@ public class TagController {
     @ResponseStatus(HttpStatus.OK)
     public Page<TagResponse> findAll(@RequestParam(name = "nameContains", required = false) String tagNameContains,
                                      Pageable pageable) {
-        if (Objects.isNull(tagNameContains)) {
-            return tagService.findAll(pageable).map(this::toResponse);
-        }
-        return tagService.findByNameContains(tagNameContains, pageable).map(this::toResponse);
+        return tagService.findAll(tagNameContains, pageable)
+                .map(this::toResponse);
     }
 
     @GetMapping("/tags/{tagId}")

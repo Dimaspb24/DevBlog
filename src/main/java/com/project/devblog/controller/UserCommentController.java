@@ -11,6 +11,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +45,7 @@ public class UserCommentController {
     @ResponseStatus(HttpStatus.OK)
     public Page<CommentResponse> findAll(@NonNull @PathVariable String userId,
                                          @NonNull @PathVariable Integer articleId,
-                                         @NonNull Pageable pageable) {
+                                         @SortDefault(sort = "creationDate") Pageable pageable) {
         return commentService.findAllByAuthorIdAndArticleId(userId, articleId, pageable)
                 .map(this::toResponse);
     }
@@ -81,8 +82,9 @@ public class UserCommentController {
         return new CommentResponse(
                 comment.getId(),
                 comment.getMessage(),
-                comment.getAuthor().getId(),
-                comment.getReceiver().getId(),
+                comment.getAuthor().getPersonalInfo().getNickname(),
+                comment.getReceiver().getPersonalInfo().getNickname(),
+                comment.getCreationDate(),
                 comment.getArticle().getId());
     }
 }

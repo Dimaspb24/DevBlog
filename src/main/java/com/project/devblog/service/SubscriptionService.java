@@ -29,7 +29,7 @@ public class SubscriptionService {
     public void unsubscribe(String userId, String authorId) {
         UserEntity user = userService.find(userId);
         UserEntity author = userService.find(authorId);
-        user.getSubscriptions().remove(author);
+        user.removeSubscription(author);
         userService.save(user);
     }
 

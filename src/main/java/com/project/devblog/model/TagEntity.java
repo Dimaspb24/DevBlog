@@ -17,9 +17,8 @@ import java.util.List;
 @Data
 @ToString(exclude = "articles")
 @EqualsAndHashCode(of = "name")
+@RequiredArgsConstructor
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "tags")
@@ -33,12 +32,7 @@ public class TagEntity {
     String name;
 
     @Fetch(FetchMode.SUBSELECT)
-    @Builder.Default
     @ManyToMany(mappedBy = "tags")
     @JsonIgnore
     List<ArticleEntity> articles = new ArrayList<>();
-
-    public TagEntity(@NonNull String name) {
-        this.name = name;
-    }
 }

@@ -6,23 +6,13 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
-
 @Getter
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CommentResponse {
+public class SubscriberResponse {
 
     @NonNull
-    Long id;
+    String subscriberId;
     @NonNull
-    String message;
-    @NonNull
-    String authorNickname;
-    @NonNull
-    String receiverNickname;
-    @NonNull
-    LocalDateTime creationDate;
-    @NonNull
-    Integer articleId;
+    String nickname;
 }

@@ -1,6 +1,7 @@
 package com.project.devblog.service;
 
 import com.project.devblog.controller.dto.request.UserRequest;
+import com.project.devblog.exception.NonUniqueValueException;
 import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
@@ -16,7 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -69,10 +69,6 @@ public class UserService {
     }
 
     @NonNull
-    public List<UserEntity> getAll() {
-        return userRepository.findAll();
-    }
-
     public Page<UserEntity> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
@@ -101,30 +97,39 @@ public class UserService {
 
     public UserEntity update(String userId, UserRequest userRequest) {
         UserEntity user = find(userId);
+        PersonalInfo personalInfo = user.getPersonalInfo();
 
         String firstname = userRequest.getFirstname();
         if (firstname != null && !firstname.isEmpty()) {
-            user.getPersonalInfo().setFirstname(firstname);
+            personalInfo.setFirstname(firstname);
         }
 
         String lastname = userRequest.getLastname();
         if (lastname != null && !lastname.isEmpty()) {
-            user.getPersonalInfo().setLastname(lastname);
-        }
-
-        String phone = userRequest.getPhone();
-        if (phone != null && !phone.isEmpty() && !userRepository.existsByPersonalInfoPhone(phone)) {
-            user.getPersonalInfo().setPhone(phone);
+            personalInfo.setLastname(lastname);
         }
 
         String info = userRequest.getInfo();
         if (info != null && !info.isEmpty()) {
-            user.getPersonalInfo().setInfo(info);
+            personalInfo.setInfo(info);
+        }
+
+        String phone = userRequest.getPhone();
+        if (phone != null && !phone.isEmpty()) {
+            if (!userRepository.existsByPersonalInfoPhone(phone)) {
+                personalInfo.setPhone(phone);
+            } else {
+                throw new NonUniqueValueException("The phone must be unique");
+            }
         }
 
         String nickname = userRequest.getNickname();
-        if (nickname != null && !nickname.isEmpty() && !userRepository.existsByPersonalInfoNickname(nickname)) {
-            user.getPersonalInfo().setNickname(nickname);
+        if (nickname != null && !nickname.isEmpty()) {
+            if (!userRepository.existsByPersonalInfoNickname(nickname)) {
+                personalInfo.setNickname(nickname);
+            } else {
+                throw new NonUniqueValueException("The nickname must be unique");
+            }
         }
 
         userRepository.save(user);

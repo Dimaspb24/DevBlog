@@ -15,179 +15,28 @@ servers:
 security:
   - bearerAuthScheme: [ ]
 tags:
+  - name: User subscription
+  - name: User comments
+  - name: User articles
+  - name: User bookmarks
+  - name: Authentication
+  - name: User
+  - name: Tags
+  - name: User rating of articles
+  - name: Google authentication
+  - name: Verification
   - name: Actuator
     description: Monitor and interact
     externalDocs:
       description: Spring Boot Actuator Web API Documentation
       url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
+  - name: Articles
 paths:
-  /v1/users/{userId}:
-    get:
-      tags:
-        - user-controller
-      operationId: get
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "500":
-          description: Internal Server Error
-          content:
-            '*/*':
-              schema:
-                type: object
-        "409":
-          description: Conflict
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
-          content:
-            '*/*':
-              schema:
-                type: object
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "415":
-          description: Unsupported Media Type
-          content:
-            '*/*':
-              schema:
-                type: object
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/UserResponse'
-    put:
-      tags:
-        - user-controller
-      operationId: update
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserRequest'
-        required: true
-      responses:
-        "500":
-          description: Internal Server Error
-          content:
-            '*/*':
-              schema:
-                type: object
-        "409":
-          description: Conflict
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
-          content:
-            '*/*':
-              schema:
-                type: object
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "415":
-          description: Unsupported Media Type
-          content:
-            '*/*':
-              schema:
-                type: object
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/UserResponse'
-    delete:
-      tags:
-        - user-controller
-      operationId: delete
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "500":
-          description: Internal Server Error
-          content:
-            '*/*':
-              schema:
-                type: object
-        "409":
-          description: Conflict
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
-          content:
-            '*/*':
-              schema:
-                type: object
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "415":
-          description: Unsupported Media Type
-          content:
-            '*/*':
-              schema:
-                type: object
-        "204":
-          description: No Content
   /v1/users/{userId}/articles/{articleId}:
     get:
       tags:
-        - article-controller
-      operationId: get_1
+        - User articles
+      operationId: find_1
       parameters:
         - name: userId
           in: path
@@ -206,9 +55,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -221,9 +75,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -245,8 +113,8 @@ paths:
                 $ref: '#/components/schemas/OpenArticleResponse'
     put:
       tags:
-        - article-controller
-      operationId: update_1
+        - User articles
+      operationId: update
       parameters:
         - name: userId
           in: path
@@ -270,9 +138,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -285,9 +158,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -309,7 +196,7 @@ paths:
                 $ref: '#/components/schemas/OpenArticleResponse'
     delete:
       tags:
-        - article-controller
+        - User articles
       operationId: delete_2
       parameters:
         - name: userId
@@ -329,9 +216,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -344,9 +236,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -364,7 +270,8 @@ paths:
           description: No Content
     patch:
       tags:
-        - article-controller
+        - User articles
+      summary: Hide or show the article
       operationId: enable
       parameters:
         - name: userId
@@ -389,9 +296,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -404,9 +316,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -425,8 +351,8 @@ paths:
   /v1/users/{userId}/articles/{articleId}/ratings:
     get:
       tags:
-        - rating-controller
-      operationId: get_2
+        - User rating of articles
+      operationId: find_2
       parameters:
         - name: userId
           in: path
@@ -445,9 +371,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -460,9 +391,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -484,8 +429,8 @@ paths:
                 $ref: '#/components/schemas/RatingResponse'
     put:
       tags:
-        - rating-controller
-      operationId: update_2
+        - User rating of articles
+      operationId: update_1
       parameters:
         - name: userId
           in: path
@@ -509,9 +454,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -524,9 +474,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -548,7 +512,7 @@ paths:
                 $ref: '#/components/schemas/RatingResponse'
     post:
       tags:
-        - rating-controller
+        - User rating of articles
       operationId: create_1
       parameters:
         - name: userId
@@ -573,9 +537,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -588,9 +557,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -613,8 +596,8 @@ paths:
   /v1/users/{userId}/articles/{articleId}/comments/{commentId}:
     get:
       tags:
-        - comment-controller
-      operationId: get_3
+        - User comments
+      operationId: find_3
       parameters:
         - name: userId
           in: path
@@ -639,9 +622,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -654,9 +642,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -678,26 +680,26 @@ paths:
                 $ref: '#/components/schemas/CommentResponse'
     put:
       tags:
-        - comment-controller
-      operationId: update_3
+        - User comments
+      operationId: update_2
       parameters:
         - name: userId
           in: path
           required: true
           schema:
             type: string
-        - name: commentId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
         - name: articleId
           in: path
           required: true
           schema:
             type: integer
             format: int32
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
       requestBody:
         content:
           application/json:
@@ -709,9 +711,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -724,9 +731,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -748,7 +769,7 @@ paths:
                 $ref: '#/components/schemas/CommentResponse'
     delete:
       tags:
-        - comment-controller
+        - User comments
       operationId: delete_3
       parameters:
         - name: userId
@@ -774,9 +795,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -789,9 +815,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -809,7 +849,8 @@ paths:
           description: No Content
     patch:
       tags:
-        - comment-controller
+        - User comments
+      summary: Hide or show the comment
       operationId: enable_1
       parameters:
         - name: userId
@@ -840,9 +881,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -855,9 +901,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -876,7 +936,7 @@ paths:
   /v1/users/{userId}/subscriptions/{authorId}:
     post:
       tags:
-        - subscription-controller
+        - User subscription
       operationId: subscribe
       parameters:
         - name: userId
@@ -895,9 +955,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -910,9 +975,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -934,7 +1013,7 @@ paths:
                 type: object
     delete:
       tags:
-        - subscription-controller
+        - User subscription
       operationId: unsubscribe
       parameters:
         - name: userId
@@ -953,9 +1032,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -968,9 +1052,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -989,8 +1087,8 @@ paths:
   /v1/users/{userId}/articles:
     get:
       tags:
-        - article-controller
-      operationId: getAll_2
+        - User articles
+      operationId: findAll_2
       parameters:
         - name: userId
           in: path
@@ -1008,9 +1106,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1023,9 +1126,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1047,7 +1164,7 @@ paths:
                 $ref: '#/components/schemas/PageCloseArticleResponse'
     post:
       tags:
-        - article-controller
+        - User articles
       operationId: create
       parameters:
         - name: userId
@@ -1067,9 +1184,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1082,9 +1204,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1107,8 +1243,8 @@ paths:
   /v1/users/{userId}/articles/{articleId}/comments:
     get:
       tags:
-        - comment-controller
-      operationId: getAll_3
+        - User comments
+      operationId: findAll_3
       parameters:
         - name: userId
           in: path
@@ -1132,9 +1268,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1147,9 +1288,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1171,7 +1326,7 @@ paths:
                 $ref: '#/components/schemas/PageCommentResponse'
     post:
       tags:
-        - comment-controller
+        - User comments
       operationId: create_2
       parameters:
         - name: userId
@@ -1196,9 +1351,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1211,9 +1371,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1236,7 +1410,7 @@ paths:
   /v1/users/{userId}/articles/{articleId}/bookmarks:
     post:
       tags:
-        - bookmark-controller
+        - User bookmarks
       operationId: create_3
       parameters:
         - name: userId
@@ -1261,9 +1435,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1276,9 +1455,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1301,17 +1494,33 @@ paths:
   /v1/tags:
     get:
       tags:
-        - tag-controller
-      operationId: getAll_4
+        - Tags
+      operationId: findAll_4
+      parameters:
+        - name: nameContains
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
       responses:
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1324,9 +1533,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1345,12 +1568,10 @@ paths:
           content:
             '*/*':
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TagResponse'
+                $ref: '#/components/schemas/PageTagResponse'
     post:
       tags:
-        - tag-controller
+        - Tags
       operationId: create_4
       requestBody:
         content:
@@ -1363,9 +1584,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1378,9 +1604,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1400,10 +1640,10 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/TagResponse'
-  /v1/registration:
+  /v1/auth/registration:
     post:
       tags:
-        - registration-controller
+        - Authentication
       operationId: registration
       requestBody:
         content:
@@ -1417,9 +1657,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1432,9 +1677,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1457,7 +1716,7 @@ paths:
   /v1/auth/logout:
     post:
       tags:
-        - authentication-controller
+        - Authentication
       operationId: logout
       responses:
         "500":
@@ -1465,9 +1724,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1480,9 +1744,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1501,7 +1779,7 @@ paths:
   /v1/auth/login:
     post:
       tags:
-        - authentication-controller
+        - Authentication
       operationId: login
       requestBody:
         content:
@@ -1515,9 +1793,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1530,9 +1813,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1552,26 +1849,31 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthenticationResponse'
-  /v1/users:
+  /v1/users/{userId}:
     get:
       tags:
-        - user-controller
-      operationId: getAll
+        - User
+      operationId: find
       parameters:
-        - name: pageable
-          in: query
+        - name: userId
+          in: path
           required: true
           schema:
-            $ref: '#/components/schemas/Pageable'
+            type: string
       responses:
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1584,9 +1886,242 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+    delete:
+      tags:
+        - User
+      operationId: delete
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
         "404":
           description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "204":
+          description: No Content
+    patch:
+      tags:
+        - User
+      operationId: update_3
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+  /v1/users:
+    get:
+      tags:
+        - User
+      operationId: findAll
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1609,7 +2144,7 @@ paths:
   /v1/users/{userId}/verify:
     get:
       tags:
-        - verification-controller
+        - Verification
       operationId: verifyUser
       parameters:
         - name: userId
@@ -1628,9 +2163,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1643,9 +2183,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1668,8 +2222,8 @@ paths:
   /v1/users/{userId}/subscriptions:
     get:
       tags:
-        - subscription-controller
-      operationId: getSubscriptions
+        - User subscription
+      operationId: findSubscriptions
       parameters:
         - name: userId
           in: path
@@ -1687,9 +2241,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1702,9 +2261,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1724,11 +2297,89 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/PageSubscriptionResponse'
+  /v1/users/{userId}/subscriptions/articles:
+    get:
+      tags:
+        - User subscription
+      operationId: findArticlesBySubscriptions
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageCloseArticleResponse'
   /v1/users/{userId}/subscribers:
     get:
       tags:
-        - subscription-controller
-      operationId: getSubscribers
+        - User subscription
+      operationId: findSubscribers
       parameters:
         - name: userId
           in: path
@@ -1746,9 +2397,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1761,9 +2417,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1782,12 +2452,12 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/PageSubscriptionResponse'
-  /v1/users/{userId}/bookmarks/{bookmarkType}:
+                $ref: '#/components/schemas/PageSubscriberResponse'
+  /v1/users/{userId}/bookmarks:
     get:
       tags:
-        - bookmark-controller
-      operationId: getAll_1
+        - User bookmarks
+      operationId: findAll_1
       parameters:
         - name: userId
           in: path
@@ -1795,8 +2465,8 @@ paths:
           schema:
             type: string
         - name: bookmarkType
-          in: path
-          required: true
+          in: query
+          required: false
           schema:
             type: string
         - name: pageable
@@ -1810,9 +2480,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1825,9 +2500,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1847,124 +2536,11 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/PageBookmarkArticleResponse'
-  /v1/users/{userId}/articlesBySubscriptions:
-    get:
-      tags:
-        - article-controller
-      operationId: findArticlesBySubscriptions
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Pageable'
-      responses:
-        "500":
-          description: Internal Server Error
-          content:
-            '*/*':
-              schema:
-                type: object
-        "409":
-          description: Conflict
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
-          content:
-            '*/*':
-              schema:
-                type: object
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "415":
-          description: Unsupported Media Type
-          content:
-            '*/*':
-              schema:
-                type: object
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/PageCloseArticleResponse'
-  /v1/topic/articles:
-    get:
-      tags:
-        - article-sorting-controller
-      operationId: sorting
-      parameters:
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Pageable'
-      responses:
-        "500":
-          description: Internal Server Error
-          content:
-            '*/*':
-              schema:
-                type: object
-        "409":
-          description: Conflict
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
-          content:
-            '*/*':
-              schema:
-                type: object
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "415":
-          description: Unsupported Media Type
-          content:
-            '*/*':
-              schema:
-                type: object
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/PageCloseArticleResponse'
   /v1/tags/{tagId}:
     get:
       tags:
-        - tag-controller
-      operationId: get_4
+        - Tags
+      operationId: find_4
       parameters:
         - name: tagId
           in: path
@@ -1978,9 +2554,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -1993,9 +2574,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2017,7 +2612,7 @@ paths:
                 $ref: '#/components/schemas/TagResponse'
     delete:
       tags:
-        - tag-controller
+        - Tags
       operationId: delete_4
       parameters:
         - name: tagId
@@ -2032,9 +2627,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -2047,9 +2647,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2065,184 +2679,10 @@ paths:
                 type: object
         "204":
           description: No Content
-  /v1/searches/tags:
+  /v1/auth/checkToken:
     get:
       tags:
-        - tag-searches-controller
-      operationId: getByName
-      parameters:
-        - name: nameContains
-          in: query
-          required: true
-          schema:
-            type: string
-      responses:
-        "500":
-          description: Internal Server Error
-          content:
-            '*/*':
-              schema:
-                type: object
-        "409":
-          description: Conflict
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
-          content:
-            '*/*':
-              schema:
-                type: object
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "415":
-          description: Unsupported Media Type
-          content:
-            '*/*':
-              schema:
-                type: object
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TagResponse'
-  /v1/searches/articles:
-    get:
-      tags:
-        - article-searches-controller
-      operationId: getByTitleName
-      parameters:
-        - name: titleContains
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Pageable'
-      responses:
-        "500":
-          description: Internal Server Error
-          content:
-            '*/*':
-              schema:
-                type: object
-        "409":
-          description: Conflict
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
-          content:
-            '*/*':
-              schema:
-                type: object
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "415":
-          description: Unsupported Media Type
-          content:
-            '*/*':
-              schema:
-                type: object
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/PageCloseArticleResponse'
-  /v1/searches/articlesByTag:
-    get:
-      tags:
-        - article-searches-controller
-      operationId: findArticlesByTagName
-      parameters:
-        - name: tag
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Pageable'
-      responses:
-        "500":
-          description: Internal Server Error
-          content:
-            '*/*':
-              schema:
-                type: object
-        "409":
-          description: Conflict
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
-          content:
-            '*/*':
-              schema:
-                type: object
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "415":
-          description: Unsupported Media Type
-          content:
-            '*/*':
-              schema:
-                type: object
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/PageCloseArticleResponse'
-  /v1/checkToken:
-    get:
-      tags:
-        - jwt-controller
+        - Authentication
       operationId: checkValidateToken
       parameters:
         - name: token
@@ -2256,9 +2696,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -2271,9 +2716,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2293,21 +2752,41 @@ paths:
             '*/*':
               schema:
                 type: string
-  /actuator:
+  /v1/articles:
     get:
       tags:
-        - Actuator
-      summary: Actuator root web endpoint
-      operationId: links
+        - Articles
+      operationId: findAll_5
+      parameters:
+        - name: titleContains
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tagName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
       responses:
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -2320,9 +2799,170 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageCloseArticleResponse'
+  /v1/articles/{articleId}/comments:
+    get:
+      tags:
+        - Articles
+      operationId: findAll_6
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
         "404":
           description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageCommentResponse'
+  /actuator:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator root web endpoint
+      operationId: links
+      responses:
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2358,9 +2998,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -2373,9 +3018,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2407,9 +3066,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -2422,9 +3086,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2447,7 +3125,7 @@ paths:
   /:
     get:
       tags:
-        - google-auth-controller
+        - Google authentication
       operationId: login_1
       responses:
         "500":
@@ -2455,9 +3133,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -2470,9 +3153,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2495,7 +3192,7 @@ paths:
   /v1/users/{userId}/bookmarks/{bookmarkId}:
     delete:
       tags:
-        - bookmark-controller
+        - User bookmarks
       operationId: delete_1
       parameters:
         - name: userId
@@ -2515,9 +3212,14 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
-        "409":
-          description: Conflict
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
@@ -2530,9 +3232,23 @@ paths:
           content:
             '*/*':
               schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
                 type: object
-        "404":
-          description: Not Found
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2647,44 +3363,6 @@ components:
         propertyName: error
     ApiSubError:
       type: object
-    UserRequest:
-      type: object
-      properties:
-        phone:
-          pattern: "^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$"
-          type: string
-        firstname:
-          type: string
-        lastname:
-          type: string
-        nickname:
-          type: string
-        info:
-          type: string
-    PersonalInfo:
-      type: object
-      properties:
-        firstname:
-          type: string
-        lastname:
-          type: string
-        nickname:
-          type: string
-        photo:
-          type: string
-        info:
-          type: string
-        phone:
-          type: string
-    UserResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        login:
-          type: string
-        personalInfo:
-          $ref: '#/components/schemas/PersonalInfo'
     ArticleRequest:
       required:
         - body
@@ -2722,6 +3400,9 @@ components:
           type: string
         description:
           type: string
+        rating:
+          type: number
+          format: double
         publicationDate:
           type: string
           format: date-time
@@ -2784,16 +3465,17 @@ components:
           format: int64
         message:
           type: string
-        authorId:
+        authorNickname:
           type: string
-        receiverId:
+        receiverNickname:
           type: string
+        creationDate:
+          type: string
+          format: date-time
         articleId:
           type: integer
           format: int32
     BookmarkRequest:
-      required:
-        - bookmarkType
       type: object
       properties:
         bookmarkType:
@@ -2820,12 +3502,10 @@ components:
           type: string
     RegistrationRequest:
       required:
-        - login
         - password
       type: object
       properties:
         login:
-          pattern: .+@.+\..+
           type: string
         password:
           type: string
@@ -2838,12 +3518,10 @@ components:
           type: string
     AuthenticationRequest:
       required:
-        - login
         - password
       type: object
       properties:
         login:
-          pattern: .+@.+\..+
           type: string
         password:
           type: string
@@ -2854,8 +3532,43 @@ components:
           type: string
         login:
           type: string
-        token:
+    UserRequest:
+      type: object
+      properties:
+        phone:
           type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        nickname:
+          type: string
+        info:
+          type: string
+    PersonalInfo:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        nickname:
+          type: string
+        photo:
+          type: string
+        info:
+          type: string
+        phone:
+          type: string
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        login:
+          type: string
+        personalInfo:
+          $ref: '#/components/schemas/PersonalInfo'
     Pageable:
       type: object
       properties:
@@ -2880,6 +3593,15 @@ components:
         totalElements:
           type: integer
           format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponse'
+        sort:
+          $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
@@ -2892,43 +3614,34 @@ components:
         number:
           type: integer
           format: int32
-        size:
-          type: integer
-          format: int32
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserResponse'
-        sort:
-          $ref: '#/components/schemas/Sort'
         empty:
           type: boolean
     PageableObject:
       type: object
       properties:
-        paged:
-          type: boolean
-        unpaged:
-          type: boolean
+        offset:
+          type: integer
+          format: int64
+        sort:
+          $ref: '#/components/schemas/Sort'
         pageSize:
           type: integer
           format: int32
         pageNumber:
           type: integer
           format: int32
-        offset:
-          type: integer
-          format: int64
-        sort:
-          $ref: '#/components/schemas/Sort'
+        unpaged:
+          type: boolean
+        paged:
+          type: boolean
     Sort:
       type: object
       properties:
+        empty:
+          type: boolean
         sorted:
           type: boolean
         unsorted:
-          type: boolean
-        empty:
           type: boolean
     ModelAndView:
       type: object
@@ -3010,8 +3723,8 @@ components:
             - 509 BANDWIDTH_LIMIT_EXCEEDED
             - 510 NOT_EXTENDED
             - 511 NETWORK_AUTHENTICATION_REQUIRED
-        viewName:
-          type: string
+        empty:
+          type: boolean
         reference:
           type: boolean
         modelMap:
@@ -3021,8 +3734,8 @@ components:
               type: boolean
           additionalProperties:
             type: object
-        empty:
-          type: boolean
+        viewName:
+          type: string
     View:
       type: object
       properties:
@@ -3037,6 +3750,15 @@ components:
         totalElements:
           type: integer
           format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionResponse'
+        sort:
+          $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
@@ -3049,21 +3771,12 @@ components:
         number:
           type: integer
           format: int32
-        size:
-          type: integer
-          format: int32
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionResponse'
-        sort:
-          $ref: '#/components/schemas/Sort'
         empty:
           type: boolean
     SubscriptionResponse:
       type: object
       properties:
-        id:
+        authorId:
           type: string
         firstname:
           type: string
@@ -3071,14 +3784,6 @@ components:
           type: string
         nickname:
           type: string
-    BookmarkArticleResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        articleResponse:
-          $ref: '#/components/schemas/CloseArticleResponse'
     CloseArticleResponse:
       type: object
       properties:
@@ -3091,6 +3796,9 @@ components:
           type: string
         description:
           type: string
+        rating:
+          type: number
+          format: double
         publicationDate:
           type: string
           format: date-time
@@ -3107,38 +3815,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TagResponse'
-    PageBookmarkArticleResponse:
-      type: object
-      properties:
-        totalPages:
-          type: integer
-          format: int32
-        totalElements:
-          type: integer
-          format: int64
-        numberOfElements:
-          type: integer
-          format: int32
-        first:
-          type: boolean
-        last:
-          type: boolean
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
-        number:
-          type: integer
-          format: int32
-        size:
-          type: integer
-          format: int32
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/BookmarkArticleResponse'
-        sort:
-          $ref: '#/components/schemas/Sort'
-        empty:
-          type: boolean
     PageCloseArticleResponse:
       type: object
       properties:
@@ -3148,6 +3824,15 @@ components:
         totalElements:
           type: integer
           format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/CloseArticleResponse'
+        sort:
+          $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
@@ -3160,15 +3845,90 @@ components:
         number:
           type: integer
           format: int32
+        empty:
+          type: boolean
+    PageSubscriberResponse:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
         size:
           type: integer
           format: int32
         content:
           type: array
           items:
-            $ref: '#/components/schemas/CloseArticleResponse'
+            $ref: '#/components/schemas/SubscriberResponse'
         sort:
           $ref: '#/components/schemas/Sort'
+        numberOfElements:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        number:
+          type: integer
+          format: int32
+        empty:
+          type: boolean
+    SubscriberResponse:
+      type: object
+      properties:
+        subscriberId:
+          type: string
+        nickname:
+          type: string
+    BookmarkArticleResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        rating:
+          type: integer
+          format: int32
+        bookmarkType:
+          type: string
+        articleResponse:
+          $ref: '#/components/schemas/CloseArticleResponse'
+    PageBookmarkArticleResponse:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookmarkArticleResponse'
+        sort:
+          $ref: '#/components/schemas/Sort'
+        numberOfElements:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        number:
+          type: integer
+          format: int32
         empty:
           type: boolean
     PageCommentResponse:
@@ -3180,6 +3940,15 @@ components:
         totalElements:
           type: integer
           format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommentResponse'
+        sort:
+          $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
@@ -3192,15 +3961,38 @@ components:
         number:
           type: integer
           format: int32
+        empty:
+          type: boolean
+    PageTagResponse:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
         size:
           type: integer
           format: int32
         content:
           type: array
           items:
-            $ref: '#/components/schemas/CommentResponse'
+            $ref: '#/components/schemas/TagResponse'
         sort:
           $ref: '#/components/schemas/Sort'
+        numberOfElements:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        number:
+          type: integer
+          format: int32
         empty:
           type: boolean
     Link:
@@ -3213,28 +4005,28 @@ components:
     ApplicationContext:
       type: object
       properties:
-        autowireCapableBeanFactory:
-          $ref: '#/components/schemas/AutowireCapableBeanFactory'
-        startupDate:
-          type: integer
-          format: int64
-        applicationName:
-          type: string
         parent:
           $ref: '#/components/schemas/ApplicationContext'
         id:
           type: string
         displayName:
           type: string
+        applicationName:
+          type: string
+        startupDate:
+          type: integer
+          format: int64
+        autowireCapableBeanFactory:
+          $ref: '#/components/schemas/AutowireCapableBeanFactory'
         environment:
           $ref: '#/components/schemas/Environment'
-        beanDefinitionCount:
-          type: integer
-          format: int32
         beanDefinitionNames:
           type: array
           items:
             type: string
+        beanDefinitionCount:
+          type: integer
+          format: int32
         parentBeanFactory:
           $ref: '#/components/schemas/BeanFactory'
         classLoader:
@@ -3276,18 +4068,6 @@ components:
                             properties:
                               name:
                                 type: string
-                              specificationTitle:
-                                type: string
-                              implementationTitle:
-                                type: string
-                              specificationVersion:
-                                type: string
-                              specificationVendor:
-                                type: string
-                              implementationVersion:
-                                type: string
-                              implementationVendor:
-                                type: string
                               annotations:
                                 type: array
                                 items:
@@ -3298,6 +4078,18 @@ components:
                                   type: object
                               sealed:
                                 type: boolean
+                              specificationVersion:
+                                type: string
+                              specificationVendor:
+                                type: string
+                              implementationVersion:
+                                type: string
+                              implementationVendor:
+                                type: string
+                              specificationTitle:
+                                type: string
+                              implementationTitle:
+                                type: string
                     annotations:
                       type: array
                       items:
@@ -3325,18 +4117,6 @@ components:
                     properties:
                       name:
                         type: string
-                      specificationTitle:
-                        type: string
-                      implementationTitle:
-                        type: string
-                      specificationVersion:
-                        type: string
-                      specificationVendor:
-                        type: string
-                      implementationVersion:
-                        type: string
-                      implementationVendor:
-                        type: string
                       annotations:
                         type: array
                         items:
@@ -3347,6 +4127,18 @@ components:
                           type: object
                       sealed:
                         type: boolean
+                      specificationVersion:
+                        type: string
+                      specificationVendor:
+                        type: string
+                      implementationVersion:
+                        type: string
+                      implementationVendor:
+                        type: string
+                      specificationTitle:
+                        type: string
+                      implementationTitle:
+                        type: string
             name:
               type: string
             unnamedModule:
@@ -3380,18 +4172,6 @@ components:
                         properties:
                           name:
                             type: string
-                          specificationTitle:
-                            type: string
-                          implementationTitle:
-                            type: string
-                          specificationVersion:
-                            type: string
-                          specificationVendor:
-                            type: string
-                          implementationVersion:
-                            type: string
-                          implementationVendor:
-                            type: string
                           annotations:
                             type: array
                             items:
@@ -3402,6 +4182,18 @@ components:
                               type: object
                           sealed:
                             type: boolean
+                          specificationVersion:
+                            type: string
+                          specificationVendor:
+                            type: string
+                          implementationVersion:
+                            type: string
+                          implementationVendor:
+                            type: string
+                          specificationTitle:
+                            type: string
+                          implementationTitle:
+                            type: string
                 annotations:
                   type: array
                   items:
@@ -3429,18 +4221,6 @@ components:
                 properties:
                   name:
                     type: string
-                  specificationTitle:
-                    type: string
-                  implementationTitle:
-                    type: string
-                  specificationVersion:
-                    type: string
-                  specificationVendor:
-                    type: string
-                  implementationVersion:
-                    type: string
-                  implementationVendor:
-                    type: string
                   annotations:
                     type: array
                     items:
@@ -3451,6 +4231,18 @@ components:
                       type: object
                   sealed:
                     type: boolean
+                  specificationVersion:
+                    type: string
+                  specificationVendor:
+                    type: string
+                  implementationVersion:
+                    type: string
+                  implementationVendor:
+                    type: string
+                  specificationTitle:
+                    type: string
+                  implementationTitle:
+                    type: string
     AutowireCapableBeanFactory:
       type: object
     BeanFactory:
@@ -3458,11 +4250,11 @@ components:
     Environment:
       type: object
       properties:
-        activeProfiles:
+        defaultProfiles:
           type: array
           items:
             type: string
-        defaultProfiles:
+        activeProfiles:
           type: array
           items:
             type: string
@@ -3474,170 +4266,6 @@ components:
         servletContext:
           type: object
           properties:
-            responseCharacterEncoding:
-              type: string
-            effectiveMajorVersion:
-              type: integer
-              format: int32
-            servletContextName:
-              type: string
-            filterRegistrations:
-              type: object
-              additionalProperties:
-                type: object
-                properties:
-                  urlPatternMappings:
-                    type: array
-                    items:
-                      type: string
-                  servletNameMappings:
-                    type: array
-                    items:
-                      type: string
-                  initParameters:
-                    type: object
-                    additionalProperties:
-                      type: string
-                  name:
-                    type: string
-                  className:
-                    type: string
-            sessionTrackingModes:
-              uniqueItems: true
-              type: array
-              writeOnly: true
-              items:
-                type: string
-                enum:
-                  - COOKIE
-                  - URL
-                  - SSL
-            effectiveMinorVersion:
-              type: integer
-              format: int32
-            defaultSessionTrackingModes:
-              uniqueItems: true
-              type: array
-              items:
-                type: string
-                enum:
-                  - COOKIE
-                  - URL
-                  - SSL
-            servletRegistrations:
-              type: object
-              additionalProperties:
-                type: object
-                properties:
-                  mappings:
-                    type: array
-                    items:
-                      type: string
-                  runAsRole:
-                    type: string
-                  initParameters:
-                    type: object
-                    additionalProperties:
-                      type: string
-                  name:
-                    type: string
-                  className:
-                    type: string
-            effectiveSessionTrackingModes:
-              uniqueItems: true
-              type: array
-              items:
-                type: string
-                enum:
-                  - COOKIE
-                  - URL
-                  - SSL
-            jspConfigDescriptor:
-              type: object
-              properties:
-                taglibs:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      taglibLocation:
-                        type: string
-                      taglibURI:
-                        type: string
-                jspPropertyGroups:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      defaultContentType:
-                        type: string
-                      urlPatterns:
-                        type: array
-                        items:
-                          type: string
-                      trimDirectiveWhitespaces:
-                        type: string
-                      deferredSyntaxAllowedAsLiteral:
-                        type: string
-                      errorOnUndeclaredNamespace:
-                        type: string
-                      scriptingInvalid:
-                        type: string
-                      elIgnored:
-                        type: string
-                      pageEncoding:
-                        type: string
-                      includeCodas:
-                        type: array
-                        items:
-                          type: string
-                      isXml:
-                        type: string
-                      includePreludes:
-                        type: array
-                        items:
-                          type: string
-                      buffer:
-                        type: string
-            requestCharacterEncoding:
-              type: string
-            virtualServerName:
-              type: string
-            sessionCookieConfig:
-              type: object
-              properties:
-                comment:
-                  type: string
-                domain:
-                  type: string
-                maxAge:
-                  type: integer
-                  format: int32
-                path:
-                  type: string
-                httpOnly:
-                  type: boolean
-                secure:
-                  type: boolean
-                name:
-                  type: string
-            initParameterNames:
-              type: object
-            contextPath:
-              type: string
-            sessionTimeout:
-              type: integer
-              format: int32
-            servletNames:
-              type: object
-              deprecated: true
-            serverInfo:
-              type: string
-            attributeNames:
-              type: object
-            servlets:
-              type: object
-              deprecated: true
             classLoader:
               type: object
               properties:
@@ -3655,18 +4283,6 @@ components:
                     properties:
                       name:
                         type: string
-                      specificationTitle:
-                        type: string
-                      implementationTitle:
-                        type: string
-                      specificationVersion:
-                        type: string
-                      specificationVendor:
-                        type: string
-                      implementationVersion:
-                        type: string
-                      implementationVendor:
-                        type: string
                       annotations:
                         type: array
                         items:
@@ -3677,12 +4293,188 @@ components:
                           type: object
                       sealed:
                         type: boolean
+                      specificationVersion:
+                        type: string
+                      specificationVendor:
+                        type: string
+                      implementationVersion:
+                        type: string
+                      implementationVendor:
+                        type: string
+                      specificationTitle:
+                        type: string
+                      implementationTitle:
+                        type: string
             majorVersion:
               type: integer
               format: int32
             minorVersion:
               type: integer
               format: int32
+            servletNames:
+              type: object
+              deprecated: true
+            serverInfo:
+              type: string
+            attributeNames:
+              type: object
+            servlets:
+              type: object
+              deprecated: true
+            sessionTimeout:
+              type: integer
+              format: int32
+            contextPath:
+              type: string
+            jspConfigDescriptor:
+              type: object
+              properties:
+                taglibs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      taglibLocation:
+                        type: string
+                      taglibURI:
+                        type: string
+                jspPropertyGroups:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      buffer:
+                        type: string
+                      urlPatterns:
+                        type: array
+                        items:
+                          type: string
+                      defaultContentType:
+                        type: string
+                      deferredSyntaxAllowedAsLiteral:
+                        type: string
+                      scriptingInvalid:
+                        type: string
+                      trimDirectiveWhitespaces:
+                        type: string
+                      errorOnUndeclaredNamespace:
+                        type: string
+                      isXml:
+                        type: string
+                      includePreludes:
+                        type: array
+                        items:
+                          type: string
+                      pageEncoding:
+                        type: string
+                      includeCodas:
+                        type: array
+                        items:
+                          type: string
+                      elIgnored:
+                        type: string
+            virtualServerName:
+              type: string
+            servletRegistrations:
+              type: object
+              additionalProperties:
+                type: object
+                properties:
+                  mappings:
+                    type: array
+                    items:
+                      type: string
+                  runAsRole:
+                    type: string
+                  name:
+                    type: string
+                  className:
+                    type: string
+                  initParameters:
+                    type: object
+                    additionalProperties:
+                      type: string
+            sessionCookieConfig:
+              type: object
+              properties:
+                name:
+                  type: string
+                path:
+                  type: string
+                maxAge:
+                  type: integer
+                  format: int32
+                comment:
+                  type: string
+                domain:
+                  type: string
+                httpOnly:
+                  type: boolean
+                secure:
+                  type: boolean
+            servletContextName:
+              type: string
+            defaultSessionTrackingModes:
+              uniqueItems: true
+              type: array
+              items:
+                type: string
+                enum:
+                  - COOKIE
+                  - URL
+                  - SSL
+            requestCharacterEncoding:
+              type: string
+            responseCharacterEncoding:
+              type: string
+            effectiveMajorVersion:
+              type: integer
+              format: int32
+            effectiveMinorVersion:
+              type: integer
+              format: int32
+            filterRegistrations:
+              type: object
+              additionalProperties:
+                type: object
+                properties:
+                  urlPatternMappings:
+                    type: array
+                    items:
+                      type: string
+                  servletNameMappings:
+                    type: array
+                    items:
+                      type: string
+                  name:
+                    type: string
+                  className:
+                    type: string
+                  initParameters:
+                    type: object
+                    additionalProperties:
+                      type: string
+            sessionTrackingModes:
+              uniqueItems: true
+              type: array
+              writeOnly: true
+              items:
+                type: string
+                enum:
+                  - COOKIE
+                  - URL
+                  - SSL
+            effectiveSessionTrackingModes:
+              uniqueItems: true
+              type: array
+              items:
+                type: string
+                enum:
+                  - COOKIE
+                  - URL
+                  - SSL
+            initParameterNames:
+              type: object
           writeOnly: true
         contentType:
           type: string
@@ -3804,17 +4596,17 @@ components:
           type: boolean
         propagateQueryProperties:
           type: boolean
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+          writeOnly: true
         attributesMap:
           type: object
           additionalProperties:
             type: object
         attributesCSV:
           type: string
-          writeOnly: true
-        attributes:
-          type: object
-          additionalProperties:
-            type: string
           writeOnly: true
   securitySchemes:
     bearerAuthScheme:

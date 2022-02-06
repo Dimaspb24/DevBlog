@@ -8,6 +8,7 @@ import com.project.devblog.controller.dto.response.RegistrationResponse;
 import com.project.devblog.exception.VerificationException;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.security.JwtTokenProvider;
+import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import com.project.devblog.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
@@ -21,8 +22,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,7 +48,7 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> login(@NonNull @Valid @RequestBody AuthenticationRequest request) {
         final String login = request.getLogin();
 
-        if (!userService.findByLogin(login).getEnabled()) {
+        if (!userService.findByLogin(login).isEnabled()) {
             throw new VerificationException("This account is not verified");
         }
 
@@ -55,8 +58,8 @@ public class AuthenticationController {
         final String token = jwtTokenProvider.createToken(login, user.getRole());
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, token)
-                .body(toResponse(user.getId(), login, token));
+                .header(HttpHeaders.AUTHORIZATION, TOKEN_PREFIX + token)
+                .body(toResponse(user.getId(), login));
     }
 
     @PostMapping("/auth/logout")
@@ -79,13 +82,19 @@ public class AuthenticationController {
         }
     }
 
+    @GetMapping("/auth/checkToken")
+    public ResponseEntity<String> checkValidateToken(@NonNull @RequestParam String token) {
+        jwtTokenProvider.validateToken(token);
+        return ResponseEntity.ok("Token is valid");
+    }
+
     @NonNull
     private RegistrationResponse toResponse(@NonNull UserEntity user) {
         return new RegistrationResponse(user.getId(), user.getLogin());
     }
 
     @NonNull
-    private AuthenticationResponse toResponse(@NonNull String id, @NonNull String login, @NonNull String token) {
-        return new AuthenticationResponse(id, login, token);
+    private AuthenticationResponse toResponse(@NonNull String id, @NonNull String login) {
+        return new AuthenticationResponse(id, login);
     }
 }

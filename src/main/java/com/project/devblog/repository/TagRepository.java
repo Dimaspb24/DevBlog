@@ -14,9 +14,9 @@ import java.util.Optional;
 public interface TagRepository extends JpaRepository<TagEntity, Integer> {
     List<TagEntity> findAllByNameIn(@NonNull List<String> tags);
 
-    Page<TagEntity> findAll(@NonNull Pageable pageable);
+    Page<TagEntity> findAll(Pageable pageable);
 
     Optional<TagEntity> findByName(@NonNull String name);
 
-    Page<TagEntity> findTagEntitiesByNameContains(@NonNull String substring, @NonNull Pageable pageable);
+    Page<TagEntity> findTagEntitiesByNameContains(@NonNull String substring, Pageable pageable);
 }

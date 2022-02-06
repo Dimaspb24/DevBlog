@@ -16,14 +16,12 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Tag(name = "User articles")
@@ -36,74 +34,100 @@ public class UserArticleController {
 
     @PostMapping("/users/{userId}/articles")
     @ResponseStatus(HttpStatus.CREATED)
-    public OpenArticleResponse create(@NonNull @PathVariable String userId, @NonNull @Valid @RequestBody ArticleRequest request) {
-        return toOpenArticleResponse(articleService.create(userId, request.getTitle(), request.getTags(), request.getDescription(),
-                request.getBody(), StatusArticle.valueOf(request.getStatus())));
+    public OpenArticleResponse create(@NonNull @PathVariable String userId,
+                                      @NonNull @Valid @RequestBody ArticleRequest request) {
+        return toOpenArticleResponse(articleService.create(
+                userId,
+                request.getTitle(),
+                request.getTags(),
+                request.getDescription(),
+                request.getBody(),
+                StatusArticle.valueOf(request.getStatus())));
     }
 
     @GetMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
-    public OpenArticleResponse find(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId) {
+    public OpenArticleResponse find(@NonNull @PathVariable String userId,
+                                    @NonNull @PathVariable Integer articleId) {
         return toOpenArticleResponse(articleService.find(userId, articleId));
     }
 
     @GetMapping("/users/{userId}/articles")
     @ResponseStatus(HttpStatus.OK)
-    public Page<CloseArticleResponse> findAll(@NonNull @PathVariable String userId, @PageableDefault Pageable pageable) {
+    public Page<CloseArticleResponse> findAll(@NonNull @PathVariable String userId,
+                                              @SortDefault(sort = "publicationDate") Pageable pageable) {
         return articleService.findAll(userId, pageable)
-                .map(this::toCloseArticleResponse);
-    }
-
-    @GetMapping("/users/{userId}/articlesBySubscriptions")
-    @ResponseStatus(HttpStatus.OK)
-    public Page<CloseArticleResponse> findArticlesBySubscriptions(@NonNull @PathVariable String userId, Pageable pageable) {
-        return articleService.findArticlesBySubscriptions(userId, pageable)
                 .map(this::toCloseArticleResponse);
     }
 
     @DeleteMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId) {
+    public void delete(@NonNull @PathVariable String userId,
+                       @NonNull @PathVariable Integer articleId) {
         articleService.delete(userId, articleId);
     }
 
     @Operation(summary = "Hide or show the article")
     @PatchMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
-    public void enable(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
+    public void enable(@NonNull @PathVariable String userId,
+                       @NonNull @PathVariable Integer articleId,
                        @NonNull @Valid @RequestParam Boolean enabled) {
         articleService.enable(userId, articleId, enabled);
     }
 
     @PutMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
-    public OpenArticleResponse update(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
+    public OpenArticleResponse update(@NonNull @PathVariable String userId,
+                                      @NonNull @PathVariable Integer articleId,
                                       @NonNull @Valid ArticleRequest request) {
-        return toOpenArticleResponse(articleService.update(userId, articleId, request.getTitle(), request.getTags(),
-                request.getDescription(), request.getBody(), StatusArticle.valueOf(request.getStatus())));
+        return toOpenArticleResponse(articleService.update(
+                userId,
+                articleId,
+                request.getTitle(),
+                request.getTags(),
+                request.getDescription(),
+                request.getBody(),
+                StatusArticle.valueOf(request.getStatus())));
     }
 
     @NonNull
     private OpenArticleResponse toOpenArticleResponse(@NonNull ArticleEntity article) {
         PersonalInfo personalInfo = article.getAuthor().getPersonalInfo();
-        return new OpenArticleResponse(article.getId(), article.getTitle(), article.getBody(), article.getStatus().name(),
-                article.getDescription(), article.getPublicationDate(), article.getModificationDate(), article.getAuthor().getId(),
-                personalInfo.getNickname(), personalInfo.getPhoto(), tagEntityToResponse(article.getTags()));
+        return new OpenArticleResponse(
+                article.getId(),
+                article.getTitle(),
+                article.getBody(),
+                article.getStatus().name(),
+                article.getDescription(),
+                article.getPublicationDate(),
+                article.getModificationDate(),
+                article.getAuthor().getId(),
+                personalInfo.getNickname(),
+                personalInfo.getPhoto(),
+                tagEntityToResponse(article.getTags()));
     }
 
     @NonNull
     private CloseArticleResponse toCloseArticleResponse(@NonNull ArticleEntity article) {
         final PersonalInfo personalInfo = article.getAuthor().getPersonalInfo();
-        return new CloseArticleResponse(article.getId(), article.getTitle(), article.getStatus().name(), article.getDescription(),
-                article.getPublicationDate(), article.getModificationDate(), article.getAuthor().getId(), personalInfo.getNickname(),
-                personalInfo.getPhoto(), tagEntityToResponse(article.getTags()));
+        return new CloseArticleResponse(
+                article.getId(),
+                article.getTitle(),
+                article.getStatus().name(),
+                article.getDescription(),
+                article.getPublicationDate(),
+                article.getModificationDate(),
+                article.getAuthor().getId(),
+                personalInfo.getNickname(),
+                personalInfo.getPhoto(),
+                tagEntityToResponse(article.getTags()));
     }
 
-    private List<TagResponse> tagEntityToResponse(List<TagEntity> tagEntities) {
-        return Optional.ofNullable(tagEntities).map(tags ->
-                tags.stream()
-                        .map(tagEntity -> new TagResponse(tagEntity.getId(), tagEntity.getName()))
-                        .collect(Collectors.toList()))
-                .orElse(Collections.emptyList());
+    @NonNull
+    private List<TagResponse> tagEntityToResponse(@NonNull List<TagEntity> tagEntities) {
+        return tagEntities.stream()
+                .map(tagEntity -> new TagResponse(tagEntity.getId(), tagEntity.getName()))
+                .collect(Collectors.toList());
     }
 }

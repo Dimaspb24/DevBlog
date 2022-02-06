@@ -33,7 +33,7 @@ public class TagController {
     @GetMapping("/tags")
     @ResponseStatus(HttpStatus.OK)
     public Page<TagResponse> findAll(@RequestParam(name = "nameContains", required = false) String tagNameContains,
-                                     @NonNull Pageable pageable) {
+                                     Pageable pageable) {
         if (Objects.isNull(tagNameContains)) {
             return tagService.findAll(pageable).map(this::toResponse);
         }

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -112,7 +113,7 @@ public class ArticleService {
 
     @NonNull
     public Page<ArticleEntity> findByTitleContains(String name, @NonNull Pageable pageable) {
-        if (name == null || name.isEmpty()) {
+        if (name.isEmpty()) {
             return articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageable);
         }
         return articleRepository.findArticleEntitiesByTitleContains(name, pageable);
@@ -131,5 +132,20 @@ public class ArticleService {
     @NonNull
     public Page<ArticleEntity> findArticlesBySubscriptions(@NonNull String userId, @NonNull Pageable pageable) {
         return articleRepository.findBySubscriptions(userId, pageable);
+    }
+
+    @NonNull
+    public Page<ArticleEntity> findAll(String titleContains, String tagName, Pageable pageable) {
+        Page<ArticleEntity> articleEntities;
+        if (Objects.isNull(titleContains) && Objects.isNull(tagName)) {
+            articleEntities = find(pageable);
+        } else if (Objects.nonNull(titleContains) && Objects.nonNull(tagName)) {
+            articleEntities = findArticlesByTagNameAndTitleContains(tagName, titleContains, pageable);
+        } else if (Objects.nonNull(titleContains)) {
+            articleEntities = findByTitleContains(titleContains, pageable);
+        } else {
+            articleEntities = findArticlesByTagName(tagName, pageable);
+        }
+        return articleEntities;
     }
 }

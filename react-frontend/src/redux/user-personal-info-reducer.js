@@ -4,7 +4,8 @@ const testPersonalInfoInitialState = {
     firstname: 'Alex',
     lastname: 'Afanasiev',
     nickname: 'Leha-Chel',
-    photo: 'https://sun9-32.userapi.com/impf/c830209/v830209268/120d18/lqU5_fb3DKo.jpg?size=1080x810&quality=96&sign=af1665c70b3ecfbc34e610daaac4f67e&type=album',
+    photo: 'https://sun9-32.userapi.com/impf/c830209/v830209268/120d18/lqU5_fb3DKo.jpg?size=1080x810&quality=' +
+        '96&sign=af1665c70b3ecfbc34e610daaac4f67e&type=album',
     info: 'some info...',
     phone: '89841235488'
 }

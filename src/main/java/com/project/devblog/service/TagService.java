@@ -1,8 +1,8 @@
 package com.project.devblog.service;
 
+import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.repository.TagRepository;
-import com.project.devblog.service.exception.TagNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,8 @@ public class TagService {
 
     @NonNull
     public TagEntity get(@NonNull Integer tagId) {
-        return tagRepository.findById(tagId).orElseThrow(TagNotFoundException::new);
+        return tagRepository.findById(tagId).orElseThrow(() ->
+                new NotFoundException(TagEntity.class, tagId.toString()));
     }
 
     @NonNull

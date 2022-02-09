@@ -1,7 +1,6 @@
 package com.project.devblog.model;
 
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.model.enums.StatusUser;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
@@ -24,17 +23,17 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "users")
-public class UserEntity extends AuditableBaseEntity<Integer> {
+public class UserEntity extends AuditableBaseEntity<String> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    String id;
     String login;
     String password;
     @Enumerated(EnumType.STRING)
     Role role;
-    @Enumerated(EnumType.STRING)
-    StatusUser status;
+
+    Boolean enabled;
+    String verificationCode;
 
     PersonalInfo personalInfo;
 
@@ -83,10 +82,18 @@ public class UserEntity extends AuditableBaseEntity<Integer> {
     @OrderBy("personalInfo.nickname")
     List<UserEntity> subscriptions = new ArrayList<>();
 
-    public UserEntity(@NonNull String login, @NonNull Role role, @NonNull StatusUser status) {
+    public UserEntity(@NonNull String id, @NonNull String login, @NonNull Role role) {
+        this.id = id;
         this.login = login;
         this.role = role;
-        this.status = status;
+    }
+
+    public UserEntity(String id, String login, String password, Role role, Boolean enabled) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.role = role;
+        this.enabled = enabled;
     }
 
     /*-----------------------------------FOR_MANY_TO_MANY_SUBSCRIBERS--------------------------------*/

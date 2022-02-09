@@ -1,19 +1,19 @@
 create table if not exists users
 (
-    id                serial    not null primary key,
+    id                text primary key,
     login             text      not null,
     password          text      not null,
     role              text      not null,
-    status            text      not null,
     firstname         text      null,
     lastname          text      null,
     nickname          text      not null default concat('user#', gen_random_uuid()),
     photo             text      null,
     info              text      null,
     phone             text      null,
-    enabled           boolean   null     default true,
+    enabled           boolean   not null default false,
     creation_date     timestamp not null default now(),
     modification_date timestamp not null default now(),
+    verification_code text      null,
     constraint unique_nickname unique (nickname),
     constraint unique_phone unique (phone),
     constraint unique_login unique (login)
@@ -21,8 +21,8 @@ create table if not exists users
 
 create table if not exists articles
 (
-    id                serial    not null primary key,
-    user_id           int       not null,
+    id                serial primary key,
+    user_id           text      not null,
     title             text      not null,
     body              text      not null,
     status            text      not null,
@@ -31,21 +31,19 @@ create table if not exists articles
     creation_date     timestamp not null default now(),
     modification_date timestamp not null default now(),
     publication_date  timestamp null,
-    deletion_date     timestamp null,
     constraint id_fk_articles_users foreign key (user_id) references users (id) --on delete  -- При удалении юзера нужно удалять его посты?
 );
 
 create table if not exists comments
 (
-    id                bigserial not null primary key,
+    id                bigserial primary key,
     article_id        int       not null,
-    author_id         int       not null,
-    receiver_id       int       null,
+    author_id         text      not null,
+    receiver_id       text      null,
     message           text      not null,
     enabled           boolean   not null default true,
     creation_date     timestamp not null default now(),
     modification_date timestamp not null default now(),
-    deletion_date     timestamp null,
     constraint id_fk_comments_articleles foreign key (article_id) references articles (id) on delete cascade,
     constraint id_fk_comments_author_id__users foreign key (author_id) references users (id),
     constraint id_fk_comments_receiver_id__users foreign key (receiver_id) references users (id)
@@ -54,8 +52,8 @@ create table if not exists comments
 
 create table if not exists tags
 (
-    id   serial not null primary key,
-    name text   not null,
+    id   serial primary key,
+    name text not null,
     constraint unique_name unique (name)
 );
 
@@ -70,8 +68,8 @@ create table if not exists articles_tags
 
 create table if not exists subscribers
 (
-    user_id       int not null,
-    subscriber_id int not null,
+    user_id       text not null,
+    subscriber_id text not null,
     primary key (user_id, subscriber_id),
     constraint id_fk_subscribers_user_id__users foreign key (user_id) references users (id) on delete cascade,
     constraint id_fk_subscribers_subscriber_id__users foreign key (subscriber_id) references users (id) on delete cascade
@@ -80,7 +78,7 @@ create table if not exists subscribers
 create table if not exists users_articles
 (
     id                bigserial primary key,
-    user_id           int       not null,
+    user_id           text      not null,
     article_id        int       not null,
     rating            int       null,
     bookmark_type     text      null,

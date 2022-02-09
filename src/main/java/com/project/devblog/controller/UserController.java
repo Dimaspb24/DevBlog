@@ -5,27 +5,27 @@ import com.project.devblog.controller.dto.request.UserRequest;
 import com.project.devblog.controller.dto.response.UserResponse;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.service.UserService;
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Tag(name = "User")
 @ApiV1
-@AllArgsConstructor
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
-    @NonNull
     private final UserService userService;
 
     @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponse get(@NonNull @PathVariable Integer userId) {
+    public UserResponse get(@NonNull @PathVariable String userId) {
         UserEntity user = userService.get(userId);
         return toResponse(user);
     }
@@ -39,13 +39,13 @@ public class UserController {
 
     @DeleteMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@NonNull @PathVariable Integer userId) {
+    public void delete(@NonNull @PathVariable String userId) {
         userService.delete(userId);
     }
 
     @PutMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponse update(@NonNull @PathVariable Integer userId,
+    public UserResponse update(@NonNull @PathVariable String userId,
                                @RequestBody @NonNull @Valid UserRequest userRequest) {
         UserEntity user = userService.update(userId, userRequest);
         return toResponse(user);

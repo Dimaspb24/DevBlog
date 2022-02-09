@@ -1,7 +1,6 @@
 package com.project.devblog.security;
 
 import com.project.devblog.model.UserEntity;
-import com.project.devblog.security.jwt.JwtUserFactory;
 import com.project.devblog.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

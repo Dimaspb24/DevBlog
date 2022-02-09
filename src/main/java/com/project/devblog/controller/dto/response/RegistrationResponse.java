@@ -1,15 +1,18 @@
 package com.project.devblog.controller.dto.response;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.experimental.FieldDefaults;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RegistrationResponse {
 
     @NonNull
-    private final Integer id;
+    String id;
     @NonNull
-    private final String login;
+    String login;
 }

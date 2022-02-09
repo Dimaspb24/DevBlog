@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -14,15 +13,9 @@ import javax.validation.constraints.Pattern;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RegistrationRequest {
 
-    @Email
+    @Pattern(regexp = ".+@.+\\..+", message = "Please provide a valid email address")
     @NotBlank(message = "Login is required")
     String login;
     @NotBlank(message = "Password is required")
     String password;
-    @NotBlank(message = "Role is required")
-    @Pattern(regexp = "(USER)|(ADMIN)")
-    String role;
-    @NotBlank(message = "Status is required")
-    @Pattern(regexp = "(ACTIVE)|(BANNED)")
-    String status;
 }

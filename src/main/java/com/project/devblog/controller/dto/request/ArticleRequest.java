@@ -21,7 +21,7 @@ public class ArticleRequest {
     @NotBlank(message = "Body is required")
     String body;
     @NotBlank(message = "Status is required")
-    @Pattern(regexp = "(PUBLISHED)|(CREATED)|(REMOVED)")
+    @Pattern(regexp = "(PUBLISHED)|(CREATED)")
     String status;
     @NotBlank(message = "Description is required")
     String description;

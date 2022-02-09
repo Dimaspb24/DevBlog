@@ -29,7 +29,7 @@ public class OpenArticleResponse {
     @NonNull
     LocalDateTime modificationDate;
     @NonNull
-    Integer authorId;
+    String authorId;
     @NonNull
     String nickname;
     @Nullable

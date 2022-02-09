@@ -7,8 +7,9 @@ import InformationField from './InformationField'
 const UserPersonalInfo = (props) => {
     return (
         <Box sx={{
-            display: 'flex', flexDirection: 'column', maxWidth: 600, border: '3px solid #512da8',
-            borderRadius: 3
+            alignSelf: 'center',
+            display: 'flex', flexDirection: 'column',
+            minWidth: 600, border: '3px solid #512da8', borderRadius: 3, mt: '8ch', mb: '15ch'
         }}>
             <Text/>
             <UserAvatarContainer/>

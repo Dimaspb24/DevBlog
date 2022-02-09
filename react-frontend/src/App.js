@@ -4,7 +4,7 @@ import Header from './components/Header/Header'
 
 function App() {
     return (
-        <Box>
+        <Box sx={{display: 'flex', flexDirection: 'column'}}>
             <Header/>
             <UserPersonalInfoContainer/>
         </Box>

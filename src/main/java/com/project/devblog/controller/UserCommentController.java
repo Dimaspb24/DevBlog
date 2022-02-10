@@ -58,7 +58,7 @@ public class UserCommentController {
         commentService.delete(commentId, userId, articleId);
     }
 
-    @Operation(summary = "Hide or show the comment")
+    @Operation(summary = "Block or unblock the comment")
     @PatchMapping("/users/{userId}/articles/{articleId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.OK)
     public void enable(@NonNull @PathVariable String userId,

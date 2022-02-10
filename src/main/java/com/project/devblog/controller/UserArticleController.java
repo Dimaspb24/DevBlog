@@ -67,7 +67,7 @@ public class UserArticleController {
         articleService.delete(userId, articleId);
     }
 
-    @Operation(summary = "Hide or show the article")
+    @Operation(summary = "Block or unblock the article")
     @PatchMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
     public void enable(@NonNull @PathVariable String userId,

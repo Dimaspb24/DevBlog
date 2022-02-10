@@ -1,22 +1,21 @@
 package com.project.devblog.service;
 
 import com.project.devblog.model.UserEntity;
-import lombok.AllArgsConstructor;
-import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SubscriptionService {
 
-    @NonNull
     private final UserService userService;
 
     public void subscribe(String userId, String authorId) {
@@ -35,13 +34,13 @@ public class SubscriptionService {
 
     public Page<UserEntity> findSubscriptions(String userId, Pageable pageable) {
         UserEntity user = userService.find(userId);
-        List<UserEntity> subscriptions = user.getSubscriptions();
-        return new PageImpl<>(subscriptions, pageable, subscriptions.size());
+        Set<UserEntity> subscriptions = user.getSubscriptions();
+        return new PageImpl<>(new ArrayList<>(subscriptions), pageable, subscriptions.size());
     }
 
     public Page<UserEntity> findSubscribers(String userId, Pageable pageable) {
         UserEntity user = userService.find(userId);
-        List<UserEntity> subscribers = user.getSubscribers();
-        return new PageImpl<>(subscribers, pageable, subscribers.size());
+        Set<UserEntity> subscribers = user.getSubscribers();
+        return new PageImpl<>(new ArrayList<>(subscribers), pageable, subscribers.size());
     }
 }

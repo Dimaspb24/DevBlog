@@ -3,8 +3,8 @@ package com.project.devblog.service;
 import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.repository.TagRepository;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,9 +16,9 @@ import java.util.Objects;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TagService {
-    @NonNull
+
     private final TagRepository tagRepository;
 
     @NonNull

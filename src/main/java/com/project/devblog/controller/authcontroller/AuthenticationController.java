@@ -4,24 +4,13 @@ import com.project.devblog.controller.annotation.ApiV1;
 import com.project.devblog.controller.dto.request.AuthenticationRequest;
 import com.project.devblog.controller.dto.request.RegistrationRequest;
 import com.project.devblog.controller.dto.response.AuthenticationResponse;
-import com.project.devblog.controller.dto.response.RegistrationResponse;
-import com.project.devblog.exception.VerificationException;
-import com.project.devblog.model.UserEntity;
 import com.project.devblog.security.JwtTokenProvider;
-import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
-import com.project.devblog.service.UserService;
+import com.project.devblog.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,62 +28,30 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
-    private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserService userService;
+    private final AuthenticationService authenticationService;
 
     @PostMapping("/auth/login")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<AuthenticationResponse> login(@NonNull @Valid @RequestBody AuthenticationRequest request) {
-        final String login = request.getLogin();
-
-        if (!userService.findByLogin(login).isEnabled()) {
-            throw new VerificationException("This account is not verified");
-        }
-
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(login, request.getPassword()));
-        final UserEntity user = userService.findByLogin(login);
-        final String token = jwtTokenProvider.createToken(login, user.getRole());
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, TOKEN_PREFIX + token)
-                .body(toResponse(user.getId(), login));
+        return authenticationService.login(request.getLogin(), request.getPassword());
     }
 
     @PostMapping("/auth/logout")
     @ResponseStatus(HttpStatus.OK)
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
-        securityContextLogoutHandler.logout(request, response, auth);
+        authenticationService.logout(request, response);
     }
 
     @PostMapping("/auth/registration")
-    @ResponseStatus(HttpStatus.OK)
-    public RegistrationResponse registration(@NonNull @Valid @RequestBody RegistrationRequest request) {
-        if (!userService.isExists(request.getLogin())) {
-            return toResponse(userService.register(
-                    request.getLogin(),
-                    request.getPassword()));
-        } else {
-            throw new BadCredentialsException("Login already exists");
-        }
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<AuthenticationResponse> registration(@NonNull @Valid @RequestBody RegistrationRequest request) {
+        return authenticationService.register(request.getLogin(), request.getPassword());
     }
 
     @GetMapping("/auth/checkToken")
     public ResponseEntity<String> checkValidateToken(@NonNull @RequestParam String token) {
         jwtTokenProvider.validateToken(token);
         return ResponseEntity.ok("Token is valid");
-    }
-
-    @NonNull
-    private RegistrationResponse toResponse(@NonNull UserEntity user) {
-        return new RegistrationResponse(user.getId(), user.getLogin());
-    }
-
-    @NonNull
-    private AuthenticationResponse toResponse(@NonNull String id, @NonNull String login) {
-        return new AuthenticationResponse(id, login);
     }
 }

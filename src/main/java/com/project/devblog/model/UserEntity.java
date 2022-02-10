@@ -10,7 +10,9 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @DynamicInsert
 @DynamicUpdate
@@ -69,7 +71,7 @@ public class UserEntity extends AuditableBaseEntity<String> {
             inverseJoinColumns = @JoinColumn(name = "subscriber_id")
     )
     @OrderBy("personalInfo.nickname")
-    List<UserEntity> subscribers = new ArrayList<>();
+    Set<UserEntity> subscribers = new HashSet<>();
 
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
@@ -80,7 +82,7 @@ public class UserEntity extends AuditableBaseEntity<String> {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     @OrderBy("personalInfo.nickname")
-    List<UserEntity> subscriptions = new ArrayList<>();
+    Set<UserEntity> subscriptions = new HashSet<>();
 
     public UserEntity(String id, String login, String password, Role role, Boolean enabled) {
         this.id = id;

@@ -12,8 +12,8 @@ import com.project.devblog.model.UserArticleEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.BookmarkType;
 import com.project.devblog.repository.UserArticleRepository;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,14 +25,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BookmarkService {
 
-    @NonNull
     private final UserArticleRepository userArticleRepository;
-    @NonNull
     private final ArticleService articleService;
-    @NonNull
     private final UserService userService;
 
     @NonNull

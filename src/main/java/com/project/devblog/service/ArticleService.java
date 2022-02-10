@@ -6,8 +6,8 @@ import com.project.devblog.model.TagEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.repository.ArticleRepository;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,14 +19,11 @@ import java.util.Objects;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ArticleService {
 
-    @NonNull
     private final ArticleRepository articleRepository;
-    @NonNull
     private final UserService userService;
-    @NonNull
     private final TagService tagService;
 
     @NonNull

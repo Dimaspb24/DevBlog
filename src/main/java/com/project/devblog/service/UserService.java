@@ -8,6 +8,7 @@ import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.repository.UserRepository;
 import com.project.devblog.service.idgenerator.Generator;
+import static java.lang.String.format;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,8 +22,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class UserService {
 
     @NonNull
@@ -95,40 +96,42 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void enable(@NonNull String userId, @NonNull Boolean enabled) {
+        UserEntity user = find(userId);
+        user.setEnabled(enabled);
+        userRepository.save(user);
+    }
+
     public UserEntity update(String userId, UserRequest userRequest) {
         UserEntity user = find(userId);
         PersonalInfo personalInfo = user.getPersonalInfo();
-
         String firstname = userRequest.getFirstname();
+        String lastname = userRequest.getLastname();
+        String info = userRequest.getInfo();
+        String phone = userRequest.getPhone();
+        String nickname = userRequest.getNickname();
+
         if (firstname != null && !firstname.isEmpty()) {
             personalInfo.setFirstname(firstname);
         }
-
-        String lastname = userRequest.getLastname();
         if (lastname != null && !lastname.isEmpty()) {
             personalInfo.setLastname(lastname);
         }
-
-        String info = userRequest.getInfo();
         if (info != null && !info.isEmpty()) {
             personalInfo.setInfo(info);
         }
-
-        String phone = userRequest.getPhone();
         if (phone != null && !phone.isEmpty()) {
             if (!userRepository.existsByPersonalInfoPhone(phone)) {
                 personalInfo.setPhone(phone);
             } else {
-                throw new NonUniqueValueException("The phone must be unique");
+                throw new NonUniqueValueException(format("User with this phone=%s already exists", phone));
             }
         }
-
-        String nickname = userRequest.getNickname();
         if (nickname != null && !nickname.isEmpty()) {
             if (!userRepository.existsByPersonalInfoNickname(nickname)) {
                 personalInfo.setNickname(nickname);
             } else {
-                throw new NonUniqueValueException("The nickname must be unique");
+                throw new NonUniqueValueException(format("User with nickname=%s already exists", nickname));
             }
         }
 

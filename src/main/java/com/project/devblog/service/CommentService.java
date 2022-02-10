@@ -5,8 +5,8 @@ import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.CommentEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.CommentRepository;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,14 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CommentService {
 
-    @NonNull
     private final CommentRepository commentRepository;
-    @NonNull
     private final ArticleService articleService;
-    @NonNull
     private final UserService userService;
 
     @NonNull

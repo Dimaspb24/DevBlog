@@ -10,17 +10,18 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name = "Bookmark")
+@Tag(name = "User bookmarks")
 @ApiV1
 @RestController
 @RequiredArgsConstructor
-public class BookmarkController {
+public class UserBookmarkController {
 
     private final BookmarkService bookmarkService;
 
@@ -32,11 +33,11 @@ public class BookmarkController {
         return bookmarkService.create(userId, articleId, request);
     }
 
-    @GetMapping("/users/{userId}/bookmarks/{bookmarkType}")
+    @GetMapping("/users/{userId}/bookmarks")
     @ResponseStatus(HttpStatus.OK)
-    public Page<BookmarkArticleResponse> getAll(@NonNull @PathVariable String userId,
-                                                @NonNull @PathVariable String bookmarkType,
-                                                @NonNull Pageable pageable) {
+    public Page<BookmarkArticleResponse> findAll(@NonNull @PathVariable String userId,
+                                                 @RequestParam(name = "bookmarkType", required = false) String bookmarkType,
+                                                 @SortDefault(sort = "article.publicationDate") Pageable pageable) {
         return bookmarkService.findAll(userId, bookmarkType, pageable);
     }
 

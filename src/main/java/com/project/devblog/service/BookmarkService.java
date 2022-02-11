@@ -12,27 +12,24 @@ import com.project.devblog.model.UserArticleEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.BookmarkType;
 import com.project.devblog.repository.UserArticleRepository;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BookmarkService {
 
-    @NonNull
     private final UserArticleRepository userArticleRepository;
-    @NonNull
     private final ArticleService articleService;
-    @NonNull
     private final UserService userService;
 
     @NonNull
@@ -43,7 +40,7 @@ public class BookmarkService {
             userArt.setBookmarkType(bookmarkType);
             return userArt;
         }).orElseGet(() -> {
-            final UserEntity userEntity = userService.get(userId);
+            final UserEntity userEntity = userService.find(userId);
             final ArticleEntity articleEntity = articleService.findById(articleId);
             return new UserArticleEntity(bookmarkType, userEntity, articleEntity);
         });
@@ -52,27 +49,15 @@ public class BookmarkService {
     }
 
     @NonNull
-    public Page<BookmarkArticleResponse> findAll(String userId, String bookmarkType, Pageable pageable) {
-        BookmarkType type = BookmarkType.valueOf(bookmarkType);
-
-        Page<UserArticleEntity> userBookmarks = userArticleRepository.findByUserIdAndBookmarkType(userId, type, pageable);
-
-        List<BookmarkArticleResponse> listCloseArticleResponse = userBookmarks.stream().map(userArticleEntity -> {
-
-            ArticleEntity article = userArticleEntity.getArticle();
-            List<TagResponse> listTags = article.getTags().stream()
-                    .map(tagEntity -> new TagResponse(tagEntity.getId(), tagEntity.getName()))
-                    .collect(Collectors.toList());
-            UserEntity author = article.getAuthor();
-            PersonalInfo personalInfo = author.getPersonalInfo();
-            CloseArticleResponse closeArticleResponse = new CloseArticleResponse(article.getId(), article.getTitle(), article.getStatus().name(),
-                    article.getDescription(), article.getPublicationDate(), article.getModificationDate(),
-                    author.getId(), personalInfo.getNickname(), personalInfo.getPhoto(), listTags);
-
-            return new BookmarkArticleResponse(userArticleEntity.getId(), closeArticleResponse);
-        }).collect(Collectors.toList());
-
-        return new PageImpl<>(listCloseArticleResponse, pageable, listCloseArticleResponse.size());
+    public Page<BookmarkArticleResponse> findAll(@NonNull String userId, String bookmarkType, Pageable pageable) {
+        if (Objects.isNull(bookmarkType)) {
+            return userArticleRepository.findByUserId(userId, pageable).
+                    map(this::getBookmarkArticleResponses);
+        } else {
+            BookmarkType type = BookmarkType.valueOf(bookmarkType);
+            return userArticleRepository.findByUserIdAndBookmarkType(userId, type, pageable)
+                    .map(this::getBookmarkArticleResponses);
+        }
     }
 
     public void delete(@NonNull Long bookmarkId) {
@@ -83,4 +68,21 @@ public class BookmarkService {
         userArticleRepository.save(userArticleEntity);
     }
 
+    private BookmarkArticleResponse getBookmarkArticleResponses(UserArticleEntity userArticleEntity) {
+        ArticleEntity article = userArticleEntity.getArticle();
+        List<TagResponse> listTags = article.getTags().stream()
+                .map(tagEntity -> new TagResponse(tagEntity.getId(), tagEntity.getName()))
+                .collect(Collectors.toList());
+        UserEntity author = article.getAuthor();
+        PersonalInfo personalInfo = author.getPersonalInfo();
+        CloseArticleResponse closeArticleResponse = new CloseArticleResponse(article.getId(), article.getTitle(), article.getStatus().name(),
+                article.getDescription(), article.getRating(), article.getPublicationDate(), article.getModificationDate(),
+                author.getId(), personalInfo.getNickname(), personalInfo.getPhoto(), listTags);
+
+        return new BookmarkArticleResponse(
+                userArticleEntity.getId(),
+                userArticleEntity.getRating(),
+                userArticleEntity.getBookmarkType().toString(),
+                closeArticleResponse);
+    }
 }

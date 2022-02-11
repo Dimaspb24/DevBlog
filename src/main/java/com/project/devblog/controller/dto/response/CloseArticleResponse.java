@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CloseArticleResponse {
+
     @NonNull
     Integer id;
     @NonNull
@@ -22,6 +23,8 @@ public class CloseArticleResponse {
     String status;
     @NonNull
     String description;
+    @Nullable
+    Double rating;
     @Nullable
     LocalDateTime publicationDate;
     @NonNull

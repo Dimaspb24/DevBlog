@@ -2,11 +2,11 @@ package com.project.devblog.service;
 
 import com.project.devblog.config.MailProperties;
 import com.project.devblog.exception.NotFoundException;
+import com.project.devblog.exception.VerificationException;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.UserRepository;
-import com.project.devblog.exception.VerificationException;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -17,15 +17,12 @@ import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 
 @Service
-@AllArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class VerificationService {
 
-    @NonNull
     private final JavaMailSender mailSender;
-    @NonNull
     private final UserRepository userRepository;
-    @NonNull
     private final MailProperties mailProperties;
 
     public void sendVerificationEmail(@NonNull String userId) {

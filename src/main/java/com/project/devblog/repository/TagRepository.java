@@ -2,6 +2,8 @@ package com.project.devblog.repository;
 
 import com.project.devblog.model.TagEntity;
 import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,12 +12,11 @@ import java.util.Optional;
 
 @Repository
 public interface TagRepository extends JpaRepository<TagEntity, Integer> {
-    @NonNull
     List<TagEntity> findAllByNameIn(@NonNull List<String> tags);
 
-    @NonNull
+    Page<TagEntity> findAll(Pageable pageable);
+
     Optional<TagEntity> findByName(@NonNull String name);
 
-    @NonNull
-    List<TagEntity> findTagEntitiesByNameContains(@NonNull String substring);
+    Page<TagEntity> findTagEntitiesByNameContains(@NonNull String substring, Pageable pageable);
 }

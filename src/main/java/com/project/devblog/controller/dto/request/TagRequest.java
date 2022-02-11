@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TagRequest {
+
     @NotBlank(message = "Name is required")
     @Size(max = 50, message = "The tag can contain up to 50 characters")
     String name;

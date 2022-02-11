@@ -10,7 +10,9 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @DynamicInsert
 @DynamicUpdate
@@ -32,7 +34,7 @@ public class UserEntity extends AuditableBaseEntity<String> {
     @Enumerated(EnumType.STRING)
     Role role;
 
-    Boolean enabled;
+    boolean enabled;
     String verificationCode;
 
     PersonalInfo personalInfo;
@@ -69,7 +71,7 @@ public class UserEntity extends AuditableBaseEntity<String> {
             inverseJoinColumns = @JoinColumn(name = "subscriber_id")
     )
     @OrderBy("personalInfo.nickname")
-    List<UserEntity> subscribers = new ArrayList<>();
+    Set<UserEntity> subscribers = new HashSet<>();
 
     @Fetch(FetchMode.SUBSELECT)
     @Builder.Default
@@ -80,13 +82,7 @@ public class UserEntity extends AuditableBaseEntity<String> {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     @OrderBy("personalInfo.nickname")
-    List<UserEntity> subscriptions = new ArrayList<>();
-
-    public UserEntity(@NonNull String id, @NonNull String login, @NonNull Role role) {
-        this.id = id;
-        this.login = login;
-        this.role = role;
-    }
+    Set<UserEntity> subscriptions = new HashSet<>();
 
     public UserEntity(String id, String login, String password, Role role, Boolean enabled) {
         this.id = id;
@@ -104,15 +100,4 @@ public class UserEntity extends AuditableBaseEntity<String> {
     public void removeSubscription(UserEntity subscriber) {
         subscriptions.remove(subscriber);
     }
-
-    /*-----------------------------------FOR_MANY_TO_MANY_USER_ARTICLE--------------------------------*/
-    public void addRelationArticle(UserArticleEntity userArticle) {
-        relationArticles.add(userArticle);
-        userArticle.setUser(this);
-    }
-
-    public void removeRelationArticle(UserArticleEntity userArticle) {
-        relationArticles.remove(userArticle);
-    }
-
 }

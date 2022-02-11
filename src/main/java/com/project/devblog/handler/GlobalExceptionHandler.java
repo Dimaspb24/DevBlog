@@ -1,5 +1,6 @@
 package com.project.devblog.handler;
 
+import com.project.devblog.exception.NonUniqueValueException;
 import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.exception.VerificationException;
 import com.project.devblog.handler.apierror.ApiError;
@@ -9,18 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
+import static org.springframework.http.HttpStatus.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -142,6 +139,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return toResponseEntity(apiError);
     }
 
+    @ExceptionHandler(NonUniqueValueException.class)
+    @ResponseStatus(BAD_REQUEST)
+    protected ResponseEntity<ApiError> handleNonUniqueResultException(NonUniqueValueException ex,
+                                                                      HttpServletRequest request) {
+        log.error("NonUniqueValueException {}\n", request.getRequestURI(), ex);
+
+        ApiError apiError = new ApiError(BAD_REQUEST, ex.getMessage(), ex);
+        return toResponseEntity(apiError);
+    }
+
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(NOT_FOUND)
     protected ResponseEntity<ApiError> handleNotFound(NotFoundException ex, HttpServletRequest request) {
@@ -190,6 +197,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("AccessDeniedException {}\n", request.getRequestURI(), ex);
 
         ApiError apiError = new ApiError(FORBIDDEN, "Access denied!", ex);
+        return toResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(LockedException.class)
+    @ResponseStatus(UNAUTHORIZED)
+    public ResponseEntity<ApiError> handleLockedException(HttpServletRequest request, LockedException ex) {
+        log.error("LockedException {}\n", request.getRequestURI(), ex);
+
+        ApiError apiError = new ApiError(UNAUTHORIZED, "Unauthorized", ex);
         return toResponseEntity(apiError);
     }
 

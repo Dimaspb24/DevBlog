@@ -5,6 +5,7 @@ import com.project.devblog.controller.dto.request.UserRequest;
 import com.project.devblog.controller.dto.response.UserResponse;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -25,30 +26,37 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponse get(@NonNull @PathVariable String userId) {
-        UserEntity user = userService.get(userId);
-        return toResponse(user);
+    public UserResponse find(@NonNull @PathVariable String userId) {
+        return toResponse(userService.find(userId));
     }
 
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
-    public Page<UserResponse> getAll(@NonNull Pageable pageable) {
+    public Page<UserResponse> findAll(@NonNull Pageable pageable) {
         return userService.findAll(pageable)
                 .map(this::toResponse);
     }
 
+    @Operation(summary = "Block the user")
     @DeleteMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@NonNull @PathVariable String userId) {
         userService.delete(userId);
     }
 
+    @Operation(summary = "Block or unblock the user")
+    @PatchMapping("/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void enable(@NonNull @PathVariable String userId,
+                       @NonNull @Valid @RequestParam Boolean enabled) {
+        userService.enable(userId, enabled);
+    }
+
     @PutMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public UserResponse update(@NonNull @PathVariable String userId,
-                               @RequestBody @NonNull @Valid UserRequest userRequest) {
-        UserEntity user = userService.update(userId, userRequest);
-        return toResponse(user);
+                               @RequestBody @NonNull UserRequest userRequest) {
+        return toResponse(userService.update(userId, userRequest));
     }
 
     @NonNull

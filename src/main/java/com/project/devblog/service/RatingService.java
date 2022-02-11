@@ -5,35 +5,32 @@ import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.UserArticleEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.UserArticleRepository;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RatingService {
 
-    @NonNull
     private final UserArticleRepository userArticleRepository;
-    @NonNull
     private final ArticleService articleService;
-    @NonNull
     private final UserService userService;
 
     @NonNull
     public UserArticleEntity create(@NonNull String authorId, @NonNull Integer articleId, @NonNull Integer rating) {
-        final ArticleEntity articleEntity = articleService.get(authorId, articleId);
-        final UserEntity userEntity = userService.get(authorId);
+        final ArticleEntity articleEntity = articleService.find(authorId, articleId);
+        final UserEntity userEntity = userService.find(authorId);
         final UserArticleEntity userArticleEntity = new UserArticleEntity(rating, userEntity, articleEntity);
 
         return userArticleRepository.save(userArticleEntity);
     }
 
     @NonNull
-    public UserArticleEntity get(@NonNull String userId, @NonNull Integer articleId) {
+    public UserArticleEntity find(@NonNull String userId, @NonNull Integer articleId) {
         return userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(userId, articleId).orElseThrow(() ->
                 new NotFoundException(UserArticleEntity.class, "userId", userId, "articleId", articleId.toString()));
     }

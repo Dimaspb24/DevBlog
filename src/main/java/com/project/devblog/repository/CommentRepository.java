@@ -11,12 +11,11 @@ import java.util.Optional;
 
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
-    @NonNull
-    Page<CommentEntity> findAllByArticleIdAndEnabledIsTrue(@NonNull Integer articleId, @NonNull Pageable pageable);
+    Page<CommentEntity> findAllByArticleIdAndEnabledIsTrue(@NonNull Integer articleId, Pageable pageable);
 
-    @NonNull
+    Page<CommentEntity> findAllByAuthorIdAndArticleIdAndEnabledIsTrue(@NonNull String authorId, @NonNull Integer articleId, Pageable pageable);
+
     Optional<CommentEntity> findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(@NonNull Long commentId, @NonNull String authorId, @NonNull Integer articleId);
 
-    @NonNull
     Optional<CommentEntity> findByIdAndAuthorIdAndArticleId(@NonNull Long id, @NonNull String authorId, @NonNull Integer articleId);
 }

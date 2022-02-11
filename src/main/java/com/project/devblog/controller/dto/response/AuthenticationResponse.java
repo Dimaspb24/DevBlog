@@ -15,6 +15,4 @@ public class AuthenticationResponse {
     String id;
     @NonNull
     String login;
-    @NonNull
-    String token;
 }

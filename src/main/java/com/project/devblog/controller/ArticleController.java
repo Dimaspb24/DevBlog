@@ -1,109 +1,89 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.controller.annotation.ApiV1;
-import com.project.devblog.controller.dto.request.ArticleRequest;
 import com.project.devblog.controller.dto.response.CloseArticleResponse;
-import com.project.devblog.controller.dto.response.OpenArticleResponse;
+import com.project.devblog.controller.dto.response.CommentResponse;
 import com.project.devblog.controller.dto.response.TagResponse;
 import com.project.devblog.model.ArticleEntity;
+import com.project.devblog.model.CommentEntity;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.TagEntity;
-import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.service.ArticleService;
-import io.swagger.v3.oas.annotations.Operation;
+import com.project.devblog.service.CommentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Tag(name = "Article")
+@Tag(name = "Articles")
 @ApiV1
 @RestController
 @RequiredArgsConstructor
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final CommentService commentService;
 
-    @PostMapping("/users/{userId}/articles")
-    @ResponseStatus(HttpStatus.CREATED)
-    public OpenArticleResponse create(@NonNull @PathVariable String userId, @NonNull @Valid @RequestBody ArticleRequest request) {
-        return toOpenArticleResponse(articleService.create(userId, request.getTitle(), request.getTags(), request.getDescription(),
-                request.getBody(), StatusArticle.valueOf(request.getStatus())));
-    }
-
-    @GetMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
-    public OpenArticleResponse get(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId) {
-        return toOpenArticleResponse(articleService.get(userId, articleId));
+    @GetMapping("/articles")
+    public Page<CloseArticleResponse> findAll(@RequestParam(name = "titleContains", required = false) String titleContains,
+                                              @RequestParam(name = "tagName", required = false) String tagName,
+                                              @SortDefault(sort = "publicationDate") Pageable pageable) {
+        return articleService.findAll(titleContains, tagName, pageable)
+                .map(this::toResponse);
     }
 
-    @GetMapping("/users/{userId}/articles")
     @ResponseStatus(HttpStatus.OK)
-    public Page<CloseArticleResponse> getAll(@NonNull @PathVariable String userId, @PageableDefault Pageable pageable) {
-        return articleService.getAll(userId, pageable)
-                .map(this::toCloseArticleResponse);
-    }
-
-    @GetMapping("/users/{userId}/articlesBySubscriptions")
-    @ResponseStatus(HttpStatus.OK)
-    public Page<CloseArticleResponse> findArticlesBySubscriptions(@NonNull @PathVariable String userId, Pageable pageable) {
-        return articleService.findArticlesBySubscriptions(userId, pageable)
-                .map(this::toCloseArticleResponse);
-    }
-
-    @DeleteMapping("/users/{userId}/articles/{articleId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId) {
-        articleService.delete(userId, articleId);
-    }
-
-    @Operation(summary = "Hide or show the article")
-    @PatchMapping("/users/{userId}/articles/{articleId}")
-    @ResponseStatus(HttpStatus.OK)
-    public void enable(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
-                       @NonNull @Valid @RequestParam Boolean enabled) {
-        articleService.enable(userId, articleId, enabled);
-    }
-
-    @PutMapping("/users/{userId}/articles/{articleId}")
-    @ResponseStatus(HttpStatus.OK)
-    public OpenArticleResponse update(@NonNull @PathVariable String userId, @NonNull @PathVariable Integer articleId,
-                                      @NonNull @Valid ArticleRequest request) {
-        return toOpenArticleResponse(articleService.update(userId, articleId, request.getTitle(), request.getTags(),
-                request.getDescription(), request.getBody(), StatusArticle.valueOf(request.getStatus())));
+    @GetMapping("/articles/{articleId}/comments")
+    public Page<CommentResponse> findAll(@NonNull @PathVariable Integer articleId,
+                                         @SortDefault(sort = "creationDate") Pageable pageable) {
+        return commentService.findAllByArticleId(articleId, pageable)
+                .map(this::toResponse);
     }
 
     @NonNull
-    private OpenArticleResponse toOpenArticleResponse(@NonNull ArticleEntity article) {
-        PersonalInfo personalInfo = article.getAuthor().getPersonalInfo();
-        return new OpenArticleResponse(article.getId(), article.getTitle(), article.getBody(), article.getStatus().name(),
-                article.getDescription(), article.getPublicationDate(), article.getModificationDate(), article.getAuthor().getId(),
-                personalInfo.getNickname(), personalInfo.getPhoto(), tagEntityToResponse(article.getTags()));
+    private CommentResponse toResponse(@NonNull CommentEntity comment) {
+        return new CommentResponse(
+                comment.getId(),
+                comment.getMessage(),
+                comment.getAuthor().getPersonalInfo().getNickname(),
+                comment.getReceiver().getPersonalInfo().getNickname(),
+                comment.getCreationDate(),
+                comment.getArticle().getId());
     }
 
     @NonNull
-    private CloseArticleResponse toCloseArticleResponse(@NonNull ArticleEntity article) {
+    private CloseArticleResponse toResponse(@NonNull ArticleEntity article) {
         final PersonalInfo personalInfo = article.getAuthor().getPersonalInfo();
-        return new CloseArticleResponse(article.getId(), article.getTitle(), article.getStatus().name(), article.getDescription(),
-                article.getPublicationDate(), article.getModificationDate(), article.getAuthor().getId(), personalInfo.getNickname(),
-                personalInfo.getPhoto(), tagEntityToResponse(article.getTags()));
+        return new CloseArticleResponse(
+                article.getId(),
+                article.getTitle(),
+                article.getStatus().name(),
+                article.getDescription(),
+                article.getRating(),
+                article.getPublicationDate(),
+                article.getModificationDate(),
+                article.getAuthor().getId(),
+                personalInfo.getNickname(),
+                personalInfo.getPhoto(),
+                tagEntityToResponse(article.getTags()));
     }
 
-    private List<TagResponse> tagEntityToResponse(List<TagEntity> tagEntities) {
-        return Optional.ofNullable(tagEntities).map(tags ->
-                tags.stream()
-                        .map(tagEntity -> new TagResponse(tagEntity.getId(), tagEntity.getName()))
-                        .collect(Collectors.toList()))
-                .orElse(Collections.emptyList());
+    @NonNull
+    private List<TagResponse> tagEntityToResponse(@NonNull List<TagEntity> tagEntities) {
+        return tagEntities.stream()
+                .map(tagEntity -> new TagResponse(tagEntity.getId(), tagEntity.getName()))
+                .collect(Collectors.toList());
     }
 }

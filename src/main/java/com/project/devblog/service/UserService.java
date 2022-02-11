@@ -1,12 +1,14 @@
 package com.project.devblog.service;
 
 import com.project.devblog.controller.dto.request.UserRequest;
+import com.project.devblog.exception.NonUniqueValueException;
 import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.repository.UserRepository;
 import com.project.devblog.service.idgenerator.Generator;
+import static java.lang.String.format;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,13 +18,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class UserService {
 
     @NonNull
@@ -69,10 +70,6 @@ public class UserService {
     }
 
     @NonNull
-    public List<UserEntity> getAll() {
-        return userRepository.findAll();
-    }
-
     public Page<UserEntity> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
@@ -88,43 +85,54 @@ public class UserService {
     }
 
     @NonNull
-    public UserEntity get(@NonNull String id) {
+    public UserEntity find(@NonNull String id) {
         return userRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(UserEntity.class, id));
     }
 
     public void delete(String userId) {
-        UserEntity user = get(userId);
+        UserEntity user = find(userId);
         user.setEnabled(false);
         userRepository.save(user);
     }
 
+    public void enable(@NonNull String userId, @NonNull Boolean enabled) {
+        UserEntity user = find(userId);
+        user.setEnabled(enabled);
+        userRepository.save(user);
+    }
+
     public UserEntity update(String userId, UserRequest userRequest) {
-        UserEntity user = get(userId);
-
+        UserEntity user = find(userId);
+        PersonalInfo personalInfo = user.getPersonalInfo();
         String firstname = userRequest.getFirstname();
-        if (firstname != null && !firstname.isEmpty()) {
-            user.getPersonalInfo().setFirstname(firstname);
-        }
-
         String lastname = userRequest.getLastname();
-        if (lastname != null && !lastname.isEmpty()) {
-            user.getPersonalInfo().setLastname(lastname);
-        }
-
-        String phone = userRequest.getPhone();
-        if (phone != null && !phone.isEmpty() && !userRepository.existsByPersonalInfoPhone(phone)) {
-            user.getPersonalInfo().setPhone(phone);
-        }
-
         String info = userRequest.getInfo();
-        if (info != null && !info.isEmpty()) {
-            user.getPersonalInfo().setInfo(info);
-        }
-
+        String phone = userRequest.getPhone();
         String nickname = userRequest.getNickname();
-        if (nickname != null && !nickname.isEmpty() && !userRepository.existsByPersonalInfoNickname(nickname)) {
-            user.getPersonalInfo().setNickname(nickname);
+
+        if (firstname != null && !firstname.isEmpty()) {
+            personalInfo.setFirstname(firstname);
+        }
+        if (lastname != null && !lastname.isEmpty()) {
+            personalInfo.setLastname(lastname);
+        }
+        if (info != null && !info.isEmpty()) {
+            personalInfo.setInfo(info);
+        }
+        if (phone != null && !phone.isEmpty()) {
+            if (!userRepository.existsByPersonalInfoPhone(phone)) {
+                personalInfo.setPhone(phone);
+            } else {
+                throw new NonUniqueValueException(format("User with this phone=%s already exists", phone));
+            }
+        }
+        if (nickname != null && !nickname.isEmpty()) {
+            if (!userRepository.existsByPersonalInfoNickname(nickname)) {
+                personalInfo.setNickname(nickname);
+            } else {
+                throw new NonUniqueValueException(format("User with nickname=%s already exists", nickname));
+            }
         }
 
         userRepository.save(user);

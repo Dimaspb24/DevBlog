@@ -9,10 +9,10 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class RegistrationResponse {
+public class SubscriberResponse {
 
     @NonNull
-    String id;
+    String subscriberId;
     @NonNull
-    String login;
+    String nickname;
 }

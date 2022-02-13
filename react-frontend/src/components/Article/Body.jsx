@@ -1,9 +1,10 @@
-import {Box, Typography} from '@mui/material'
+import {Box} from '@mui/material'
+import ReactMarkdown from 'react-markdown'
 
 const Body = (props) => {
     return (
         <Box sx={{pt: '1ch', pb: '15ch'}}>
-            <Typography>{props.body}</Typography>
+            <ReactMarkdown>{props.body}</ReactMarkdown>
         </Box>
     )
 }

@@ -1,21 +1,21 @@
 insert into users (id, login, password, role, enabled, firstname, lastname, nickname, phone)
-values ('1', 'mail1@mail.ru', '$2a$12$UMR/uPkgKgh7bqWv.Mq2l.TNLahQLmb4zHAwmFmmNgdyZHNXciNhe', 'USER', true, 'Иосиф',
+values ('1', 'mail1@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true, 'Иосиф',
         'Сталин', 'Вождь', '89999999999'),
-       ('2', 'mail2@mail.ru', '$2a$12$YJIjbu9U/Z4/qMuK1.OPquLc4M8U5v10iIRmQPpiD6JIyD3V/X8ia', 'USER', true, 'Дмитрий',
+       ('2', 'mail2@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true, 'Дмитрий',
         'Смирнов', 'Чел', '89878789879'),
-       ('3', 'mail3@mail.ru', '$2a$12$C68.hcvWF6IGz12xmei2le39YzCZZWs93EqPyfedeVM1eIkR9U/22', 'USER', true, 'Алексей',
+       ('3', 'mail3@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true, 'Алексей',
         'Афанасьев', 'Шрэк', '85555555555'),
-       ('4', 'mail4@mail.ru', '$2a$12$OxKKjpzg2sa1uZwpTYX4b.gdpieXi/8tjWXeBqVe4B72vCJFiCdX2', 'USER', true, 'Семён',
+       ('4', 'mail4@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true, 'Семён',
         'Антуфьев', 'Чувак', '87536584648'),
-       ('5', 'mail5@mail.ru', '$2a$12$VUthC/o/Iqk4hQ5med3yb.iek/2gr1h519sS.ky/GrznZHOmcsoN.', 'USER', true, 'Даниил',
+       ('5', 'mail5@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true, 'Даниил',
         'Беседин', 'Frontend master', '87563648576'),
-       ('6', 'mail6@mail.ru', '$2a$12$pyg9ZqA1mPXeXroylVABk.p.OVqzN3EJwfsu5KhNgpAH6ltWr7cke', 'USER', true, 'Иисус',
+       ('6', 'mail6@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true, 'Иисус',
         'Христос', 'Святой', '886759987675');
 insert into users (id, login, password, role, enabled)
-values ('7', 'mail7@mail.ru', '$2a$12$DH2sZpGNuh5QwebSUMnoHu1lGr93SLXdbpQnKJDcJ9fNLNNxOLxb6', 'USER', true),
-       ('8', 'mail8@mail.ru', '$2a$12$xssrjunPTqqO1JrfvE14s.UbdISqgQKJy4fu/tO9Hqb.YZM1h8Uie', 'USER', true),
-       ('9', 'mail9@mail.ru', '$2a$12$zjkfNpYaXQqkxnK2QMlP7OFu77U8IjbPTqioOUc59Gnu2fyaAu5Hi', 'USER', true),
-       ('10', 'mail10@mail.ru', '$2a$12$2xAmiPGAybXLZ3Pb4MtvZ.MGzjJ0QO1cFkPh8.p4MVvTQuao8Fk8O', 'USER', false);
+values ('7', 'mail7@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true),
+       ('8', 'mail8@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true),
+       ('9', 'mail9@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true),
+       ('10', 'mail10@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', false);
 
 insert into subscribers (user_id, subscriber_id)
 values (1, 2),

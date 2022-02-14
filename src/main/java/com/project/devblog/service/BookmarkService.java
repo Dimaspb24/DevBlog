@@ -1,10 +1,10 @@
 package com.project.devblog.service;
 
-import com.project.devblog.controller.dto.request.BookmarkRequest;
-import com.project.devblog.controller.dto.response.BookmarkArticleResponse;
-import com.project.devblog.controller.dto.response.BookmarkResponse;
-import com.project.devblog.controller.dto.response.CloseArticleResponse;
-import com.project.devblog.controller.dto.response.TagResponse;
+import com.project.devblog.dto.request.BookmarkRequest;
+import com.project.devblog.dto.response.BookmarkArticleResponse;
+import com.project.devblog.dto.response.BookmarkResponse;
+import com.project.devblog.dto.response.CloseArticleResponse;
+import com.project.devblog.dto.response.TagResponse;
 import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.PersonalInfo;

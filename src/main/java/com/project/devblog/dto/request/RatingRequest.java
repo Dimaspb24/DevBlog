@@ -1,4 +1,4 @@
-package com.project.devblog.controller.dto.request;
+package com.project.devblog.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

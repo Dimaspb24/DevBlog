@@ -1,8 +1,8 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.controller.annotation.ApiV1;
-import com.project.devblog.controller.dto.request.RatingRequest;
-import com.project.devblog.controller.dto.response.RatingResponse;
+import com.project.devblog.dto.request.RatingRequest;
+import com.project.devblog.dto.response.RatingResponse;
 import com.project.devblog.model.UserArticleEntity;
 import com.project.devblog.service.RatingService;
 import io.swagger.v3.oas.annotations.tags.Tag;

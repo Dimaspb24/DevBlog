@@ -8,6 +8,10 @@ import java.util.stream.IntStream;
 
 public class NotFoundException extends RuntimeException {
 
+    public NotFoundException(String message) {
+        super(message);
+    }
+
     public NotFoundException(Class<?> clazz, String id) {
         super(String.format("%s with id=%s not found", clazz.getSimpleName(), id));
     }

@@ -1,8 +1,8 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.controller.annotation.ApiV1;
-import com.project.devblog.controller.dto.request.CommentRequest;
-import com.project.devblog.controller.dto.response.CommentResponse;
+import com.project.devblog.dto.request.CommentRequest;
+import com.project.devblog.dto.response.CommentResponse;
 import com.project.devblog.model.CommentEntity;
 import com.project.devblog.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,6 +1,5 @@
 package com.project.devblog.security;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,12 +20,10 @@ public class JwtUser implements UserDetails {
         return authorities;
     }
 
-    @JsonIgnore
     public String getId() {
         return id;
     }
 
-    @JsonIgnore
     @Override
     public String getPassword() {
         return password;
@@ -37,19 +34,16 @@ public class JwtUser implements UserDetails {
         return login;
     }
 
-    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return enabled;
     }
 
-    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;

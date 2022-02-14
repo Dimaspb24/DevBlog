@@ -1,4 +1,4 @@
-package com.project.devblog.controller.dto.response;
+package com.project.devblog.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -13,12 +13,14 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CloseArticleResponse {
+public class OpenArticleResponse {
 
     @NonNull
     Integer id;
     @NonNull
     String title;
+    @NonNull
+    String body;
     @NonNull
     String status;
     @NonNull

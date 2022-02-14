@@ -1,10 +1,12 @@
 package com.project.devblog.service;
 
-import com.project.devblog.controller.dto.response.AuthenticationResponse;
+import com.project.devblog.dto.response.AuthenticationResponse;
+import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.exception.VerificationException;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.security.JwtTokenProvider;
 import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
+import static java.lang.String.format;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -33,7 +35,12 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public ResponseEntity<AuthenticationResponse> login(@NonNull String login, @NonNull String password) {
-        final UserEntity user = userService.findByLogin(login);
+        final UserEntity user;
+        try {
+            user = userService.findByLogin(login);
+        } catch (NotFoundException ex) {
+            throw new NotFoundException(format("The account with login %s does not exist", login));
+        }
 
         if (!user.isEnabled()) {
             if (user.getVerificationCode() != null) {
@@ -47,7 +54,7 @@ public class AuthenticationService {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, TOKEN_PREFIX + token)
-                .body(new AuthenticationResponse(user.getId(), login));
+                .body(new AuthenticationResponse(user.getId(), login, user.getRole().toString()));
     }
 
     public void logout(HttpServletRequest request, HttpServletResponse response) {
@@ -61,9 +68,9 @@ public class AuthenticationService {
             UserEntity user = userService.register(login, password);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(new AuthenticationResponse(user.getId(), login));
+                    .body(new AuthenticationResponse(user.getId(), login, user.getRole().toString()));
         } else {
-            throw new BadCredentialsException("Login already exists");
+            throw new BadCredentialsException(format("The account with login %s is already registered", login));
         }
     }
 }

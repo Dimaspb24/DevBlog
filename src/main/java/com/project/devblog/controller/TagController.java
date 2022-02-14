@@ -1,8 +1,8 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.controller.annotation.ApiV1;
-import com.project.devblog.controller.dto.request.TagRequest;
-import com.project.devblog.controller.dto.response.TagResponse;
+import com.project.devblog.dto.request.TagRequest;
+import com.project.devblog.dto.response.TagResponse;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.service.TagService;
 import io.swagger.v3.oas.annotations.tags.Tag;

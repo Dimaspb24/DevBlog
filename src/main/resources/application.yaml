@@ -62,7 +62,7 @@ jwt:
 app:
   google:
     redirect:
-      url: http://localhost:8080/v1/users/%s
+      url: http://localhost:8080/v1/users/%s/articles
 mail:
   name: IDK
   email: idkspbcorp.com

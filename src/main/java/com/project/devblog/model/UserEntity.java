@@ -84,12 +84,13 @@ public class UserEntity extends AuditableBaseEntity<String> {
     @OrderBy("personalInfo.nickname")
     Set<UserEntity> subscriptions = new HashSet<>();
 
-    public UserEntity(String id, String login, String password, Role role, Boolean enabled) {
+    public UserEntity(String id, String login, String password, Role role, Boolean enabled, String verificationCode) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.role = role;
         this.enabled = enabled;
+        this.verificationCode = verificationCode;
     }
 
     /*-----------------------------------FOR_MANY_TO_MANY_SUBSCRIBERS--------------------------------*/

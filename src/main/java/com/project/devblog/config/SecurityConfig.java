@@ -1,5 +1,6 @@
 package com.project.devblog.config;
 
+import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.CustomAccessDeniedHandler;
 import com.project.devblog.security.CustomAuthenticationEntryPoint;
 import com.project.devblog.security.JwtTokenAuthorizationFilter;
@@ -36,15 +37,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).and()
-                .exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler())
-                .authenticationEntryPoint(authenticationEntryPoint())
-                .and()
+//                .exceptionHandling()
+//                .accessDeniedHandler(accessDeniedHandler())
+//                .authenticationEntryPoint(authenticationEntryPoint())
+//                .and()
                 .authorizeRequests()
                 .antMatchers(OPEN_API_URLS).permitAll()
                 .antMatchers(AUTH_URL).permitAll()
-//                .antMatchers(DOMAIN_URLS).hasRole(Role.USER.toString())
-//                .antMatchers(GOOGLE_AUTH_REDIRECT_URL).hasRole(Role.USER.toString())
+                .antMatchers(DOMAIN_URLS).hasRole(Role.USER.toString())
+                .antMatchers(GOOGLE_AUTH_REDIRECT_URL).hasRole(Role.USER.toString())
                 .anyRequest()
                 .authenticated()
                 .and()

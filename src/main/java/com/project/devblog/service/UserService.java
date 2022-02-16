@@ -56,7 +56,7 @@ public class UserService {
     public UserEntity createUser(@NonNull String id, @NonNull String login, @NonNull Role role, @NonNull Boolean enabled,
                                  @Nullable String firstname, @Nullable String lastname, @Nullable String nickname,
                                  @Nullable String photo, @Nullable String phone) {
-        final UserEntity userEntity = new UserEntity(id, login, passwordEncoder.encode(UUID.randomUUID().toString()), role, enabled);
+        final UserEntity userEntity = new UserEntity(id, login, passwordEncoder.encode(UUID.randomUUID().toString()), role, enabled, UUID.randomUUID().toString());
         final PersonalInfo personalInfo = new PersonalInfo(firstname, lastname, nickname, photo, null, phone);
         userEntity.setPersonalInfo(personalInfo);
 

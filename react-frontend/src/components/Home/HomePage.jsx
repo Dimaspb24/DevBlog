@@ -1,6 +1,7 @@
 import {Box} from '@mui/material'
 import UserArticle from '../Article/UserArticle'
 import SortButton from './SortButton'
+import ArticleSearchInput from './ArticleSearchInput'
 
 const HomePage = (props) => {
     const articles = props.articles.map(article => <UserArticle article={article} key={article.id}/>)
@@ -12,6 +13,7 @@ const HomePage = (props) => {
                 <SortButton title="По возрастанию даты"/>
                 <SortButton title="По убыванию рейтинга"/>
                 <SortButton title="По возрастанию рейтинга"/>
+                <ArticleSearchInput/>
             </Box>
             {articles}
         </Box>

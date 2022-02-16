@@ -1,5 +1,5 @@
 import {Box} from '@mui/material'
-import UserArticle from '../Article/UserArticle'
+import UserArticle from '../ArticleForHomePage/UserArticle'
 import SortButton from './SortButton'
 import ArticleSearchInput from './ArticleSearchInput'
 

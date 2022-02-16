@@ -3,8 +3,15 @@ import Text from './Text'
 import SaveButton from './SaveButton'
 import UserAvatarContainer from './UserAvatarContainer'
 import InformationField from './InformationField'
+import {useEffect} from 'react'
+import jQuery from 'jquery'
 
 const UserPersonalInfo = (props) => {
+
+    useEffect(() => {
+
+    })
+
     return (
         <Box sx={{
             alignSelf: 'center',
@@ -14,7 +21,8 @@ const UserPersonalInfo = (props) => {
             <Text/>
             <UserAvatarContainer/>
 
-            <InformationField label="Firstname" currentProperty="firstname" currentValue={props.personalInfo.firstname}
+            <InformationField label="Firstname" currentProperty="firstname"
+                              currentValue={props.personalInfo.firstname}
                               updateCurrentTextField={props.updateCurrentTextField}/>
             <InformationField label="Lastname" currentProperty="lastname" currentValue={props.personalInfo.lastname}
                               updateCurrentTextField={props.updateCurrentTextField}/>

@@ -10,46 +10,51 @@ externalDocs:
   description: Dev Blog repository
   url: https://github.com/Dimaspb24/DevBlog
 servers:
-  - url: http://localhost:8080
-    description: Local service
+- url: http://localhost:8080
+  description: Local service
 security:
-  - bearerAuthScheme: [ ]
+- bearerAuthScheme: []
 tags:
-  - name: User subscription
-  - name: User comments
-  - name: User articles
-  - name: User bookmarks
-  - name: Authentication
-  - name: User
-  - name: Tags
-  - name: User rating of articles
-  - name: Google authentication
-  - name: Verification
-  - name: Actuator
-    description: Monitor and interact
-    externalDocs:
-      description: Spring Boot Actuator Web API Documentation
-      url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
-  - name: Articles
+- name: User subscription
+- name: User comments
+- name: User articles
+- name: User bookmarks
+- name: Authentication
+- name: User
+- name: Tags
+- name: User rating of articles
+- name: Google authentication
+- name: Verification
+- name: Actuator
+  description: Monitor and interact
+  externalDocs:
+    description: Spring Boot Actuator Web API Documentation
+    url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
+- name: Articles
 paths:
   /v1/users/{userId}:
     get:
       tags:
-        - User
+      - User
       operationId: find
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -59,17 +64,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -88,26 +91,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -116,14 +116,14 @@ paths:
                 $ref: '#/components/schemas/UserResponse'
     put:
       tags:
-        - User
+      - User
       operationId: update
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -131,12 +131,17 @@ paths:
               $ref: '#/components/schemas/UserRequest'
         required: true
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -146,17 +151,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -175,26 +178,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -203,22 +203,27 @@ paths:
                 $ref: '#/components/schemas/UserResponse'
     delete:
       tags:
-        - User
+      - User
       summary: Block the user
       operationId: delete
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -228,17 +233,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -257,51 +260,53 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "204":
           description: No Content
     patch:
       tags:
-        - User
+      - User
       summary: Block or unblock the user
       operationId: enable
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: enabled
-          in: query
-          required: true
-          schema:
-            type: boolean
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: enabled
+        in: query
+        required: true
+        schema:
+          type: boolean
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -311,17 +316,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -340,52 +343,54 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
   /v1/users/{userId}/articles/{articleId}:
     get:
       tags:
-        - User articles
+      - User articles
       operationId: find_1
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -395,17 +400,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -424,26 +427,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -452,20 +452,20 @@ paths:
                 $ref: '#/components/schemas/OpenArticleResponse'
     put:
       tags:
-        - User articles
+      - User articles
       operationId: update_1
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       requestBody:
         content:
           application/json:
@@ -473,12 +473,17 @@ paths:
               $ref: '#/components/schemas/ArticleRequest'
         required: true
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -488,17 +493,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -517,26 +520,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -545,27 +545,32 @@ paths:
                 $ref: '#/components/schemas/OpenArticleResponse'
     delete:
       tags:
-        - User articles
+      - User articles
       operationId: delete_2
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -575,17 +580,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -604,57 +607,59 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "204":
           description: No Content
     patch:
       tags:
-        - User articles
+      - User articles
       summary: Block or unblock the article
       operationId: enable_1
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: enabled
-          in: query
-          required: true
-          schema:
-            type: boolean
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: enabled
+        in: query
+        required: true
+        schema:
+          type: boolean
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -664,17 +669,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -693,52 +696,54 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
   /v1/users/{userId}/articles/{articleId}/ratings:
     get:
       tags:
-        - User rating of articles
+      - User rating of articles
       operationId: find_2
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -748,17 +753,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -777,26 +780,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -805,20 +805,20 @@ paths:
                 $ref: '#/components/schemas/RatingResponse'
     put:
       tags:
-        - User rating of articles
+      - User rating of articles
       operationId: update_2
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       requestBody:
         content:
           application/json:
@@ -826,12 +826,17 @@ paths:
               $ref: '#/components/schemas/RatingRequest'
         required: true
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -841,17 +846,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -870,26 +873,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -898,20 +898,20 @@ paths:
                 $ref: '#/components/schemas/RatingResponse'
     post:
       tags:
-        - User rating of articles
+      - User rating of articles
       operationId: create_1
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       requestBody:
         content:
           application/json:
@@ -919,12 +919,17 @@ paths:
               $ref: '#/components/schemas/RatingRequest'
         required: true
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -934,17 +939,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -963,26 +966,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "201":
           description: Created
           content:
@@ -992,33 +992,38 @@ paths:
   /v1/users/{userId}/articles/{articleId}/comments/{commentId}:
     get:
       tags:
-        - User comments
+      - User comments
       operationId: find_3
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: commentId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: commentId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -1028,17 +1033,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -1057,26 +1060,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -1085,26 +1085,26 @@ paths:
                 $ref: '#/components/schemas/CommentResponse'
     put:
       tags:
-        - User comments
+      - User comments
       operationId: update_3
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: commentId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: commentId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
       requestBody:
         content:
           application/json:
@@ -1112,12 +1112,17 @@ paths:
               $ref: '#/components/schemas/CommentRequest'
         required: true
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -1127,17 +1132,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -1156,26 +1159,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -1184,33 +1184,38 @@ paths:
                 $ref: '#/components/schemas/CommentResponse'
     delete:
       tags:
-        - User comments
+      - User comments
       operationId: delete_3
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: commentId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: commentId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -1220,17 +1225,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -1249,63 +1252,65 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "204":
           description: No Content
     patch:
       tags:
-        - User comments
+      - User comments
       summary: Block or unblock the comment
       operationId: enable_2
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: commentId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: enabled
-          in: query
-          required: true
-          schema:
-            type: boolean
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: commentId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: enabled
+        in: query
+        required: true
+        schema:
+          type: boolean
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -1315,17 +1320,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -1344,47 +1347,49 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
   /v1/tags/{tagId}:
     get:
       tags:
-        - Tags
+      - Tags
       operationId: find_4
       parameters:
-        - name: tagId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
+      - name: tagId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -1394,17 +1399,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -1423,26 +1426,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -1451,15 +1451,15 @@ paths:
                 $ref: '#/components/schemas/TagResponse'
     put:
       tags:
-        - Tags
+      - Tags
       operationId: update_4
       parameters:
-        - name: tagId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
+      - name: tagId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       requestBody:
         content:
           application/json:
@@ -1467,12 +1467,17 @@ paths:
               $ref: '#/components/schemas/TagRequest'
         required: true
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -1482,17 +1487,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -1511,26 +1514,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -1539,22 +1539,27 @@ paths:
                 $ref: '#/components/schemas/TagResponse'
     delete:
       tags:
-        - Tags
+      - Tags
       operationId: delete_4
       parameters:
-        - name: tagId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
+      - name: tagId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -1564,17 +1569,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -1593,51 +1596,53 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "204":
           description: No Content
   /v1/users/{userId}/subscriptions/{authorId}:
     post:
       tags:
-        - User subscription
+      - User subscription
       operationId: subscribe
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: authorId
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorId
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -1647,17 +1652,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -1676,26 +1679,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "201":
           description: Created
           content:
@@ -1704,26 +1704,31 @@ paths:
                 type: object
     delete:
       tags:
-        - User subscription
+      - User subscription
       operationId: unsubscribe
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: authorId
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorId
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -1733,17 +1738,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -1762,51 +1765,53 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "204":
           description: No Content
   /v1/users/{userId}/articles:
     get:
       tags:
-        - User articles
+      - User articles
       operationId: findAll_2
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Pageable'
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -1816,17 +1821,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -1845,26 +1848,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -1873,14 +1873,14 @@ paths:
                 $ref: '#/components/schemas/PageCloseArticleResponse'
     post:
       tags:
-        - User articles
+      - User articles
       operationId: create
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -1888,12 +1888,17 @@ paths:
               $ref: '#/components/schemas/ArticleRequest'
         required: true
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -1903,17 +1908,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -1932,26 +1935,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "201":
           description: Created
           content:
@@ -1961,32 +1961,37 @@ paths:
   /v1/users/{userId}/articles/{articleId}/comments:
     get:
       tags:
-        - User comments
+      - User comments
       operationId: findAll_3
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Pageable'
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -1996,17 +2001,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -2025,26 +2028,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -2053,20 +2053,20 @@ paths:
                 $ref: '#/components/schemas/PageCommentResponse'
     post:
       tags:
-        - User comments
+      - User comments
       operationId: create_2
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       requestBody:
         content:
           application/json:
@@ -2074,12 +2074,17 @@ paths:
               $ref: '#/components/schemas/CommentRequest'
         required: true
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -2089,17 +2094,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -2118,26 +2121,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "201":
           description: Created
           content:
@@ -2147,20 +2147,20 @@ paths:
   /v1/users/{userId}/articles/{articleId}/bookmarks:
     post:
       tags:
-        - User bookmarks
+      - User bookmarks
       operationId: create_3
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       requestBody:
         content:
           application/json:
@@ -2168,12 +2168,17 @@ paths:
               $ref: '#/components/schemas/BookmarkRequest'
         required: true
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -2183,17 +2188,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -2212,26 +2215,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "201":
           description: Created
           content:
@@ -2241,26 +2241,31 @@ paths:
   /v1/tags:
     get:
       tags:
-        - Tags
+      - Tags
       operationId: findAll_4
       parameters:
-        - name: nameContains
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Pageable'
+      - name: nameContains
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -2270,17 +2275,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -2299,26 +2302,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -2327,7 +2327,7 @@ paths:
                 $ref: '#/components/schemas/PageTagResponse'
     post:
       tags:
-        - Tags
+      - Tags
       operationId: create_4
       requestBody:
         content:
@@ -2336,12 +2336,17 @@ paths:
               $ref: '#/components/schemas/TagRequest'
         required: true
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -2351,17 +2356,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -2380,26 +2383,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "201":
           description: Created
           content:
@@ -2409,7 +2409,7 @@ paths:
   /v1/auth/registration:
     post:
       tags:
-        - Authentication
+      - Authentication
       operationId: registration
       requestBody:
         content:
@@ -2418,12 +2418,17 @@ paths:
               $ref: '#/components/schemas/RegistrationRequest'
         required: true
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -2433,17 +2438,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -2462,26 +2465,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "201":
           description: Created
           content:
@@ -2491,15 +2491,20 @@ paths:
   /v1/auth/logout:
     post:
       tags:
-        - Authentication
+      - Authentication
       operationId: logout
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -2509,17 +2514,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -2538,32 +2541,29 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
   /v1/auth/login:
     post:
       tags:
-        - Authentication
+      - Authentication
       operationId: login
       requestBody:
         content:
@@ -2572,12 +2572,17 @@ paths:
               $ref: '#/components/schemas/AuthenticationRequest'
         required: true
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -2587,17 +2592,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -2616,26 +2619,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -2645,21 +2645,26 @@ paths:
   /v1/users:
     get:
       tags:
-        - User
+      - User
       operationId: findAll
       parameters:
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Pageable'
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -2669,17 +2674,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -2698,26 +2701,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -2727,26 +2727,31 @@ paths:
   /v1/users/{userId}/verify:
     get:
       tags:
-        - Verification
+      - Verification
       operationId: verifyUser
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: code
-          in: query
-          required: true
-          schema:
-            type: string
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: code
+        in: query
+        required: true
+        schema:
+          type: string
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -2756,17 +2761,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -2785,26 +2788,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -2814,26 +2814,31 @@ paths:
   /v1/users/{userId}/subscriptions:
     get:
       tags:
-        - User subscription
+      - User subscription
       operationId: findSubscriptions
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Pageable'
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -2843,17 +2848,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -2872,26 +2875,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -2901,26 +2901,31 @@ paths:
   /v1/users/{userId}/subscriptions/articles:
     get:
       tags:
-        - User subscription
+      - User subscription
       operationId: findArticlesBySubscriptions
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Pageable'
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -2930,17 +2935,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -2959,26 +2962,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -2988,26 +2988,31 @@ paths:
   /v1/users/{userId}/subscribers:
     get:
       tags:
-        - User subscription
+      - User subscription
       operationId: findSubscribers
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Pageable'
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -3017,17 +3022,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -3046,26 +3049,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -3075,31 +3075,36 @@ paths:
   /v1/users/{userId}/bookmarks:
     get:
       tags:
-        - User bookmarks
+      - User bookmarks
       operationId: findAll_1
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: bookmarkType
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Pageable'
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: bookmarkType
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -3109,17 +3114,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -3138,26 +3141,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -3167,21 +3167,26 @@ paths:
   /v1/auth/checkToken:
     get:
       tags:
-        - Authentication
+      - Authentication
       operationId: checkValidateToken
       parameters:
-        - name: token
-          in: query
-          required: true
-          schema:
-            type: string
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -3191,17 +3196,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -3220,26 +3223,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -3249,31 +3249,36 @@ paths:
   /v1/articles:
     get:
       tags:
-        - Articles
+      - Articles
       operationId: findAll_5
       parameters:
-        - name: titleContains
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: tagName
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Pageable'
+      - name: titleContains
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: tagName
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -3283,17 +3288,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -3312,26 +3315,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -3341,22 +3341,27 @@ paths:
   /v1/articles/{articleId}:
     get:
       tags:
-        - Articles
+      - Articles
       operationId: find_5
       parameters:
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -3366,17 +3371,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -3395,26 +3398,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -3424,27 +3424,32 @@ paths:
   /v1/articles/{articleId}/comments:
     get:
       tags:
-        - Articles
+      - Articles
       operationId: findAll_6
       parameters:
-        - name: articleId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: pageable
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/Pageable'
+      - name: articleId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -3454,17 +3459,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -3483,26 +3486,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -3512,16 +3512,21 @@ paths:
   /actuator:
     get:
       tags:
-        - Actuator
+      - Actuator
       summary: Actuator root web endpoint
       operationId: links
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -3531,17 +3536,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -3560,26 +3563,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -3593,16 +3593,21 @@ paths:
   /actuator/health:
     get:
       tags:
-        - Actuator
+      - Actuator
       summary: Actuator web endpoint 'health'
       operationId: health
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -3612,17 +3617,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -3641,26 +3644,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -3670,16 +3670,21 @@ paths:
   /actuator/health/**:
     get:
       tags:
-        - Actuator
+      - Actuator
       summary: Actuator web endpoint 'health-path'
       operationId: health-path
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -3689,17 +3694,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -3718,26 +3721,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "200":
           description: OK
           content:
@@ -3747,15 +3747,20 @@ paths:
   /:
     get:
       tags:
-        - Google authentication
+      - Google authentication
       operationId: login_1
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -3765,17 +3770,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -3794,26 +3797,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "308":
           description: Permanent Redirect
           content:
@@ -3823,27 +3823,32 @@ paths:
   /v1/users/{userId}/bookmarks/{bookmarkId}:
     delete:
       tags:
-        - User bookmarks
+      - User bookmarks
       operationId: delete_1
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: bookmarkId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: bookmarkId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
       responses:
-        "415":
-          description: Unsupported Media Type
+        "400":
+          description: Bad Request
           content:
             '*/*':
               schema:
-                type: object
+                oneOf:
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "403":
           description: Forbidden
           content:
@@ -3853,17 +3858,15 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "409":
           description: Conflict
           content:
@@ -3882,26 +3885,23 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "415":
+          description: Unsupported Media Type
           content:
             '*/*':
               schema:
                 type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
             '*/*':
               schema:
                 oneOf:
-                  - type: object
-                    properties:
-                      com.project.devblog.handler.apierror.ApiError:
-                        $ref: '#/components/schemas/ApiError'
-                  - type: object
+                - type: object
+                  properties:
+                    com.project.devblog.handler.apierror.ApiError:
+                      $ref: '#/components/schemas/ApiError'
+                - type: object
         "204":
           description: No Content
           content:
@@ -3912,80 +3912,80 @@ components:
   schemas:
     ApiError:
       required:
-        - error
+      - error
       type: object
       properties:
         status:
           type: string
           enum:
-            - 100 CONTINUE
-            - 101 SWITCHING_PROTOCOLS
-            - 102 PROCESSING
-            - 103 CHECKPOINT
-            - 200 OK
-            - 201 CREATED
-            - 202 ACCEPTED
-            - 203 NON_AUTHORITATIVE_INFORMATION
-            - 204 NO_CONTENT
-            - 205 RESET_CONTENT
-            - 206 PARTIAL_CONTENT
-            - 207 MULTI_STATUS
-            - 208 ALREADY_REPORTED
-            - 226 IM_USED
-            - 300 MULTIPLE_CHOICES
-            - 301 MOVED_PERMANENTLY
-            - 302 FOUND
-            - 302 MOVED_TEMPORARILY
-            - 303 SEE_OTHER
-            - 304 NOT_MODIFIED
-            - 305 USE_PROXY
-            - 307 TEMPORARY_REDIRECT
-            - 308 PERMANENT_REDIRECT
-            - 400 BAD_REQUEST
-            - 401 UNAUTHORIZED
-            - 402 PAYMENT_REQUIRED
-            - 403 FORBIDDEN
-            - 404 NOT_FOUND
-            - 405 METHOD_NOT_ALLOWED
-            - 406 NOT_ACCEPTABLE
-            - 407 PROXY_AUTHENTICATION_REQUIRED
-            - 408 REQUEST_TIMEOUT
-            - 409 CONFLICT
-            - 410 GONE
-            - 411 LENGTH_REQUIRED
-            - 412 PRECONDITION_FAILED
-            - 413 PAYLOAD_TOO_LARGE
-            - 413 REQUEST_ENTITY_TOO_LARGE
-            - 414 URI_TOO_LONG
-            - 414 REQUEST_URI_TOO_LONG
-            - 415 UNSUPPORTED_MEDIA_TYPE
-            - 416 REQUESTED_RANGE_NOT_SATISFIABLE
-            - 417 EXPECTATION_FAILED
-            - 418 I_AM_A_TEAPOT
-            - 419 INSUFFICIENT_SPACE_ON_RESOURCE
-            - 420 METHOD_FAILURE
-            - 421 DESTINATION_LOCKED
-            - 422 UNPROCESSABLE_ENTITY
-            - 423 LOCKED
-            - 424 FAILED_DEPENDENCY
-            - 425 TOO_EARLY
-            - 426 UPGRADE_REQUIRED
-            - 428 PRECONDITION_REQUIRED
-            - 429 TOO_MANY_REQUESTS
-            - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
-            - 451 UNAVAILABLE_FOR_LEGAL_REASONS
-            - 500 INTERNAL_SERVER_ERROR
-            - 501 NOT_IMPLEMENTED
-            - 502 BAD_GATEWAY
-            - 503 SERVICE_UNAVAILABLE
-            - 504 GATEWAY_TIMEOUT
-            - 505 HTTP_VERSION_NOT_SUPPORTED
-            - 506 VARIANT_ALSO_NEGOTIATES
-            - 507 INSUFFICIENT_STORAGE
-            - 508 LOOP_DETECTED
-            - 509 BANDWIDTH_LIMIT_EXCEEDED
-            - 510 NOT_EXTENDED
-            - 511 NETWORK_AUTHENTICATION_REQUIRED
+          - 100 CONTINUE
+          - 101 SWITCHING_PROTOCOLS
+          - 102 PROCESSING
+          - 103 CHECKPOINT
+          - 200 OK
+          - 201 CREATED
+          - 202 ACCEPTED
+          - 203 NON_AUTHORITATIVE_INFORMATION
+          - 204 NO_CONTENT
+          - 205 RESET_CONTENT
+          - 206 PARTIAL_CONTENT
+          - 207 MULTI_STATUS
+          - 208 ALREADY_REPORTED
+          - 226 IM_USED
+          - 300 MULTIPLE_CHOICES
+          - 301 MOVED_PERMANENTLY
+          - 302 FOUND
+          - 302 MOVED_TEMPORARILY
+          - 303 SEE_OTHER
+          - 304 NOT_MODIFIED
+          - 305 USE_PROXY
+          - 307 TEMPORARY_REDIRECT
+          - 308 PERMANENT_REDIRECT
+          - 400 BAD_REQUEST
+          - 401 UNAUTHORIZED
+          - 402 PAYMENT_REQUIRED
+          - 403 FORBIDDEN
+          - 404 NOT_FOUND
+          - 405 METHOD_NOT_ALLOWED
+          - 406 NOT_ACCEPTABLE
+          - 407 PROXY_AUTHENTICATION_REQUIRED
+          - 408 REQUEST_TIMEOUT
+          - 409 CONFLICT
+          - 410 GONE
+          - 411 LENGTH_REQUIRED
+          - 412 PRECONDITION_FAILED
+          - 413 PAYLOAD_TOO_LARGE
+          - 413 REQUEST_ENTITY_TOO_LARGE
+          - 414 URI_TOO_LONG
+          - 414 REQUEST_URI_TOO_LONG
+          - 415 UNSUPPORTED_MEDIA_TYPE
+          - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+          - 417 EXPECTATION_FAILED
+          - 418 I_AM_A_TEAPOT
+          - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+          - 420 METHOD_FAILURE
+          - 421 DESTINATION_LOCKED
+          - 422 UNPROCESSABLE_ENTITY
+          - 423 LOCKED
+          - 424 FAILED_DEPENDENCY
+          - 425 TOO_EARLY
+          - 426 UPGRADE_REQUIRED
+          - 428 PRECONDITION_REQUIRED
+          - 429 TOO_MANY_REQUESTS
+          - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+          - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+          - 500 INTERNAL_SERVER_ERROR
+          - 501 NOT_IMPLEMENTED
+          - 502 BAD_GATEWAY
+          - 503 SERVICE_UNAVAILABLE
+          - 504 GATEWAY_TIMEOUT
+          - 505 HTTP_VERSION_NOT_SUPPORTED
+          - 506 VARIANT_ALSO_NEGOTIATES
+          - 507 INSUFFICIENT_STORAGE
+          - 508 LOOP_DETECTED
+          - 509 BANDWIDTH_LIMIT_EXCEEDED
+          - 510 NOT_EXTENDED
+          - 511 NETWORK_AUTHENTICATION_REQUIRED
         timestamp:
           type: string
           format: date-time
@@ -4042,10 +4042,10 @@ components:
           $ref: '#/components/schemas/PersonalInfo'
     ArticleRequest:
       required:
-        - body
-        - description
-        - status
-        - title
+      - body
+      - description
+      - status
+      - title
       type: object
       properties:
         title:
@@ -4106,7 +4106,7 @@ components:
           type: string
     RatingRequest:
       required:
-        - rating
+      - rating
       type: object
       properties:
         rating:
@@ -4127,7 +4127,7 @@ components:
           format: int32
     CommentRequest:
       required:
-        - message
+      - message
       type: object
       properties:
         message:
@@ -4156,7 +4156,7 @@ components:
           format: int32
     TagRequest:
       required:
-        - name
+      - name
       type: object
       properties:
         name:
@@ -4181,7 +4181,7 @@ components:
           type: string
     RegistrationRequest:
       required:
-        - password
+      - password
       type: object
       properties:
         login:
@@ -4201,7 +4201,7 @@ components:
           type: string
     AuthenticationRequest:
       required:
-        - password
+      - password
       type: object
       properties:
         login:
@@ -4228,12 +4228,15 @@ components:
     PageUserResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
         size:
           type: integer
           format: int32
@@ -4241,18 +4244,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserResponse'
-        number:
-          type: integer
-          format: int32
         sort:
           $ref: '#/components/schemas/Sort'
-        numberOfElements:
-          type: integer
-          format: int32
         first:
           type: boolean
         last:
           type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
         pageable:
           $ref: '#/components/schemas/PageableObject'
         empty:
@@ -4265,10 +4265,10 @@ components:
           format: int64
         sort:
           $ref: '#/components/schemas/Sort'
-        pageNumber:
+        pageSize:
           type: integer
           format: int32
-        pageSize:
+        pageNumber:
           type: integer
           format: int32
         paged:
@@ -4296,78 +4296,76 @@ components:
         status:
           type: string
           enum:
-            - 100 CONTINUE
-            - 101 SWITCHING_PROTOCOLS
-            - 102 PROCESSING
-            - 103 CHECKPOINT
-            - 200 OK
-            - 201 CREATED
-            - 202 ACCEPTED
-            - 203 NON_AUTHORITATIVE_INFORMATION
-            - 204 NO_CONTENT
-            - 205 RESET_CONTENT
-            - 206 PARTIAL_CONTENT
-            - 207 MULTI_STATUS
-            - 208 ALREADY_REPORTED
-            - 226 IM_USED
-            - 300 MULTIPLE_CHOICES
-            - 301 MOVED_PERMANENTLY
-            - 302 FOUND
-            - 302 MOVED_TEMPORARILY
-            - 303 SEE_OTHER
-            - 304 NOT_MODIFIED
-            - 305 USE_PROXY
-            - 307 TEMPORARY_REDIRECT
-            - 308 PERMANENT_REDIRECT
-            - 400 BAD_REQUEST
-            - 401 UNAUTHORIZED
-            - 402 PAYMENT_REQUIRED
-            - 403 FORBIDDEN
-            - 404 NOT_FOUND
-            - 405 METHOD_NOT_ALLOWED
-            - 406 NOT_ACCEPTABLE
-            - 407 PROXY_AUTHENTICATION_REQUIRED
-            - 408 REQUEST_TIMEOUT
-            - 409 CONFLICT
-            - 410 GONE
-            - 411 LENGTH_REQUIRED
-            - 412 PRECONDITION_FAILED
-            - 413 PAYLOAD_TOO_LARGE
-            - 413 REQUEST_ENTITY_TOO_LARGE
-            - 414 URI_TOO_LONG
-            - 414 REQUEST_URI_TOO_LONG
-            - 415 UNSUPPORTED_MEDIA_TYPE
-            - 416 REQUESTED_RANGE_NOT_SATISFIABLE
-            - 417 EXPECTATION_FAILED
-            - 418 I_AM_A_TEAPOT
-            - 419 INSUFFICIENT_SPACE_ON_RESOURCE
-            - 420 METHOD_FAILURE
-            - 421 DESTINATION_LOCKED
-            - 422 UNPROCESSABLE_ENTITY
-            - 423 LOCKED
-            - 424 FAILED_DEPENDENCY
-            - 425 TOO_EARLY
-            - 426 UPGRADE_REQUIRED
-            - 428 PRECONDITION_REQUIRED
-            - 429 TOO_MANY_REQUESTS
-            - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
-            - 451 UNAVAILABLE_FOR_LEGAL_REASONS
-            - 500 INTERNAL_SERVER_ERROR
-            - 501 NOT_IMPLEMENTED
-            - 502 BAD_GATEWAY
-            - 503 SERVICE_UNAVAILABLE
-            - 504 GATEWAY_TIMEOUT
-            - 505 HTTP_VERSION_NOT_SUPPORTED
-            - 506 VARIANT_ALSO_NEGOTIATES
-            - 507 INSUFFICIENT_STORAGE
-            - 508 LOOP_DETECTED
-            - 509 BANDWIDTH_LIMIT_EXCEEDED
-            - 510 NOT_EXTENDED
-            - 511 NETWORK_AUTHENTICATION_REQUIRED
+          - 100 CONTINUE
+          - 101 SWITCHING_PROTOCOLS
+          - 102 PROCESSING
+          - 103 CHECKPOINT
+          - 200 OK
+          - 201 CREATED
+          - 202 ACCEPTED
+          - 203 NON_AUTHORITATIVE_INFORMATION
+          - 204 NO_CONTENT
+          - 205 RESET_CONTENT
+          - 206 PARTIAL_CONTENT
+          - 207 MULTI_STATUS
+          - 208 ALREADY_REPORTED
+          - 226 IM_USED
+          - 300 MULTIPLE_CHOICES
+          - 301 MOVED_PERMANENTLY
+          - 302 FOUND
+          - 302 MOVED_TEMPORARILY
+          - 303 SEE_OTHER
+          - 304 NOT_MODIFIED
+          - 305 USE_PROXY
+          - 307 TEMPORARY_REDIRECT
+          - 308 PERMANENT_REDIRECT
+          - 400 BAD_REQUEST
+          - 401 UNAUTHORIZED
+          - 402 PAYMENT_REQUIRED
+          - 403 FORBIDDEN
+          - 404 NOT_FOUND
+          - 405 METHOD_NOT_ALLOWED
+          - 406 NOT_ACCEPTABLE
+          - 407 PROXY_AUTHENTICATION_REQUIRED
+          - 408 REQUEST_TIMEOUT
+          - 409 CONFLICT
+          - 410 GONE
+          - 411 LENGTH_REQUIRED
+          - 412 PRECONDITION_FAILED
+          - 413 PAYLOAD_TOO_LARGE
+          - 413 REQUEST_ENTITY_TOO_LARGE
+          - 414 URI_TOO_LONG
+          - 414 REQUEST_URI_TOO_LONG
+          - 415 UNSUPPORTED_MEDIA_TYPE
+          - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+          - 417 EXPECTATION_FAILED
+          - 418 I_AM_A_TEAPOT
+          - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+          - 420 METHOD_FAILURE
+          - 421 DESTINATION_LOCKED
+          - 422 UNPROCESSABLE_ENTITY
+          - 423 LOCKED
+          - 424 FAILED_DEPENDENCY
+          - 425 TOO_EARLY
+          - 426 UPGRADE_REQUIRED
+          - 428 PRECONDITION_REQUIRED
+          - 429 TOO_MANY_REQUESTS
+          - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+          - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+          - 500 INTERNAL_SERVER_ERROR
+          - 501 NOT_IMPLEMENTED
+          - 502 BAD_GATEWAY
+          - 503 SERVICE_UNAVAILABLE
+          - 504 GATEWAY_TIMEOUT
+          - 505 HTTP_VERSION_NOT_SUPPORTED
+          - 506 VARIANT_ALSO_NEGOTIATES
+          - 507 INSUFFICIENT_STORAGE
+          - 508 LOOP_DETECTED
+          - 509 BANDWIDTH_LIMIT_EXCEEDED
+          - 510 NOT_EXTENDED
+          - 511 NETWORK_AUTHENTICATION_REQUIRED
         empty:
           type: boolean
-        viewName:
-          type: string
         modelMap:
           type: object
           properties:
@@ -4377,6 +4375,8 @@ components:
             type: object
         reference:
           type: boolean
+        viewName:
+          type: string
     View:
       type: object
       properties:
@@ -4385,12 +4385,15 @@ components:
     PageSubscriptionResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
         size:
           type: integer
           format: int32
@@ -4398,18 +4401,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SubscriptionResponse'
-        number:
-          type: integer
-          format: int32
         sort:
           $ref: '#/components/schemas/Sort'
-        numberOfElements:
-          type: integer
-          format: int32
         first:
           type: boolean
         last:
           type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
         pageable:
           $ref: '#/components/schemas/PageableObject'
         empty:
@@ -4459,12 +4459,15 @@ components:
     PageCloseArticleResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
         size:
           type: integer
           format: int32
@@ -4472,18 +4475,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CloseArticleResponse'
-        number:
-          type: integer
-          format: int32
         sort:
           $ref: '#/components/schemas/Sort'
-        numberOfElements:
-          type: integer
-          format: int32
         first:
           type: boolean
         last:
           type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
         pageable:
           $ref: '#/components/schemas/PageableObject'
         empty:
@@ -4491,12 +4491,15 @@ components:
     PageSubscriberResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
         size:
           type: integer
           format: int32
@@ -4504,18 +4507,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SubscriberResponse'
-        number:
-          type: integer
-          format: int32
         sort:
           $ref: '#/components/schemas/Sort'
-        numberOfElements:
-          type: integer
-          format: int32
         first:
           type: boolean
         last:
           type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
         pageable:
           $ref: '#/components/schemas/PageableObject'
         empty:
@@ -4543,12 +4543,15 @@ components:
     PageBookmarkArticleResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
         size:
           type: integer
           format: int32
@@ -4556,18 +4559,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BookmarkArticleResponse'
-        number:
-          type: integer
-          format: int32
         sort:
           $ref: '#/components/schemas/Sort'
-        numberOfElements:
-          type: integer
-          format: int32
         first:
           type: boolean
         last:
           type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
         pageable:
           $ref: '#/components/schemas/PageableObject'
         empty:
@@ -4575,12 +4575,15 @@ components:
     PageCommentResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
         size:
           type: integer
           format: int32
@@ -4588,18 +4591,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CommentResponse'
-        number:
-          type: integer
-          format: int32
         sort:
           $ref: '#/components/schemas/Sort'
-        numberOfElements:
-          type: integer
-          format: int32
         first:
           type: boolean
         last:
           type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
         pageable:
           $ref: '#/components/schemas/PageableObject'
         empty:
@@ -4607,12 +4607,15 @@ components:
     PageTagResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
         size:
           type: integer
           format: int32
@@ -4620,18 +4623,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TagResponse'
-        number:
-          type: integer
-          format: int32
         sort:
           $ref: '#/components/schemas/Sort'
-        numberOfElements:
-          type: integer
-          format: int32
         first:
           type: boolean
         last:
           type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
         pageable:
           $ref: '#/components/schemas/PageableObject'
         empty:
@@ -4650,24 +4650,24 @@ components:
           $ref: '#/components/schemas/ApplicationContext'
         id:
           type: string
+        displayName:
+          type: string
         applicationName:
           type: string
         startupDate:
           type: integer
           format: int64
-        displayName:
-          type: string
         autowireCapableBeanFactory:
           $ref: '#/components/schemas/AutowireCapableBeanFactory'
         environment:
           $ref: '#/components/schemas/Environment'
-        beanDefinitionCount:
-          type: integer
-          format: int32
         beanDefinitionNames:
           type: array
           items:
             type: string
+        beanDefinitionCount:
+          type: integer
+          format: int32
         parentBeanFactory:
           $ref: '#/components/schemas/BeanFactory'
         classLoader:
@@ -4719,6 +4719,10 @@ components:
                                   type: object
                               sealed:
                                 type: boolean
+                              specificationTitle:
+                                type: string
+                              implementationTitle:
+                                type: string
                               specificationVersion:
                                 type: string
                               specificationVendor:
@@ -4726,10 +4730,6 @@ components:
                               implementationVersion:
                                 type: string
                               implementationVendor:
-                                type: string
-                              specificationTitle:
-                                type: string
-                              implementationTitle:
                                 type: string
                     annotations:
                       type: array
@@ -4768,6 +4768,10 @@ components:
                           type: object
                       sealed:
                         type: boolean
+                      specificationTitle:
+                        type: string
+                      implementationTitle:
+                        type: string
                       specificationVersion:
                         type: string
                       specificationVendor:
@@ -4775,10 +4779,6 @@ components:
                       implementationVersion:
                         type: string
                       implementationVendor:
-                        type: string
-                      specificationTitle:
-                        type: string
-                      implementationTitle:
                         type: string
             name:
               type: string
@@ -4823,6 +4823,10 @@ components:
                               type: object
                           sealed:
                             type: boolean
+                          specificationTitle:
+                            type: string
+                          implementationTitle:
+                            type: string
                           specificationVersion:
                             type: string
                           specificationVendor:
@@ -4830,10 +4834,6 @@ components:
                           implementationVersion:
                             type: string
                           implementationVendor:
-                            type: string
-                          specificationTitle:
-                            type: string
-                          implementationTitle:
                             type: string
                 annotations:
                   type: array
@@ -4872,6 +4872,10 @@ components:
                       type: object
                   sealed:
                     type: boolean
+                  specificationTitle:
+                    type: string
+                  implementationTitle:
+                    type: string
                   specificationVersion:
                     type: string
                   specificationVendor:
@@ -4879,10 +4883,6 @@ components:
                   implementationVersion:
                     type: string
                   implementationVendor:
-                    type: string
-                  specificationTitle:
-                    type: string
-                  implementationTitle:
                     type: string
     AutowireCapableBeanFactory:
       type: object
@@ -4934,6 +4934,10 @@ components:
                           type: object
                       sealed:
                         type: boolean
+                      specificationTitle:
+                        type: string
+                      implementationTitle:
+                        type: string
                       specificationVersion:
                         type: string
                       specificationVendor:
@@ -4942,18 +4946,67 @@ components:
                         type: string
                       implementationVendor:
                         type: string
-                      specificationTitle:
-                        type: string
-                      implementationTitle:
-                        type: string
             majorVersion:
               type: integer
               format: int32
             minorVersion:
               type: integer
               format: int32
+            serverInfo:
+              type: string
+            servletNames:
+              type: object
+              deprecated: true
+            sessionTimeout:
+              type: integer
+              format: int32
+            attributeNames:
+              type: object
+            servlets:
+              type: object
+              deprecated: true
             contextPath:
               type: string
+            servletRegistrations:
+              type: object
+              additionalProperties:
+                type: object
+                properties:
+                  mappings:
+                    type: array
+                    items:
+                      type: string
+                  runAsRole:
+                    type: string
+                  name:
+                    type: string
+                  className:
+                    type: string
+                  initParameters:
+                    type: object
+                    additionalProperties:
+                      type: string
+            effectiveMinorVersion:
+              type: integer
+              format: int32
+            sessionCookieConfig:
+              type: object
+              properties:
+                name:
+                  type: string
+                path:
+                  type: string
+                comment:
+                  type: string
+                domain:
+                  type: string
+                maxAge:
+                  type: integer
+                  format: int32
+                secure:
+                  type: boolean
+                httpOnly:
+                  type: boolean
             filterRegistrations:
               type: object
               additionalProperties:
@@ -4975,61 +5028,6 @@ components:
                     type: object
                     additionalProperties:
                       type: string
-            servletContextName:
-              type: string
-            defaultSessionTrackingModes:
-              uniqueItems: true
-              type: array
-              items:
-                type: string
-                enum:
-                  - COOKIE
-                  - URL
-                  - SSL
-            virtualServerName:
-              type: string
-            effectiveMinorVersion:
-              type: integer
-              format: int32
-            sessionCookieConfig:
-              type: object
-              properties:
-                name:
-                  type: string
-                path:
-                  type: string
-                maxAge:
-                  type: integer
-                  format: int32
-                domain:
-                  type: string
-                comment:
-                  type: string
-                secure:
-                  type: boolean
-                httpOnly:
-                  type: boolean
-            servletRegistrations:
-              type: object
-              additionalProperties:
-                type: object
-                properties:
-                  runAsRole:
-                    type: string
-                  mappings:
-                    type: array
-                    items:
-                      type: string
-                  name:
-                    type: string
-                  className:
-                    type: string
-                  initParameters:
-                    type: object
-                    additionalProperties:
-                      type: string
-            responseCharacterEncoding:
-              type: string
             sessionTrackingModes:
               uniqueItems: true
               type: array
@@ -5037,17 +5035,48 @@ components:
               items:
                 type: string
                 enum:
-                  - COOKIE
-                  - URL
-                  - SSL
-            requestCharacterEncoding:
-              type: string
+                - COOKIE
+                - URL
+                - SSL
+            initParameterNames:
+              type: object
             effectiveMajorVersion:
               type: integer
               format: int32
+            defaultSessionTrackingModes:
+              uniqueItems: true
+              type: array
+              items:
+                type: string
+                enum:
+                - COOKIE
+                - URL
+                - SSL
+            effectiveSessionTrackingModes:
+              uniqueItems: true
+              type: array
+              items:
+                type: string
+                enum:
+                - COOKIE
+                - URL
+                - SSL
+            servletContextName:
+              type: string
+            responseCharacterEncoding:
+              type: string
             jspConfigDescriptor:
               type: object
               properties:
+                taglibs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      taglibLocation:
+                        type: string
+                      taglibURI:
+                        type: string
                 jspPropertyGroups:
                   type: array
                   items:
@@ -5061,61 +5090,32 @@ components:
                         type: array
                         items:
                           type: string
-                      scriptingInvalid:
-                        type: string
                       deferredSyntaxAllowedAsLiteral:
                         type: string
                       trimDirectiveWhitespaces:
                         type: string
+                      scriptingInvalid:
+                        type: string
                       errorOnUndeclaredNamespace:
                         type: string
-                      includePreludes:
-                        type: array
-                        items:
-                          type: string
-                      elIgnored:
+                      isXml:
                         type: string
                       includeCodas:
                         type: array
                         items:
                           type: string
+                      elIgnored:
+                        type: string
                       pageEncoding:
                         type: string
-                      isXml:
-                        type: string
-                taglibs:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      taglibLocation:
-                        type: string
-                      taglibURI:
-                        type: string
-            initParameterNames:
-              type: object
-            effectiveSessionTrackingModes:
-              uniqueItems: true
-              type: array
-              items:
-                type: string
-                enum:
-                  - COOKIE
-                  - URL
-                  - SSL
-            serverInfo:
+                      includePreludes:
+                        type: array
+                        items:
+                          type: string
+            virtualServerName:
               type: string
-            servlets:
-              type: object
-              deprecated: true
-            attributeNames:
-              type: object
-            servletNames:
-              type: object
-              deprecated: true
-            sessionTimeout:
-              type: integer
-              format: int32
+            requestCharacterEncoding:
+              type: string
           writeOnly: true
         contentType:
           type: string
@@ -5155,74 +5155,74 @@ components:
           type: string
           writeOnly: true
           enum:
-            - 100 CONTINUE
-            - 101 SWITCHING_PROTOCOLS
-            - 102 PROCESSING
-            - 103 CHECKPOINT
-            - 200 OK
-            - 201 CREATED
-            - 202 ACCEPTED
-            - 203 NON_AUTHORITATIVE_INFORMATION
-            - 204 NO_CONTENT
-            - 205 RESET_CONTENT
-            - 206 PARTIAL_CONTENT
-            - 207 MULTI_STATUS
-            - 208 ALREADY_REPORTED
-            - 226 IM_USED
-            - 300 MULTIPLE_CHOICES
-            - 301 MOVED_PERMANENTLY
-            - 302 FOUND
-            - 302 MOVED_TEMPORARILY
-            - 303 SEE_OTHER
-            - 304 NOT_MODIFIED
-            - 305 USE_PROXY
-            - 307 TEMPORARY_REDIRECT
-            - 308 PERMANENT_REDIRECT
-            - 400 BAD_REQUEST
-            - 401 UNAUTHORIZED
-            - 402 PAYMENT_REQUIRED
-            - 403 FORBIDDEN
-            - 404 NOT_FOUND
-            - 405 METHOD_NOT_ALLOWED
-            - 406 NOT_ACCEPTABLE
-            - 407 PROXY_AUTHENTICATION_REQUIRED
-            - 408 REQUEST_TIMEOUT
-            - 409 CONFLICT
-            - 410 GONE
-            - 411 LENGTH_REQUIRED
-            - 412 PRECONDITION_FAILED
-            - 413 PAYLOAD_TOO_LARGE
-            - 413 REQUEST_ENTITY_TOO_LARGE
-            - 414 URI_TOO_LONG
-            - 414 REQUEST_URI_TOO_LONG
-            - 415 UNSUPPORTED_MEDIA_TYPE
-            - 416 REQUESTED_RANGE_NOT_SATISFIABLE
-            - 417 EXPECTATION_FAILED
-            - 418 I_AM_A_TEAPOT
-            - 419 INSUFFICIENT_SPACE_ON_RESOURCE
-            - 420 METHOD_FAILURE
-            - 421 DESTINATION_LOCKED
-            - 422 UNPROCESSABLE_ENTITY
-            - 423 LOCKED
-            - 424 FAILED_DEPENDENCY
-            - 425 TOO_EARLY
-            - 426 UPGRADE_REQUIRED
-            - 428 PRECONDITION_REQUIRED
-            - 429 TOO_MANY_REQUESTS
-            - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
-            - 451 UNAVAILABLE_FOR_LEGAL_REASONS
-            - 500 INTERNAL_SERVER_ERROR
-            - 501 NOT_IMPLEMENTED
-            - 502 BAD_GATEWAY
-            - 503 SERVICE_UNAVAILABLE
-            - 504 GATEWAY_TIMEOUT
-            - 505 HTTP_VERSION_NOT_SUPPORTED
-            - 506 VARIANT_ALSO_NEGOTIATES
-            - 507 INSUFFICIENT_STORAGE
-            - 508 LOOP_DETECTED
-            - 509 BANDWIDTH_LIMIT_EXCEEDED
-            - 510 NOT_EXTENDED
-            - 511 NETWORK_AUTHENTICATION_REQUIRED
+          - 100 CONTINUE
+          - 101 SWITCHING_PROTOCOLS
+          - 102 PROCESSING
+          - 103 CHECKPOINT
+          - 200 OK
+          - 201 CREATED
+          - 202 ACCEPTED
+          - 203 NON_AUTHORITATIVE_INFORMATION
+          - 204 NO_CONTENT
+          - 205 RESET_CONTENT
+          - 206 PARTIAL_CONTENT
+          - 207 MULTI_STATUS
+          - 208 ALREADY_REPORTED
+          - 226 IM_USED
+          - 300 MULTIPLE_CHOICES
+          - 301 MOVED_PERMANENTLY
+          - 302 FOUND
+          - 302 MOVED_TEMPORARILY
+          - 303 SEE_OTHER
+          - 304 NOT_MODIFIED
+          - 305 USE_PROXY
+          - 307 TEMPORARY_REDIRECT
+          - 308 PERMANENT_REDIRECT
+          - 400 BAD_REQUEST
+          - 401 UNAUTHORIZED
+          - 402 PAYMENT_REQUIRED
+          - 403 FORBIDDEN
+          - 404 NOT_FOUND
+          - 405 METHOD_NOT_ALLOWED
+          - 406 NOT_ACCEPTABLE
+          - 407 PROXY_AUTHENTICATION_REQUIRED
+          - 408 REQUEST_TIMEOUT
+          - 409 CONFLICT
+          - 410 GONE
+          - 411 LENGTH_REQUIRED
+          - 412 PRECONDITION_FAILED
+          - 413 PAYLOAD_TOO_LARGE
+          - 413 REQUEST_ENTITY_TOO_LARGE
+          - 414 URI_TOO_LONG
+          - 414 REQUEST_URI_TOO_LONG
+          - 415 UNSUPPORTED_MEDIA_TYPE
+          - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+          - 417 EXPECTATION_FAILED
+          - 418 I_AM_A_TEAPOT
+          - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+          - 420 METHOD_FAILURE
+          - 421 DESTINATION_LOCKED
+          - 422 UNPROCESSABLE_ENTITY
+          - 423 LOCKED
+          - 424 FAILED_DEPENDENCY
+          - 425 TOO_EARLY
+          - 426 UPGRADE_REQUIRED
+          - 428 PRECONDITION_REQUIRED
+          - 429 TOO_MANY_REQUESTS
+          - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+          - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+          - 500 INTERNAL_SERVER_ERROR
+          - 501 NOT_IMPLEMENTED
+          - 502 BAD_GATEWAY
+          - 503 SERVICE_UNAVAILABLE
+          - 504 GATEWAY_TIMEOUT
+          - 505 HTTP_VERSION_NOT_SUPPORTED
+          - 506 VARIANT_ALSO_NEGOTIATES
+          - 507 INSUFFICIENT_STORAGE
+          - 508 LOOP_DETECTED
+          - 509 BANDWIDTH_LIMIT_EXCEEDED
+          - 510 NOT_EXTENDED
+          - 511 NETWORK_AUTHENTICATION_REQUIRED
         expandUriTemplateVariables:
           type: boolean
           writeOnly: true

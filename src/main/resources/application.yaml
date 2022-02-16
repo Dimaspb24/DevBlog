@@ -4,13 +4,13 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     # for docker db
-    username: demouser
-    password: demopassword
-    url: jdbc:postgresql://localhost:15432/postgres
+#    username: demouser
+#    password: demopassword
+#    url: jdbc:postgresql://localhost:15432/postgres
     # for local db
-#    username: postgres
-#    password: postgres
-#    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/postgres
   jpa:
     open-in-view: true # TODO: change to false later
     show-sql: true
@@ -35,8 +35,8 @@ spring:
       client:
         registration:
           google:
-            clientId:
-            clientSecret:
+            clientId: 295125751349-7dp9n0ts4gqalikl3srd4b54ul9mv83s.apps.googleusercontent.com
+            clientSecret: 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
             scope: 'email,profile,openid'
 
   # For Handling NoHandlerFoundException

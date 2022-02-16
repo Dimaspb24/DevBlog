@@ -54,6 +54,7 @@ public class AuthenticationService {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, TOKEN_PREFIX + token)
+                .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.AUTHORIZATION)
                 .body(new AuthenticationResponse(user.getId(), login, user.getRole().toString()));
     }
 

@@ -110,7 +110,11 @@ public class UserService {
         String info = userRequest.getInfo();
         String phone = userRequest.getPhone();
         String nickname = userRequest.getNickname();
+        String urlPhoto = userRequest.getPhoto();
 
+        if (urlPhoto != null && !urlPhoto.isEmpty()) {
+            personalInfo.setPhoto(urlPhoto);
+        }
         if (firstname != null && !firstname.isEmpty()) {
             personalInfo.setFirstname(firstname);
         }
@@ -135,6 +139,7 @@ public class UserService {
             }
         }
 
+        user.setPersonalInfo(personalInfo);
         userRepository.save(user);
         return user;
     }

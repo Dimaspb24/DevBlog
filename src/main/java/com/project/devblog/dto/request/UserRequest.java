@@ -15,4 +15,5 @@ public class UserRequest {
     String lastname;
     String nickname;
     String info;
+    String photo;
 }

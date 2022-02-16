@@ -3,6 +3,7 @@ package com.project.devblog.controller;
 import com.project.devblog.controller.annotation.ApiV1;
 import com.project.devblog.dto.response.CloseArticleResponse;
 import com.project.devblog.dto.response.CommentResponse;
+import com.project.devblog.dto.response.OpenArticleResponse;
 import com.project.devblog.dto.response.TagResponse;
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.CommentEntity;
@@ -39,17 +40,41 @@ public class ArticleController {
     @GetMapping("/articles")
     public Page<CloseArticleResponse> findAll(@RequestParam(name = "titleContains", required = false) String titleContains,
                                               @RequestParam(name = "tagName", required = false) String tagName,
-                                              @SortDefault(sort = "publicationDate") Pageable pageable) {
+                                              @SortDefault("publicationDate") Pageable pageable) {
         return articleService.findAll(titleContains, tagName, pageable)
                 .map(this::toResponse);
+    }
+
+    @GetMapping("/articles/{articleId}")
+    @ResponseStatus(HttpStatus.OK)
+    public OpenArticleResponse find(@NonNull @PathVariable Integer articleId) {
+        return toOpenArticleResponse(articleService.findById(articleId));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/articles/{articleId}/comments")
     public Page<CommentResponse> findAll(@NonNull @PathVariable Integer articleId,
-                                         @SortDefault(sort = "creationDate") Pageable pageable) {
+                                         @SortDefault("creationDate") Pageable pageable) {
         return commentService.findAllByArticleId(articleId, pageable)
                 .map(this::toResponse);
+    }
+
+    @NonNull
+    private OpenArticleResponse toOpenArticleResponse(@NonNull ArticleEntity article) {
+        PersonalInfo personalInfo = article.getAuthor().getPersonalInfo();
+        return new OpenArticleResponse(
+                article.getId(),
+                article.getTitle(),
+                article.getBody(),
+                article.getStatus().name(),
+                article.getDescription(),
+                article.getRating(),
+                article.getPublicationDate(),
+                article.getModificationDate(),
+                article.getAuthor().getId(),
+                personalInfo.getNickname(),
+                personalInfo.getPhoto(),
+                tagEntityToResponse(article.getTags()));
     }
 
     @NonNull

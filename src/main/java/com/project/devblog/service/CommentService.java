@@ -41,12 +41,12 @@ public class CommentService {
     }
 
     @NonNull
-    public Page<CommentEntity> findAllByAuthorIdAndArticleId(@NonNull String authorId, @NonNull Integer articleId, @NonNull Pageable pageable) {
+    public Page<CommentEntity> findAllByAuthorIdAndArticleId(@NonNull String authorId, @NonNull Integer articleId, Pageable pageable) {
         return commentRepository.findAllByAuthorIdAndArticleIdAndEnabledIsTrue(authorId, articleId, pageable);
     }
 
     @NonNull
-    public Page<CommentEntity> findAllByArticleId(@NonNull Integer articleId, @NonNull Pageable pageable) {
+    public Page<CommentEntity> findAllByArticleId(@NonNull Integer articleId, Pageable pageable) {
         return commentRepository.findAllByArticleIdAndEnabledIsTrue(articleId, pageable);
     }
 

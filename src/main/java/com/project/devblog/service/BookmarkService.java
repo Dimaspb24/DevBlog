@@ -51,7 +51,7 @@ public class BookmarkService {
     @NonNull
     public Page<BookmarkArticleResponse> findAll(@NonNull String userId, String bookmarkType, Pageable pageable) {
         if (Objects.isNull(bookmarkType)) {
-            return userArticleRepository.findByUserId(userId, pageable).
+            return userArticleRepository.findByUserIdAndBookmarkTypeNotNull(userId, pageable).
                     map(this::getBookmarkArticleResponses);
         } else {
             BookmarkType type = BookmarkType.valueOf(bookmarkType);

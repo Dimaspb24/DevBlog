@@ -66,7 +66,7 @@ public class UserSubscriptionController {
     @GetMapping("/users/{userId}/subscriptions/articles")
     @ResponseStatus(HttpStatus.OK)
     public Page<CloseArticleResponse> findArticlesBySubscriptions(@NonNull @PathVariable String userId,
-                                                                  @SortDefault(sort = "publicationDate") Pageable pageable) {
+                                                                  @SortDefault(sort = "a.publicationDate") Pageable pageable) {
         return articleService.findArticlesBySubscriptions(userId, pageable)
                 .map(this::toCloseArticleResponse);
     }

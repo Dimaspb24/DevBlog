@@ -23,7 +23,7 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
     @Query("select a from ArticleEntity a " +
             "where a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +
             "and a.enabled = true and a.publicationDate is not null")
-    Page<ArticleEntity> findByEnabledIsTrueAndPublicationDateIsNotNull(@NonNull Pageable pageable);
+    Page<ArticleEntity> findByEnabledIsTrueAndPublicationDateIsNotNull(Pageable pageable);
 
     Page<ArticleEntity> findByEnabledIsTrueAndTitleContains(@NonNull String name, Pageable pageable);
 
@@ -32,8 +32,7 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
             "where t.name = :tagName " +
             "and a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +
             "and a.enabled = true " +
-            "and a.publicationDate is not null " +
-            "order by a.publicationDate")
+            "and a.publicationDate is not null")
     Page<ArticleEntity> findByTagName(@NonNull @Param("tagName") String tagName, Pageable pageable);
 
     @Query("select a from TagEntity t " +
@@ -42,8 +41,7 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
             "and lower(a.title) like lower(concat('%', :titleContains, '%'))  " +
             "and a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +
             "and a.enabled = true " +
-            "and a.publicationDate is not null " +
-            "order by a.publicationDate")
+            "and a.publicationDate is not null")
     Page<ArticleEntity> findByTagNameAndTitleContains(@NonNull @Param("tagName") String tagName,
                                                       @NonNull @Param("titleContains") String titleContains,
                                                       Pageable pageable);
@@ -54,7 +52,6 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
             "where u.id = :userId " +
             "and a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +
             "and a.enabled = true " +
-            "and a.publicationDate is not null " +
-            "order by a.publicationDate")
+            "and a.publicationDate is not null")
     Page<ArticleEntity> findBySubscriptions(@NonNull @Param("userId") String userId, Pageable pageable);
 }

@@ -1,6 +1,5 @@
 package com.project.devblog.config;
 
-import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.CustomAccessDeniedHandler;
 import com.project.devblog.security.CustomAuthenticationEntryPoint;
 import com.project.devblog.security.JwtTokenAuthorizationFilter;
@@ -18,19 +17,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenAuthorizationFilter jwtTokenAuthorizationFilter;
-    private static final String GOOGLE_AUTH_REDIRECT = "/";
-    private static final String[] DOMAIN_USERS_URLS = {
-            "/v1/user/**",
-            "/v1/topic/**",
-            "/v1/searches/**"
+    private static final String AUTH_URL = "/v1/auth/**";
+    private static final String GOOGLE_AUTH_REDIRECT_URL = "/";
+    private static final String[] DOMAIN_URLS = {
+            "/v1/users/**",
+            "/v1/articles/**",
+            "/v1/tags/**",
     };
-    private static final String[] DOMAIN_PUBLIC_URLS = {
-            "/v1/auth/**",
-            "/v1/registration",
-            "/v1/checkToken/**",
-            "/v1/users/**/verify"
-    };
-    private static final String[] OPEN_API_ENDPOINTS = {
+    private static final String[] OPEN_API_URLS = {
             "/api-docs/**",
             "/api-docs.yaml",
             "/swagger-ui/**",
@@ -47,11 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(authenticationEntryPoint())
                 .and()
                 .authorizeRequests()
-                .antMatchers(OPEN_API_ENDPOINTS).permitAll()
-                .antMatchers(DOMAIN_PUBLIC_URLS).permitAll()
-                .antMatchers(GOOGLE_AUTH_REDIRECT).hasRole(Role.USER.name())
-                .antMatchers(DOMAIN_USERS_URLS).hasRole(Role.USER.name())
-                .anyRequest().authenticated()
+                .antMatchers(OPEN_API_URLS).permitAll()
+                .antMatchers(AUTH_URL).permitAll()
+//                .antMatchers(DOMAIN_URLS).hasRole(Role.USER.toString())
+//                .antMatchers(GOOGLE_AUTH_REDIRECT_URL).hasRole(Role.USER.toString())
+                .anyRequest()
+                .authenticated()
                 .and()
                 .addFilterBefore(jwtTokenAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login();

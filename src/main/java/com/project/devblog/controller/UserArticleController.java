@@ -80,7 +80,7 @@ public class UserArticleController {
     @ResponseStatus(HttpStatus.OK)
     public OpenArticleResponse update(@NonNull @PathVariable String userId,
                                       @NonNull @PathVariable Integer articleId,
-                                      @NonNull @Valid ArticleRequest request) {
+                                      @NonNull @Valid @RequestBody ArticleRequest request) {
         return toOpenArticleResponse(articleService.update(
                 userId,
                 articleId,

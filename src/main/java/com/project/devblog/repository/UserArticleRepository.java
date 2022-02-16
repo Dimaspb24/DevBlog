@@ -18,5 +18,5 @@ public interface UserArticleRepository extends JpaRepository<UserArticleEntity, 
 
     Page<UserArticleEntity> findByUserIdAndBookmarkType(@NonNull String userId, @NonNull BookmarkType bookmarkType, Pageable pageable);
 
-    Page<UserArticleEntity> findByUserId(@NonNull String userId, Pageable pageable);
+    Page<UserArticleEntity> findByUserIdAndBookmarkTypeNotNull(@NonNull String userId, Pageable pageable);
 }

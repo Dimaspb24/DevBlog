@@ -25,7 +25,7 @@ public class UserArticleRatingController {
     @ResponseStatus(HttpStatus.CREATED)
     public RatingResponse create(@NonNull @PathVariable String userId,
                                  @NonNull @PathVariable Integer articleId,
-                                 @NonNull @Valid RatingRequest request) {
+                                 @NonNull @Valid @RequestBody RatingRequest request) {
         return toResponse(ratingService.create(userId, articleId, request.getRating()));
     }
 
@@ -40,7 +40,7 @@ public class UserArticleRatingController {
     @ResponseStatus(HttpStatus.OK)
     public RatingResponse update(@NonNull @PathVariable String userId,
                                  @NonNull @PathVariable Integer articleId,
-                                 @NonNull @Valid RatingRequest request) {
+                                 @NonNull @Valid @RequestBody RatingRequest request) {
         return toResponse(ratingService.update(userId, articleId, request.getRating()));
     }
 

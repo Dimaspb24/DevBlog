@@ -29,7 +29,7 @@ public class UserCommentController {
     @ResponseStatus(HttpStatus.CREATED)
     public CommentResponse create(@NonNull @PathVariable String userId,
                                   @NonNull @PathVariable Integer articleId,
-                                  @NonNull @Valid CommentRequest request) {
+                                  @NonNull @Valid @RequestBody CommentRequest request) {
         return toResponse(commentService.create(userId, articleId, request.getMessage(), request.getReceiverId()));
     }
 
@@ -73,7 +73,7 @@ public class UserCommentController {
     public CommentResponse update(@NonNull @PathVariable String userId,
                                   @NonNull @PathVariable Integer articleId,
                                   @NonNull @PathVariable Long commentId,
-                                  @NonNull @Valid CommentRequest request) {
+                                  @NonNull @Valid @RequestBody CommentRequest request) {
         return toResponse(commentService.update(commentId, request.getMessage(), articleId, userId));
     }
 

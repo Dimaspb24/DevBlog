@@ -29,7 +29,7 @@ public class UserBookmarkController {
     @ResponseStatus(HttpStatus.CREATED)
     public BookmarkResponse create(@NonNull @PathVariable String userId,
                                    @NonNull @PathVariable Integer articleId,
-                                   @NonNull @Valid BookmarkRequest request) {
+                                   @NonNull @Valid @RequestBody BookmarkRequest request) {
         return bookmarkService.create(userId, articleId, request);
     }
 

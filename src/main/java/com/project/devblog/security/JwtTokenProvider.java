@@ -2,12 +2,7 @@ package com.project.devblog.security;
 
 import com.project.devblog.exception.JwtAuthenticationException;
 import com.project.devblog.model.enums.Role;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 import static java.lang.String.format;
 import static java.util.Optional.ofNullable;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +44,7 @@ public class JwtTokenProvider {
     public String createToken(String login, Role role) {
         return Jwts.builder()
                 .setSubject(login)
-                .addClaims(Map.of(ROLES, List.of(role)))
+                .addClaims(Map.of(ROLES, List.of(role.toString())))
                 .setIssuedAt(new Date())
                 .setExpiration(Date.from(LocalDateTime.now().plusMinutes(expirationTime).toInstant(ZoneOffset.UTC)))
                 .signWith(SignatureAlgorithm.HS256, secret)

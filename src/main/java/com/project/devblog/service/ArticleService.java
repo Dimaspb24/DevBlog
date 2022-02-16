@@ -9,13 +9,16 @@ import com.project.devblog.repository.ArticleRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -57,7 +60,7 @@ public class ArticleService {
     }
 
     @NonNull
-    public Page<ArticleEntity> findAll(@NonNull String userId, @NonNull Pageable pageable) {
+    public Page<ArticleEntity> findAll(@NonNull String userId, Pageable pageable) {
         return articleRepository.findByAuthorIdAndEnabledIsTrue(userId, pageable);
     }
 
@@ -86,15 +89,20 @@ public class ArticleService {
         articleEntity.setDescription(description);
         articleEntity.setBody(body);
         articleEntity.setStatus(status);
-        if (status == StatusArticle.PUBLISHED && articleEntity.getStatus() != StatusArticle.PUBLISHED) {
+
+        StatusArticle statusArticle = articleEntity.getStatus();
+        if (status == StatusArticle.PUBLISHED && statusArticle != StatusArticle.PUBLISHED) {
             articleEntity.setPublicationDate(LocalDateTime.now());
+        }
+        if (status == StatusArticle.CREATED && statusArticle == StatusArticle.PUBLISHED) {
+            articleEntity.setPublicationDate(null);
         }
 
         return articleRepository.save(articleEntity);
     }
 
     @NonNull
-    public Page<ArticleEntity> findArticlesBySubscriptions(@NonNull String userId, @NonNull Pageable pageable) {
+    public Page<ArticleEntity> findArticlesBySubscriptions(@NonNull String userId, Pageable pageable) {
         return articleRepository.findBySubscriptions(userId, pageable);
     }
 
@@ -104,12 +112,23 @@ public class ArticleService {
         if (Objects.isNull(titleContains) && Objects.isNull(tagName)) {
             articleEntities = articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageable);
         } else if (Objects.nonNull(titleContains) && Objects.nonNull(tagName)) {
-            articleEntities = articleRepository.findByTagNameAndTitleContains(tagName, titleContains, pageable);
+            PageRequest pageRequest = getPageRequestForSortByArticles(pageable);
+            articleEntities = articleRepository.findByTagNameAndTitleContains(tagName, titleContains, pageRequest);
         } else if (Objects.nonNull(titleContains)) {
             articleEntities = articleRepository.findByEnabledIsTrueAndTitleContains(titleContains, pageable);
         } else {
-            articleEntities = articleRepository.findByTagName(tagName, pageable);
+            PageRequest pageRequest = getPageRequestForSortByArticles(pageable);
+            articleEntities = articleRepository.findByTagName(tagName, pageRequest);
         }
         return articleEntities;
+    }
+
+    @NonNull
+    private PageRequest getPageRequestForSortByArticles(Pageable pageable) {
+        List<Sort.Order> orders = pageable.getSort().stream().map(order ->
+                order.withProperty("a." + order.getProperty()))
+                .collect(Collectors.toList());
+        Sort sort = Sort.by(orders);
+        return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
     }
 }

@@ -3,6 +3,7 @@ import {Box} from '@mui/material'
 import Header from './components/Header/Header'
 import UserArticleContainer from './components/Article/UserArticleContainer'
 import HomePageContainer from './components/Home/HomePageContainer'
+import CreatingPostContainer from './components/CreatingPost/CreatingPostContainer'
 
 function App() {
     return (
@@ -10,7 +11,8 @@ function App() {
             <Header/>
             {/*<UserPersonalInfoContainer/>*/}
             {/*<UserArticleContainer/>*/}
-            <HomePageContainer/>
+            {/*<HomePageContainer/>*/}
+            <CreatingPostContainer/>
         </Box>
     )
 }

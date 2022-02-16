@@ -1,9 +1,9 @@
 import {AppBar, Box, Toolbar} from '@mui/material'
 import Logo from './Logo'
-import HomeButton from './HomeButton'
 import CreateButton from './CreateButton'
 import ProfileButtonContainer from './ProfileButtonContainer'
 import UserSubscriptionButton from './UserSubscriptionButton'
+import HomeButtonContainer from './HomeButtonContainer'
 
 const Header = () => {
     return (
@@ -12,7 +12,7 @@ const Header = () => {
                 <Toolbar color="#512da8" sx={{display: 'flex'}}>
                     <Logo/>
                     <UserSubscriptionButton/>
-                    <HomeButton/>
+                    <HomeButtonContainer/>
                     <CreateButton/>
                     <ProfileButtonContainer/>
                 </Toolbar>

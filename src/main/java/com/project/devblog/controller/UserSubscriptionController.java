@@ -1,10 +1,10 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.controller.annotation.ApiV1;
-import com.project.devblog.controller.dto.response.CloseArticleResponse;
-import com.project.devblog.controller.dto.response.SubscriberResponse;
-import com.project.devblog.controller.dto.response.SubscriptionResponse;
-import com.project.devblog.controller.dto.response.TagResponse;
+import com.project.devblog.dto.response.CloseArticleResponse;
+import com.project.devblog.dto.response.SubscriberResponse;
+import com.project.devblog.dto.response.SubscriptionResponse;
+import com.project.devblog.dto.response.TagResponse;
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.TagEntity;
@@ -66,7 +66,7 @@ public class UserSubscriptionController {
     @GetMapping("/users/{userId}/subscriptions/articles")
     @ResponseStatus(HttpStatus.OK)
     public Page<CloseArticleResponse> findArticlesBySubscriptions(@NonNull @PathVariable String userId,
-                                                                  @SortDefault(sort = "publicationDate") Pageable pageable) {
+                                                                  @SortDefault(sort = "a.publicationDate") Pageable pageable) {
         return articleService.findArticlesBySubscriptions(userId, pageable)
                 .map(this::toCloseArticleResponse);
     }

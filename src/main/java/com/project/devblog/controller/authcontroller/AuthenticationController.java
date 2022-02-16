@@ -1,9 +1,9 @@
 package com.project.devblog.controller.authcontroller;
 
 import com.project.devblog.controller.annotation.ApiV1;
-import com.project.devblog.controller.dto.request.AuthenticationRequest;
-import com.project.devblog.controller.dto.request.RegistrationRequest;
-import com.project.devblog.controller.dto.response.AuthenticationResponse;
+import com.project.devblog.dto.request.AuthenticationRequest;
+import com.project.devblog.dto.request.RegistrationRequest;
+import com.project.devblog.dto.response.AuthenticationResponse;
 import com.project.devblog.security.JwtTokenProvider;
 import com.project.devblog.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,6 +1,5 @@
-package com.project.devblog.controller.dto.response;
+package com.project.devblog.dto.response;
 
-import com.project.devblog.model.PersonalInfo;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,12 +9,12 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class UserResponse {
+public class BookmarkResponse {
 
     @NonNull
-    String id;
+    String userId;
     @NonNull
-    String login;
+    Integer articleId;
     @NonNull
-    PersonalInfo personalInfo;
+    String bookmarkType;
 }

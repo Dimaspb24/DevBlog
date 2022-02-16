@@ -1,6 +1,6 @@
 package com.project.devblog.service;
 
-import com.project.devblog.controller.dto.request.UserRequest;
+import com.project.devblog.dto.request.UserRequest;
 import com.project.devblog.exception.NonUniqueValueException;
 import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.PersonalInfo;

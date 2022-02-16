@@ -1,4 +1,4 @@
-package com.project.devblog.controller.dto.request;
+package com.project.devblog.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -27,5 +27,5 @@ public class ArticleRequest {
     String description;
     @Nullable
     @Size(max = 4, message = "The maximum number of tags is 4")
-    List<String> tags;
+    List<@NotBlank @Size(max = 20, message = "The tag can contain up to 20 characters") String> tags;
 }

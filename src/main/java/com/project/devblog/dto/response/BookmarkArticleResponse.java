@@ -1,18 +1,23 @@
-package com.project.devblog.controller.dto.response;
+package com.project.devblog.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
+import org.springframework.lang.Nullable;
 
 @Getter
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class SubscriberResponse {
+public class BookmarkArticleResponse {
 
     @NonNull
-    String subscriberId;
+    Long id;
+    @Nullable
+    Integer rating;
     @NonNull
-    String nickname;
+    String bookmarkType;
+    @NonNull
+    CloseArticleResponse articleResponse;
 }

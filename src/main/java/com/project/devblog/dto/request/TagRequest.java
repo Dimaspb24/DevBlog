@@ -1,19 +1,19 @@
-package com.project.devblog.controller.dto.request;
+package com.project.devblog.dto.request;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TagRequest {
 
     @NotBlank(message = "Name is required")
-    @Size(max = 50, message = "The tag can contain up to 50 characters")
+    @Size(max = 20, message = "The tag can contain up to 20 characters")
     String name;
 }

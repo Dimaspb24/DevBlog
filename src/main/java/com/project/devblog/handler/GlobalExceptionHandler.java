@@ -1,5 +1,6 @@
 package com.project.devblog.handler;
 
+import com.project.devblog.exception.JwtAuthenticationException;
 import com.project.devblog.exception.NonUniqueValueException;
 import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.exception.VerificationException;
@@ -133,8 +134,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                  HttpServletRequest request) {
         log.error("ConstraintViolationException {}\n", request.getRequestURI(), ex);
 
-        ApiError apiError = new ApiError(BAD_REQUEST);
-        apiError.setMessage("Validation error");
+        ApiError apiError = new ApiError(BAD_REQUEST, "Validation error", ex);
         apiError.addValidationErrors(ex.getConstraintViolations());
         return toResponseEntity(apiError);
     }
@@ -188,6 +188,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         apiError.setMessage(String.format("The parameter '%s' of value '%s' could not be converted to type '%s'",
                 ex.getName(), ex.getValue(), Objects.requireNonNull(ex.getRequiredType()).getSimpleName()));
         apiError.setDebugMessage(ex.getMessage());
+        return toResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(JwtAuthenticationException.class)
+    @ResponseStatus(UNAUTHORIZED)
+    public ResponseEntity<ApiError> handleJwtAuthenticationException(HttpServletRequest request, AccessDeniedException ex) {
+        log.error("JwtAuthenticationException {}\n", request.getRequestURI(), ex);
+
+        ApiError apiError = new ApiError(UNAUTHORIZED, "Unauthorized!", ex);
         return toResponseEntity(apiError);
     }
 

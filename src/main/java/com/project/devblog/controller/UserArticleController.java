@@ -1,10 +1,10 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.controller.annotation.ApiV1;
-import com.project.devblog.controller.dto.request.ArticleRequest;
-import com.project.devblog.controller.dto.response.CloseArticleResponse;
-import com.project.devblog.controller.dto.response.OpenArticleResponse;
-import com.project.devblog.controller.dto.response.TagResponse;
+import com.project.devblog.dto.request.ArticleRequest;
+import com.project.devblog.dto.response.CloseArticleResponse;
+import com.project.devblog.dto.response.OpenArticleResponse;
+import com.project.devblog.dto.response.TagResponse;
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.TagEntity;
@@ -80,7 +80,7 @@ public class UserArticleController {
     @ResponseStatus(HttpStatus.OK)
     public OpenArticleResponse update(@NonNull @PathVariable String userId,
                                       @NonNull @PathVariable Integer articleId,
-                                      @NonNull @Valid ArticleRequest request) {
+                                      @NonNull @Valid @RequestBody ArticleRequest request) {
         return toOpenArticleResponse(articleService.update(
                 userId,
                 articleId,

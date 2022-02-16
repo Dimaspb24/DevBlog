@@ -1,8 +1,8 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.controller.annotation.ApiV1;
-import com.project.devblog.controller.dto.request.UserRequest;
-import com.project.devblog.controller.dto.response.UserResponse;
+import com.project.devblog.dto.request.UserRequest;
+import com.project.devblog.dto.response.UserResponse;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
-    public Page<UserResponse> findAll(@NonNull Pageable pageable) {
+    public Page<UserResponse> findAll(Pageable pageable) {
         return userService.findAll(pageable)
                 .map(this::toResponse);
     }
@@ -55,7 +55,7 @@ public class UserController {
     @PutMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public UserResponse update(@NonNull @PathVariable String userId,
-                               @RequestBody @NonNull UserRequest userRequest) {
+                               @NonNull @RequestBody UserRequest userRequest) {
         return toResponse(userService.update(userId, userRequest));
     }
 

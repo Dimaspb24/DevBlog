@@ -1,9 +1,9 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.controller.annotation.ApiV1;
-import com.project.devblog.controller.dto.request.BookmarkRequest;
-import com.project.devblog.controller.dto.response.BookmarkArticleResponse;
-import com.project.devblog.controller.dto.response.BookmarkResponse;
+import com.project.devblog.dto.request.BookmarkRequest;
+import com.project.devblog.dto.response.BookmarkArticleResponse;
+import com.project.devblog.dto.response.BookmarkResponse;
 import com.project.devblog.service.BookmarkService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
@@ -29,7 +29,7 @@ public class UserBookmarkController {
     @ResponseStatus(HttpStatus.CREATED)
     public BookmarkResponse create(@NonNull @PathVariable String userId,
                                    @NonNull @PathVariable Integer articleId,
-                                   @NonNull @Valid BookmarkRequest request) {
+                                   @NonNull @Valid @RequestBody BookmarkRequest request) {
         return bookmarkService.create(userId, articleId, request);
     }
 

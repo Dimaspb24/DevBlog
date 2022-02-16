@@ -1,8 +1,8 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.controller.annotation.ApiV1;
-import com.project.devblog.controller.dto.request.CommentRequest;
-import com.project.devblog.controller.dto.response.CommentResponse;
+import com.project.devblog.dto.request.CommentRequest;
+import com.project.devblog.dto.response.CommentResponse;
 import com.project.devblog.model.CommentEntity;
 import com.project.devblog.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +29,7 @@ public class UserCommentController {
     @ResponseStatus(HttpStatus.CREATED)
     public CommentResponse create(@NonNull @PathVariable String userId,
                                   @NonNull @PathVariable Integer articleId,
-                                  @NonNull @Valid CommentRequest request) {
+                                  @NonNull @Valid @RequestBody CommentRequest request) {
         return toResponse(commentService.create(userId, articleId, request.getMessage(), request.getReceiverId()));
     }
 
@@ -73,7 +73,7 @@ public class UserCommentController {
     public CommentResponse update(@NonNull @PathVariable String userId,
                                   @NonNull @PathVariable Integer articleId,
                                   @NonNull @PathVariable Long commentId,
-                                  @NonNull @Valid CommentRequest request) {
+                                  @NonNull @Valid @RequestBody CommentRequest request) {
         return toResponse(commentService.update(commentId, request.getMessage(), articleId, userId));
     }
 

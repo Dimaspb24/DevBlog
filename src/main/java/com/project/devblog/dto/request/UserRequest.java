@@ -1,18 +1,18 @@
-package com.project.devblog.controller.dto.response;
+package com.project.devblog.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
 @Getter
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AuthenticationResponse {
+public class UserRequest {
 
-    @NonNull
-    String id;
-    @NonNull
-    String login;
+    String phone;
+    String firstname;
+    String lastname;
+    String nickname;
+    String info;
 }

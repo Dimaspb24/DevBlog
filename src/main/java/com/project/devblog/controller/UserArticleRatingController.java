@@ -1,8 +1,8 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.controller.annotation.ApiV1;
-import com.project.devblog.controller.dto.request.RatingRequest;
-import com.project.devblog.controller.dto.response.RatingResponse;
+import com.project.devblog.dto.request.RatingRequest;
+import com.project.devblog.dto.response.RatingResponse;
 import com.project.devblog.model.UserArticleEntity;
 import com.project.devblog.service.RatingService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,7 +25,7 @@ public class UserArticleRatingController {
     @ResponseStatus(HttpStatus.CREATED)
     public RatingResponse create(@NonNull @PathVariable String userId,
                                  @NonNull @PathVariable Integer articleId,
-                                 @NonNull @Valid RatingRequest request) {
+                                 @NonNull @Valid @RequestBody RatingRequest request) {
         return toResponse(ratingService.create(userId, articleId, request.getRating()));
     }
 
@@ -40,7 +40,7 @@ public class UserArticleRatingController {
     @ResponseStatus(HttpStatus.OK)
     public RatingResponse update(@NonNull @PathVariable String userId,
                                  @NonNull @PathVariable Integer articleId,
-                                 @NonNull @Valid RatingRequest request) {
+                                 @NonNull @Valid @RequestBody RatingRequest request) {
         return toResponse(ratingService.update(userId, articleId, request.getRating()));
     }
 

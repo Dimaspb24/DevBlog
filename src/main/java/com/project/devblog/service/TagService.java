@@ -52,4 +52,11 @@ public class TagService {
     public void delete(@NonNull Integer tagId) {
         tagRepository.deleteById(tagId);
     }
+
+    public TagEntity update(@NonNull Integer tagId, @NonNull String name) {
+        TagEntity tagEntity = tagRepository.getById(tagId);
+        tagEntity.setName(name);
+        tagRepository.save(tagEntity);
+        return tagEntity;
+    }
 }

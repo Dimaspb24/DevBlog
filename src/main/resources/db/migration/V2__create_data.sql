@@ -1,16 +1,23 @@
-insert into users (id, login, password, role, enabled, firstname, lastname, nickname, phone)
+insert into users (id, login, password, role, enabled, firstname, lastname, nickname, phone, photo, info)
 values ('1', 'mail1@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true, 'Иосиф',
-        'Сталин', 'Вождь', '89999999999'),
+        'Сталин', 'Вождь', '89999999999',
+        'https://histrf.ru/images/biographies/05/KuQYEI2HeM9mzCXevgKdebKS7FjiY87B1sm59t3t.jpg', 'Я Сталин'),
        ('2', 'mail2@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true, 'Дмитрий',
-        'Смирнов', 'Чел', '89878789879'),
+        'Смирнов', 'Чел', '89878789879',
+        'https://histrf.ru/images/biographies/05/KuQYEI2HeM9mzCXevgKdebKS7FjiY87B1sm59t3t.jpg', 'Я Дмитрий'),
        ('3', 'mail3@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true, 'Алексей',
-        'Афанасьев', 'Шрэк', '85555555555'),
+        'Афанасьев', 'Шрэк', '85555555555',
+        'https://histrf.ru/images/biographies/05/KuQYEI2HeM9mzCXevgKdebKS7FjiY87B1sm59t3t.jpg', 'Я Алексей'),
        ('4', 'mail4@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true, 'Семён',
-        'Антуфьев', 'Чувак', '87536584648'),
+        'Антуфьев', 'Чувак', '87536584648',
+        'https://histrf.ru/images/biographies/05/KuQYEI2HeM9mzCXevgKdebKS7FjiY87B1sm59t3t.jpg', 'Я Семён'),
        ('5', 'mail5@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true, 'Даниил',
-        'Беседин', 'Frontend master', '87563648576'),
+        'Беседин', 'Frontend master', '87563648576',
+        'https://histrf.ru/images/biographies/05/KuQYEI2HeM9mzCXevgKdebKS7FjiY87B1sm59t3t.jpg', 'Я Даниил'),
        ('6', 'mail6@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true, 'Иисус',
-        'Христос', 'Святой', '886759987675');
+        'Христос', 'Святой', '886759987675',
+        'https://ichef.bbci.co.uk/news/624/amz/worldservice/live/assets/images/2015/12/24/151224130920_jesus_1_624x485_thinkstock_nocredit.jpg',
+        'Я Иисус');
 insert into users (id, login, password, role, enabled)
 values ('7', 'mail7@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true),
        ('8', 'mail8@mail.ru', '$2a$12$EIigg.G180RiQzEoIM/DGepBGOE2dOsnJIsJ4Oy600A91Raa0Us5O', 'USER', true),
@@ -48,8 +55,22 @@ values (1, 2),
        (9, 5);
 
 insert into articles (user_id, title, body, status, description, publication_date)
-values (1, 'Title 1.1', 'test body 1', 'CREATED', 'description', null),
-       (2, 'Title 2.1', 'test body 1', 'CREATED', 'description', null),
+values (1, 'Spring Security with JWT for REST API',
+        'Spring is considered a trusted framework in the Java ecosystem and is widely used. It’s no longer valid to refer to Spring as a framework, as it’s more of an umbrella term that covers various frameworks. One of these frameworks is Spring Security, which is a powerful and customizable authentication and authorization framework. It is considered the de facto standard for securing Spring-based applications.
+
+Despite its popularity, I must admit that when it comes to single-page applications, it’s not simple and straightforward to configure. I suspect the reason is that it started more as an MVC application-oriented framework, where webpage rendering happens on the server-side and communication is session-based.
+
+If the back end is based on Java and Spring, it makes sense to use Spring Security for authentication/authorization and configure it for stateless communication. While there are a lot of articles explaining how this is done, for me, it was still frustrating to set it up for the first time, and I had to read and sum up information from multiple sources. That’s why I decided to write this article, where I will try to summarize and cover all the required subtle details and foibles you may encounter during the configuration process.',
+        'PUBLISHED',
+        'The Spring Security framework is the de facto industry standard when it comes to securing Spring-based apps, but it can be tricky to configure. In this article, Toptal Software Engineer Ioram Gordadze demonstrates how you can implement it without wasting too much time.',
+        timestamp '2022-01-30 10:10:35'),
+       (2, 'Spring Security: Check If a User Has a Role in Java',
+        'test body 1',
+        'PUBLISHED',
+        'In Spring Security, sometimes it is necessary to check if an authenticated user has a specific role. This can be useful to enable or disable particular features in our applications.
+
+In this tutorial, we''ll see various ways to check user roles in Java for Spring Security.',
+        timestamp '2022-01-30 10:17:35'),
        (2, 'Title 2.2', 'test body 2', 'CREATED', 'description', null),
        (3, 'Title 3.1', 'test body 1', 'CREATED', 'description', null),
        (3, 'Title 3.2', 'test body 2', 'CREATED', 'description', null),

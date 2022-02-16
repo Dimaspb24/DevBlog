@@ -2,13 +2,15 @@ import UserPersonalInfoContainer from './components/UserPersonalInfo/UserPersona
 import {Box} from '@mui/material'
 import Header from './components/Header/Header'
 import UserArticleContainer from './components/Article/UserArticleContainer'
+import HomePageContainer from './components/Home/HomePageContainer'
 
 function App() {
     return (
         <Box sx={{display: 'flex', flexDirection: 'column'}}>
             <Header/>
             {/*<UserPersonalInfoContainer/>*/}
-            <UserArticleContainer/>
+            {/*<UserArticleContainer/>*/}
+            <HomePageContainer/>
         </Box>
     )
 }

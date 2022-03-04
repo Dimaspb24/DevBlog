@@ -1,22 +1,13 @@
 package com.project.devblog.integration;
 
-import com.project.devblog.model.ArticleEntity;
-import com.project.devblog.model.TagEntity;
-import com.project.devblog.model.UserEntity;
-import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.repository.ArticleRepository;
 import com.project.devblog.repository.TagRepository;
 import com.project.devblog.repository.UserArticleRepository;
 import com.project.devblog.repository.UserRepository;
+import javax.persistence.EntityManager;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class ArticleIT extends AbstractIT {

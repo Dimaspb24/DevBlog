@@ -24,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
 
@@ -123,5 +124,15 @@ class AuthenticationServiceTest {
         assertThat(response.getBody().getId()).isEqualTo(authenticationResponse.getId());
         assertThat(response.getBody().getLogin()).isEqualTo(authenticationResponse.getLogin());
         assertThat(response.getBody().getRole()).isEqualTo(authenticationResponse.getRole());
+    }
+
+    @Test
+    void registerTestWithBadCredentials() throws Exception {
+        when(userService.isExists(user.getLogin()))
+                .thenReturn(true);
+
+        assertThatThrownBy(() -> authenticationService.register(user.getLogin(), user.getPassword()))
+                .isInstanceOf(BadCredentialsException.class)
+                .hasMessageContaining(format("The account with login %s is already registered", user.getLogin()));
     }
 }

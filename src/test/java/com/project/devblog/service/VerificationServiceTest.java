@@ -1,5 +1,6 @@
 package com.project.devblog.service;
 
+import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.exception.VerificationException;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
@@ -11,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.when;
+import static java.lang.String.format;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -64,6 +66,17 @@ class VerificationServiceTest {
 
         assertThat(user.isEnabled()).isTrue();
         assertThat(user.getVerificationCode()).isNull();
+    }
+
+    @Test
+    void verifyTestWithNotFoundUser() throws Exception {
+        when(userRepository.findById(user.getId()))
+                .thenReturn(Optional.empty());
+
+        final String verificationCode = UUID.randomUUID().toString();
+        assertThatThrownBy(() -> verificationService.verify(user.getId(), verificationCode))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining(format("%s with id=%s not found", UserEntity.class.getSimpleName(), user.getId()));
     }
 
     @Test

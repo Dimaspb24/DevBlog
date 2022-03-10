@@ -4,6 +4,7 @@ import com.project.devblog.exception.VerificationException;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.repository.UserRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,54 +26,42 @@ public class VerificationServiceTest {
     private VerificationService verificationService;
     @MockBean
     private UserRepository userRepository;
+    private static UserEntity user;
+
+    @BeforeAll
+    static void init() {
+        user = UserEntity.builder()
+                .id(UUID.randomUUID().toString())
+                .login("user1@gmail.com")
+                .password("pass1")
+                .role(Role.USER)
+                .build();
+    }
 
     @Test
     void sendVerificationEmailTestWithInvalidEmail() throws Exception {
-        final String id = UUID.randomUUID().toString();
-        final String login = "user1@mail/$*\n";
-        final String password = "pass1";
-        final String verificationCode = UUID.randomUUID().toString();
+        user.setLogin("user1@mail/$*\n");
 
-        UserEntity user = UserEntity.builder()
-                .id(id)
-                .login(login)
-                .password(password)
-                .role(Role.USER)
-                .enabled(true)
-                .verificationCode(verificationCode)
-                .build();
-
-        Mockito.when(userRepository.getById(id))
+        Mockito.when(userRepository.getById(user.getId()))
                 .thenReturn(user);
 
-        assertThatThrownBy(() -> {
-            verificationService.sendVerificationEmail(id);
-        })
+        assertThatThrownBy(() -> verificationService.sendVerificationEmail(user.getId()))
                 .isInstanceOf(VerificationException.class)
                 .hasMessageContaining("Error sending the verification message to the mail");
     }
 
     @Test
     void verifyTest() throws Exception {
-        final String id = UUID.randomUUID().toString();
-        final String login = "user1@gmail.com";
-        final String password = "pass1";
-        final String verificationCode = UUID.randomUUID().toString();
+        user.setLogin("user1@gmail.com");
+        user.setEnabled(false);
+        user.setVerificationCode(UUID.randomUUID().toString());
 
-        UserEntity user = UserEntity.builder()
-                .id(id)
-                .login(login)
-                .password(password)
-                .role(Role.USER)
-                .enabled(false)
-                .verificationCode(verificationCode)
-                .build();
-
-        Mockito.when(userRepository.findById(id))
+        Mockito.when(userRepository.findById(user.getId()))
                 .thenReturn(Optional.of(user));
-        Mockito.when(userRepository.save(user)).thenReturn(user);
+        Mockito.when(userRepository.save(user))
+                .thenReturn(user);
 
-        verificationService.verify(id, verificationCode);
+        verificationService.verify(user.getId(), user.getVerificationCode());
 
         assertThat(user.isEnabled()).isTrue();
         assertThat(user.getVerificationCode()).isNull();
@@ -80,57 +69,36 @@ public class VerificationServiceTest {
 
     @Test
     void verifyTestWithAlreadyVerifiedUser() throws Exception {
-        final String id = UUID.randomUUID().toString();
-        final String login = "user1@gmail.com";
-        final String password = "pass1";
+        user.setLogin("user1@gmail.com");
+        user.setEnabled(true);
+        user.setVerificationCode(null);
 
-        UserEntity user = UserEntity.builder()
-                .id(id)
-                .login(login)
-                .password(password)
-                .role(Role.USER)
-                .enabled(true)
-                .verificationCode(null)
-                .build();
-
-        Mockito.when(userRepository.findById(id))
+        Mockito.when(userRepository.findById(user.getId()))
                 .thenReturn(Optional.of(user));
-        Mockito.when(userRepository.save(user)).thenReturn(user);
+        Mockito.when(userRepository.save(user))
+                .thenReturn(user);
 
         final String verificationCode = UUID.randomUUID().toString();
 
-        assertThatThrownBy(() -> {
-            verificationService.verify(id, verificationCode);
-        })
+        assertThatThrownBy(() -> verificationService.verify(user.getId(), verificationCode))
                 .isInstanceOf(VerificationException.class)
                 .hasMessageContaining("User already verified");
     }
 
     @Test
     void verifyTestWithInvalidVerificationCode() throws Exception {
-        final String id = UUID.randomUUID().toString();
-        final String login = "user1@gmail.com";
-        final String password = "pass1";
-        final String verificationCode = UUID.randomUUID().toString();
+        user.setLogin("user1@gmail.com");
+        user.setEnabled(false);
+        user.setVerificationCode(UUID.randomUUID().toString());
 
-        UserEntity user = UserEntity.builder()
-                .id(id)
-                .login(login)
-                .password(password)
-                .role(Role.USER)
-                .enabled(false)
-                .verificationCode(verificationCode)
-                .build();
-
-        Mockito.when(userRepository.findById(id))
+        Mockito.when(userRepository.findById(user.getId()))
                 .thenReturn(Optional.of(user));
-        Mockito.when(userRepository.save(user)).thenReturn(user);
+        Mockito.when(userRepository.save(user))
+                .thenReturn(user);
 
         final String invalidVerificationCode = UUID.randomUUID().toString();
 
-        assertThatThrownBy(() -> {
-            verificationService.verify(id, invalidVerificationCode);
-        })
+        assertThatThrownBy(() -> verificationService.verify(user.getId(), invalidVerificationCode))
                 .isInstanceOf(VerificationException.class)
                 .hasMessageContaining("Invalid verification code");
     }

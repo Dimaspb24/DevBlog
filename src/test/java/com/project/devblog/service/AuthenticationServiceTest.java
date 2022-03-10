@@ -6,6 +6,7 @@ import com.project.devblog.exception.VerificationException;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,29 +39,33 @@ public class AuthenticationServiceTest {
     private UserService userService;
     @MockBean
     private AuthenticationManager authenticationManager;
+    private static UserEntity user;
+    private static AuthenticationResponse authenticationResponse;
+
+    @BeforeAll
+    static void init() {
+        user = UserEntity.builder()
+                .id(UUID.randomUUID().toString())
+                .login("user1@gmail.com")
+                .password("pass1")
+                .role(Role.USER)
+                .build();
+        authenticationResponse = new AuthenticationResponse(user.getId(), user.getLogin(), Role.USER.name());
+    }
 
     @Test
     void loginTest() throws Exception {
-        final String id = UUID.randomUUID().toString();
-        final String login = "user1@gmail.com";
-        final String password = "pass1";
-        final AuthenticationResponse authenticationResponse = new AuthenticationResponse(id,
-                login, Role.USER.name());
+        user.setEnabled(true);
+        user.setVerificationCode(null);
 
-        Mockito.when(userService.findByLogin(login))
-                .thenReturn(UserEntity.builder()
-                        .id(id)
-                        .login(login)
-                        .password(password)
-                        .role(Role.USER)
-                        .enabled(true)
-                        .verificationCode(null)
-                        .build());
+        Mockito.when(userService.findByLogin(user.getLogin()))
+                .thenReturn(user);
 
         Authentication authentication = Mockito.mock(Authentication.class);
         Mockito.when(authenticationManager.authenticate(any())).thenReturn(authentication);
 
-        ResponseEntity<AuthenticationResponse> response = authenticationService.login(login, password);
+        ResponseEntity<AuthenticationResponse> response = authenticationService.login(user.getLogin(),
+                user.getPassword());
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)).isTrue();
@@ -73,85 +78,49 @@ public class AuthenticationServiceTest {
 
     @Test
     void loginTestWithNotFoundUser() throws Exception {
-        final String login = "user1@gmail.com";
-        final String password = "pass1";
-
-        Mockito.when(userService.findByLogin(login))
+        Mockito.when(userService.findByLogin(user.getLogin()))
                 .thenThrow(NotFoundException.class);
 
-        assertThatThrownBy(() -> {
-            authenticationService.login(login, password);
-        })
+        assertThatThrownBy(() -> authenticationService.login(user.getLogin(), user.getPassword()))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining(format("The account with login %s does not exist", login));
+                .hasMessageContaining(format("The account with login %s does not exist", user.getLogin()));
     }
 
     @Test
     void loginTestWithBlockedUser() throws Exception {
-        final String id = UUID.randomUUID().toString();
-        final String login = "user1@gmail.com";
-        final String password = "pass1";
+        user.setEnabled(false);
+        user.setVerificationCode(null);
 
-        Mockito.when(userService.findByLogin(login))
-                .thenReturn(UserEntity.builder()
-                        .id(id)
-                        .login(login)
-                        .password(password)
-                        .role(Role.USER)
-                        .enabled(false)
-                        .verificationCode(null)
-                        .build());
+        Mockito.when(userService.findByLogin(user.getLogin()))
+                .thenReturn(user);
 
-        assertThatThrownBy(() -> {
-            authenticationService.login(login, password);
-        })
+        assertThatThrownBy(() -> authenticationService.login(user.getLogin(), user.getPassword()))
                 .isInstanceOf(LockedException.class)
                 .hasMessageContaining("This account is blocked");
     }
 
     @Test
     void loginTestWithNotVerifiedUser() throws Exception {
-        final String id = UUID.randomUUID().toString();
-        final String login = "user1@gmail.com";
-        final String password = "pass1";
-        final String verificationCode = UUID.randomUUID().toString();
+        user.setEnabled(false);
+        user.setVerificationCode(UUID.randomUUID().toString());
 
-        Mockito.when(userService.findByLogin(login))
-                .thenReturn(UserEntity.builder()
-                        .id(id)
-                        .login(login)
-                        .password(password)
-                        .role(Role.USER)
-                        .enabled(false)
-                        .verificationCode(verificationCode)
-                        .build());
+        Mockito.when(userService.findByLogin(user.getLogin()))
+                .thenReturn(user);
 
-        assertThatThrownBy(() -> {
-            authenticationService.login(login, password);
-        })
+        assertThatThrownBy(() -> authenticationService.login(user.getLogin(), user.getPassword()))
                 .isInstanceOf(VerificationException.class)
                 .hasMessageContaining("This account is not verified");
     }
 
     @Test
     void registerTest() throws Exception {
-        final String id = UUID.randomUUID().toString();
-        final String login = "user1@gmail.com";
-        final String password = "pass1";
-        final AuthenticationResponse authenticationResponse = new AuthenticationResponse(id,
-                login, Role.USER.name());
+        Mockito.when(userService.isExists(user.getLogin()))
+                .thenReturn(false);
+        Mockito.when(userService.register(user.getLogin(), user.getPassword()))
+                .thenReturn(user);
 
-        Mockito.when(userService.isExists(login))
-                        .thenReturn(false);
-        Mockito.when(userService.register(login, password))
-                .thenReturn(UserEntity.builder()
-                        .id(id)
-                        .login(login)
-                        .password(password)
-                        .role(Role.USER)
-                        .build());
-
-        ResponseEntity<AuthenticationResponse> response = authenticationService.register(login, password);
+        ResponseEntity<AuthenticationResponse> response = authenticationService.register(user.getLogin(),
+                user.getPassword());
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody().getId()).isEqualTo(authenticationResponse.getId());

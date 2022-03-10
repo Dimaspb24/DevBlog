@@ -135,14 +135,14 @@ public class CommentServiceTest {
 
     @Test
     void findAllByAuthorIdAndArticleIdTest() throws Exception {
-        Page<CommentEntity> page = new PageImpl<>(List.of(comment, comment2));
-        Pageable pageable = Pageable.ofSize(2);
+        final Page<CommentEntity> page = new PageImpl<>(List.of(comment, comment2));
+        final Pageable pageable = Pageable.ofSize(2);
 
         Mockito.when(commentRepository.findAllByAuthorIdAndArticleIdAndEnabledIsTrue(author.getId(), article.getId(),
                         pageable))
                 .thenReturn(page);
 
-        Page<CommentEntity> foundPage = commentService.findAllByAuthorIdAndArticleId(author.getId(), article.getId(),
+        final Page<CommentEntity> foundPage = commentService.findAllByAuthorIdAndArticleId(author.getId(), article.getId(),
                 pageable);
 
         assertThat(foundPage.getContent()).containsExactly(comment, comment2);
@@ -150,13 +150,13 @@ public class CommentServiceTest {
 
     @Test
     void findAllByArticleIdTest() throws Exception {
-        Page<CommentEntity> page = new PageImpl<>(List.of(comment, comment2));
-        Pageable pageable = Pageable.ofSize(2);
+        final Page<CommentEntity> page = new PageImpl<>(List.of(comment, comment2));
+        final Pageable pageable = Pageable.ofSize(2);
 
         Mockito.when(commentRepository.findAllByArticleIdAndEnabledIsTrue(article.getId(), pageable))
                 .thenReturn(page);
 
-        Page<CommentEntity> foundPage = commentService.findAllByArticleId(article.getId(), pageable);
+        final Page<CommentEntity> foundPage = commentService.findAllByArticleId(article.getId(), pageable);
 
         assertThat(foundPage.getContent()).containsExactly(comment, comment2);
     }

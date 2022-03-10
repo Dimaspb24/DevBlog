@@ -3,6 +3,7 @@ package com.project.devblog.service;
 import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.repository.TagRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +30,22 @@ public class TagServiceTest {
     private TagService tagService;
     @MockBean
     private TagRepository tagRepository;
+    private static TagEntity tag;
+    private static TagEntity tag2;
+
+    @BeforeAll
+    static void init() {
+        tag = new TagEntity("tag");
+        tag.setId(1);
+        tag2 = new TagEntity("tag2");
+        tag2.setId(2);
+    }
 
     @Test
     void findTest() throws Exception {
-        TagEntity tag = new TagEntity();
-        tag.setId(1);
-        tag.setName("tag1");
-        Mockito.when(tagRepository.findById(tag.getId())).thenReturn(Optional.of(tag));
-        TagEntity foundTag = tagService.find(tag.getId());
+        Mockito.when(tagRepository.findById(tag.getId()))
+                .thenReturn(Optional.of(tag));
+        final TagEntity foundTag = tagService.find(tag.getId());
 
         assertThat(foundTag.getId()).isEqualTo(tag.getId());
         assertThat(foundTag.getName()).isEqualTo(tag.getName());
@@ -44,47 +53,41 @@ public class TagServiceTest {
 
     @Test
     void findTestWithNotFoundTag() throws Exception {
-        Mockito.when(tagRepository.findById(any())).thenReturn(Optional.empty());
+        Mockito.when(tagRepository.findById(any()))
+                .thenReturn(Optional.empty());
 
         final Integer tagId = 5;
-        assertThatThrownBy(() -> {
-            tagService.find(tagId);
-        })
+        assertThatThrownBy(() -> tagService.find(tagId))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining(format("%s with id=%s not found", TagEntity.class.getSimpleName(), tagId));
     }
 
     @Test
     void findAllTestByNameContains() throws Exception {
-        TagEntity tag1 = new TagEntity("tag1");
-        TagEntity tag2 = new TagEntity("tag2");
-        String nameContains = "tag";
+        final String nameContains = "tag";
 
-        Page<TagEntity> page = new PageImpl<>(List.of(tag1, tag2));
-        Pageable pageable = Pageable.ofSize(2);
+        final Page<TagEntity> page = new PageImpl<>(List.of(tag, tag2));
+        final Pageable pageable = Pageable.ofSize(2);
 
         Mockito.when(tagRepository.findTagEntitiesByNameContains(nameContains, pageable)).thenReturn(page);
 
         Page<TagEntity> foundPage = tagService.findAll(nameContains, pageable);
 
-        assertThat(foundPage.getContent()).containsExactly(tag1, tag2);
+        assertThat(foundPage.getContent()).containsExactly(tag, tag2);
     }
 
     @Test
     void findAllTestByEmptyAndNullNameContains() throws Exception {
-        TagEntity tag1 = new TagEntity("tag1");
-        TagEntity tag2 = new TagEntity("tag2");
-
-        Page<TagEntity> page = new PageImpl<>(List.of(tag1, tag2));
-        Pageable pageable = Pageable.ofSize(2);
+        final Page<TagEntity> page = new PageImpl<>(List.of(tag, tag2));
+        final Pageable pageable = Pageable.ofSize(2);
 
         Mockito.when(tagRepository.findAll(pageable)).thenReturn(page);
 
-        Page<TagEntity> foundPageByEmptyNameContains = tagService.findAll("", pageable);
-        Page<TagEntity> foundPageByNullNameContains = tagService.findAll(null, pageable);
+        final Page<TagEntity> foundPageByEmptyNameContains = tagService.findAll("", pageable);
+        final Page<TagEntity> foundPageByNullNameContains = tagService.findAll(null, pageable);
 
-        assertThat(foundPageByEmptyNameContains.getContent()).containsExactly(tag1, tag2);
-        assertThat(foundPageByNullNameContains.getContent()).containsExactly(tag1, tag2);
+        assertThat(foundPageByEmptyNameContains.getContent()).containsExactly(tag, tag2);
+        assertThat(foundPageByNullNameContains.getContent()).containsExactly(tag, tag2);
         assertThat(foundPageByEmptyNameContains).isEqualTo(foundPageByNullNameContains);
     }
 
@@ -102,12 +105,10 @@ public class TagServiceTest {
 
     @Test
     void createAndGetAllByNameTest() throws Exception {
-        TagEntity tag1 = new TagEntity("tag1");
-        TagEntity tag2 = new TagEntity("tag2");
         final String newTag1Name = "newTag1";
         final String newTag2Name = "tag2";
 
-        final List<TagEntity> tags = List.of(tag1, tag2);
+        final List<TagEntity> tags = List.of(tag, tag2);
         final List<String> newTags = List.of(newTag1Name, newTag2Name);
 
         newTags.forEach(name -> {
@@ -139,11 +140,9 @@ public class TagServiceTest {
 
     @Test
     void updateTest() throws Exception {
-        final TagEntity tag = new TagEntity("name");
-        tag.setId(1);
         final String updateName = "updateName";
         final TagEntity updateTag = new TagEntity(updateName);
-        updateTag.setId(1);
+        updateTag.setId(tag.getId());
 
         Mockito.when(tagRepository.getById(tag.getId())).thenReturn(tag);
         Mockito.when(tagRepository.save(updateTag)).thenReturn(updateTag);

@@ -4,9 +4,13 @@ import com.project.devblog.exception.VerificationException;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.repository.UserRepository;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,18 +19,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class VerificationServiceTest {
+class VerificationServiceTest {
 
     @Autowired
-    private VerificationService verificationService;
+    VerificationService verificationService;
     @MockBean
-    private UserRepository userRepository;
-    private static UserEntity user;
+    UserRepository userRepository;
+    static UserEntity user;
 
     @BeforeAll
     static void init() {
@@ -42,8 +44,7 @@ public class VerificationServiceTest {
     void sendVerificationEmailTestWithInvalidEmail() throws Exception {
         user.setLogin("user1@mail/$*\n");
 
-        Mockito.when(userRepository.getById(user.getId()))
-                .thenReturn(user);
+        when(userRepository.getById(user.getId())).thenReturn(user);
 
         assertThatThrownBy(() -> verificationService.sendVerificationEmail(user.getId()))
                 .isInstanceOf(VerificationException.class)
@@ -56,10 +57,8 @@ public class VerificationServiceTest {
         user.setEnabled(false);
         user.setVerificationCode(UUID.randomUUID().toString());
 
-        Mockito.when(userRepository.findById(user.getId()))
-                .thenReturn(Optional.of(user));
-        Mockito.when(userRepository.save(user))
-                .thenReturn(user);
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.save(user)).thenReturn(user);
 
         verificationService.verify(user.getId(), user.getVerificationCode());
 
@@ -73,10 +72,8 @@ public class VerificationServiceTest {
         user.setEnabled(true);
         user.setVerificationCode(null);
 
-        Mockito.when(userRepository.findById(user.getId()))
-                .thenReturn(Optional.of(user));
-        Mockito.when(userRepository.save(user))
-                .thenReturn(user);
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.save(user)).thenReturn(user);
 
         final String verificationCode = UUID.randomUUID().toString();
 
@@ -91,10 +88,8 @@ public class VerificationServiceTest {
         user.setEnabled(false);
         user.setVerificationCode(UUID.randomUUID().toString());
 
-        Mockito.when(userRepository.findById(user.getId()))
-                .thenReturn(Optional.of(user));
-        Mockito.when(userRepository.save(user))
-                .thenReturn(user);
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.save(user)).thenReturn(user);
 
         final String invalidVerificationCode = UUID.randomUUID().toString();
 

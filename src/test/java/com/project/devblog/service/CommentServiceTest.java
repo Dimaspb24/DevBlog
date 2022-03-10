@@ -7,9 +7,18 @@ import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.repository.CommentRepository;
+import static java.lang.String.format;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,28 +31,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static java.lang.String.format;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CommentServiceTest {
+class CommentServiceTest {
 
+    static UserEntity author;
+    static UserEntity receiver;
+    static ArticleEntity article;
+    static CommentEntity comment;
+    static CommentEntity comment2;
     @Autowired
-    private CommentService commentService;
+    CommentService commentService;
     @MockBean
-    private CommentRepository commentRepository;
+    CommentRepository commentRepository;
     @MockBean
-    private ArticleService articleService;
+    ArticleService articleService;
     @MockBean
-    private UserService userService;
-    private static UserEntity author;
-    private static UserEntity receiver;
-    private static ArticleEntity article;
-    private static CommentEntity comment;
-    private static CommentEntity comment2;
+    UserService userService;
 
     @BeforeAll
     static void init() {
@@ -87,13 +92,13 @@ public class CommentServiceTest {
 
     @Test
     void createTest() throws Exception {
-        Mockito.when(articleService.find(author.getId(), article.getId()))
+        when(articleService.find(author.getId(), article.getId()))
                 .thenReturn(article);
-        Mockito.when(userService.find(author.getId()))
+        when(userService.find(author.getId()))
                 .thenReturn(author);
-        Mockito.when(userService.find(receiver.getId()))
+        when(userService.find(receiver.getId()))
                 .thenReturn(receiver);
-        Mockito.when(commentRepository.save(any(CommentEntity.class)))
+        when(commentRepository.save(any(CommentEntity.class)))
                 .thenReturn(comment);
 
         final CommentEntity createdComment = commentService.create(author.getId(), article.getId(),
@@ -108,8 +113,7 @@ public class CommentServiceTest {
 
     @Test
     void findTest() throws Exception {
-        Mockito.when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(comment.getId(), author.getId(),
-                        article.getId()))
+        when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(comment.getId(), author.getId(), article.getId()))
                 .thenReturn(Optional.of(comment));
 
         final CommentEntity foundComment = commentService.find(comment.getId(), author.getId(), article.getId());
@@ -124,8 +128,7 @@ public class CommentServiceTest {
     @Test
     void findTestWithNotFoundComment() throws Exception {
         final Long id = 5L;
-        Mockito.when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(id, author.getId(),
-                        article.getId()))
+        when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(id, author.getId(), article.getId()))
                 .thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> commentService.find(id, author.getId(), article.getId()))
@@ -138,8 +141,7 @@ public class CommentServiceTest {
         final Page<CommentEntity> page = new PageImpl<>(List.of(comment, comment2));
         final Pageable pageable = Pageable.ofSize(2);
 
-        Mockito.when(commentRepository.findAllByAuthorIdAndArticleIdAndEnabledIsTrue(author.getId(), article.getId(),
-                        pageable))
+        when(commentRepository.findAllByAuthorIdAndArticleIdAndEnabledIsTrue(author.getId(), article.getId(), pageable))
                 .thenReturn(page);
 
         final Page<CommentEntity> foundPage = commentService.findAllByAuthorIdAndArticleId(author.getId(), article.getId(),
@@ -153,8 +155,7 @@ public class CommentServiceTest {
         final Page<CommentEntity> page = new PageImpl<>(List.of(comment, comment2));
         final Pageable pageable = Pageable.ofSize(2);
 
-        Mockito.when(commentRepository.findAllByArticleIdAndEnabledIsTrue(article.getId(), pageable))
-                .thenReturn(page);
+        when(commentRepository.findAllByArticleIdAndEnabledIsTrue(article.getId(), pageable)).thenReturn(page);
 
         final Page<CommentEntity> foundPage = commentService.findAllByArticleId(article.getId(), pageable);
 
@@ -163,10 +164,8 @@ public class CommentServiceTest {
 
     @Test
     void enableTest() throws Exception {
-        Mockito.when(commentRepository.findByIdAndAuthorIdAndArticleId(comment.getId(), author.getId(), article.getId()))
-                .thenReturn(Optional.of(comment));
-        Mockito.when(commentRepository.save(any(CommentEntity.class)))
-                .thenReturn(comment);
+        when(commentRepository.findByIdAndAuthorIdAndArticleId(comment.getId(), author.getId(), article.getId())).thenReturn(Optional.of(comment));
+        when(commentRepository.save(any(CommentEntity.class))).thenReturn(comment);
 
         commentService.enable(comment.getId(), author.getId(), article.getId(), true);
         assertThat(comment.getEnabled()).isTrue();
@@ -178,7 +177,7 @@ public class CommentServiceTest {
     @Test
     void enableTestWithNotFoundComment() throws Exception {
         final Long id = 5L;
-        Mockito.when(commentRepository.findByIdAndAuthorIdAndArticleId(id, author.getId(), article.getId()))
+        when(commentRepository.findByIdAndAuthorIdAndArticleId(id, author.getId(), article.getId()))
                 .thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> commentService.enable(id, author.getId(), article.getId(), true))
@@ -188,19 +187,19 @@ public class CommentServiceTest {
 
     @Test
     void deleteTest() throws Exception {
-        Mockito.when(commentRepository.findByIdAndAuthorIdAndArticleId(comment.getId(), author.getId(), article.getId()))
+        when(commentRepository.findByIdAndAuthorIdAndArticleId(comment.getId(), author.getId(), article.getId()))
                 .thenReturn(Optional.of(comment));
-        Mockito.doNothing().when(commentRepository).delete(any());
+        doNothing().when(commentRepository).delete(any());
 
         commentService.delete(comment.getId(), author.getId(), article.getId());
 
-        Mockito.verify(commentRepository, Mockito.times(1)).delete(any());
+        verify(commentRepository, times(1)).delete(any());
     }
 
     @Test
     void deleteTestWithNotFoundComment() throws Exception {
         final Long id = 5L;
-        Mockito.when(commentRepository.findByIdAndAuthorIdAndArticleId(id, author.getId(), article.getId()))
+        when(commentRepository.findByIdAndAuthorIdAndArticleId(id, author.getId(), article.getId()))
                 .thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> commentService.delete(id, author.getId(), article.getId()))
@@ -210,10 +209,9 @@ public class CommentServiceTest {
 
     @Test
     void updateTest() throws Exception {
-        Mockito.when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(comment.getId(), author.getId(),
-                        article.getId()))
+        when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(comment.getId(), author.getId(), article.getId()))
                 .thenReturn(Optional.of(comment));
-        Mockito.when(commentRepository.save(any(CommentEntity.class)))
+        when(commentRepository.save(any(CommentEntity.class)))
                 .thenReturn(comment);
 
         final String updatedMessage = "updatedMessage";
@@ -226,8 +224,7 @@ public class CommentServiceTest {
     @Test
     void updateTestWithNotFoundComment() throws Exception {
         final Long id = 5L;
-        Mockito.when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(id, author.getId(),
-                        article.getId()))
+        when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(id, author.getId(), article.getId()))
                 .thenReturn(Optional.empty());
 
         final String updatedMessage = "updatedMessage";

@@ -6,9 +6,16 @@ import com.project.devblog.exception.VerificationException;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
+import static java.lang.String.format;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,25 +29,21 @@ import org.springframework.security.core.Authentication;
 
 import java.util.UUID;
 
-import static java.lang.String.format;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AuthenticationServiceTest {
+class AuthenticationServiceTest {
 
     @Autowired
-    private AuthenticationService authenticationService;
+    AuthenticationService authenticationService;
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    JwtTokenProvider jwtTokenProvider;
     @MockBean
-    private UserService userService;
+    UserService userService;
     @MockBean
-    private AuthenticationManager authenticationManager;
-    private static UserEntity user;
-    private static AuthenticationResponse authenticationResponse;
+    AuthenticationManager authenticationManager;
+    static UserEntity user;
+    static AuthenticationResponse authenticationResponse;
 
     @BeforeAll
     static void init() {
@@ -58,11 +61,10 @@ public class AuthenticationServiceTest {
         user.setEnabled(true);
         user.setVerificationCode(null);
 
-        Mockito.when(userService.findByLogin(user.getLogin()))
-                .thenReturn(user);
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
-        Authentication authentication = Mockito.mock(Authentication.class);
-        Mockito.when(authenticationManager.authenticate(any())).thenReturn(authentication);
+        Authentication authentication = mock(Authentication.class);
+        when(authenticationManager.authenticate(any())).thenReturn(authentication);
 
         ResponseEntity<AuthenticationResponse> response = authenticationService.login(user.getLogin(),
                 user.getPassword());
@@ -78,8 +80,7 @@ public class AuthenticationServiceTest {
 
     @Test
     void loginTestWithNotFoundUser() throws Exception {
-        Mockito.when(userService.findByLogin(user.getLogin()))
-                .thenThrow(NotFoundException.class);
+        when(userService.findByLogin(user.getLogin())).thenThrow(NotFoundException.class);
 
         assertThatThrownBy(() -> authenticationService.login(user.getLogin(), user.getPassword()))
                 .isInstanceOf(NotFoundException.class)
@@ -91,8 +92,7 @@ public class AuthenticationServiceTest {
         user.setEnabled(false);
         user.setVerificationCode(null);
 
-        Mockito.when(userService.findByLogin(user.getLogin()))
-                .thenReturn(user);
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         assertThatThrownBy(() -> authenticationService.login(user.getLogin(), user.getPassword()))
                 .isInstanceOf(LockedException.class)
@@ -104,8 +104,7 @@ public class AuthenticationServiceTest {
         user.setEnabled(false);
         user.setVerificationCode(UUID.randomUUID().toString());
 
-        Mockito.when(userService.findByLogin(user.getLogin()))
-                .thenReturn(user);
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         assertThatThrownBy(() -> authenticationService.login(user.getLogin(), user.getPassword()))
                 .isInstanceOf(VerificationException.class)
@@ -114,10 +113,8 @@ public class AuthenticationServiceTest {
 
     @Test
     void registerTest() throws Exception {
-        Mockito.when(userService.isExists(user.getLogin()))
-                .thenReturn(false);
-        Mockito.when(userService.register(user.getLogin(), user.getPassword()))
-                .thenReturn(user);
+        when(userService.isExists(user.getLogin())).thenReturn(false);
+        when(userService.register(user.getLogin(), user.getPassword())).thenReturn(user);
 
         ResponseEntity<AuthenticationResponse> response = authenticationService.register(user.getLogin(),
                 user.getPassword());

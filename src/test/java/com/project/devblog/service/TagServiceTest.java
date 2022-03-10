@@ -21,6 +21,7 @@ import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -43,7 +44,7 @@ public class TagServiceTest {
 
     @Test
     void findTest() throws Exception {
-        Mockito.when(tagRepository.findById(tag.getId()))
+        when(tagRepository.findById(tag.getId()))
                 .thenReturn(Optional.of(tag));
         final TagEntity foundTag = tagService.find(tag.getId());
 
@@ -53,7 +54,7 @@ public class TagServiceTest {
 
     @Test
     void findTestWithNotFoundTag() throws Exception {
-        Mockito.when(tagRepository.findById(any()))
+        when(tagRepository.findById(any()))
                 .thenReturn(Optional.empty());
 
         final Integer tagId = 5;
@@ -69,7 +70,7 @@ public class TagServiceTest {
         final Page<TagEntity> page = new PageImpl<>(List.of(tag, tag2));
         final Pageable pageable = Pageable.ofSize(2);
 
-        Mockito.when(tagRepository.findTagEntitiesByNameContains(nameContains, pageable)).thenReturn(page);
+        when(tagRepository.findTagEntitiesByNameContains(nameContains, pageable)).thenReturn(page);
 
         Page<TagEntity> foundPage = tagService.findAll(nameContains, pageable);
 
@@ -81,7 +82,7 @@ public class TagServiceTest {
         final Page<TagEntity> page = new PageImpl<>(List.of(tag, tag2));
         final Pageable pageable = Pageable.ofSize(2);
 
-        Mockito.when(tagRepository.findAll(pageable)).thenReturn(page);
+        when(tagRepository.findAll(pageable)).thenReturn(page);
 
         final Page<TagEntity> foundPageByEmptyNameContains = tagService.findAll("", pageable);
         final Page<TagEntity> foundPageByNullNameContains = tagService.findAll(null, pageable);
@@ -96,7 +97,7 @@ public class TagServiceTest {
         final String name = "newTag";
         final TagEntity newTag = new TagEntity(name);
 
-        Mockito.when(tagRepository.save(new TagEntity(name))).thenReturn(newTag);
+        when(tagRepository.save(new TagEntity(name))).thenReturn(newTag);
 
         final TagEntity createdTag = tagService.create(name);
 
@@ -112,12 +113,12 @@ public class TagServiceTest {
         final List<String> newTags = List.of(newTag1Name, newTag2Name);
 
         newTags.forEach(name -> {
-            Mockito.when(tagRepository.findByName(name))
+            when(tagRepository.findByName(name))
                     .thenReturn(Optional.ofNullable(tags.stream()
                             .filter(tag -> name.equals(tag.getName()))
                             .findAny()
                             .orElse(null)));
-            Mockito.when(tagRepository.save(new TagEntity(name)))
+            when(tagRepository.save(new TagEntity(name)))
                     .thenReturn(new TagEntity(name));
         });
 
@@ -131,11 +132,11 @@ public class TagServiceTest {
     void deleteTest() throws Exception {
         final Integer tagId = 1;
 
-        Mockito.doNothing().when(tagRepository).deleteById(tagId);
+        doNothing().when(tagRepository).deleteById(tagId);
         tagService.delete(tagId);
 
-        Mockito.verify(tagRepository, Mockito.times(1)).deleteById(tagId);
-        Mockito.verifyNoMoreInteractions(tagRepository);
+        verify(tagRepository, times(1)).deleteById(tagId);
+        verifyNoMoreInteractions(tagRepository);
     }
 
     @Test
@@ -144,8 +145,8 @@ public class TagServiceTest {
         final TagEntity updateTag = new TagEntity(updateName);
         updateTag.setId(tag.getId());
 
-        Mockito.when(tagRepository.getById(tag.getId())).thenReturn(tag);
-        Mockito.when(tagRepository.save(updateTag)).thenReturn(updateTag);
+        when(tagRepository.getById(tag.getId())).thenReturn(tag);
+        when(tagRepository.save(updateTag)).thenReturn(updateTag);
 
         final TagEntity result = tagService.update(tag.getId(), updateName);
 

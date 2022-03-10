@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
 
@@ -26,6 +27,7 @@ import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -58,11 +60,11 @@ public class AuthenticationServiceTest {
         user.setEnabled(true);
         user.setVerificationCode(null);
 
-        Mockito.when(userService.findByLogin(user.getLogin()))
+        when(userService.findByLogin(user.getLogin()))
                 .thenReturn(user);
 
-        Authentication authentication = Mockito.mock(Authentication.class);
-        Mockito.when(authenticationManager.authenticate(any())).thenReturn(authentication);
+        Authentication authentication = mock(Authentication.class);
+        when(authenticationManager.authenticate(any())).thenReturn(authentication);
 
         ResponseEntity<AuthenticationResponse> response = authenticationService.login(user.getLogin(),
                 user.getPassword());
@@ -78,7 +80,7 @@ public class AuthenticationServiceTest {
 
     @Test
     void loginTestWithNotFoundUser() throws Exception {
-        Mockito.when(userService.findByLogin(user.getLogin()))
+        when(userService.findByLogin(user.getLogin()))
                 .thenThrow(NotFoundException.class);
 
         assertThatThrownBy(() -> authenticationService.login(user.getLogin(), user.getPassword()))
@@ -91,7 +93,7 @@ public class AuthenticationServiceTest {
         user.setEnabled(false);
         user.setVerificationCode(null);
 
-        Mockito.when(userService.findByLogin(user.getLogin()))
+        when(userService.findByLogin(user.getLogin()))
                 .thenReturn(user);
 
         assertThatThrownBy(() -> authenticationService.login(user.getLogin(), user.getPassword()))
@@ -104,7 +106,7 @@ public class AuthenticationServiceTest {
         user.setEnabled(false);
         user.setVerificationCode(UUID.randomUUID().toString());
 
-        Mockito.when(userService.findByLogin(user.getLogin()))
+        when(userService.findByLogin(user.getLogin()))
                 .thenReturn(user);
 
         assertThatThrownBy(() -> authenticationService.login(user.getLogin(), user.getPassword()))
@@ -114,9 +116,9 @@ public class AuthenticationServiceTest {
 
     @Test
     void registerTest() throws Exception {
-        Mockito.when(userService.isExists(user.getLogin()))
+        when(userService.isExists(user.getLogin()))
                 .thenReturn(false);
-        Mockito.when(userService.register(user.getLogin(), user.getPassword()))
+        when(userService.register(user.getLogin(), user.getPassword()))
                 .thenReturn(user);
 
         ResponseEntity<AuthenticationResponse> response = authenticationService.register(user.getLogin(),
@@ -126,5 +128,15 @@ public class AuthenticationServiceTest {
         assertThat(response.getBody().getId()).isEqualTo(authenticationResponse.getId());
         assertThat(response.getBody().getLogin()).isEqualTo(authenticationResponse.getLogin());
         assertThat(response.getBody().getRole()).isEqualTo(authenticationResponse.getRole());
+    }
+
+    @Test
+    void registerTestWithBadCredentials() throws Exception {
+        when(userService.isExists(user.getLogin()))
+                .thenReturn(true);
+
+        assertThatThrownBy(() -> authenticationService.register(user.getLogin(), user.getPassword()))
+                .isInstanceOf(BadCredentialsException.class)
+                .hasMessageContaining(format("The account with login %s is already registered", user.getLogin()));
     }
 }

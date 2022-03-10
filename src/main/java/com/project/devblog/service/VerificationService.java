@@ -35,18 +35,16 @@ public class VerificationService {
         MimeMessage message = mailSender.createMimeMessage();
 
         try {
-            MimeMessageHelper helper = new MimeMessageHelper(message);
-
-            helper.setFrom(fromAddress, senderName);
-            helper.setTo(toAddress);
-            helper.setSubject(subject);
-
             content = content.replace("[[name]]", toAddress.substring(0, toAddress.indexOf('@')));
             String verifyURL = mailProperties.getUrl();
             verifyURL = verifyURL.replace("[[userId]]", userId);
             verifyURL = verifyURL.replace("[[code]]", userRepository.getById(userId).getVerificationCode());
             content = content.replace("[[URL]]", verifyURL);
 
+            MimeMessageHelper helper = new MimeMessageHelper(message);
+            helper.setFrom(fromAddress, senderName);
+            helper.setTo(toAddress);
+            helper.setSubject(subject);
             helper.setText(content, true);
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new VerificationException("Error sending the verification message to the mail");

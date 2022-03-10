@@ -37,8 +37,8 @@ public class RatingService {
 
     @NonNull
     public UserArticleEntity update(@NonNull String userId, @NonNull Integer articleId, @NonNull Integer rating) {
-        final UserArticleEntity userArticleEntity = userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(userId, articleId)
-                .orElseThrow(() -> new NotFoundException(UserArticleEntity.class, "userId", userId, "articleId", articleId.toString()));
+        final UserArticleEntity userArticleEntity = find(userId, articleId);
+
         userArticleEntity.setRating(rating);
 
         return userArticleRepository.save(userArticleEntity);

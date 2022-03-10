@@ -18,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -56,13 +55,14 @@ public class UserService {
     public UserEntity createUser(@NonNull String id, @NonNull String login, @NonNull Role role, @NonNull Boolean enabled,
                                  @Nullable String firstname, @Nullable String lastname, @Nullable String nickname,
                                  @Nullable String photo, @Nullable String phone) {
-        final UserEntity userEntity = new UserEntity(id, login, passwordEncoder.encode(UUID.randomUUID().toString()), role, enabled, UUID.randomUUID().toString());
+        String encodePassword = passwordEncoder.encode(UUID.randomUUID().toString());
+        String verificationCode = Boolean.TRUE.equals((enabled)) ? null : UUID.randomUUID().toString();
+        final UserEntity userEntity = new UserEntity(id, login, encodePassword, role, enabled, verificationCode);
         final PersonalInfo personalInfo = new PersonalInfo(firstname, lastname, nickname, photo, null, phone);
         userEntity.setPersonalInfo(personalInfo);
 
-        final Optional<UserEntity> userOptional = userRepository.findById(id);
-
-        return userOptional.orElseGet(() -> userRepository.save(userEntity));
+        return userRepository.findById(id)
+                .orElseGet(() -> userRepository.save(userEntity));
     }
 
     public boolean isExists(@NonNull String login) {

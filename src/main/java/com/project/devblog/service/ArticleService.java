@@ -5,6 +5,7 @@ import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.StatusArticle;
+import static com.project.devblog.model.enums.StatusArticle.*;
 import com.project.devblog.repository.ArticleRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,7 @@ public class ArticleService {
         final UserEntity author = userService.find(userId);
         final ArticleEntity articleEntity = new ArticleEntity(title, body, status, description, author);
 
-        if (status.toString().equalsIgnoreCase(StatusArticle.PUBLISHED.toString())) {
+        if (status.toString().equalsIgnoreCase(PUBLISHED.toString())) {
             articleEntity.setPublicationDate(LocalDateTime.now());
         }
 
@@ -91,10 +92,10 @@ public class ArticleService {
         articleEntity.setStatus(status);
 
         StatusArticle statusArticle = articleEntity.getStatus();
-        if (status == StatusArticle.PUBLISHED && statusArticle != StatusArticle.PUBLISHED) {
+        if (status == PUBLISHED && statusArticle == CREATED) {
             articleEntity.setPublicationDate(LocalDateTime.now());
         }
-        if (status == StatusArticle.CREATED && statusArticle == StatusArticle.PUBLISHED) {
+        if (status == CREATED && statusArticle == PUBLISHED) {
             articleEntity.setPublicationDate(null);
         }
 

@@ -36,14 +36,16 @@ public class BookmarkService {
     public BookmarkResponse create(@NonNull String userId, @NonNull Integer articleId, @NonNull BookmarkRequest request) {
         BookmarkType bookmarkType = BookmarkType.valueOf(request.getBookmarkType());
 
-        UserArticleEntity userArticleEntity = userArticleRepository.findByUserIdAndArticleId(userId, articleId).map(userArt -> {
-            userArt.setBookmarkType(bookmarkType);
-            return userArt;
-        }).orElseGet(() -> {
-            final UserEntity userEntity = userService.find(userId);
-            final ArticleEntity articleEntity = articleService.findById(articleId);
-            return new UserArticleEntity(bookmarkType, userEntity, articleEntity);
-        });
+        UserArticleEntity userArticleEntity = userArticleRepository
+                .findByUserIdAndArticleId(userId, articleId)
+                .map(userArt -> {
+                    userArt.setBookmarkType(bookmarkType);
+                    return userArt;
+                }).orElseGet(() -> {
+                    final UserEntity userEntity = userService.find(userId);
+                    final ArticleEntity articleEntity = articleService.findById(articleId);
+                    return new UserArticleEntity(bookmarkType, userEntity, articleEntity);
+                });
 
         return new BookmarkResponse(userId, articleId, userArticleEntity.getBookmarkType().name());
     }

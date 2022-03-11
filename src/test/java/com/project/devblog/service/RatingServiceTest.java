@@ -108,7 +108,9 @@ class RatingServiceTest {
     void update() {
         int newRating = 6;
         doReturn(Optional.of(rating)).when(userArticleRepository).findByUserIdAndArticleIdAndArticleEnabledIsTrue(user.getId(), article.getId());
+
         ratingService.update(user.getId(), article.getId(), newRating);
+
         verify(userArticleRepository).findByUserIdAndArticleIdAndArticleEnabledIsTrue(user.getId(), article.getId());
         verify(userArticleRepository).save(argumentCaptorUserArticle.capture());
         assertThat(argumentCaptorUserArticle.getValue().getRating()).isEqualTo(newRating);

@@ -36,11 +36,6 @@ import java.util.UUID;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CommentServiceTest {
 
-    static UserEntity author;
-    static UserEntity receiver;
-    static ArticleEntity article;
-    static CommentEntity comment;
-    static CommentEntity comment2;
     @Autowired
     CommentService commentService;
     @MockBean
@@ -49,6 +44,12 @@ class CommentServiceTest {
     ArticleService articleService;
     @MockBean
     UserService userService;
+
+    static UserEntity author;
+    static UserEntity receiver;
+    static ArticleEntity article;
+    static CommentEntity comment;
+    static CommentEntity comment2;
 
     @BeforeAll
     static void init() {
@@ -92,14 +93,10 @@ class CommentServiceTest {
 
     @Test
     void createTest() throws Exception {
-        when(articleService.find(author.getId(), article.getId()))
-                .thenReturn(article);
-        when(userService.find(author.getId()))
-                .thenReturn(author);
-        when(userService.find(receiver.getId()))
-                .thenReturn(receiver);
-        when(commentRepository.save(any(CommentEntity.class)))
-                .thenReturn(comment);
+        when(articleService.find(author.getId(), article.getId())).thenReturn(article);
+        when(userService.find(author.getId())).thenReturn(author);
+        when(userService.find(receiver.getId())).thenReturn(receiver);
+        when(commentRepository.save(any(CommentEntity.class))).thenReturn(comment);
 
         final CommentEntity createdComment = commentService.create(author.getId(), article.getId(),
                 comment.getMessage(), receiver.getId());

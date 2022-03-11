@@ -12,13 +12,19 @@ import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.service.ArticleService;
 import com.project.devblog.service.CommentService;
-import org.junit.jupiter.api.Assertions;
+import static java.time.LocalDateTime.now;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -26,22 +32,22 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.UUID;
 
-import static java.time.LocalDateTime.now;
-import static org.mockito.ArgumentMatchers.any;
-
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @ExtendWith(MockitoExtension.class)
 class ArticleControllerTest {
+
     @Mock
-    private ArticleService articleService;
+    ArticleService articleService;
     @Mock
-    private CommentService commentService;
+    CommentService commentService;
     @InjectMocks
-    private ArticleController articleController;
-    private CloseArticleResponse closeArticleResponse;
-    private OpenArticleResponse openArticleResponse;
-    private CommentResponse commentResponse;
-    private ArticleEntity articleEntity;
-    private CommentEntity commentEntity;
+    ArticleController articleController;
+
+    CloseArticleResponse closeArticleResponse;
+    OpenArticleResponse openArticleResponse;
+    CommentResponse commentResponse;
+    ArticleEntity articleEntity;
+    CommentEntity commentEntity;
 
     @BeforeEach
     void setUp() {
@@ -134,50 +140,55 @@ class ArticleControllerTest {
         final var titleContains = "titleContains";
         final var tagName = "tagName";
         final var pageable = Pageable.ofSize(5);
-        Mockito.when(articleService.findAll(any(String.class), any(String.class), any(Pageable.class)))
+        when(articleService.findAll(any(String.class), any(String.class), any(Pageable.class)))
                 .thenReturn(new PageImpl<>(List.of(articleEntity)));
+
         final var response = articleController.findAll(titleContains, tagName, pageable);
-        Mockito.verify(articleService).findAll(any(String.class), any(String.class), any(Pageable.class));
-        Assertions.assertEquals(1, response.getTotalElements());
-        Assertions.assertTrue(response.stream().findFirst().isPresent());
-        Assertions.assertEquals(response.stream().findFirst().get().getId(), closeArticleResponse.getId());
-        Assertions.assertEquals(response.stream().findFirst().get().getAuthorId(), closeArticleResponse.getAuthorId());
-        Assertions.assertEquals(response.stream().findFirst().get().getDescription(),
+
+        verify(articleService).findAll(any(String.class), any(String.class), any(Pageable.class));
+        assertEquals(1, response.getTotalElements());
+        assertTrue(response.stream().findFirst().isPresent());
+        assertEquals(response.stream().findFirst().get().getId(), closeArticleResponse.getId());
+        assertEquals(response.stream().findFirst().get().getAuthorId(), closeArticleResponse.getAuthorId());
+        assertEquals(response.stream().findFirst().get().getDescription(),
                 closeArticleResponse.getDescription());
-        Assertions.assertEquals(response.stream().findFirst().get().getNickname(), closeArticleResponse.getNickname());
-        Assertions.assertEquals(response.stream().findFirst().get().getPhoto(), closeArticleResponse.getPhoto());
-        Assertions.assertEquals(response.stream().findFirst().get().getStatus(), closeArticleResponse.getStatus());
+        assertEquals(response.stream().findFirst().get().getNickname(), closeArticleResponse.getNickname());
+        assertEquals(response.stream().findFirst().get().getPhoto(), closeArticleResponse.getPhoto());
+        assertEquals(response.stream().findFirst().get().getStatus(), closeArticleResponse.getStatus());
     }
 
     @Test
     void findArticleSuccessTest() {
         final var articleId = 42;
-        Mockito.when(articleService.findById(any(Integer.class)))
-                .thenReturn(articleEntity);
+        when(articleService.findById(any(Integer.class))).thenReturn(articleEntity);
+
         final var response = articleController.find(articleId);
-        Mockito.verify(articleService).findById(any(Integer.class));
-        Assertions.assertEquals(openArticleResponse.getAuthorId(), response.getAuthorId());
-        Assertions.assertEquals(openArticleResponse.getDescription(), response.getDescription());
-        Assertions.assertEquals(openArticleResponse.getNickname(), response.getNickname());
-        Assertions.assertEquals(openArticleResponse.getBody(), response.getBody());
-        Assertions.assertEquals(openArticleResponse.getTitle(), response.getTitle());
-        Assertions.assertEquals(openArticleResponse.getPhoto(), response.getPhoto());
+
+        verify(articleService).findById(any(Integer.class));
+        assertEquals(openArticleResponse.getAuthorId(), response.getAuthorId());
+        assertEquals(openArticleResponse.getDescription(), response.getDescription());
+        assertEquals(openArticleResponse.getNickname(), response.getNickname());
+        assertEquals(openArticleResponse.getBody(), response.getBody());
+        assertEquals(openArticleResponse.getTitle(), response.getTitle());
+        assertEquals(openArticleResponse.getPhoto(), response.getPhoto());
     }
 
     @Test
     void findAllCommentsSuccessTest() {
         final var articleId = 42;
         final var pageable = Pageable.ofSize(5);
-        Mockito.when(commentService.findAllByArticleId(any(Integer.class), any(Pageable.class)))
+        when(commentService.findAllByArticleId(any(Integer.class), any(Pageable.class)))
                 .thenReturn(new PageImpl<>(List.of(commentEntity)));
+
         final var response = articleController.findAll(articleId, pageable);
-        Mockito.verify(commentService).findAllByArticleId(any(Integer.class), any(Pageable.class));
-        Assertions.assertEquals(1, response.getTotalElements());
-        Assertions.assertTrue(response.stream().findFirst().isPresent());
-        Assertions.assertEquals(commentResponse.getAuthorNickname(),
+
+        verify(commentService).findAllByArticleId(any(Integer.class), any(Pageable.class));
+        assertEquals(1, response.getTotalElements());
+        assertTrue(response.stream().findFirst().isPresent());
+        assertEquals(commentResponse.getAuthorNickname(),
                 response.stream().findFirst().get().getAuthorNickname());
-        Assertions.assertEquals(commentResponse.getReceiverNickname(),
+        assertEquals(commentResponse.getReceiverNickname(),
                 response.stream().findFirst().get().getReceiverNickname());
-        Assertions.assertEquals(commentResponse.getArticleId(), response.stream().findFirst().get().getArticleId());
+        assertEquals(commentResponse.getArticleId(), response.stream().findFirst().get().getArticleId());
     }
 }

@@ -47,20 +47,20 @@ public class ArticleController {
 
     @GetMapping("/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
-    public OpenArticleResponse find(/*@NonNull*/ @PathVariable Integer articleId) {
+    public OpenArticleResponse find(@NonNull @PathVariable Integer articleId) {
         return toOpenArticleResponse(articleService.findById(articleId));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/articles/{articleId}/comments")
-    public Page<CommentResponse> findAll(/*@NonNull*/ @PathVariable Integer articleId,
-                                                      @SortDefault("creationDate") Pageable pageable) {
+    public Page<CommentResponse> findAll(@NonNull @PathVariable Integer articleId,
+                                         @SortDefault("creationDate") Pageable pageable) {
         return commentService.findAllByArticleId(articleId, pageable)
                 .map(this::toResponse);
     }
 
-    /*@NonNull*/
-    private OpenArticleResponse toOpenArticleResponse(/*@NonNull*/ ArticleEntity article) {
+    @NonNull
+    private OpenArticleResponse toOpenArticleResponse(@NonNull ArticleEntity article) {
         PersonalInfo personalInfo = article.getAuthor().getPersonalInfo();
         return new OpenArticleResponse(
                 article.getId(),
@@ -77,8 +77,8 @@ public class ArticleController {
                 tagEntityToResponse(article.getTags()));
     }
 
-    /*@NonNull*/
-    private CommentResponse toResponse(/*@NonNull*/ CommentEntity comment) {
+    @NonNull
+    private CommentResponse toResponse(@NonNull CommentEntity comment) {
         return new CommentResponse(
                 comment.getId(),
                 comment.getMessage(),
@@ -88,8 +88,8 @@ public class ArticleController {
                 comment.getArticle().getId());
     }
 
-    /*@NonNull*/
-    private CloseArticleResponse toResponse(/*@NonNull*/ ArticleEntity article) {
+    @NonNull
+    private CloseArticleResponse toResponse(@NonNull ArticleEntity article) {
         final PersonalInfo personalInfo = article.getAuthor().getPersonalInfo();
         return new CloseArticleResponse(
                 article.getId(),
@@ -105,8 +105,8 @@ public class ArticleController {
                 tagEntityToResponse(article.getTags()));
     }
 
-    /*@NonNull*/
-    private List<TagResponse> tagEntityToResponse(/*@NonNull*/ List<TagEntity> tagEntities) {
+    @NonNull
+    private List<TagResponse> tagEntityToResponse(@NonNull List<TagEntity> tagEntities) {
         return tagEntities.stream()
                 .map(tagEntity -> new TagResponse(tagEntity.getId(), tagEntity.getName()))
                 .collect(Collectors.toList());

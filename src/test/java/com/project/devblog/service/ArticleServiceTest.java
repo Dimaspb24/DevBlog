@@ -80,14 +80,16 @@ class ArticleServiceTest {
 
     @Test
     void findByArticleIdAndUserId() {
-        doReturn(Optional.of(article)).when(articleRepository).findByIdAndAuthorIdAndEnabledIsTrue(article.getId(), user.getId());
+        doReturn(Optional.of(article)).when(articleRepository)
+                .findByIdAndAuthorIdAndEnabledIsTrue(article.getId(), user.getId());
         articleService.find(user.getId(), article.getId());
         verify(articleRepository).findByIdAndAuthorIdAndEnabledIsTrue(article.getId(), user.getId());
     }
 
     @Test
     void throwIfNotFoundByArticleIdAndUserId() {
-        doReturn(Optional.empty()).when(articleRepository).findByIdAndAuthorIdAndEnabledIsTrue(article.getId(), user.getId());
+        doReturn(Optional.empty()).when(articleRepository)
+                .findByIdAndAuthorIdAndEnabledIsTrue(article.getId(), user.getId());
         assertThrows(NotFoundException.class, () -> articleService.find(user.getId(), article.getId()));
         verify(articleRepository).findByIdAndAuthorIdAndEnabledIsTrue(article.getId(), user.getId());
     }
@@ -112,7 +114,6 @@ class ArticleServiceTest {
         List<TagEntity> tagEntities = List.of(new TagEntity("1"), new TagEntity("2"), new TagEntity("3"));
         article.setPublicationDate(LocalDateTime.now());
         article.setTags(tagEntities);
-
         doReturn(user).when(userService).find(user.getId());
         doReturn(tagEntities).when(tagService).createAndGetAllByName(tags);
 
@@ -120,8 +121,7 @@ class ArticleServiceTest {
                 article.getBody(), article.getStatus());
 
         verify(articleRepository).save(argumentCaptorArticle.capture());
-        ArticleEntity actualArticle = argumentCaptorArticle.getValue();
-        assertThat(actualArticle).isEqualTo(article);
+        assertThat(argumentCaptorArticle.getValue()).isEqualTo(article);
     }
 
     @ParameterizedTest
@@ -209,7 +209,9 @@ class ArticleServiceTest {
         String tagName = "maven";
         PageRequest pageRequest = PageRequest.of(0, 10);
         doReturn(new PageImpl<>(List.of(article), pageRequest, 1)).when(articleRepository).findByTagNameAndTitleContains(anyString(), anyString(), any(Pageable.class));
+
         articleService.findAll(titleContains, tagName, pageRequest);
+
         verify(articleRepository).findByTagNameAndTitleContains(anyString(), anyString(), any(Pageable.class));
     }
 }

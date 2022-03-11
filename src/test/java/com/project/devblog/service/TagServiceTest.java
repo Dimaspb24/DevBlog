@@ -36,9 +36,11 @@ class TagServiceTest {
     TagService tagService;
     @MockBean
     TagRepository tagRepository;
+
     static TagEntity tag;
     static TagEntity tag2;
 
+    // FIXME: WHY not @BeforeEach
     @BeforeAll
     static void init() {
         tag = new TagEntity("tag");
@@ -49,8 +51,7 @@ class TagServiceTest {
 
     @Test
     void findTest() throws Exception {
-        when(tagRepository.findById(tag.getId()))
-                .thenReturn(Optional.of(tag));
+        when(tagRepository.findById(tag.getId())).thenReturn(Optional.of(tag));
         final TagEntity foundTag = tagService.find(tag.getId());
 
         assertThat(foundTag.getId()).isEqualTo(tag.getId());
@@ -59,8 +60,7 @@ class TagServiceTest {
 
     @Test
     void findTestWithNotFoundTag() throws Exception {
-        when(tagRepository.findById(any()))
-                .thenReturn(Optional.empty());
+        when(tagRepository.findById(any())).thenReturn(Optional.empty());
 
         final Integer tagId = 5;
         assertThatThrownBy(() -> tagService.find(tagId))
@@ -71,10 +71,8 @@ class TagServiceTest {
     @Test
     void findAllTestByNameContains() throws Exception {
         final String nameContains = "tag";
-
         final Page<TagEntity> page = new PageImpl<>(List.of(tag, tag2));
         final Pageable pageable = Pageable.ofSize(2);
-
         when(tagRepository.findTagEntitiesByNameContains(nameContains, pageable)).thenReturn(page);
 
         Page<TagEntity> foundPage = tagService.findAll(nameContains, pageable);
@@ -86,7 +84,6 @@ class TagServiceTest {
     void findAllTestByEmptyAndNullNameContains() throws Exception {
         final Page<TagEntity> page = new PageImpl<>(List.of(tag, tag2));
         final Pageable pageable = Pageable.ofSize(2);
-
         when(tagRepository.findAll(pageable)).thenReturn(page);
 
         final Page<TagEntity> foundPageByEmptyNameContains = tagService.findAll("", pageable);
@@ -101,7 +98,6 @@ class TagServiceTest {
     void createTest() throws Exception {
         final String name = "newTag";
         final TagEntity newTag = new TagEntity(name);
-
         when(tagRepository.save(new TagEntity(name))).thenReturn(newTag);
 
         final TagEntity createdTag = tagService.create(name);
@@ -113,7 +109,6 @@ class TagServiceTest {
     void createAndGetAllByNameTest() throws Exception {
         final String newTag1Name = "newTag1";
         final String newTag2Name = "tag2";
-
         final List<TagEntity> tags = List.of(tag, tag2);
         final List<String> newTags = List.of(newTag1Name, newTag2Name);
 
@@ -136,8 +131,8 @@ class TagServiceTest {
     @Test
     void deleteTest() throws Exception {
         final Integer tagId = 1;
-
         doNothing().when(tagRepository).deleteById(tagId);
+
         tagService.delete(tagId);
 
         verify(tagRepository, times(1)).deleteById(tagId);
@@ -149,7 +144,6 @@ class TagServiceTest {
         final String updateName = "updateName";
         final TagEntity updateTag = new TagEntity(updateName);
         updateTag.setId(tag.getId());
-
         when(tagRepository.getById(tag.getId())).thenReturn(tag);
         when(tagRepository.save(updateTag)).thenReturn(updateTag);
 

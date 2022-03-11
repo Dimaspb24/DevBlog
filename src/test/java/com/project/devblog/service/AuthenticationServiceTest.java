@@ -43,6 +43,7 @@ class AuthenticationServiceTest {
     UserService userService;
     @MockBean
     AuthenticationManager authenticationManager;
+
     static UserEntity user;
     static AuthenticationResponse authenticationResponse;
 

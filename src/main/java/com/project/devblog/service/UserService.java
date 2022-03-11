@@ -9,6 +9,7 @@ import com.project.devblog.model.enums.Role;
 import com.project.devblog.repository.UserRepository;
 import com.project.devblog.service.idgenerator.Generator;
 import static java.lang.String.format;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,17 +25,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService {
 
-    /*@NonNull*/
+    @NonNull
     private final UserRepository userRepository;
-    /*@NonNull*/
+    @NonNull
     private final BCryptPasswordEncoder passwordEncoder;
-    /*@NonNull*/
+    @NonNull
     private final Generator idGenerator;
-    /*@NonNull*/
+    @NonNull
     private final VerificationService verificationService;
 
-    /*@NonNull*/
-    public UserEntity register(/*@NonNull*/ String login, /*@NonNull*/ String password) {
+    @NonNull
+    public UserEntity register(@NonNull String login, @NonNull String password) {
         String userId = idGenerator.generateId();
         final UserEntity userEntity = UserEntity.builder()
                 .id(userId)
@@ -50,10 +51,10 @@ public class UserService {
         return savedUser;
     }
 
-    /*@NonNull*/
-    public UserEntity createUser(/*@NonNull*/ String id, /*@NonNull*/ String login, /*@NonNull*/ Role role, /*@NonNull*/ Boolean enabled,
-                                              @Nullable String firstname, @Nullable String lastname, @Nullable String nickname,
-                                              @Nullable String photo, @Nullable String phone) {
+    @NonNull
+    public UserEntity createUser(@NonNull String id, @NonNull String login, @NonNull Role role, @NonNull Boolean enabled,
+                                 @Nullable String firstname, @Nullable String lastname, @Nullable String nickname,
+                                 @Nullable String photo, @Nullable String phone) {
         String encodePassword = passwordEncoder.encode(UUID.randomUUID().toString());
         String verificationCode = Boolean.TRUE.equals((enabled)) ? null : UUID.randomUUID().toString();
         final UserEntity userEntity = new UserEntity(id, login, encodePassword, role, enabled, verificationCode);
@@ -64,11 +65,11 @@ public class UserService {
                 .orElseGet(() -> userRepository.save(userEntity));
     }
 
-    public boolean isExists(/*@NonNull*/ String login) {
+    public boolean isExists(@NonNull String login) {
         return userRepository.existsByLogin(login);
     }
 
-    /*@NonNull*/
+    @NonNull
     public Page<UserEntity> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
@@ -77,14 +78,14 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
-    /*@NonNull*/
-    public UserEntity findByLogin(/*@NonNull*/ String login) {
+    @NonNull
+    public UserEntity findByLogin(@NonNull String login) {
         return userRepository.findByLogin(login).orElseThrow(() ->
                 new NotFoundException(UserEntity.class, "login", login));
     }
 
-    /*@NonNull*/
-    public UserEntity find(/*@NonNull*/ String id) {
+    @NonNull
+    public UserEntity find(@NonNull String id) {
         return userRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(UserEntity.class, id));
     }
@@ -95,7 +96,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void enable(/*@NonNull*/ String userId, /*@NonNull*/ Boolean enabled) {
+    public void enable(@NonNull String userId, @NonNull Boolean enabled) {
         UserEntity user = find(userId);
         user.setEnabled(enabled);
         userRepository.save(user);

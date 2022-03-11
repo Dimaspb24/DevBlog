@@ -10,13 +10,20 @@ import com.project.devblog.model.TagEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.service.ArticleService;
-import org.junit.jupiter.api.Assertions;
+import static java.time.LocalDateTime.now;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -24,19 +31,19 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.UUID;
 
-import static java.time.LocalDateTime.now;
-import static org.mockito.ArgumentMatchers.any;
-
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @ExtendWith(MockitoExtension.class)
 class UserArticleControllerTest {
+
     @Mock
-    private ArticleService articleService;
+    ArticleService articleService;
     @InjectMocks
-    private UserArticleController userArticleController;
-    private ArticleEntity articleEntity;
-    private OpenArticleResponse openArticleResponse;
-    private CloseArticleResponse closeArticleResponse;
-    private ArticleRequest articleRequest;
+    UserArticleController userArticleController;
+
+    ArticleEntity articleEntity;
+    OpenArticleResponse openArticleResponse;
+    CloseArticleResponse closeArticleResponse;
+    ArticleRequest articleRequest;
 
     @BeforeEach
     void setUp() {
@@ -105,43 +112,47 @@ class UserArticleControllerTest {
     @Test
     void createSuccessTest() {
         final var userId = UUID.randomUUID().toString();
-        Mockito.when(articleService.create(any(), any(), any(), any(), any(), any()))
+        when(articleService.create(any(), any(), any(), any(), any(), any()))
                 .thenReturn(articleEntity);
+
         final var response = userArticleController.create(userId, articleRequest);
-        Mockito.verify(articleService).create(any(), any(), any(), any(), any(), any());
-        Assertions.assertEquals(openArticleResponse.getTitle(), response.getTitle());
-        Assertions.assertEquals(openArticleResponse.getNickname(), response.getNickname());
-        Assertions.assertEquals(openArticleResponse.getStatus(), response.getStatus());
-        Assertions.assertEquals(openArticleResponse.getDescription(), response.getDescription());
+
+        verify(articleService).create(any(), any(), any(), any(), any(), any());
+        assertEquals(openArticleResponse.getTitle(), response.getTitle());
+        assertEquals(openArticleResponse.getNickname(), response.getNickname());
+        assertEquals(openArticleResponse.getStatus(), response.getStatus());
+        assertEquals(openArticleResponse.getDescription(), response.getDescription());
     }
 
     @Test
     void findSuccessTest() {
         final var userId = UUID.randomUUID().toString();
         final var articleId = 42;
-        Mockito.when(articleService.find(any(), any()))
-                .thenReturn(articleEntity);
+        when(articleService.find(any(), any())).thenReturn(articleEntity);
+
         final var response = userArticleController.find(userId, articleId);
-        Mockito.verify(articleService).find(any(), any());
-        Assertions.assertEquals(openArticleResponse.getTitle(), response.getTitle());
-        Assertions.assertEquals(openArticleResponse.getNickname(), response.getNickname());
-        Assertions.assertEquals(openArticleResponse.getStatus(), response.getStatus());
-        Assertions.assertEquals(openArticleResponse.getDescription(), response.getDescription());
+
+        verify(articleService).find(any(), any());
+        assertEquals(openArticleResponse.getTitle(), response.getTitle());
+        assertEquals(openArticleResponse.getNickname(), response.getNickname());
+        assertEquals(openArticleResponse.getStatus(), response.getStatus());
+        assertEquals(openArticleResponse.getDescription(), response.getDescription());
     }
 
     @Test
     void findAllSuccessTest() {
         final var userId = UUID.randomUUID().toString();
         final var pageable = Pageable.ofSize(5);
-        Mockito.when(articleService.findAll(any(), any()))
-                .thenReturn(new PageImpl<>(List.of(articleEntity)));
+        when(articleService.findAll(any(), any())).thenReturn(new PageImpl<>(List.of(articleEntity)));
+
         final var response = userArticleController.findAll(userId, pageable);
-        Mockito.verify(articleService).findAll(any(), any());
-        Assertions.assertEquals(1, response.getTotalElements());
-        Assertions.assertTrue(response.stream().findFirst().isPresent());
-        Assertions.assertEquals(response.stream().findFirst().get().getId(), closeArticleResponse.getId());
-        Assertions.assertEquals(response.stream().findFirst().get().getNickname(), closeArticleResponse.getNickname());
-        Assertions.assertEquals(response.stream().findFirst().get().getDescription(),
+
+        verify(articleService).findAll(any(), any());
+        assertEquals(1, response.getTotalElements());
+        assertTrue(response.stream().findFirst().isPresent());
+        assertEquals(response.stream().findFirst().get().getId(), closeArticleResponse.getId());
+        assertEquals(response.stream().findFirst().get().getNickname(), closeArticleResponse.getNickname());
+        assertEquals(response.stream().findFirst().get().getDescription(),
                 closeArticleResponse.getDescription());
     }
 
@@ -149,9 +160,11 @@ class UserArticleControllerTest {
     void deleteSuccessTest() {
         final var userId = UUID.randomUUID().toString();
         final var articleId = 42;
-        Mockito.doNothing().when(articleService).delete(any(), any());
+        doNothing().when(articleService).delete(any(), any());
+
         userArticleController.delete(userId, articleId);
-        Mockito.verify(articleService).delete(any(), any());
+
+        verify(articleService).delete(any(), any());
     }
 
     @Test
@@ -159,22 +172,26 @@ class UserArticleControllerTest {
         final var userId = UUID.randomUUID().toString();
         final var articleId = 42;
         final var enabled = true;
-        Mockito.doNothing().when(articleService).enable(any(), any(), any());
+        doNothing().when(articleService).enable(any(), any(), any());
+
         userArticleController.enable(userId, articleId, enabled);
-        Mockito.verify(articleService).enable(any(), any(), any());
+
+        verify(articleService).enable(any(), any(), any());
     }
 
     @Test
     void updateSuccessTest() {
         final var userId = UUID.randomUUID().toString();
         final var articleId = 42;
-        Mockito.when(articleService.update(any(), any(), any(), any(), any(), any(), any()))
+        when(articleService.update(any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn(articleEntity);
+
         final var response = userArticleController.update(userId, articleId, articleRequest);
-        Mockito.verify(articleService).update(any(), any(), any(), any(), any(), any(), any());
-        Assertions.assertEquals(openArticleResponse.getTitle(), response.getTitle());
-        Assertions.assertEquals(openArticleResponse.getNickname(), response.getNickname());
-        Assertions.assertEquals(openArticleResponse.getStatus(), response.getStatus());
-        Assertions.assertEquals(openArticleResponse.getDescription(), response.getDescription());
+
+        verify(articleService).update(any(), any(), any(), any(), any(), any(), any());
+        assertEquals(openArticleResponse.getTitle(), response.getTitle());
+        assertEquals(openArticleResponse.getNickname(), response.getNickname());
+        assertEquals(openArticleResponse.getStatus(), response.getStatus());
+        assertEquals(openArticleResponse.getDescription(), response.getDescription());
     }
 }

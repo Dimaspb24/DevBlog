@@ -6,13 +6,20 @@ import com.project.devblog.dto.response.BookmarkResponse;
 import com.project.devblog.dto.response.CloseArticleResponse;
 import com.project.devblog.dto.response.TagResponse;
 import com.project.devblog.service.BookmarkService;
-import org.junit.jupiter.api.Assertions;
+import static java.time.LocalDateTime.now;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -20,18 +27,18 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.UUID;
 
-import static java.time.LocalDateTime.now;
-import static org.mockito.ArgumentMatchers.any;
-
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @ExtendWith(MockitoExtension.class)
 class UserBookmarkControllerTest {
+
     @Mock
-    private BookmarkService bookmarkService;
+    BookmarkService bookmarkService;
     @InjectMocks
-    private UserBookmarkController bookmarkController;
-    private BookmarkResponse bookmarkResponse;
-    private BookmarkArticleResponse bookmarkArticleResponse;
-    private BookmarkRequest bookmarkRequest;
+    UserBookmarkController bookmarkController;
+
+    BookmarkResponse bookmarkResponse;
+    BookmarkArticleResponse bookmarkArticleResponse;
+    BookmarkRequest bookmarkRequest;
 
     @BeforeEach
     void setUp() {
@@ -74,13 +81,15 @@ class UserBookmarkControllerTest {
     void create() {
         final var userId = bookmarkResponse.getUserId();
         final var articleId = bookmarkResponse.getArticleId();
-        Mockito.when(bookmarkService.create(any(), any(), any()))
+        when(bookmarkService.create(any(), any(), any()))
                 .thenReturn(bookmarkResponse);
+
         final var response = bookmarkController.create(userId, articleId, bookmarkRequest);
-        Mockito.verify(bookmarkService).create(any(), any(), any());
-        Assertions.assertEquals(bookmarkResponse.getUserId(), response.getUserId());
-        Assertions.assertEquals(bookmarkResponse.getBookmarkType(), response.getBookmarkType());
-        Assertions.assertEquals(bookmarkResponse.getArticleId(), response.getArticleId());
+
+        verify(bookmarkService).create(any(), any(), any());
+        assertEquals(bookmarkResponse.getUserId(), response.getUserId());
+        assertEquals(bookmarkResponse.getBookmarkType(), response.getBookmarkType());
+        assertEquals(bookmarkResponse.getArticleId(), response.getArticleId());
     }
 
     @Test
@@ -88,24 +97,28 @@ class UserBookmarkControllerTest {
         final var userId = bookmarkResponse.getUserId();
         final var bookmarkType = bookmarkResponse.getBookmarkType();
         final var pageable = Pageable.ofSize(5);
-        Mockito.when(bookmarkService.findAll(any(), any(), any()))
+        when(bookmarkService.findAll(any(), any(), any()))
                 .thenReturn(new PageImpl<>(List.of(bookmarkArticleResponse)));
+
         final var response = bookmarkController.findAll(userId, bookmarkType, pageable);
-        Mockito.verify(bookmarkService).findAll(any(), any(), any());
-        Assertions.assertEquals(1, response.getTotalElements());
-        Assertions.assertTrue(response.stream().findFirst().isPresent());
-        Assertions.assertEquals(bookmarkArticleResponse.getId(), response.stream().findFirst().get().getId());
-        Assertions.assertEquals(bookmarkArticleResponse.getBookmarkType(),
+
+        verify(bookmarkService).findAll(any(), any(), any());
+        assertEquals(1, response.getTotalElements());
+        assertTrue(response.stream().findFirst().isPresent());
+        assertEquals(bookmarkArticleResponse.getId(), response.stream().findFirst().get().getId());
+        assertEquals(bookmarkArticleResponse.getBookmarkType(),
                 response.stream().findFirst().get().getBookmarkType());
-        Assertions.assertEquals(bookmarkArticleResponse.getRating(), response.stream().findFirst().get().getRating());
+        assertEquals(bookmarkArticleResponse.getRating(), response.stream().findFirst().get().getRating());
     }
 
     @Test
     void delete() {
         final var userId = bookmarkResponse.getUserId();
         final var bookmarkId = 42L;
-        Mockito.doNothing().when(bookmarkService).delete(any());
+        doNothing().when(bookmarkService).delete(any());
+
         bookmarkController.delete(userId, bookmarkId);
-        Mockito.verify(bookmarkService).delete(any());
+
+        verify(bookmarkService).delete(any());
     }
 }

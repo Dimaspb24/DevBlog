@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponse find(/*@NonNull*/ @PathVariable String userId) {
+    public UserResponse find(@NonNull @PathVariable String userId) {
         return toResponse(userService.find(userId));
     }
 
@@ -40,27 +40,27 @@ public class UserController {
     @Operation(summary = "Block the user")
     @DeleteMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(/*@NonNull*/ @PathVariable String userId) {
+    public void delete(@NonNull @PathVariable String userId) {
         userService.delete(userId);
     }
 
     @Operation(summary = "Block or unblock the user")
     @PatchMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public void enable(/*@NonNull*/ @PathVariable String userId,
-            /*@NonNull*/ @Valid @RequestParam Boolean enabled) {
+    public void enable(@NonNull @PathVariable String userId,
+                       @NonNull @Valid @RequestParam Boolean enabled) {
         userService.enable(userId, enabled);
     }
 
     @PutMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponse update(/*@NonNull*/ @PathVariable String userId,
-            /*@NonNull*/ @RequestBody UserRequest userRequest) {
+    public UserResponse update(@NonNull @PathVariable String userId,
+                               @NonNull @RequestBody UserRequest userRequest) {
         return toResponse(userService.update(userId, userRequest));
     }
 
-    /*@NonNull*/
-    private UserResponse toResponse(/*@NonNull*/ UserEntity user) {
+    @NonNull
+    private UserResponse toResponse(@NonNull UserEntity user) {
         return new UserResponse(user.getId(), user.getLogin(), user.getPersonalInfo());
     }
 }

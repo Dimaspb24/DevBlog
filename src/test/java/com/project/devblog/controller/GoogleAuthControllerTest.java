@@ -4,13 +4,10 @@ import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.service.UserService;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,21 +18,28 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
-import org.springframework.test.web.servlet.MockMvc;
-
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
+import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class GoogleAuthControllerTest {
+
     @MockBean
-    private UserService userService;
+    UserService userService;
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @Test
     void registrationTest() throws Exception {
@@ -56,8 +60,8 @@ class GoogleAuthControllerTest {
 
         GrantedAuthority authority = new OAuth2UserAuthority(attributes);
 
-        Mockito.when(userService.createUser(user.getId(), user.getLogin(), Role.USER, true, personalInfo.getFirstname(),
-                        personalInfo.getLastname(), personalInfo.getNickname(), personalInfo.getPhoto(), personalInfo.getPhone()))
+        when(userService.createUser(user.getId(), user.getLogin(), Role.USER, true, personalInfo.getFirstname(),
+                personalInfo.getLastname(), personalInfo.getNickname(), personalInfo.getPhoto(), personalInfo.getPhone()))
                 .thenReturn(user);
         DefaultOidcUser auth2User = new DefaultOidcUser(List.of(authority), OidcIdToken.withTokenValue("some token here").claims(stringObjectMap ->
                 stringObjectMap.putAll(attributes)).build());

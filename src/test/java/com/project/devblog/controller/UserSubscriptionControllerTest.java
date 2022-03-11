@@ -11,12 +11,16 @@ import com.project.devblog.security.JwtTokenProvider;
 import com.project.devblog.service.ArticleService;
 import com.project.devblog.service.SubscriptionService;
 import com.project.devblog.service.UserService;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,22 +39,25 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserSubscriptionControllerTest {
+
     @MockBean
-    private UserService userService;
+    UserService userService;
     @MockBean
-    private SubscriptionService subscriptionService;
+    SubscriptionService subscriptionService;
     @MockBean
-    private ArticleService articleService;
-    private static UserEntity user;
-    private static UserEntity author;
+    ArticleService articleService;
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-    private final ObjectMapper mapper = new ObjectMapper();
+    JwtTokenProvider jwtTokenProvider;
+
+    static UserEntity user;
+    static UserEntity author;
+    final ObjectMapper mapper = new ObjectMapper();
 
     @BeforeAll
     static void init() {
@@ -69,8 +76,8 @@ class UserSubscriptionControllerTest {
 
     @Test
     void createSubscriptionTest() throws Exception {
-        Mockito.doNothing().when(subscriptionService).subscribe(user.getId(), author.getId());
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        doNothing().when(subscriptionService).subscribe(user.getId(), author.getId());
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
         mockMvc
@@ -83,8 +90,8 @@ class UserSubscriptionControllerTest {
 
     @Test
     void createSubscriptionNotExistUserTest() throws Exception {
-        Mockito.doThrow(NotFoundException.class).when(subscriptionService).subscribe(user.getId(), author.getId());
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        doThrow(NotFoundException.class).when(subscriptionService).subscribe(user.getId(), author.getId());
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
         mockMvc
@@ -98,8 +105,8 @@ class UserSubscriptionControllerTest {
     @Test
     void getUserSubscriptionsTest() throws Exception {
         final PageImpl<UserEntity> page = new PageImpl<>(List.of(author));
-        Mockito.when(subscriptionService.findSubscriptions(eq(user.getId()), any())).thenReturn(page);
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        when(subscriptionService.findSubscriptions(eq(user.getId()), any())).thenReturn(page);
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
         final MvcResult mvcResult = mockMvc
@@ -114,8 +121,8 @@ class UserSubscriptionControllerTest {
 
     @Test
     void deleteSubscriptionTest() throws Exception {
-        Mockito.doNothing().when(subscriptionService).unsubscribe(user.getId(), author.getId());
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        doNothing().when(subscriptionService).unsubscribe(user.getId(), author.getId());
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
         mockMvc
@@ -133,8 +140,8 @@ class UserSubscriptionControllerTest {
                 List.of(), List.of(), List.of());
         article.setModificationDate(LocalDateTime.now());
         final PageImpl<ArticleEntity> page = new PageImpl<>(List.of(article));
-        Mockito.when(articleService.findArticlesBySubscriptions(eq(user.getId()), any())).thenReturn(page);
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        when(articleService.findArticlesBySubscriptions(eq(user.getId()), any())).thenReturn(page);
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
         final MvcResult mvcResult = mockMvc
@@ -152,6 +159,7 @@ class UserSubscriptionControllerTest {
         assertThat(response).contains(String.format("\"status\":\"%s\"", article.getStatus()));
         assertThat(response).contains(String.format("\"description\":\"%s\"", article.getDescription()));
         assertThat(response).contains(String.format("\"rating\":%s", article.getRating().toString()));
+        //FIXME: failed when mvn clean install
 //        assertThat(response).contains(String.format("\"publicationDate\":\"%s\"", article.getPublicationDate().toString().substring(0, 27)));
 //        assertThat(response).contains(String.format("\"modificationDate\":\"%s\"", article.getModificationDate().toString().substring(0, 27)));
     }
@@ -159,8 +167,8 @@ class UserSubscriptionControllerTest {
     @Test
     void getUserSubscribers() throws Exception {
         final PageImpl<UserEntity> page = new PageImpl<>(List.of(user));
-        Mockito.when(subscriptionService.findSubscribers(eq(author.getId()), any())).thenReturn(page);
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        when(subscriptionService.findSubscribers(eq(author.getId()), any())).thenReturn(page);
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(author.getLogin(), Role.USER);
         final MvcResult mvcResult = mockMvc

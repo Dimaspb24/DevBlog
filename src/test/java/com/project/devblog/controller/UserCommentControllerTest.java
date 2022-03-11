@@ -9,12 +9,18 @@ import com.project.devblog.model.TagEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.service.CommentService;
+import static java.time.LocalDateTime.now;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -22,21 +28,21 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.UUID;
 
-import static java.time.LocalDateTime.now;
-import static org.mockito.Mockito.any;
-
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @ExtendWith(MockitoExtension.class)
 class UserCommentControllerTest {
+
     @Mock
-    private CommentService commentService;
+    CommentService commentService;
     @InjectMocks
-    private UserCommentController controller;
-    private CommentResponse commentResponse;
-    private CommentEntity commentEntity;
-    private UserEntity author;
-    private UserEntity receiver;
-    private ArticleEntity articleEntity;
-    private CommentRequest commentRequest;
+    UserCommentController controller;
+
+    CommentResponse commentResponse;
+    CommentEntity commentEntity;
+    UserEntity author;
+    UserEntity receiver;
+    ArticleEntity articleEntity;
+    CommentRequest commentRequest;
 
     @BeforeEach
     void setUp() {
@@ -100,10 +106,11 @@ class UserCommentControllerTest {
     void create() {
         final var userId = UUID.randomUUID().toString();
         final var articleId = 42;
-        Mockito.when(commentService.create(any(), any(), any(), any()))
-                .thenReturn(commentEntity);
+        when(commentService.create(any(), any(), any(), any())).thenReturn(commentEntity);
+
         final var response = controller.create(userId, articleId, commentRequest);
-        Mockito.verify(commentService).create(any(), any(), any(), any());
+
+        verify(commentService).create(any(), any(), any(), any());
     }
 
     @Test
@@ -111,10 +118,11 @@ class UserCommentControllerTest {
         final var userId = UUID.randomUUID().toString();
         final var articleId = 42;
         final var commentId = 42L;
-        Mockito.when(commentService.find(any(), any(), any()))
-                .thenReturn(commentEntity);
+        when(commentService.find(any(), any(), any())).thenReturn(commentEntity);
+
         final var response = controller.find(userId, articleId, commentId);
-        Mockito.verify(commentService).find(any(), any(), any());
+
+        verify(commentService).find(any(), any(), any());
     }
 
     @Test
@@ -122,10 +130,12 @@ class UserCommentControllerTest {
         final var userId = UUID.randomUUID().toString();
         final var articleId = 42;
         final var pageable = Pageable.ofSize(5);
-        Mockito.when(commentService.findAllByAuthorIdAndArticleId(any(), any(), any()))
+        when(commentService.findAllByAuthorIdAndArticleId(any(), any(), any()))
                 .thenReturn(new PageImpl<>(List.of(commentEntity)));
+
         final var response = controller.findAll(userId, articleId, pageable);
-        Mockito.verify(commentService).findAllByAuthorIdAndArticleId(any(), any(), any());
+
+        verify(commentService).findAllByAuthorIdAndArticleId(any(), any(), any());
     }
 
     @Test
@@ -133,9 +143,11 @@ class UserCommentControllerTest {
         final var userId = UUID.randomUUID().toString();
         final var articleId = 42;
         final var commentId = 42L;
-        Mockito.doNothing().when(commentService).delete(any(), any(), any());
+        doNothing().when(commentService).delete(any(), any(), any());
+
         controller.delete(userId, articleId, commentId);
-        Mockito.verify(commentService).delete(any(), any(), any());
+
+        verify(commentService).delete(any(), any(), any());
     }
 
     @Test
@@ -144,9 +156,11 @@ class UserCommentControllerTest {
         final var articleId = 42;
         final var commentId = 42L;
         final var enabled = true;
-        Mockito.doNothing().when(commentService).enable(any(), any(), any(), any());
+        doNothing().when(commentService).enable(any(), any(), any(), any());
+
         controller.enable(userId, articleId, commentId, enabled);
-        Mockito.verify(commentService).enable(any(), any(), any(), any());
+
+        verify(commentService).enable(any(), any(), any(), any());
     }
 
     @Test
@@ -154,9 +168,10 @@ class UserCommentControllerTest {
         final var userId = UUID.randomUUID().toString();
         final var articleId = 42;
         final var commentId = 42L;
-        Mockito.when(commentService.update(any(), any(), any(), any()))
-                .thenReturn(commentEntity);
+        when(commentService.update(any(), any(), any(), any())).thenReturn(commentEntity);
+
         final var response = controller.update(userId, articleId, commentId, commentRequest);
-        Mockito.verify(commentService).update(any(), any(), any(), any());
+
+        verify(commentService).update(any(), any(), any(), any());
     }
 }

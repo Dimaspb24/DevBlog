@@ -8,6 +8,7 @@ import com.project.devblog.model.enums.StatusArticle;
 import static com.project.devblog.model.enums.StatusArticle.CREATED;
 import static com.project.devblog.model.enums.StatusArticle.PUBLISHED;
 import com.project.devblog.repository.ArticleRepository;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,21 +31,21 @@ public class ArticleService {
     private final UserService userService;
     private final TagService tagService;
 
-    /*@NonNull*/
-    public ArticleEntity find(/*@NonNull*/ String authorId, /*@NonNull*/ Integer articleId) {
+    @NonNull
+    public ArticleEntity find(@NonNull String authorId, @NonNull Integer articleId) {
         return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(articleId, authorId).orElseThrow(() ->
                 new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
     }
 
-    /*@NonNull*/
-    public ArticleEntity findById(/*@NonNull*/ Integer articleId) {
+    @NonNull
+    public ArticleEntity findById(@NonNull Integer articleId) {
         return articleRepository.findById(articleId)
                 .orElseThrow(() -> new NotFoundException(ArticleEntity.class, articleId.toString()));
     }
 
-    /*@NonNull*/
-    public ArticleEntity create(/*@NonNull*/ String userId, /*@NonNull*/ String title, List<String> tags,
-            /*@NonNull*/ String description, /*@NonNull*/ String body, /*@NonNull*/ StatusArticle status) {
+    @NonNull
+    public ArticleEntity create(@NonNull String userId, @NonNull String title, List<String> tags,
+                                @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
 
         final UserEntity author = userService.find(userId);
         final ArticleEntity articleEntity = new ArticleEntity(title, body, status, description, author);
@@ -60,12 +61,12 @@ public class ArticleService {
         return articleRepository.save(articleEntity);
     }
 
-    /*@NonNull*/
-    public Page<ArticleEntity> findAll(/*@NonNull*/ String userId, Pageable pageable) {
+    @NonNull
+    public Page<ArticleEntity> findAll(@NonNull String userId, Pageable pageable) {
         return articleRepository.findByAuthorIdAndEnabledIsTrue(userId, pageable);
     }
 
-    public void enable(/*@NonNull*/ String authorId, /*@NonNull*/ Integer articleId, /*@NonNull*/ Boolean enabled) {
+    public void enable(@NonNull String authorId, @NonNull Integer articleId, @NonNull Boolean enabled) {
         final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId).orElseThrow(() ->
                 new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
 
@@ -73,15 +74,15 @@ public class ArticleService {
         articleRepository.save(articleEntity);
     }
 
-    public void delete(/*@NonNull*/ String authorId, /*@NonNull*/ Integer articleId) {
+    public void delete(@NonNull String authorId, @NonNull Integer articleId) {
         final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId).orElseThrow(() ->
                 new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
         articleRepository.delete(articleEntity);
     }
 
-    /*@NonNull*/
-    public ArticleEntity update(/*@NonNull*/ String authorId, /*@NonNull*/ Integer articleId, /*@NonNull*/ String title, List<String> tags,
-            /*@NonNull*/ String description, /*@NonNull*/ String body, /*@NonNull*/ StatusArticle status) {
+    @NonNull
+    public ArticleEntity update(@NonNull String authorId, @NonNull Integer articleId, @NonNull String title, List<String> tags,
+                                @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
         final ArticleEntity articleEntity = find(authorId, articleId);
         final List<TagEntity> tagEntities = tagService.createAndGetAllByName(tags);
 
@@ -102,12 +103,12 @@ public class ArticleService {
         return articleRepository.save(articleEntity);
     }
 
-    /*@NonNull*/
-    public Page<ArticleEntity> findArticlesBySubscriptions(/*@NonNull*/ String userId, Pageable pageable) {
+    @NonNull
+    public Page<ArticleEntity> findArticlesBySubscriptions(@NonNull String userId, Pageable pageable) {
         return articleRepository.findBySubscriptions(userId, pageable);
     }
 
-    /*@NonNull*/
+    @NonNull
     public Page<ArticleEntity> findAll(String titleContains, String tagName, Pageable pageable) {
         Page<ArticleEntity> articleEntities;
         if (Objects.isNull(titleContains) && Objects.isNull(tagName)) {
@@ -124,7 +125,7 @@ public class ArticleService {
         return articleEntities;
     }
 
-    /*@NonNull*/
+    @NonNull
     private PageRequest getPageRequestForSortByArticles(Pageable pageable) {
         List<Sort.Order> orders = pageable.getSort().stream().map(order ->
                 order.withProperty("a." + order.getProperty()))

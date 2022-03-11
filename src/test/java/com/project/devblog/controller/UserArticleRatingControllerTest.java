@@ -10,31 +10,36 @@ import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.BookmarkType;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.service.RatingService;
-import org.junit.jupiter.api.Assertions;
+import static java.time.LocalDateTime.now;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.UUID;
 
-import static java.time.LocalDateTime.now;
-import static org.mockito.ArgumentMatchers.any;
-
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @ExtendWith(MockitoExtension.class)
 class UserArticleRatingControllerTest {
+
     @Mock
-    private RatingService ratingService;
+    RatingService ratingService;
     @InjectMocks
-    private UserArticleRatingController userArticleRatingController;
-    private ArticleEntity articleEntity;
-    private UserArticleEntity userArticleEntity;
-    private UserEntity userEntity;
-    private RatingResponse ratingResponse;
+    UserArticleRatingController userArticleRatingController;
+
+    ArticleEntity articleEntity;
+    UserArticleEntity userArticleEntity;
+    UserEntity userEntity;
+    RatingResponse ratingResponse;
 
     @BeforeEach
     void setUp() {
@@ -80,44 +85,43 @@ class UserArticleRatingControllerTest {
     void create() {
         final var userId = userEntity.getId();
         final var articleId = articleEntity.getId();
-        final var ratingRequest = RatingRequest.builder()
-                .rating(422)
-                .build();
-        Mockito.when(ratingService.create(any(), any(), any()))
-                .thenReturn(userArticleEntity);
+        final var ratingRequest = RatingRequest.builder().rating(422).build();
+        when(ratingService.create(any(), any(), any())).thenReturn(userArticleEntity);
+
         final var response = userArticleRatingController.create(userId, articleId, ratingRequest);
-        Mockito.verify(ratingService).create(any(), any(), any());
-        Assertions.assertEquals(ratingResponse.getRating(), response.getRating());
-        Assertions.assertEquals(ratingResponse.getArticleId(), response.getArticleId());
-        Assertions.assertEquals(ratingResponse.getAuthorId(), response.getAuthorId());
+
+        verify(ratingService).create(any(), any(), any());
+        assertEquals(ratingResponse.getRating(), response.getRating());
+        assertEquals(ratingResponse.getArticleId(), response.getArticleId());
+        assertEquals(ratingResponse.getAuthorId(), response.getAuthorId());
     }
 
     @Test
     void find() {
         final var userId = userEntity.getId();
         final var articleId = articleEntity.getId();
-        Mockito.when(ratingService.find(any(), any()))
-                .thenReturn(userArticleEntity);
+        when(ratingService.find(any(), any())).thenReturn(userArticleEntity);
+
         final var response = userArticleRatingController.find(userId, articleId);
-        Mockito.verify(ratingService).find(any(), any());
-        Assertions.assertEquals(ratingResponse.getRating(), response.getRating());
-        Assertions.assertEquals(ratingResponse.getArticleId(), response.getArticleId());
-        Assertions.assertEquals(ratingResponse.getAuthorId(), response.getAuthorId());
+
+        verify(ratingService).find(any(), any());
+        assertEquals(ratingResponse.getRating(), response.getRating());
+        assertEquals(ratingResponse.getArticleId(), response.getArticleId());
+        assertEquals(ratingResponse.getAuthorId(), response.getAuthorId());
     }
 
     @Test
     void update() {
         final var userId = userEntity.getId();
         final var articleId = articleEntity.getId();
-        final var ratingRequest = RatingRequest.builder()
-                .rating(422)
-                .build();
-        Mockito.when(ratingService.update(any(), any(), any()))
-                .thenReturn(userArticleEntity);
+        final var ratingRequest = RatingRequest.builder().rating(422).build();
+        when(ratingService.update(any(), any(), any())).thenReturn(userArticleEntity);
+
         final var response = userArticleRatingController.update(userId, articleId, ratingRequest);
-        Mockito.verify(ratingService).update(any(), any(), any());
-        Assertions.assertEquals(ratingResponse.getRating(), response.getRating());
-        Assertions.assertEquals(ratingResponse.getArticleId(), response.getArticleId());
-        Assertions.assertEquals(ratingResponse.getAuthorId(), response.getAuthorId());
+
+        verify(ratingService).update(any(), any(), any());
+        assertEquals(ratingResponse.getRating(), response.getRating());
+        assertEquals(ratingResponse.getArticleId(), response.getArticleId());
+        assertEquals(ratingResponse.getAuthorId(), response.getAuthorId());
     }
 }

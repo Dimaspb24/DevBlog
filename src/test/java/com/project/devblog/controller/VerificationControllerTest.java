@@ -8,8 +8,12 @@ import com.project.devblog.security.JwtTokenProvider;
 import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import com.project.devblog.service.UserService;
 import com.project.devblog.service.VerificationService;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,17 +28,19 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class VerificationControllerTest {
+
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
     @MockBean
-    private VerificationService verificationService;
+    VerificationService verificationService;
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    JwtTokenProvider jwtTokenProvider;
     @MockBean
-    private UserService userService;
+    UserService userService;
 
     @Test
     void confirmVerificationCodeTest() throws Exception {
@@ -47,8 +53,8 @@ class VerificationControllerTest {
         final String token = TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
         final String verificationCode = UUID.randomUUID().toString();
 
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
-        Mockito.doNothing().when(verificationService).verify(user.getId(), verificationCode);
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        doNothing().when(verificationService).verify(user.getId(), verificationCode);
 
         mockMvc
                 .perform(get("/v1/users/{userId}/verify", user.getId())
@@ -70,8 +76,8 @@ class VerificationControllerTest {
         final String token = TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
         final String verificationCode = UUID.randomUUID().toString();
 
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
-        Mockito.doThrow(VerificationException.class).when(verificationService).verify(user.getId(), verificationCode);
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        doThrow(VerificationException.class).when(verificationService).verify(user.getId(), verificationCode);
 
         mockMvc
                 .perform(get("/v1/users/{userId}/verify", user.getId())
@@ -93,8 +99,8 @@ class VerificationControllerTest {
         final String token = TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
         final String verificationCode = UUID.randomUUID().toString();
 
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
-        Mockito.doThrow(VerificationException.class).when(verificationService).verify(user.getId(), verificationCode);
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        doThrow(VerificationException.class).when(verificationService).verify(user.getId(), verificationCode);
 
         mockMvc
                 .perform(get("/v1/users/{userId}/verify", user.getId())

@@ -20,8 +20,8 @@ public class RatingService {
     private final ArticleService articleService;
     private final UserService userService;
 
-    /*@NonNull*/
-    public UserArticleEntity create(/*@NonNull*/ String authorId, /*@NonNull*/ Integer articleId, /*@NonNull*/ Integer rating) {
+    @NonNull
+    public UserArticleEntity create(@NonNull String authorId, @NonNull Integer articleId, @NonNull Integer rating) {
         final ArticleEntity articleEntity = articleService.find(authorId, articleId);
         final UserEntity userEntity = userService.find(authorId);
         final UserArticleEntity userArticleEntity = new UserArticleEntity(rating, userEntity, articleEntity);
@@ -29,14 +29,14 @@ public class RatingService {
         return userArticleRepository.save(userArticleEntity);
     }
 
-    /*@NonNull*/
-    public UserArticleEntity find(/*@NonNull*/ String userId, /*@NonNull*/ Integer articleId) {
+    @NonNull
+    public UserArticleEntity find(@NonNull String userId, @NonNull Integer articleId) {
         return userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(userId, articleId).orElseThrow(() ->
                 new NotFoundException(UserArticleEntity.class, "userId", userId, "articleId", articleId.toString()));
     }
 
-    /*@NonNull*/
-    public UserArticleEntity update(/*@NonNull*/ String userId, /*@NonNull*/ Integer articleId, /*@NonNull*/ Integer rating) {
+    @NonNull
+    public UserArticleEntity update(@NonNull String userId, @NonNull Integer articleId, @NonNull Integer rating) {
         final UserArticleEntity userArticleEntity = find(userId, articleId);
 
         userArticleEntity.setRating(rating);

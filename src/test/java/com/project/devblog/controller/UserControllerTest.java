@@ -8,12 +8,15 @@ import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
 import com.project.devblog.service.UserService;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,10 +26,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -34,17 +33,24 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerTest {
+
     @MockBean
-    private UserService userService;
-    private static UserEntity user;
+    UserService userService;
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-    private final ObjectMapper mapper = new ObjectMapper();
+    JwtTokenProvider jwtTokenProvider;
+
+    final ObjectMapper mapper = new ObjectMapper();
+    static UserEntity user;
 
     @BeforeAll
     static void init() {
@@ -57,8 +63,8 @@ class UserControllerTest {
 
     @Test
     void getUserTest() throws Exception {
-        Mockito.when(userService.find(user.getId())).thenReturn(user);
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        when(userService.find(user.getId())).thenReturn(user);
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
         final MvcResult mvcResult = mockMvc
@@ -74,8 +80,8 @@ class UserControllerTest {
 
     @Test
     void getNotExistUserTest() throws Exception {
-        Mockito.when(userService.find(user.getId())).thenThrow(NotFoundException.class);
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        when(userService.find(user.getId())).thenThrow(NotFoundException.class);
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
         mockMvc
@@ -94,8 +100,8 @@ class UserControllerTest {
                 List.of(), List.of(), List.of(), List.of(), Set.of(), Set.of());
 
         PageImpl<UserEntity> page = new PageImpl<>(List.of(user, secondUser));
-        Mockito.when(userService.findAll(Pageable.ofSize(2))).thenReturn(page);
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        when(userService.findAll(Pageable.ofSize(2))).thenReturn(page);
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
         final MvcResult mvcResult = mockMvc
@@ -112,8 +118,8 @@ class UserControllerTest {
 
     @Test
     void blockUserTest() throws Exception {
-        Mockito.doNothing().when(userService).delete(user.getId());
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        doNothing().when(userService).delete(user.getId());
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
         mockMvc
@@ -125,8 +131,8 @@ class UserControllerTest {
 
     @Test
     void enableUserTest() throws Exception {
-        Mockito.doNothing().when(userService).enable(user.getId(), true);
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        doNothing().when(userService).enable(user.getId(), true);
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
         mockMvc
@@ -145,8 +151,8 @@ class UserControllerTest {
         user.setPersonalInfo(new PersonalInfo("firstname", "lastname", "nickname",
                 "photo", "info", "89123123123"));
 
-        Mockito.when(userService.update(eq(user.getId()), any())).thenReturn(user);
-        Mockito.when(userService.findByLogin(user.getLogin())).thenReturn(user);
+        when(userService.update(eq(user.getId()), any())).thenReturn(user);
+        when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
         final MvcResult mvcResult = mockMvc

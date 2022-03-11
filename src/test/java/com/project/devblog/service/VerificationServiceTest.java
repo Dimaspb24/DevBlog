@@ -30,6 +30,7 @@ class VerificationServiceTest {
     VerificationService verificationService;
     @MockBean
     UserRepository userRepository;
+
     static UserEntity user;
 
     @BeforeAll
@@ -58,10 +59,8 @@ class VerificationServiceTest {
         user.setLogin("user1@gmail.com");
         user.setEnabled(false);
         user.setVerificationCode(UUID.randomUUID().toString());
-
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
-
         verificationService.verify(user.getId(), user.getVerificationCode());
 
         assertThat(user.isEnabled()).isTrue();
@@ -70,11 +69,9 @@ class VerificationServiceTest {
 
     @Test
     void verifyTestWithNotFoundUser() throws Exception {
-        when(userRepository.findById(user.getId()))
-                .thenReturn(Optional.empty());
+        when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
 
-        final String verificationCode = UUID.randomUUID().toString();
-        assertThatThrownBy(() -> verificationService.verify(user.getId(), verificationCode))
+        assertThatThrownBy(() -> verificationService.verify(user.getId(), UUID.randomUUID().toString()))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining(format("%s with id=%s not found", UserEntity.class.getSimpleName(), user.getId()));
     }
@@ -84,13 +81,10 @@ class VerificationServiceTest {
         user.setLogin("user1@gmail.com");
         user.setEnabled(true);
         user.setVerificationCode(null);
-
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
 
-        final String verificationCode = UUID.randomUUID().toString();
-
-        assertThatThrownBy(() -> verificationService.verify(user.getId(), verificationCode))
+        assertThatThrownBy(() -> verificationService.verify(user.getId(), UUID.randomUUID().toString()))
                 .isInstanceOf(VerificationException.class)
                 .hasMessageContaining("User already verified");
     }
@@ -100,13 +94,10 @@ class VerificationServiceTest {
         user.setLogin("user1@gmail.com");
         user.setEnabled(false);
         user.setVerificationCode(UUID.randomUUID().toString());
-
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
 
-        final String invalidVerificationCode = UUID.randomUUID().toString();
-
-        assertThatThrownBy(() -> verificationService.verify(user.getId(), invalidVerificationCode))
+        assertThatThrownBy(() -> verificationService.verify(user.getId(), UUID.randomUUID().toString()))
                 .isInstanceOf(VerificationException.class)
                 .hasMessageContaining("Invalid verification code");
     }

@@ -32,8 +32,8 @@ public class BookmarkService {
     private final ArticleService articleService;
     private final UserService userService;
 
-    /*@NonNull*/
-    public BookmarkResponse create(/*@NonNull*/ String userId, /*@NonNull*/ Integer articleId, /*@NonNull*/ BookmarkRequest request) {
+    @NonNull
+    public BookmarkResponse create(@NonNull String userId, @NonNull Integer articleId, @NonNull BookmarkRequest request) {
         BookmarkType bookmarkType = BookmarkType.valueOf(request.getBookmarkType());
 
         UserArticleEntity userArticleEntity = userArticleRepository
@@ -50,8 +50,8 @@ public class BookmarkService {
         return new BookmarkResponse(userId, articleId, userArticleEntity.getBookmarkType().name());
     }
 
-    /*@NonNull*/
-    public Page<BookmarkArticleResponse> findAll(/*@NonNull*/ String userId, String bookmarkType, Pageable pageable) {
+    @NonNull
+    public Page<BookmarkArticleResponse> findAll(@NonNull String userId, String bookmarkType, Pageable pageable) {
         if (Objects.isNull(bookmarkType)) {
             return userArticleRepository.findByUserIdAndBookmarkTypeNotNull(userId, pageable).
                     map(this::getBookmarkArticleResponses);
@@ -62,7 +62,7 @@ public class BookmarkService {
         }
     }
 
-    public void delete(/*@NonNull*/ Long bookmarkId) {
+    public void delete(@NonNull Long bookmarkId) {
         UserArticleEntity userArticleEntity = userArticleRepository.findById(bookmarkId)
                 .orElseThrow(() -> new NotFoundException(UserArticleEntity.class, bookmarkId.toString()));
 

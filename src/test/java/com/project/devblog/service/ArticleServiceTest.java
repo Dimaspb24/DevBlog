@@ -149,9 +149,19 @@ class ArticleServiceTest {
         verify(articleRepository).delete(article);
     }
 
+    @Test
+    void throwIfNotFoundByIdAndAuthorId() {
+        doReturn(Optional.empty()).when(articleRepository).findByIdAndAuthorId(article.getId(), user.getId());
+        assertThrows(NotFoundException.class, () -> articleService.delete(user.getId(), article.getId()));
+        verify(articleRepository).findByIdAndAuthorId(article.getId(), user.getId());
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {"CREATED", "PUBLISHED"})
     void shouldUpdateArticle(String status) {
+        if (status.equals("PUBLISHED")) {
+            article.setStatus(CREATED);
+        }
         ArticleRequest articleRequest = new ArticleRequest("Test", "Test", status, "Test", List.of("1", "2", "3"));
         List<TagEntity> tagEntities = List.of(new TagEntity("1"), new TagEntity("2"), new TagEntity("3"));
 

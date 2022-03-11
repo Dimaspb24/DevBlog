@@ -89,7 +89,6 @@ public class ArticleService {
         articleEntity.setTags(tagEntities);
         articleEntity.setDescription(description);
         articleEntity.setBody(body);
-        articleEntity.setStatus(status);
 
         StatusArticle statusArticle = articleEntity.getStatus();
         if (status == PUBLISHED && statusArticle == CREATED) {
@@ -98,6 +97,7 @@ public class ArticleService {
         if (status == CREATED && statusArticle == PUBLISHED) {
             articleEntity.setPublicationDate(null);
         }
+        articleEntity.setStatus(status);
 
         return articleRepository.save(articleEntity);
     }

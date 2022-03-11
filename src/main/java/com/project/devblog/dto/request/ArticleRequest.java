@@ -2,6 +2,7 @@ package com.project.devblog.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import org.springframework.lang.Nullable;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
+@Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ArticleRequest {

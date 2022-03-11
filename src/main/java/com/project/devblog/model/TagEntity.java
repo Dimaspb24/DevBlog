@@ -17,9 +17,11 @@ import java.util.List;
 @Data
 @ToString(exclude = "articles")
 @EqualsAndHashCode(of = "name")
+@AllArgsConstructor
 @RequiredArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 @Entity
 @Table(name = "tags")
 public class TagEntity {

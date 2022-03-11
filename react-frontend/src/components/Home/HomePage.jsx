@@ -1,10 +1,15 @@
 import {Box} from '@mui/material'
-import UserArticle from '../ArticleForHomePage/UserArticle'
 import SortButton from './SortButton'
 import ArticleSearchInput from './ArticleSearchInput'
+import UserArticleContainer from '../ArticleForHomePage/UserArticleContainer'
+import UserArticle from '../ArticleForHomePage/UserArticle'
 
 const HomePage = (props) => {
-    const articles = props.articles.map(article => <UserArticle article={article} key={article.id}/>)
+    console.log(props.articles)
+
+    const articles = props.articles.map(article => <UserArticle article={article} loginUser={props.loginUser}
+                                                                updateState={props.updateArticleState}
+                                                                key={article.id}/>)
 
     return (
         <Box>

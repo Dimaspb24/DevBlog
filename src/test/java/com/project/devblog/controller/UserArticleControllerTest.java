@@ -52,9 +52,21 @@ class UserArticleControllerTest {
                 .nickname("Nickname")
                 .photo("Photo")
                 .tags(List.of(TagResponse.builder()
-                        .id(42)
-                        .name("Name")
-                        .build()))
+                                .id(42)
+                                .name("Namewwwwwwwwwwwwww20")
+                                .build(),
+                        TagResponse.builder()
+                                .id(42)
+                                .name("Namewwwwwwwwwwwwww20")
+                                .build(),
+                        TagResponse.builder()
+                                .id(42)
+                                .name("Namewwwwwwwwwwwwww20")
+                                .build(),
+                        TagResponse.builder()
+                                .id(42)
+                                .name("Namewwwwwwwwwwwwww20")
+                                .build()))
                 .build();
         articleEntity = ArticleEntity.builder()
                 .id(42)
@@ -98,7 +110,8 @@ class UserArticleControllerTest {
                 .body("Body")
                 .status("PUBLISHED")
                 .description("Description")
-                .tags(List.of("Name"))
+                .tags(List.of("Nameууууууууууууууууувввв", "Nameууууууууууууууууувввв",
+                        "Nameууууууууууууууууувввв", "Nameууууууууууууууууувввв"))
                 .build();
     }
 

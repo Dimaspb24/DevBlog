@@ -3,17 +3,14 @@ import {NavLink} from 'react-router-dom'
 import jQuery from 'jquery'
 
 const ProfileButton = (props) => {
-    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWlsMUBtYWlsLnJ1Iiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2NDUwMDU4NDksImV4cCI6MTY0NTAyMDI0OX0.dCJqG6L79Q6oxsDvP-Jf_kzdrZP3ISE_fCdw6LTgFvM'
-
-
     const onClick = () => {
-        jQuery.ajax('http://localhost:8080/v1/users/1', {
+        jQuery.ajax(`http://localhost:8080/v1/users/${props.loginUser.id}`, {
             method: 'GET',
             xhrFields: {
                 withCredentials: true
             },
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: props.loginUser.token
             }
         }).done(ans => {
             props.updateCurrentTextField('firstname', ans.personalInfo.firstname)

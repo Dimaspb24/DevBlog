@@ -17,9 +17,9 @@ const UserArticle = (props) => {
                 <UserAvatar photo={props.article.photo}/>
                 <Nickname nickname={props.article.nickname}/>
                 <Date publicationDate={props.article.publicationDate}/>
-                <ArticleTitle title={props.article.title}/>
+                <ArticleTitle title={props.article} loginUser={props.loginUser} updateState={props.updateState}/>
                 {tagWrapper}
-                <Body body={props.article.body}/>
+                <Body body={props.article.description}/>
             </Paper>
         </Box>
     )

@@ -5,15 +5,31 @@ import UserArticleContainer from './components/Article/UserArticleContainer'
 import HomePageContainer from './components/Home/HomePageContainer'
 import CreatingPostContainer from './components/CreatingPost/CreatingPostContainer'
 import {Route} from 'react-router-dom'
+import Login from './components/Login/Login'
+import LoginContainer from './components/Login/LoginContainer'
 
 function App() {
     return (
         <Box sx={{display: 'flex', flexDirection: 'column'}}>
-            <Header/>
-            <Route path="/user-personal-info" component={UserPersonalInfoContainer}/>
-            <Route path="/article" component={UserArticleContainer}/>
-            <Route path="/home" component={HomePageContainer}/>
-            <Route path="/creating-post" component={CreatingPostContainer}/>
+            <Route path="/login">
+                <LoginContainer/>
+            </Route>
+            <Route path="/user-personal-info">
+                <Header/>
+                <UserPersonalInfoContainer/>
+            </Route>
+            <Route path="/article">
+                <Header/>
+                <UserArticleContainer/>
+            </Route>
+            <Route path="/home" component={HomePageContainer}>
+                <Header/>
+                <HomePageContainer/>
+            </Route>
+            <Route path="/creating-post">
+                <Header/>
+                <CreatingPostContainer/>
+            </Route>
         </Box>
     )
 }

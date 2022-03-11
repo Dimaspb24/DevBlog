@@ -1,4 +1,4 @@
-const UPDATE_STATE = 'UPDATE_STATE'
+const UPDATE_STATE = 'UPDATE_STATE_1'
 
 const homeInitialState = [
     {

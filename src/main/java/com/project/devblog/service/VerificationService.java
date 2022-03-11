@@ -5,7 +5,6 @@ import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.exception.VerificationException;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.UserRepository;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -25,7 +24,7 @@ public class VerificationService {
     private final UserRepository userRepository;
     private final MailProperties mailProperties;
 
-    public void sendVerificationEmail(@NonNull String userId) {
+    public void sendVerificationEmail(/*@NonNull*/ String userId) {
         String toAddress = userRepository.getById(userId).getLogin();
         String fromAddress = mailProperties.getEmail();
         String senderName = mailProperties.getName();
@@ -53,7 +52,7 @@ public class VerificationService {
         mailSender.send(message);
     }
 
-    public void verify(@NonNull String userId, @NonNull String verificationCode) {
+    public void verify(/*@NonNull*/ String userId, /*@NonNull*/ String verificationCode) {
         UserEntity user = userRepository.findById(userId).orElseThrow(() ->
                 new NotFoundException(UserEntity.class, userId));
 

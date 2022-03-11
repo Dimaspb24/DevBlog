@@ -34,8 +34,8 @@ public class UserArticleController {
 
     @PostMapping("/users/{userId}/articles")
     @ResponseStatus(HttpStatus.CREATED)
-    public OpenArticleResponse create(@NonNull @PathVariable String userId,
-                                      @NonNull @Valid @RequestBody ArticleRequest request) {
+    public OpenArticleResponse create(/*@NonNull*/ @PathVariable String userId,
+            /*@NonNull*/ @Valid @RequestBody ArticleRequest request) {
         return toOpenArticleResponse(articleService.create(
                 userId,
                 request.getTitle(),
@@ -47,40 +47,40 @@ public class UserArticleController {
 
     @GetMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
-    public OpenArticleResponse find(@NonNull @PathVariable String userId,
-                                    @NonNull @PathVariable Integer articleId) {
+    public OpenArticleResponse find(/*@NonNull*/ @PathVariable String userId,
+            /*@NonNull*/ @PathVariable Integer articleId) {
         return toOpenArticleResponse(articleService.find(userId, articleId));
     }
 
     @GetMapping("/users/{userId}/articles")
     @ResponseStatus(HttpStatus.OK)
-    public Page<CloseArticleResponse> findAll(@NonNull @PathVariable String userId,
-                                              @SortDefault(sort = "publicationDate") Pageable pageable) {
+    public Page<CloseArticleResponse> findAll(/*@NonNull*/ @PathVariable String userId,
+                                                           @SortDefault(sort = "publicationDate") Pageable pageable) {
         return articleService.findAll(userId, pageable)
                 .map(this::toCloseArticleResponse);
     }
 
     @DeleteMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@NonNull @PathVariable String userId,
-                       @NonNull @PathVariable Integer articleId) {
+    public void delete(/*@NonNull*/ @PathVariable String userId,
+            /*@NonNull*/ @PathVariable Integer articleId) {
         articleService.delete(userId, articleId);
     }
 
     @Operation(summary = "Block or unblock the article")
     @PatchMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
-    public void enable(@NonNull @PathVariable String userId,
-                       @NonNull @PathVariable Integer articleId,
-                       @NonNull @Valid @RequestParam Boolean enabled) {
+    public void enable(/*@NonNull*/ @PathVariable String userId,
+            /*@NonNull*/ @PathVariable Integer articleId,
+            /*@NonNull*/ @Valid @RequestParam Boolean enabled) {
         articleService.enable(userId, articleId, enabled);
     }
 
     @PutMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
-    public OpenArticleResponse update(@NonNull @PathVariable String userId,
-                                      @NonNull @PathVariable Integer articleId,
-                                      @NonNull @Valid @RequestBody ArticleRequest request) {
+    public OpenArticleResponse update(/*@NonNull*/ @PathVariable String userId,
+            /*@NonNull*/ @PathVariable Integer articleId,
+            /*@NonNull*/ @Valid @RequestBody ArticleRequest request) {
         return toOpenArticleResponse(articleService.update(
                 userId,
                 articleId,
@@ -91,8 +91,8 @@ public class UserArticleController {
                 StatusArticle.valueOf(request.getStatus())));
     }
 
-    @NonNull
-    private OpenArticleResponse toOpenArticleResponse(@NonNull ArticleEntity article) {
+    /*@NonNull*/
+    private OpenArticleResponse toOpenArticleResponse(/*@NonNull*/ ArticleEntity article) {
         PersonalInfo personalInfo = article.getAuthor().getPersonalInfo();
         return new OpenArticleResponse(
                 article.getId(),
@@ -109,8 +109,8 @@ public class UserArticleController {
                 tagEntityToResponse(article.getTags()));
     }
 
-    @NonNull
-    private CloseArticleResponse toCloseArticleResponse(@NonNull ArticleEntity article) {
+    /*@NonNull*/
+    private CloseArticleResponse toCloseArticleResponse(/*@NonNull*/ ArticleEntity article) {
         final PersonalInfo personalInfo = article.getAuthor().getPersonalInfo();
         return new CloseArticleResponse(
                 article.getId(),
@@ -126,8 +126,8 @@ public class UserArticleController {
                 tagEntityToResponse(article.getTags()));
     }
 
-    @NonNull
-    private List<TagResponse> tagEntityToResponse(@NonNull List<TagEntity> tagEntities) {
+    /*@NonNull*/
+    private List<TagResponse> tagEntityToResponse(/*@NonNull*/ List<TagEntity> tagEntities) {
         return tagEntities.stream()
                 .map(tagEntity -> new TagResponse(tagEntity.getId(), tagEntity.getName()))
                 .collect(Collectors.toList());

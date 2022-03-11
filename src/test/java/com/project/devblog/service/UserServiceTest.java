@@ -161,10 +161,10 @@ class UserServiceTest {
 
     @ParameterizedTest
     @CsvFileSource(resources = "/update-user-test-data.csv", delimiter = ';', numLinesToSkip = 1)
-    void shouldUpdateUserIfFieldsNotNullAndNotEmpty(String nickname, String phone, String photo, String firstname, String lastname, String info) {
-        user.setPersonalInfo(personalInfo);
+    void shouldUpdateUserIfFieldsNotNullAndNotEmpty(String nickname, String phone, String photo,
+                                                    String firstname, String lastname, String info) {
         UserRequest userRequest = new UserRequest(phone, firstname, lastname, nickname, info, photo);
-
+        user.setPersonalInfo(personalInfo);
         acceptIfNotNullAndNotEmpty(firstname, s -> personalInfo.setFirstname(s));
         acceptIfNotNullAndNotEmpty(lastname, s -> personalInfo.setLastname(s));
         acceptIfNotNullAndNotEmpty(info, s -> personalInfo.setInfo(s));

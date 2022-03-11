@@ -1,17 +1,17 @@
-nickname;phone;photo;firstname;lastname;info
-;;;;some text;
- ; ; ;;;some text
-NickIvan;89999999999;some text; ;;
-FreeNick;8;;some text; ;
-; ; ;;some text;
- ;89999999999;some text; ;;some text
-NickIvan;8;;some text; ;
-FreeNick;; ;;some text;
-;89999999999;some text; ;;some text
- ;8;;some text; ;
-NickIvan;; ;;some text;
-FreeNick; ;some text; ;;some text
-;8;;some text; ;
- ;; ;;some text;
-NickIvan; ;some text; ;;some text
-FreeNick;89999999999;;some text; ;
+nickname;phone;photo;firstname;lastname;info;;
+;;;;some text;"";;
+"";"";"";;;some text;;
+NickIvan;89999999999;some text;"";;;;
+FreeNick;8;;some text;"";;;
+;"";"";;some text;"";;
+"";89999999999;some text;"";;some text;;
+NickIvan;8;;some text;"";;;
+FreeNick;;"";;some text;"";;
+;89999999999;some text;"";;some text;;
+"";8;;some text;"";;;
+NickIvan;;"";;some text;"";;
+FreeNick;"";some text;"";;some text;;
+;8;;some text;"";;;
+"";;"";;some text;"";;
+NickIvan;"";some text;"";;some text;;
+FreeNick;89999999999;;some text;"";;;

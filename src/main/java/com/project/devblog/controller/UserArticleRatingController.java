@@ -23,29 +23,29 @@ public class UserArticleRatingController {
 
     @PostMapping("/users/{userId}/articles/{articleId}/ratings")
     @ResponseStatus(HttpStatus.CREATED)
-    public RatingResponse create(@NonNull @PathVariable String userId,
-                                 @NonNull @PathVariable Integer articleId,
-                                 @NonNull @Valid @RequestBody RatingRequest request) {
+    public RatingResponse create(/*@NonNull*/ @PathVariable String userId,
+            /*@NonNull*/ @PathVariable Integer articleId,
+            /*@NonNull*/ @Valid @RequestBody RatingRequest request) {
         return toResponse(ratingService.create(userId, articleId, request.getRating()));
     }
 
     @GetMapping("/users/{userId}/articles/{articleId}/ratings")
     @ResponseStatus(HttpStatus.OK)
-    public RatingResponse find(@NonNull @PathVariable String userId,
-                               @NonNull @PathVariable Integer articleId) {
+    public RatingResponse find(/*@NonNull*/ @PathVariable String userId,
+            /*@NonNull*/ @PathVariable Integer articleId) {
         return toResponse(ratingService.find(userId, articleId));
     }
 
     @PutMapping("/users/{userId}/articles/{articleId}/ratings")
     @ResponseStatus(HttpStatus.OK)
-    public RatingResponse update(@NonNull @PathVariable String userId,
-                                 @NonNull @PathVariable Integer articleId,
-                                 @NonNull @Valid @RequestBody RatingRequest request) {
+    public RatingResponse update(/*@NonNull*/ @PathVariable String userId,
+            /*@NonNull*/ @PathVariable Integer articleId,
+            /*@NonNull*/ @Valid @RequestBody RatingRequest request) {
         return toResponse(ratingService.update(userId, articleId, request.getRating()));
     }
 
-    @NonNull
-    private RatingResponse toResponse(@NonNull UserArticleEntity userArticleEntity) {
+    /*@NonNull*/
+    private RatingResponse toResponse(/*@NonNull*/ UserArticleEntity userArticleEntity) {
         return new RatingResponse(userArticleEntity.getUser().getId(),
                 userArticleEntity.getArticle().getId(),
                 userArticleEntity.getRating());

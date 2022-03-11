@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class GoogleAuthControllerTest {
+class GoogleAuthControllerTest {
     @MockBean
     private UserService userService;
     @Autowired

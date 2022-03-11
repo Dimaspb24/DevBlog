@@ -30,7 +30,7 @@ import static java.time.LocalDateTime.now;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
-public class ArticleControllerTest {
+class ArticleControllerTest {
     @Mock
     private ArticleService articleService;
     @Mock

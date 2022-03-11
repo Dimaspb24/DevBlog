@@ -34,7 +34,7 @@ public class AuthenticationService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
 
-    public ResponseEntity<AuthenticationResponse> login(@NonNull String login, @NonNull String password) {
+    public ResponseEntity<AuthenticationResponse> login(/*@NonNull*/ String login, /*@NonNull*/ String password) {
         final UserEntity user;
         try {
             user = userService.findByLogin(login);
@@ -64,7 +64,7 @@ public class AuthenticationService {
         securityContextLogoutHandler.logout(request, response, auth);
     }
 
-    public ResponseEntity<AuthenticationResponse> register(@NonNull String login, @NonNull String password) {
+    public ResponseEntity<AuthenticationResponse> register(/*@NonNull*/ String login, /*@NonNull*/ String password) {
         if (!userService.isExists(login)) {
             UserEntity user = userService.register(login, password);
             return ResponseEntity

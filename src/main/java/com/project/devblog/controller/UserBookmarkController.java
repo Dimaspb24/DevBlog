@@ -27,24 +27,24 @@ public class UserBookmarkController {
 
     @PostMapping("/users/{userId}/articles/{articleId}/bookmarks")
     @ResponseStatus(HttpStatus.CREATED)
-    public BookmarkResponse create(@NonNull @PathVariable String userId,
-                                   @NonNull @PathVariable Integer articleId,
-                                   @NonNull @Valid @RequestBody BookmarkRequest request) {
+    public BookmarkResponse create(/*@NonNull*/ @PathVariable String userId,
+            /*@NonNull*/ @PathVariable Integer articleId,
+            /*@NonNull*/ @Valid @RequestBody BookmarkRequest request) {
         return bookmarkService.create(userId, articleId, request);
     }
 
     @GetMapping("/users/{userId}/bookmarks")
     @ResponseStatus(HttpStatus.OK)
-    public Page<BookmarkArticleResponse> findAll(@NonNull @PathVariable String userId,
-                                                 @RequestParam(name = "bookmarkType", required = false) String bookmarkType,
-                                                 @SortDefault(sort = "article.publicationDate") Pageable pageable) {
+    public Page<BookmarkArticleResponse> findAll(/*@NonNull*/ @PathVariable String userId,
+                                                              @RequestParam(name = "bookmarkType", required = false) String bookmarkType,
+                                                              @SortDefault(sort = "article.publicationDate") Pageable pageable) {
         return bookmarkService.findAll(userId, bookmarkType, pageable);
     }
 
     @DeleteMapping("/users/{userId}/bookmarks/{bookmarkId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Object> delete(@NonNull @PathVariable String userId,
-                                         @NonNull @PathVariable Long bookmarkId) {
+    public ResponseEntity<Object> delete(/*@NonNull*/ @PathVariable String userId,
+            /*@NonNull*/ @PathVariable Long bookmarkId) {
         bookmarkService.delete(bookmarkId);
         return ResponseEntity.noContent().build();
     }

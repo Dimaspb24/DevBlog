@@ -21,18 +21,18 @@ public class TagService {
 
     private final TagRepository tagRepository;
 
-    @NonNull
-    public TagEntity find(@NonNull Integer tagId) {
+    /*@NonNull*/
+    public TagEntity find(/*@NonNull*/ Integer tagId) {
         return tagRepository.findById(tagId).orElseThrow(() ->
                 new NotFoundException(TagEntity.class, tagId.toString()));
     }
 
-    @NonNull
-    public TagEntity create(@NonNull String name) {
+    /*@NonNull*/
+    public TagEntity create(/*@NonNull*/ String name) {
         return tagRepository.save(new TagEntity(name));
     }
 
-    @NonNull
+    /*@NonNull*/
     public Page<TagEntity> findAll(String tagNameContains, Pageable pageable) {
         if (Objects.nonNull(tagNameContains) && !tagNameContains.isEmpty()) {
             return tagRepository.findTagEntitiesByNameContains(tagNameContains, pageable);
@@ -40,8 +40,8 @@ public class TagService {
         return tagRepository.findAll(pageable);
     }
 
-    @NonNull
-    public List<TagEntity> createAndGetAllByName(@NonNull List<String> tags) {
+    /*@NonNull*/
+    public List<TagEntity> createAndGetAllByName(/*@NonNull*/ List<String> tags) {
         ArrayList<TagEntity> tagEntities = new ArrayList<>();
         tags.forEach(name -> tagEntities.add(tagRepository
                 .findByName(name)
@@ -49,11 +49,11 @@ public class TagService {
         return tagEntities;
     }
 
-    public void delete(@NonNull Integer tagId) {
+    public void delete(/*@NonNull*/ Integer tagId) {
         tagRepository.deleteById(tagId);
     }
 
-    public TagEntity update(@NonNull Integer tagId, @NonNull String name) {
+    public TagEntity update(/*@NonNull*/ Integer tagId, /*@NonNull*/ String name) {
         TagEntity tagEntity = tagRepository.getById(tagId);
         tagEntity.setName(name);
         tagRepository.save(tagEntity);

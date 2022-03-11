@@ -7,7 +7,6 @@ import com.project.devblog.dto.response.AuthenticationResponse;
 import com.project.devblog.security.JwtTokenProvider;
 import com.project.devblog.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,7 @@ public class AuthenticationController {
 
     @PostMapping("/auth/login")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<AuthenticationResponse> login(@NonNull @Valid @RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> login(/*@NonNull*/ @Valid @RequestBody AuthenticationRequest request) {
         return authenticationService.login(request.getLogin(), request.getPassword());
     }
 
@@ -45,12 +44,12 @@ public class AuthenticationController {
 
     @PostMapping("/auth/registration")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<AuthenticationResponse> registration(@NonNull @Valid @RequestBody RegistrationRequest request) {
+    public ResponseEntity<AuthenticationResponse> registration(/*@NonNull*/ @Valid @RequestBody RegistrationRequest request) {
         return authenticationService.register(request.getLogin(), request.getPassword());
     }
 
     @GetMapping("/auth/checkToken")
-    public ResponseEntity<String> checkValidateToken(@NonNull @RequestParam String token) {
+    public ResponseEntity<String> checkValidateToken(/*@NonNull*/ @RequestParam String token) {
         jwtTokenProvider.validateToken(token);
         return ResponseEntity.ok("Token is valid");
     }

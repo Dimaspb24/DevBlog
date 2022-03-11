@@ -25,7 +25,7 @@ public class TagController {
 
     @PostMapping("/tags")
     @ResponseStatus(HttpStatus.CREATED)
-    public TagResponse create(@NonNull @Valid @RequestBody TagRequest request) {
+    public TagResponse create(/*@NonNull*/ @Valid @RequestBody TagRequest request) {
         return toResponse(tagService.create(request.getName()));
     }
 
@@ -39,25 +39,25 @@ public class TagController {
 
     @GetMapping("/tags/{tagId}")
     @ResponseStatus(HttpStatus.OK)
-    public TagResponse find(@NonNull @PathVariable Integer tagId) {
+    public TagResponse find(/*@NonNull*/ @PathVariable Integer tagId) {
         return toResponse(tagService.find(tagId));
     }
 
     @DeleteMapping("/tags/{tagId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@NonNull @PathVariable Integer tagId) {
+    public void delete(/*@NonNull*/ @PathVariable Integer tagId) {
         tagService.delete(tagId);
     }
 
     @PutMapping("/tags/{tagId}")
     @ResponseStatus(HttpStatus.OK)
-    public TagResponse update(@NonNull @PathVariable Integer tagId,
-                              @NonNull @Valid @RequestBody TagRequest request) {
+    public TagResponse update(/*@NonNull*/ @PathVariable Integer tagId,
+            /*@NonNull*/ @Valid @RequestBody TagRequest request) {
         return toResponse(tagService.update(tagId, request.getName()));
     }
 
-    @NonNull
-    public TagResponse toResponse(@NonNull TagEntity tagEntity) {
+    /*@NonNull*/
+    public TagResponse toResponse(/*@NonNull*/ TagEntity tagEntity) {
         return new TagResponse(tagEntity.getId(), tagEntity.getName());
     }
 }

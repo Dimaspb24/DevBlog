@@ -238,17 +238,14 @@
                 <version>0.8.7</version>
                 <configuration>
                     <excludes>
-                        <exclude>com/project/devblog/model/**</exclude>
+                        <!--                        <exclude>com/project/devblog/model/**</exclude>-->
                         <exclude>com/project/devblog/config/**</exclude>
-                        <exclude>com/project/devblog/constant/**</exclude>
-                        <exclude>com/project/devblog/dto/**</exclude>
-                        <exclude>com/project/devblog/exception/**</exclude>
                         <exclude>com/project/devblog/handler/**</exclude>
-                        <exclude>com/project/devblog/handler/**</exclude>
-                        <exclude>com/project/devblog/handler/**</exclude>
-                        <exclude>com/project/devblog/repository/**</exclude>
-                        <exclude>com/project/devblog/security/**</exclude>
                         <exclude>com/project/devblog/DevBlogApplication.class</exclude>
+                        <!--                        <exclude>com/project/devblog/dto/**</exclude>-->
+                        <!--                        <exclude>com/project/devblog/exception/**</exclude>-->
+                        <!--                        <exclude>com/project/devblog/repository/**</exclude>-->
+                        <!--                        <exclude>com/project/devblog/security/**</exclude>-->
                     </excludes>
                 </configuration>
                 <executions>

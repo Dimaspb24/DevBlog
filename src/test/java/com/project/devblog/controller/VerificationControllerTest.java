@@ -5,13 +5,10 @@ import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
+import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import com.project.devblog.service.UserService;
 import com.project.devblog.service.VerificationService;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,16 +16,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class VerificationControllerTest {
+class VerificationControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean

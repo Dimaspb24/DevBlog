@@ -21,9 +21,9 @@ public class CommentService {
     private final ArticleService articleService;
     private final UserService userService;
 
-    @NonNull
-    public CommentEntity create(@NonNull String authorCommentId, @NonNull Integer articleId, @NonNull String message,
-                                String receiverId) {
+    /*@NonNull*/
+    public CommentEntity create(/*@NonNull*/ String authorCommentId, /*@NonNull*/ Integer articleId, /*@NonNull*/ String message,
+                                             String receiverId) {
 
         final ArticleEntity articleEntity = articleService.find(authorCommentId, articleId);
         final UserEntity author = userService.find(authorCommentId);
@@ -34,23 +34,23 @@ public class CommentService {
         return commentRepository.save(commentEntity);
     }
 
-    @NonNull
-    public CommentEntity find(@NonNull Long id, @NonNull String authorId, @NonNull Integer articleId) {
+    /*@NonNull*/
+    public CommentEntity find(/*@NonNull*/ Long id, /*@NonNull*/ String authorId, /*@NonNull*/ Integer articleId) {
         return commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(id, authorId, articleId).orElseThrow(() ->
                 new NotFoundException(CommentEntity.class, id.toString()));
     }
 
-    @NonNull
-    public Page<CommentEntity> findAllByAuthorIdAndArticleId(@NonNull String authorId, @NonNull Integer articleId, Pageable pageable) {
+    /*@NonNull*/
+    public Page<CommentEntity> findAllByAuthorIdAndArticleId(/*@NonNull*/ String authorId, /*@NonNull*/ Integer articleId, Pageable pageable) {
         return commentRepository.findAllByAuthorIdAndArticleIdAndEnabledIsTrue(authorId, articleId, pageable);
     }
 
-    @NonNull
-    public Page<CommentEntity> findAllByArticleId(@NonNull Integer articleId, Pageable pageable) {
+    /*@NonNull*/
+    public Page<CommentEntity> findAllByArticleId(/*@NonNull*/ Integer articleId, Pageable pageable) {
         return commentRepository.findAllByArticleIdAndEnabledIsTrue(articleId, pageable);
     }
 
-    public void enable(@NonNull Long id, @NonNull String authorId, @NonNull Integer articleId, @NonNull Boolean enabled) {
+    public void enable(/*@NonNull*/ Long id, /*@NonNull*/ String authorId, /*@NonNull*/ Integer articleId, /*@NonNull*/ Boolean enabled) {
         final CommentEntity commentEntity = commentRepository.findByIdAndAuthorIdAndArticleId(id, authorId, articleId)
                 .orElseThrow(() -> new NotFoundException(CommentEntity.class, id.toString()));
 
@@ -58,14 +58,14 @@ public class CommentService {
         commentRepository.save(commentEntity);
     }
 
-    public void delete(@NonNull Long id, @NonNull String authorId, @NonNull Integer articleId) {
+    public void delete(/*@NonNull*/ Long id, /*@NonNull*/ String authorId, /*@NonNull*/ Integer articleId) {
         final CommentEntity commentEntity = commentRepository.findByIdAndAuthorIdAndArticleId(id, authorId, articleId)
                 .orElseThrow(() -> new NotFoundException(CommentEntity.class, id.toString()));
         commentRepository.delete(commentEntity);
     }
 
-    @NonNull
-    public CommentEntity update(@NonNull Long id, @NonNull String message, @NonNull Integer articleId, @NonNull String authorId) {
+    /*@NonNull*/
+    public CommentEntity update(/*@NonNull*/ Long id, /*@NonNull*/ String message, /*@NonNull*/ Integer articleId, /*@NonNull*/ String authorId) {
         final CommentEntity commentEntity = find(id, authorId, articleId);
         commentEntity.setMessage(message);
 

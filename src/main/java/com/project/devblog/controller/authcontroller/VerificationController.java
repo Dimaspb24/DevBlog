@@ -3,7 +3,6 @@ package com.project.devblog.controller.authcontroller;
 import com.project.devblog.controller.annotation.ApiV1;
 import com.project.devblog.service.VerificationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +22,8 @@ public class VerificationController {
 
     @GetMapping("/users/{userId}/verify")
     @ResponseStatus(HttpStatus.OK)
-    public ModelAndView verifyUser(@NonNull @PathVariable String userId,
-                                   @NonNull @RequestParam("code") String verificationCode) {
+    public ModelAndView verifyUser(/*@NonNull*/ @PathVariable String userId,
+            /*@NonNull*/ @RequestParam("code") String verificationCode) {
         verificationService.verify(userId, verificationCode);
         return new ModelAndView("verification_page");
     }

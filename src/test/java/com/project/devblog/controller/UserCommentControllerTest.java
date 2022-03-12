@@ -118,11 +118,11 @@ class UserCommentControllerTest {
         final var userId = UUID.randomUUID().toString();
         final var articleId = 42;
         final var commentId = 42L;
-        when(commentService.find(any(), any(), any())).thenReturn(commentEntity);
+        when(commentService.findByIdAndAuthorIdAndArticleId(any(), any(), any())).thenReturn(commentEntity);
 
         final var response = controller.find(userId, articleId, commentId);
 
-        verify(commentService).find(any(), any(), any());
+        verify(commentService).findByIdAndAuthorIdAndArticleId(any(), any(), any());
     }
 
     @Test

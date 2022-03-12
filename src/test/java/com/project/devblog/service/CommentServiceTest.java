@@ -12,17 +12,17 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -32,27 +32,26 @@ import java.util.Optional;
 import java.util.UUID;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
 
-    @Autowired
-    CommentService commentService;
-    @MockBean
+    @Mock
     CommentRepository commentRepository;
-    @MockBean
+    @Mock
     ArticleService articleService;
-    @MockBean
+    @Mock
     UserService userService;
+    @InjectMocks
+    CommentService commentService;
 
-    static UserEntity author;
-    static UserEntity receiver;
-    static ArticleEntity article;
-    static CommentEntity comment;
-    static CommentEntity comment2;
+    UserEntity author;
+    UserEntity receiver;
+    ArticleEntity article;
+    CommentEntity comment;
+    CommentEntity comment2;
 
-    @BeforeAll
-    static void init() {
+    @BeforeEach
+    void init() {
         author = UserEntity.builder()
                 .id(UUID.randomUUID().toString())
                 .login("author@mail.ru")
@@ -92,10 +91,10 @@ class CommentServiceTest {
     }
 
     @Test
-    void createTest() throws Exception {
-        when(articleService.find(author.getId(), article.getId())).thenReturn(article);
-        when(userService.find(author.getId())).thenReturn(author);
-        when(userService.find(receiver.getId())).thenReturn(receiver);
+    void createTest() {
+        when(articleService.findByAuthorIdAndArticleId(author.getId(), article.getId())).thenReturn(article);
+        when(userService.findById(author.getId())).thenReturn(author);
+        when(userService.findById(receiver.getId())).thenReturn(receiver);
         when(commentRepository.save(any(CommentEntity.class))).thenReturn(comment);
 
         final CommentEntity createdComment = commentService.create(author.getId(), article.getId(),
@@ -109,11 +108,11 @@ class CommentServiceTest {
     }
 
     @Test
-    void findTest() throws Exception {
+    void findTest() {
         when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(comment.getId(), author.getId(), article.getId()))
                 .thenReturn(Optional.of(comment));
 
-        final CommentEntity foundComment = commentService.find(comment.getId(), author.getId(), article.getId());
+        final CommentEntity foundComment = commentService.findByIdAndAuthorIdAndArticleId(comment.getId(), author.getId(), article.getId());
 
         assertThat(foundComment.getId()).isEqualTo(comment.getId());
         assertThat(foundComment.getAuthor()).isEqualTo(author);
@@ -123,18 +122,18 @@ class CommentServiceTest {
     }
 
     @Test
-    void findTestWithNotFoundComment() throws Exception {
+    void findTestWithNotFoundComment() {
         final Long id = 5L;
         when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(id, author.getId(), article.getId()))
                 .thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> commentService.find(id, author.getId(), article.getId()))
+        assertThatThrownBy(() -> commentService.findByIdAndAuthorIdAndArticleId(id, author.getId(), article.getId()))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining(format("%s with id=%s not found", CommentEntity.class.getSimpleName(), id));
     }
 
     @Test
-    void findAllByAuthorIdAndArticleIdTest() throws Exception {
+    void findAllByAuthorIdAndArticleIdTest() {
         final Page<CommentEntity> page = new PageImpl<>(List.of(comment, comment2));
         final Pageable pageable = Pageable.ofSize(2);
 
@@ -148,7 +147,7 @@ class CommentServiceTest {
     }
 
     @Test
-    void findAllByArticleIdTest() throws Exception {
+    void findAllByArticleIdTest() {
         final Page<CommentEntity> page = new PageImpl<>(List.of(comment, comment2));
         final Pageable pageable = Pageable.ofSize(2);
 
@@ -160,7 +159,7 @@ class CommentServiceTest {
     }
 
     @Test
-    void enableTest() throws Exception {
+    void enableTest() {
         when(commentRepository.findByIdAndAuthorIdAndArticleId(comment.getId(), author.getId(), article.getId())).thenReturn(Optional.of(comment));
         when(commentRepository.save(any(CommentEntity.class))).thenReturn(comment);
 
@@ -172,7 +171,7 @@ class CommentServiceTest {
     }
 
     @Test
-    void enableTestWithNotFoundComment() throws Exception {
+    void enableTestWithNotFoundComment() {
         final Long id = 5L;
         when(commentRepository.findByIdAndAuthorIdAndArticleId(id, author.getId(), article.getId()))
                 .thenReturn(Optional.empty());
@@ -183,7 +182,7 @@ class CommentServiceTest {
     }
 
     @Test
-    void deleteTest() throws Exception {
+    void deleteTest() {
         when(commentRepository.findByIdAndAuthorIdAndArticleId(comment.getId(), author.getId(), article.getId()))
                 .thenReturn(Optional.of(comment));
         doNothing().when(commentRepository).delete(any());
@@ -194,7 +193,7 @@ class CommentServiceTest {
     }
 
     @Test
-    void deleteTestWithNotFoundComment() throws Exception {
+    void deleteTestWithNotFoundComment() {
         final Long id = 5L;
         when(commentRepository.findByIdAndAuthorIdAndArticleId(id, author.getId(), article.getId()))
                 .thenReturn(Optional.empty());
@@ -205,7 +204,7 @@ class CommentServiceTest {
     }
 
     @Test
-    void updateTest() throws Exception {
+    void updateTest() {
         when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(comment.getId(), author.getId(), article.getId()))
                 .thenReturn(Optional.of(comment));
         when(commentRepository.save(any(CommentEntity.class)))
@@ -219,7 +218,7 @@ class CommentServiceTest {
     }
 
     @Test
-    void updateTestWithNotFoundComment() throws Exception {
+    void updateTestWithNotFoundComment() {
         final Long id = 5L;
         when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(id, author.getId(), article.getId()))
                 .thenReturn(Optional.empty());

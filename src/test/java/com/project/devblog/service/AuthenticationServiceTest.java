@@ -5,24 +5,20 @@ import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.exception.VerificationException;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.security.JwtTokenProvider;
 import static java.lang.String.format;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -31,24 +27,21 @@ import org.springframework.security.core.Authentication;
 import java.util.UUID;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ExtendWith(MockitoExtension.class)
 class AuthenticationServiceTest {
 
-    @Autowired
+    @InjectMocks
     AuthenticationService authenticationService;
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
-    @MockBean
+    @Mock
     UserService userService;
-    @MockBean
+    @Mock
     AuthenticationManager authenticationManager;
 
-    static UserEntity user;
-    static AuthenticationResponse authenticationResponse;
+    UserEntity user;
+    AuthenticationResponse authenticationResponse;
 
-    @BeforeAll
-    static void init() {
+    @BeforeEach
+    void init() {
         user = UserEntity.builder()
                 .id(UUID.randomUUID().toString())
                 .login("user1@gmail.com")
@@ -64,20 +57,14 @@ class AuthenticationServiceTest {
         user.setVerificationCode(null);
 
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
-
         Authentication authentication = mock(Authentication.class);
         when(authenticationManager.authenticate(any())).thenReturn(authentication);
 
-        ResponseEntity<AuthenticationResponse> response = authenticationService.login(user.getLogin(),
-                user.getPassword());
+        AuthenticationResponse response = authenticationService.login(user.getLogin(), user.getPassword());
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)).isTrue();
-        assertThat(response.getHeaders().containsKey(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS)).isTrue();
-        assertThat(jwtTokenProvider.validateToken(response.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0))).isTrue();
-        assertThat(response.getBody().getId()).isEqualTo(authenticationResponse.getId());
-        assertThat(response.getBody().getLogin()).isEqualTo(authenticationResponse.getLogin());
-        assertThat(response.getBody().getRole()).isEqualTo(authenticationResponse.getRole());
+        assertThat(response.getId()).isEqualTo(authenticationResponse.getId());
+        assertThat(response.getLogin()).isEqualTo(authenticationResponse.getLogin());
+        assertThat(response.getRole()).isEqualTo(authenticationResponse.getRole());
     }
 
     @Test
@@ -118,13 +105,11 @@ class AuthenticationServiceTest {
         when(userService.isExists(user.getLogin())).thenReturn(false);
         when(userService.register(user.getLogin(), user.getPassword())).thenReturn(user);
 
-        ResponseEntity<AuthenticationResponse> response = authenticationService.register(user.getLogin(),
-                user.getPassword());
+        AuthenticationResponse response = authenticationService.register(user.getLogin(), user.getPassword());
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        assertThat(response.getBody().getId()).isEqualTo(authenticationResponse.getId());
-        assertThat(response.getBody().getLogin()).isEqualTo(authenticationResponse.getLogin());
-        assertThat(response.getBody().getRole()).isEqualTo(authenticationResponse.getRole());
+        assertThat(response.getId()).isEqualTo(authenticationResponse.getId());
+        assertThat(response.getLogin()).isEqualTo(authenticationResponse.getLogin());
+        assertThat(response.getRole()).isEqualTo(authenticationResponse.getRole());
     }
 
     @Test

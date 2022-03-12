@@ -27,7 +27,7 @@ public class UserController {
     @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public UserResponse find(@NonNull @PathVariable String userId) {
-        return toResponse(userService.find(userId));
+        return toResponse(userService.findById(userId));
     }
 
     @GetMapping("/users")

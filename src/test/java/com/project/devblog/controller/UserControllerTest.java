@@ -63,7 +63,7 @@ class UserControllerTest {
 
     @Test
     void getUserTest() throws Exception {
-        when(userService.find(user.getId())).thenReturn(user);
+        when(userService.findById(user.getId())).thenReturn(user);
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
@@ -80,7 +80,7 @@ class UserControllerTest {
 
     @Test
     void getNotExistUserTest() throws Exception {
-        when(userService.find(user.getId())).thenThrow(NotFoundException.class);
+        when(userService.findById(user.getId())).thenThrow(NotFoundException.class);
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);

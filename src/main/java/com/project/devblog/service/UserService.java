@@ -18,23 +18,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class UserService {
 
-    @NonNull
     private final UserRepository userRepository;
-    @NonNull
     private final BCryptPasswordEncoder passwordEncoder;
-    @NonNull
     private final Generator idGenerator;
-    @NonNull
     private final VerificationService verificationService;
 
     @NonNull
+    @Transactional
     public UserEntity register(@NonNull String login, @NonNull String password) {
         String userId = idGenerator.generateId();
         final UserEntity userEntity = UserEntity.builder()
@@ -52,9 +50,10 @@ public class UserService {
     }
 
     @NonNull
-    public UserEntity createUser(@NonNull String id, @NonNull String login, @NonNull Role role, @NonNull Boolean enabled,
-                                 @Nullable String firstname, @Nullable String lastname, @Nullable String nickname,
-                                 @Nullable String photo, @Nullable String phone) {
+    @Transactional
+    public UserEntity create(@NonNull String id, @NonNull String login, @NonNull Role role, @NonNull Boolean enabled,
+                             @Nullable String firstname, @Nullable String lastname, @Nullable String nickname,
+                             @Nullable String photo, @Nullable String phone) {
         String encodePassword = passwordEncoder.encode(UUID.randomUUID().toString());
         String verificationCode = Boolean.TRUE.equals((enabled)) ? null : UUID.randomUUID().toString();
         final UserEntity userEntity = new UserEntity(id, login, encodePassword, role, enabled, verificationCode);
@@ -65,82 +64,82 @@ public class UserService {
                 .orElseGet(() -> userRepository.save(userEntity));
     }
 
-    public boolean isExists(@NonNull String login) {
-        return userRepository.existsByLogin(login);
-    }
-
     @NonNull
-    public Page<UserEntity> findAll(Pageable pageable) {
-        return userRepository.findAll(pageable);
-    }
-
+    @Transactional
     public UserEntity save(UserEntity userEntity) {
         return userRepository.save(userEntity);
     }
 
-    @NonNull
+    @Transactional(readOnly = true)
+    public Page<UserEntity> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
+    @Transactional
     public UserEntity findByLogin(@NonNull String login) {
         return userRepository.findByLogin(login).orElseThrow(() ->
                 new NotFoundException(UserEntity.class, "login", login));
     }
 
-    @NonNull
-    public UserEntity find(@NonNull String id) {
+    @Transactional(readOnly = true)
+    public UserEntity findById(@NonNull String id) {
         return userRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(UserEntity.class, id));
     }
 
+    @Transactional(readOnly = true)
+    public boolean isExists(@NonNull String login) {
+        return userRepository.existsByLogin(login);
+    }
+
+    @Transactional
     public void delete(String userId) {
-        UserEntity user = find(userId);
+        UserEntity user = findById(userId);
         user.setEnabled(false);
         userRepository.save(user);
     }
 
+    @Transactional
     public void enable(@NonNull String userId, @NonNull Boolean enabled) {
-        UserEntity user = find(userId);
+        UserEntity user = findById(userId);
         user.setEnabled(enabled);
         userRepository.save(user);
     }
 
+    @Transactional
     public UserEntity update(String userId, UserRequest userRequest) {
-        UserEntity user = find(userId);
+        UserEntity user = findById(userId);
         PersonalInfo personalInfo = user.getPersonalInfo();
-        String firstname = userRequest.getFirstname();
-        String lastname = userRequest.getLastname();
-        String info = userRequest.getInfo();
-        String phone = userRequest.getPhone();
-        String nickname = userRequest.getNickname();
-        String urlPhoto = userRequest.getPhoto();
 
-        if (urlPhoto != null && !urlPhoto.isEmpty()) {
-            personalInfo.setPhoto(urlPhoto);
-        }
-        if (firstname != null && !firstname.isEmpty()) {
-            personalInfo.setFirstname(firstname);
-        }
-        if (lastname != null && !lastname.isEmpty()) {
-            personalInfo.setLastname(lastname);
-        }
-        if (info != null && !info.isEmpty()) {
-            personalInfo.setInfo(info);
-        }
-        if (phone != null && !phone.isEmpty()) {
+        acceptIfNotNullAndNotEmpty(userRequest.getPhoto(), personalInfo::setPhoto);
+        acceptIfNotNullAndNotEmpty(userRequest.getFirstname(), personalInfo::setFirstname);
+        acceptIfNotNullAndNotEmpty(userRequest.getLastname(), personalInfo::setLastname);
+        acceptIfNotNullAndNotEmpty(userRequest.getInfo(), personalInfo::setInfo);
+
+        acceptIfNotNullAndNotEmpty(userRequest.getNickname(), nick -> {
+            if (!userRepository.existsByPersonalInfoNickname(nick)) {
+                personalInfo.setNickname(nick);
+            } else {
+                throw new NonUniqueValueException(format("User with nickname=%s already exists", nick));
+            }
+        });
+
+        acceptIfNotNullAndNotEmpty(userRequest.getPhone(), phone -> {
             if (!userRepository.existsByPersonalInfoPhone(phone)) {
                 personalInfo.setPhone(phone);
             } else {
                 throw new NonUniqueValueException(format("User with this phone=%s already exists", phone));
             }
-        }
-        if (nickname != null && !nickname.isEmpty()) {
-            if (!userRepository.existsByPersonalInfoNickname(nickname)) {
-                personalInfo.setNickname(nickname);
-            } else {
-                throw new NonUniqueValueException(format("User with nickname=%s already exists", nickname));
-            }
-        }
+        });
 
         user.setPersonalInfo(personalInfo);
         userRepository.save(user);
         return user;
+    }
+
+    void acceptIfNotNullAndNotEmpty(String field, Consumer<String> consumer) {
+        if (Objects.nonNull(field) && !field.isEmpty()) {
+            consumer.accept(field);
+        }
     }
 }

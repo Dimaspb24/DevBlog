@@ -53,12 +53,12 @@ class SubscriptionServiceTest {
 
     @Test
     void subscribe() {
-        doReturn(subscriber).when(userService).find(subscriber.getId());
-        doReturn(author).when(userService).find(author.getId());
+        doReturn(subscriber).when(userService).findById(subscriber.getId());
+        doReturn(author).when(userService).findById(author.getId());
 
         subscriptionService.subscribe(subscriber.getId(), author.getId());
 
-        verify(userService, times(2)).find(anyString());
+        verify(userService, times(2)).findById(anyString());
         verify(userService).save(argumentCaptorUser.capture());
         assertThat(argumentCaptorUser.getValue().getSubscriptions()).hasSize(1);
     }
@@ -66,12 +66,12 @@ class SubscriptionServiceTest {
     @Test
     void unsubscribe() {
         subscriber.addSubscription(author);
-        doReturn(subscriber).when(userService).find(subscriber.getId());
-        doReturn(author).when(userService).find(author.getId());
+        doReturn(subscriber).when(userService).findById(subscriber.getId());
+        doReturn(author).when(userService).findById(author.getId());
 
         subscriptionService.unsubscribe(subscriber.getId(), author.getId());
 
-        verify(userService, times(2)).find(anyString());
+        verify(userService, times(2)).findById(anyString());
         verify(userService).save(argumentCaptorUser.capture());
         assertThat(argumentCaptorUser.getValue().getSubscriptions()).isEmpty();
     }
@@ -79,11 +79,11 @@ class SubscriptionServiceTest {
     @Test
     void findSubscriptions() {
         subscriber.addSubscription(author);
-        doReturn(subscriber).when(userService).find(subscriber.getId());
+        doReturn(subscriber).when(userService).findById(subscriber.getId());
 
         Page<UserEntity> subscriptions = subscriptionService.findSubscriptions(subscriber.getId(), Pageable.unpaged());
 
-        verify(userService, times(1)).find(subscriber.getId());
+        verify(userService, times(1)).findById(subscriber.getId());
         assertThat(subscriptions.getContent()).hasSize(1);
     }
 
@@ -91,11 +91,11 @@ class SubscriptionServiceTest {
     void findSubscribers() {
         subscriber.addSubscription(author);
         author.getSubscribers().add(subscriber);
-        doReturn(author).when(userService).find(author.getId());
+        doReturn(author).when(userService).findById(author.getId());
 
         Page<UserEntity> subscribers = subscriptionService.findSubscribers(author.getId(), Pageable.unpaged());
 
-        verify(userService, times(1)).find(author.getId());
+        verify(userService, times(1)).findById(author.getId());
         assertThat(subscribers.getContent()).hasSize(1);
     }
 }

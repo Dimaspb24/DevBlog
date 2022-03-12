@@ -18,6 +18,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <maven.surefire.report.plugin.version>3.0.0-M5</maven.surefire.report.plugin.version>
+        <maven.jxr.plugin.version>3.1.1</maven.jxr.plugin.version>
+        <jacoco.version>0.8.7</jacoco.version>
         <jjwt.version>0.9.1</jjwt.version>
         <friendly.id.version>1.1.0</friendly.id.version>
         <flyway.core.version>8.4.0</flyway.core.version>
@@ -232,10 +235,11 @@
                 </configuration>
             </plugin>
 
+            <!--Jacoco plugin region -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version>
+                <version>${jacoco.version}</version>
                 <configuration>
                     <excludes>
                         <exclude>com/project/devblog/model/**</exclude>
@@ -243,14 +247,14 @@
                         <exclude>com/project/devblog/handler/**</exclude>
                         <exclude>com/project/devblog/DevBlogApplication.class</exclude>
                         <exclude>com/project/devblog/dto/**</exclude>
-                        <exclude>com/project/devblog/exception/**</exclude>
-                        <exclude>com/project/devblog/repository/**</exclude>
-                        <exclude>com/project/devblog/security/**</exclude>
+                        <!--                        <exclude>com/project/devblog/exception/**</exclude>-->
+                        <!--                        <exclude>com/project/devblog/repository/**</exclude>-->
+                        <!--                        <exclude>com/project/devblog/security/**</exclude>-->
                     </excludes>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>default-prepare-agent</id>
+                        <id>jacoco-prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
@@ -260,7 +264,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>default-report</id>
+                        <id>jacoco-report</id>
                         <phase>test</phase>
                         <goals>
                             <goal>report</goal>
@@ -271,7 +275,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>default-check</id>
+                        <id>jacoco-check</id>
                         <goals>
                             <goal>check</goal>
                         </goals>
@@ -283,7 +287,7 @@
                                         <limit>
                                             <counter>COMPLEXITY</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.70</minimum>
+                                            <minimum>0.60</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -292,8 +296,27 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--endregion-->
 
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${maven.surefire.report.plugin.version}</version>
+                <configuration>
+                    <outputName>DevBlog-Test-Report</outputName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>${maven.jxr.plugin.version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
 
 </project>

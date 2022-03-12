@@ -1,6 +1,6 @@
 package com.project.devblog.service;
 
-import com.project.devblog.exception.NotFoundException;
+import com.project.devblog.config.MailProperties;
 import com.project.devblog.exception.VerificationException;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
@@ -9,32 +9,39 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
-import static java.lang.String.format;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mail.javamail.JavaMailSender;
 
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
 import java.util.Optional;
 import java.util.UUID;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ExtendWith(MockitoExtension.class)
 class VerificationServiceTest {
 
-    @Autowired
-    VerificationService verificationService;
-    @MockBean
+    @Mock
     UserRepository userRepository;
+    @Spy
+    JavaMailSender mailSender;
+    @Mock
+    MailProperties mailProperties;
+    @InjectMocks
+    VerificationService verificationService;
 
-    static UserEntity user;
+    UserEntity user;
 
-    @BeforeAll
-    static void init() {
+    @BeforeEach
+    void init() {
         user = UserEntity.builder()
                 .id(UUID.randomUUID().toString())
                 .login("user1@gmail.com")
@@ -44,10 +51,27 @@ class VerificationServiceTest {
     }
 
     @Test
-    void sendVerificationEmailTestWithInvalidEmail() throws Exception {
-        user.setLogin("user1@mail/$*\n");
+    void sendVerificationEmailWithInvalidEmail() {
+        String name = "IDK";
+        String email = "idkspbcorp.com";
+        String url = "http://localhost:8080/v1/users/[[userId]]/verify?code=[[code]]";
+        String subject = "Подтверждение регистрации";
+        String content = "Приветствуем, [[name]]!<br>\n" +
+                "Для подтверждения электронной почты и завершения процесса регистрации,\n" +
+                "пожалуйста, пройдите по ссылке:<br>\n" +
+                "<h3><a href=\"[[URL]]\" target=\"_self\">Подтвердить регистрацию</a></h3>\n" +
+                "Если вы получили это письмо по ошибке, просто игнорируйте его.";
 
-        when(userRepository.getById(user.getId())).thenReturn(user);
+        user.setLogin("user1@mail/$*\n");
+        user.setVerificationCode("123");
+
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        doReturn(content).when(mailProperties).getContent();
+        doReturn(url).when(mailProperties).getUrl();
+        doReturn(email).when(mailProperties).getEmail();
+        doReturn(name).when(mailProperties).getName();
+        doReturn(subject).when(mailProperties).getSubject();
+        when(mailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
 
         assertThatThrownBy(() -> verificationService.sendVerificationEmail(user.getId()))
                 .isInstanceOf(VerificationException.class)
@@ -55,12 +79,13 @@ class VerificationServiceTest {
     }
 
     @Test
-    void verifyTest() throws Exception {
+    void verifySuccess() {
         user.setLogin("user1@gmail.com");
         user.setEnabled(false);
         user.setVerificationCode(UUID.randomUUID().toString());
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
+
         verificationService.verify(user.getId(), user.getVerificationCode());
 
         assertThat(user.isEnabled()).isTrue();
@@ -68,21 +93,11 @@ class VerificationServiceTest {
     }
 
     @Test
-    void verifyTestWithNotFoundUser() throws Exception {
-        when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> verificationService.verify(user.getId(), UUID.randomUUID().toString()))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining(format("%s with id=%s not found", UserEntity.class.getSimpleName(), user.getId()));
-    }
-
-    @Test
-    void verifyTestWithAlreadyVerifiedUser() throws Exception {
+    void verifyWithAlreadyVerifiedUser() {
         user.setLogin("user1@gmail.com");
         user.setEnabled(true);
         user.setVerificationCode(null);
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
-        when(userRepository.save(user)).thenReturn(user);
 
         assertThatThrownBy(() -> verificationService.verify(user.getId(), UUID.randomUUID().toString()))
                 .isInstanceOf(VerificationException.class)
@@ -90,12 +105,11 @@ class VerificationServiceTest {
     }
 
     @Test
-    void verifyTestWithInvalidVerificationCode() throws Exception {
+    void verifyWithInvalidVerificationCode() {
         user.setLogin("user1@gmail.com");
         user.setEnabled(false);
         user.setVerificationCode(UUID.randomUUID().toString());
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
-        when(userRepository.save(user)).thenReturn(user);
 
         assertThatThrownBy(() -> verificationService.verify(user.getId(), UUID.randomUUID().toString()))
                 .isInstanceOf(VerificationException.class)

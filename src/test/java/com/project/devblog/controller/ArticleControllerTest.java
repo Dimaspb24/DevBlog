@@ -140,12 +140,12 @@ class ArticleControllerTest {
         final var titleContains = "titleContains";
         final var tagName = "tagName";
         final var pageable = Pageable.ofSize(5);
-        when(articleService.findAll(any(String.class), any(String.class), any(Pageable.class)))
+        when(articleService.findAllEnabled(any(String.class), any(String.class), any(Pageable.class)))
                 .thenReturn(new PageImpl<>(List.of(articleEntity)));
 
         final var response = articleController.findAll(titleContains, tagName, pageable);
 
-        verify(articleService).findAll(any(String.class), any(String.class), any(Pageable.class));
+        verify(articleService).findAllEnabled(any(String.class), any(String.class), any(Pageable.class));
         assertEquals(1, response.getTotalElements());
         assertTrue(response.stream().findFirst().isPresent());
         assertEquals(response.stream().findFirst().get().getId(), closeArticleResponse.getId());

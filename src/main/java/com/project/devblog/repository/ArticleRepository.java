@@ -33,7 +33,7 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
             "and a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +
             "and a.enabled = true " +
             "and a.publicationDate is not null")
-    Page<ArticleEntity> findByTagName(@NonNull @Param("tagName") String tagName, Pageable pageable);
+    Page<ArticleEntity> findByEnabledAndTagName(@NonNull @Param("tagName") String tagName, Pageable pageable);
 
     @Query("select a from TagEntity t " +
             "join t.articles a " +
@@ -42,9 +42,9 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
             "and a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +
             "and a.enabled = true " +
             "and a.publicationDate is not null")
-    Page<ArticleEntity> findByTagNameAndTitleContains(@NonNull @Param("tagName") String tagName,
-                                                      @NonNull @Param("titleContains") String titleContains,
-                                                      Pageable pageable);
+    Page<ArticleEntity> findByEnabledAndTagNameAndTitleContains(@NonNull @Param("tagName") String tagName,
+                                                                @NonNull @Param("titleContains") String titleContains,
+                                                                Pageable pageable);
 
     @Query("select a from UserEntity u " +
             "join u.subscriptions sub " +

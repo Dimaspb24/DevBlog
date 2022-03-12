@@ -60,7 +60,7 @@ class GoogleAuthControllerTest {
 
         GrantedAuthority authority = new OAuth2UserAuthority(attributes);
 
-        when(userService.createUser(user.getId(), user.getLogin(), Role.USER, true, personalInfo.getFirstname(),
+        when(userService.create(user.getId(), user.getLogin(), Role.USER, true, personalInfo.getFirstname(),
                 personalInfo.getLastname(), personalInfo.getNickname(), personalInfo.getPhoto(), personalInfo.getPhone()))
                 .thenReturn(user);
         DefaultOidcUser auth2User = new DefaultOidcUser(List.of(authority), OidcIdToken.withTokenValue("some token here").claims(stringObjectMap ->

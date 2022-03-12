@@ -140,7 +140,7 @@ class UserSubscriptionControllerTest {
                 List.of(), List.of(), List.of());
         article.setModificationDate(LocalDateTime.now());
         final PageImpl<ArticleEntity> page = new PageImpl<>(List.of(article));
-        when(articleService.findArticlesBySubscriptions(eq(user.getId()), any())).thenReturn(page);
+        when(articleService.findBySubscriptions(eq(user.getId()), any())).thenReturn(page);
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
         final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);

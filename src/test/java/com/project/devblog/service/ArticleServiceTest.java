@@ -82,7 +82,7 @@ class ArticleServiceTest {
     void findByArticleIdAndUserId() {
         doReturn(Optional.of(article)).when(articleRepository)
                 .findByIdAndAuthorIdAndEnabledIsTrue(article.getId(), user.getId());
-        articleService.find(user.getId(), article.getId());
+        articleService.findByAuthorIdAndArticleId(user.getId(), article.getId());
         verify(articleRepository).findByIdAndAuthorIdAndEnabledIsTrue(article.getId(), user.getId());
     }
 
@@ -90,7 +90,7 @@ class ArticleServiceTest {
     void throwIfNotFoundByArticleIdAndUserId() {
         doReturn(Optional.empty()).when(articleRepository)
                 .findByIdAndAuthorIdAndEnabledIsTrue(article.getId(), user.getId());
-        assertThrows(NotFoundException.class, () -> articleService.find(user.getId(), article.getId()));
+        assertThrows(NotFoundException.class, () -> articleService.findByAuthorIdAndArticleId(user.getId(), article.getId()));
         verify(articleRepository).findByIdAndAuthorIdAndEnabledIsTrue(article.getId(), user.getId());
     }
 
@@ -114,7 +114,7 @@ class ArticleServiceTest {
         List<TagEntity> tagEntities = List.of(new TagEntity("1"), new TagEntity("2"), new TagEntity("3"));
         article.setPublicationDate(LocalDateTime.now());
         article.setTags(tagEntities);
-        doReturn(user).when(userService).find(user.getId());
+        doReturn(user).when(userService).findById(user.getId());
         doReturn(tagEntities).when(tagService).createAndGetAllByName(tags);
 
         articleService.create(user.getId(), article.getTitle(), tags, article.getDescription(),
@@ -192,14 +192,14 @@ class ArticleServiceTest {
     @Test
     void findAll() {
         doReturn(new PageImpl<>(List.of(article))).when(articleRepository).findByAuthorIdAndEnabledIsTrue(user.getId(), Pageable.unpaged());
-        articleService.findAll(user.getId(), Pageable.unpaged());
+        articleService.findAllEnabled(user.getId(), Pageable.unpaged());
         verify(articleRepository).findByAuthorIdAndEnabledIsTrue(user.getId(), Pageable.unpaged());
     }
 
     @Test
     void findArticlesBySubscriptions() {
         doReturn(new PageImpl<>(List.of(article))).when(articleRepository).findBySubscriptions(user.getId(), Pageable.unpaged());
-        articleService.findArticlesBySubscriptions(user.getId(), Pageable.unpaged());
+        articleService.findBySubscriptions(user.getId(), Pageable.unpaged());
         verify(articleRepository).findBySubscriptions(user.getId(), Pageable.unpaged());
     }
 
@@ -208,10 +208,10 @@ class ArticleServiceTest {
         String titleContains = "java";
         String tagName = "maven";
         PageRequest pageRequest = PageRequest.of(0, 10);
-        doReturn(new PageImpl<>(List.of(article), pageRequest, 1)).when(articleRepository).findByTagNameAndTitleContains(anyString(), anyString(), any(Pageable.class));
+        doReturn(new PageImpl<>(List.of(article), pageRequest, 1)).when(articleRepository).findByEnabledAndTagNameAndTitleContains(anyString(), anyString(), any(Pageable.class));
 
-        articleService.findAll(titleContains, tagName, pageRequest);
+        articleService.findAllEnabled(titleContains, tagName, pageRequest);
 
-        verify(articleRepository).findByTagNameAndTitleContains(anyString(), anyString(), any(Pageable.class));
+        verify(articleRepository).findByEnabledAndTagNameAndTitleContains(anyString(), anyString(), any(Pageable.class));
     }
 }

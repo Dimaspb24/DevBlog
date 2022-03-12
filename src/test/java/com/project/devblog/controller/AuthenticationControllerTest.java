@@ -21,9 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -54,7 +52,7 @@ class AuthenticationControllerTest {
         final AuthenticationResponse authenticationResponse = new AuthenticationResponse(UUID.randomUUID().toString(),
                 request.getLogin(), Role.USER.name());
         when(authenticationService.register(request.getLogin(), request.getPassword()))
-                .thenReturn(new ResponseEntity<>(authenticationResponse, HttpStatus.CREATED));
+                .thenReturn(authenticationResponse);
 
         final MvcResult mvcResult = mockMvc
                 .perform(post("/v1/auth/registration")
@@ -75,12 +73,9 @@ class AuthenticationControllerTest {
         final AuthenticationRequest request = new AuthenticationRequest("user@mail.ru", "userpass");
         final AuthenticationResponse authenticationResponse = new AuthenticationResponse(UUID.randomUUID().toString(),
                 request.getLogin(), Role.USER.name());
-        final String token = jwtTokenProvider.createToken(request.getLogin(), Role.USER);
+
         when(authenticationService.login(request.getLogin(), request.getPassword()))
-                .thenReturn(ResponseEntity.ok()
-                        .header(HttpHeaders.AUTHORIZATION, TOKEN_PREFIX + token)
-                        .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.AUTHORIZATION)
-                        .body(authenticationResponse));
+                .thenReturn(authenticationResponse);
 
         final MvcResult mvcResult = mockMvc
                 .perform(post("/v1/auth/login")
@@ -88,7 +83,6 @@ class AuthenticationControllerTest {
                         .content(mapper.writeValueAsString(request)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(header().string(HttpHeaders.AUTHORIZATION, TOKEN_PREFIX + token))
                 .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.AUTHORIZATION))
                 .andReturn();
 

@@ -33,7 +33,7 @@ public class UserArticleRatingController {
     @ResponseStatus(HttpStatus.OK)
     public RatingResponse find(@NonNull @PathVariable String userId,
                                @NonNull @PathVariable Integer articleId) {
-        return toResponse(ratingService.find(userId, articleId));
+        return toResponse(ratingService.findByUserIdAndArticleId(userId, articleId));
     }
 
     @PutMapping("/users/{userId}/articles/{articleId}/ratings")

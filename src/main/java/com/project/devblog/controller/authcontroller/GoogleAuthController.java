@@ -35,7 +35,7 @@ public class GoogleAuthController {
     @GetMapping("/")
     public RedirectView login(@NonNull Authentication authentication, @NonNull HttpServletResponse httpServletResponse) {
         final DefaultOidcUser user = (DefaultOidcUser) authentication.getPrincipal();
-        final UserEntity userEntity = userService.createUser(user.getSubject(), user.getEmail(), Role.USER, true, user.getGivenName(),
+        final UserEntity userEntity = userService.create(user.getSubject(), user.getEmail(), Role.USER, true, user.getGivenName(),
                 user.getFamilyName(), user.getFullName(), user.getPicture(), user.getPhoneNumber());
 
         httpServletResponse.addHeader(AUTH_HEADER_KEY, TOKEN_PREFIX + jwtTokenProvider.createToken(userEntity.getLogin(), Role.USER));

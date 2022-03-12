@@ -125,7 +125,7 @@ class BookmarkServiceTest {
     @Test
     void saveBookmark() {
         doReturn(Optional.empty()).when(userArticleRepository).findByUserIdAndArticleId(anyString(), anyInt());
-        doReturn(bookmark.getUser()).when(userService).find(anyString());
+        doReturn(bookmark.getUser()).when(userService).findById(anyString());
         doReturn(bookmark.getArticle()).when(articleService).findById(anyInt());
         BookmarkRequest request = new BookmarkRequest(BookmarkType.BOOKMARK.name());
 

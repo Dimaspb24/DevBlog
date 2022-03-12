@@ -8,18 +8,21 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -28,74 +31,70 @@ import java.util.List;
 import java.util.Optional;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ExtendWith(MockitoExtension.class)
 class TagServiceTest {
 
-    @Autowired
-    TagService tagService;
-    @MockBean
+    @Mock
     TagRepository tagRepository;
+    @InjectMocks
+    TagService tagService;
+    @Captor
+    ArgumentCaptor<List<TagEntity>> captureArgumentTags;
 
-    static TagEntity tag;
-    static TagEntity tag2;
+    TagEntity tag1;
+    TagEntity tag2;
 
-    // FIXME: WHY not @BeforeEach
-    @BeforeAll
-    static void init() {
-        tag = new TagEntity("tag");
-        tag.setId(1);
-        tag2 = new TagEntity("tag2");
-        tag2.setId(2);
+    @BeforeEach
+    void init() {
+        tag1 = TagEntity.builder().name("tag1").id(1).build();
+        tag2 = TagEntity.builder().name("tag2").id(2).build();
     }
 
     @Test
-    void findTest() throws Exception {
-        when(tagRepository.findById(tag.getId())).thenReturn(Optional.of(tag));
-        final TagEntity foundTag = tagService.find(tag.getId());
-
-        assertThat(foundTag.getId()).isEqualTo(tag.getId());
-        assertThat(foundTag.getName()).isEqualTo(tag.getName());
+    void findById() {
+        when(tagRepository.findById(tag1.getId())).thenReturn(Optional.of(tag1));
+        final TagEntity foundTag = tagService.findById(tag1.getId());
+        assertThat(foundTag).isEqualTo(tag1);
     }
 
     @Test
-    void findTestWithNotFoundTag() throws Exception {
+    void findTestWithNotFoundTag() {
         when(tagRepository.findById(any())).thenReturn(Optional.empty());
 
         final Integer tagId = 5;
-        assertThatThrownBy(() -> tagService.find(tagId))
+        assertThatThrownBy(() -> tagService.findById(tagId))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining(format("%s with id=%s not found", TagEntity.class.getSimpleName(), tagId));
     }
 
     @Test
-    void findAllTestByNameContains() throws Exception {
+    void findAllTestByNameContains() {
         final String nameContains = "tag";
-        final Page<TagEntity> page = new PageImpl<>(List.of(tag, tag2));
+        final Page<TagEntity> page = new PageImpl<>(List.of(tag1, tag2));
         final Pageable pageable = Pageable.ofSize(2);
         when(tagRepository.findTagEntitiesByNameContains(nameContains, pageable)).thenReturn(page);
 
         Page<TagEntity> foundPage = tagService.findAll(nameContains, pageable);
 
-        assertThat(foundPage.getContent()).containsExactly(tag, tag2);
+        assertThat(foundPage.getContent()).containsExactly(tag1, tag2);
     }
 
     @Test
-    void findAllTestByEmptyAndNullNameContains() throws Exception {
-        final Page<TagEntity> page = new PageImpl<>(List.of(tag, tag2));
+    void findAllTestByEmptyAndNullNameContains() {
+        final Page<TagEntity> page = new PageImpl<>(List.of(tag1, tag2));
         final Pageable pageable = Pageable.ofSize(2);
         when(tagRepository.findAll(pageable)).thenReturn(page);
 
         final Page<TagEntity> foundPageByEmptyNameContains = tagService.findAll("", pageable);
         final Page<TagEntity> foundPageByNullNameContains = tagService.findAll(null, pageable);
 
-        assertThat(foundPageByEmptyNameContains.getContent()).containsExactly(tag, tag2);
-        assertThat(foundPageByNullNameContains.getContent()).containsExactly(tag, tag2);
+        assertThat(foundPageByEmptyNameContains.getContent()).containsExactly(tag1, tag2);
+        assertThat(foundPageByNullNameContains.getContent()).containsExactly(tag1, tag2);
         assertThat(foundPageByEmptyNameContains).isEqualTo(foundPageByNullNameContains);
     }
 
     @Test
-    void createTest() throws Exception {
+    void createTest() {
         final String name = "newTag";
         final TagEntity newTag = new TagEntity(name);
         when(tagRepository.save(new TagEntity(name))).thenReturn(newTag);
@@ -106,30 +105,28 @@ class TagServiceTest {
     }
 
     @Test
-    void createAndGetAllByNameTest() throws Exception {
-        final String newTag1Name = "newTag1";
-        final String newTag2Name = "tag2";
-        final List<TagEntity> tags = List.of(tag, tag2);
-        final List<String> newTags = List.of(newTag1Name, newTag2Name);
+    void createAndGetAllByNameTest() {
+        TagEntity tag3 = new TagEntity("tag3");
+        TagEntity tag4 = new TagEntity("tag4");
+        List<String> tagNames = List.of(tag2.getName(), tag3.getName(), tag4.getName());
+        final List<TagEntity> expectedTagsForSaving = List.of(tag3, tag4);
 
-        newTags.forEach(name -> {
-            when(tagRepository.findByName(name))
-                    .thenReturn(Optional.ofNullable(tags.stream()
-                            .filter(tag -> name.equals(tag.getName()))
-                            .findAny()
-                            .orElse(null)));
-            when(tagRepository.save(new TagEntity(name)))
-                    .thenReturn(new TagEntity(name));
-        });
+        doReturn(List.of(tag2)).when(tagRepository).findByNameIn(tagNames);
+        doReturn(expectedTagsForSaving).when(tagRepository).saveAll(expectedTagsForSaving);
 
-        final List<TagEntity> resultTags = tagService.createAndGetAllByName(newTags);
 
-        assertThat(resultTags.size()).isEqualTo(newTags.size());
-        resultTags.forEach(res -> assertThat(newTags.contains(res.getName())).isTrue());
+        List<TagEntity> tags = tagService.createAndGetAllByName(tagNames);
+
+
+        verify(tagRepository).saveAll(captureArgumentTags.capture());
+        final List<TagEntity> tagsForSaving = captureArgumentTags.getValue();
+        assertThat(tagsForSaving).hasSize(expectedTagsForSaving.size())
+                .containsAll(expectedTagsForSaving);
+        assertThat(tags).hasSize(tagNames.size());
     }
 
     @Test
-    void deleteTest() throws Exception {
+    void deleteTest() {
         final Integer tagId = 1;
         doNothing().when(tagRepository).deleteById(tagId);
 
@@ -140,14 +137,14 @@ class TagServiceTest {
     }
 
     @Test
-    void updateTest() throws Exception {
+    void updateTest() {
         final String updateName = "updateName";
         final TagEntity updateTag = new TagEntity(updateName);
-        updateTag.setId(tag.getId());
-        when(tagRepository.getById(tag.getId())).thenReturn(tag);
+        updateTag.setId(tag1.getId());
+        when(tagRepository.getById(tag1.getId())).thenReturn(tag1);
         when(tagRepository.save(updateTag)).thenReturn(updateTag);
 
-        final TagEntity result = tagService.update(tag.getId(), updateName);
+        final TagEntity result = tagService.update(tag1.getId(), updateName);
 
         assertThat(result).isEqualTo(updateTag);
         assertThat(result.getName()).isEqualTo(updateName);

@@ -100,11 +100,11 @@ class UserArticleRatingControllerTest {
     void find() {
         final var userId = userEntity.getId();
         final var articleId = articleEntity.getId();
-        when(ratingService.find(any(), any())).thenReturn(userArticleEntity);
+        when(ratingService.findByUserIdAndArticleId(any(), any())).thenReturn(userArticleEntity);
 
         final var response = userArticleRatingController.find(userId, articleId);
 
-        verify(ratingService).find(any(), any());
+        verify(ratingService).findByUserIdAndArticleId(any(), any());
         assertEquals(ratingResponse.getRating(), response.getRating());
         assertEquals(ratingResponse.getArticleId(), response.getArticleId());
         assertEquals(ratingResponse.getAuthorId(), response.getAuthorId());

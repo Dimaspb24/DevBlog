@@ -63,11 +63,11 @@ class TagControllerTest {
     @Test
     void find() {
         final var tadId = 42;
-        when(tagService.find(any())).thenReturn(tagEntity);
+        when(tagService.findById(any())).thenReturn(tagEntity);
 
         controller.find(tadId);
 
-        verify(tagService).find(any());
+        verify(tagService).findById(any());
     }
 
     @Test

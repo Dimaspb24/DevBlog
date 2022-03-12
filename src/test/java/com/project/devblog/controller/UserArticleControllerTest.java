@@ -128,11 +128,11 @@ class UserArticleControllerTest {
     void findSuccessTest() {
         final var userId = UUID.randomUUID().toString();
         final var articleId = 42;
-        when(articleService.find(any(), any())).thenReturn(articleEntity);
+        when(articleService.findByAuthorIdAndArticleId(any(), any())).thenReturn(articleEntity);
 
         final var response = userArticleController.find(userId, articleId);
 
-        verify(articleService).find(any(), any());
+        verify(articleService).findByAuthorIdAndArticleId(any(), any());
         assertEquals(openArticleResponse.getTitle(), response.getTitle());
         assertEquals(openArticleResponse.getNickname(), response.getNickname());
         assertEquals(openArticleResponse.getStatus(), response.getStatus());
@@ -143,11 +143,11 @@ class UserArticleControllerTest {
     void findAllSuccessTest() {
         final var userId = UUID.randomUUID().toString();
         final var pageable = Pageable.ofSize(5);
-        when(articleService.findAll(any(), any())).thenReturn(new PageImpl<>(List.of(articleEntity)));
+        when(articleService.findAllEnabled(any(), any())).thenReturn(new PageImpl<>(List.of(articleEntity)));
 
         final var response = userArticleController.findAll(userId, pageable);
 
-        verify(articleService).findAll(any(), any());
+        verify(articleService).findAllEnabled(any(), any());
         assertEquals(1, response.getTotalElements());
         assertTrue(response.stream().findFirst().isPresent());
         assertEquals(response.stream().findFirst().get().getId(), closeArticleResponse.getId());

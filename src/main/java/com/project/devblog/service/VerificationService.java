@@ -7,6 +7,7 @@ import com.project.devblog.model.UserEntity;
 import com.project.devblog.repository.UserRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,6 @@ import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class VerificationService {
 
@@ -25,34 +25,39 @@ public class VerificationService {
     private final UserRepository userRepository;
     private final MailProperties mailProperties;
 
+    @Transactional(readOnly = true)
     public void sendVerificationEmail(@NonNull String userId) {
-        String toAddress = userRepository.getById(userId).getLogin();
-        String fromAddress = mailProperties.getEmail();
-        String senderName = mailProperties.getName();
-        String subject = mailProperties.getSubject();
-        String content = mailProperties.getContent();
+        UserEntity user = userRepository.findById(userId).orElseThrow(() ->
+                new NotFoundException(UserEntity.class, userId));
+        String toAddress = user.getLogin();
 
-        MimeMessage message = mailSender.createMimeMessage();
+        String content = mailProperties.getContent();
+        String verifyURL = mailProperties.getUrl();
+        content = content.replace("[[name]]", toAddress.substring(0, toAddress.indexOf('@')));
+        verifyURL = verifyURL.replace("[[userId]]", userId);
+        verifyURL = verifyURL.replace("[[code]]", user.getVerificationCode());
+        content = content.replace("[[URL]]", verifyURL);
 
         try {
-            content = content.replace("[[name]]", toAddress.substring(0, toAddress.indexOf('@')));
-            String verifyURL = mailProperties.getUrl();
-            verifyURL = verifyURL.replace("[[userId]]", userId);
-            verifyURL = verifyURL.replace("[[code]]", userRepository.getById(userId).getVerificationCode());
-            content = content.replace("[[URL]]", verifyURL);
-
-            MimeMessageHelper helper = new MimeMessageHelper(message);
-            helper.setFrom(fromAddress, senderName);
-            helper.setTo(toAddress);
-            helper.setSubject(subject);
-            helper.setText(content, true);
-        } catch (MessagingException | UnsupportedEncodingException e) {
+            MimeMessage message = getMimeMessage(toAddress, content);
+            mailSender.send(message);
+        } catch (MailException | MessagingException | UnsupportedEncodingException e) {
             throw new VerificationException("Error sending the verification message to the mail");
         }
-
-        mailSender.send(message);
     }
 
+    @NonNull
+    private MimeMessage getMimeMessage(String toAddress, String content) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        helper.setFrom(mailProperties.getEmail(), mailProperties.getName());
+        helper.setSubject(mailProperties.getSubject());
+        helper.setTo(toAddress);
+        helper.setText(content, true);
+        return message;
+    }
+
+    @Transactional
     public void verify(@NonNull String userId, @NonNull String verificationCode) {
         UserEntity user = userRepository.findById(userId).orElseThrow(() ->
                 new NotFoundException(UserEntity.class, userId));

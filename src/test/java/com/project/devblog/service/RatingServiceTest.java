@@ -81,8 +81,8 @@ class RatingServiceTest {
 
     @Test
     void create() {
-        doReturn(article).when(articleService).find(user.getId(), article.getId());
-        doReturn(user).when(userService).find(user.getId());
+        doReturn(article).when(articleService).findByAuthorIdAndArticleId(user.getId(), article.getId());
+        doReturn(user).when(userService).findById(user.getId());
 
         ratingService.create(rating.getUser().getId(), rating.getArticle().getId(), rating.getRating());
 
@@ -93,14 +93,14 @@ class RatingServiceTest {
     @Test
     void find() {
         doReturn(Optional.of(rating)).when(userArticleRepository).findByUserIdAndArticleIdAndArticleEnabledIsTrue(user.getId(), article.getId());
-        ratingService.find(user.getId(), article.getId());
+        ratingService.findByUserIdAndArticleId(user.getId(), article.getId());
         verify(userArticleRepository).findByUserIdAndArticleIdAndArticleEnabledIsTrue(user.getId(), article.getId());
     }
 
     @Test
     void throwIfNotFound() {
         doReturn(Optional.empty()).when(userArticleRepository).findByUserIdAndArticleIdAndArticleEnabledIsTrue(user.getId(), article.getId());
-        assertThrows(NotFoundException.class, () -> ratingService.find(user.getId(), article.getId()));
+        assertThrows(NotFoundException.class, () -> ratingService.findByUserIdAndArticleId(user.getId(), article.getId()));
         verify(userArticleRepository).findByUserIdAndArticleIdAndArticleEnabledIsTrue(user.getId(), article.getId());
     }
 

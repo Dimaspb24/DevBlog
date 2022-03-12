@@ -69,11 +69,11 @@ class UserServiceTest {
                 .verificationCode(UUID.randomUUID().toString())
                 .build();
         personalInfo = PersonalInfo.builder()
-                .firstname("Ivan")
                 .nickname("NickIvan")
                 .phone("89999999999")
-                .info("Some info")
+                .firstname("Ivan")
                 .lastname("Ivanov")
+                .info("Some info")
                 .photo("https://...")
                 .build();
     }
@@ -111,7 +111,7 @@ class UserServiceTest {
         when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
         when(userRepository.save(user)).thenReturn(user);
 
-        UserEntity actualNewUser = userService.createUser(user.getId(), user.getLogin(), user.getRole(), enabled,
+        UserEntity actualNewUser = userService.create(user.getId(), user.getLogin(), user.getRole(), enabled,
                 personalInfo.getFirstname(), personalInfo.getLastname(), personalInfo.getNickname(),
                 personalInfo.getPhoto(), personalInfo.getPhone());
 
@@ -171,15 +171,15 @@ class UserServiceTest {
         acceptIfNotNullAndNotEmpty(photo, s -> personalInfo.setPhoto(s));
 
         doReturn(Optional.of(user)).when(userRepository).findById(user.getId());
-        lenient().when(userRepository.existsByPersonalInfoNickname(user.getPersonalInfo().getNickname())).thenReturn(true);
-        lenient().when(userRepository.existsByPersonalInfoPhone(user.getPersonalInfo().getPhone())).thenReturn(true);
+        lenient().when(userRepository.existsByPersonalInfoNickname(personalInfo.getNickname())).thenReturn(true);
+        lenient().when(userRepository.existsByPersonalInfoPhone(personalInfo.getPhone())).thenReturn(true);
 
         if (personalInfo.getNickname().equals(nickname) || personalInfo.getPhone().equals(phone)) {
             assertThrows(NonUniqueValueException.class, () -> userService.update(user.getId(), userRequest));
-            if (personalInfo.getPhone().equals(phone)) {
-                verify(userRepository).existsByPersonalInfoPhone(phone);
-            } else {
+            if (personalInfo.getNickname().equals(nickname)) {
                 verify(userRepository).existsByPersonalInfoNickname(nickname);
+            } else {
+                verify(userRepository).existsByPersonalInfoPhone(phone);
             }
         } else {
             userService.update(user.getId(), userRequest);
@@ -201,7 +201,7 @@ class UserServiceTest {
     @Test
     void shouldThrowIfNotFoundUserById() {
         doReturn(Optional.empty()).when(userRepository).findById(anyString());
-        assertThrows(NotFoundException.class, () -> userService.find(UUID.randomUUID().toString()));
+        assertThrows(NotFoundException.class, () -> userService.findById(UUID.randomUUID().toString()));
     }
 
     void acceptIfNotNullAndNotEmpty(String field, Consumer<String> consumer) {

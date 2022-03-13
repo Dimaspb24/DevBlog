@@ -18,6 +18,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <maven.surefire.report.plugin.version>3.0.0-M5</maven.surefire.report.plugin.version>
+        <maven.jxr.plugin.version>3.1.1</maven.jxr.plugin.version>
+        <jacoco.version>0.8.7</jacoco.version>
         <jjwt.version>0.9.1</jjwt.version>
         <friendly.id.version>1.1.0</friendly.id.version>
         <flyway.core.version>8.4.0</flyway.core.version>
@@ -159,7 +162,6 @@
             <version>${springdoc.openapi.version}</version>
         </dependency>
         <!--endregion-->
-
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -218,7 +220,103 @@
                     <outputDir>${project.basedir}/src/main/resources</outputDir>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>
+                        --illegal-access=permit
+                    </argLine>
+                    <testFailureIgnore>true</testFailureIgnore>
+                    <forkCount>2</forkCount>
+                    <reuseForks>true</reuseForks>
+                    <argLine>${surefireArgLine}</argLine>
+                </configuration>
+            </plugin>
+
+            <!--Jacoco plugin region -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/project/devblog/model/**</exclude>
+                        <exclude>com/project/devblog/config/**</exclude>
+                        <exclude>com/project/devblog/handler/**</exclude>
+                        <exclude>com/project/devblog/DevBlogApplication.class</exclude>
+                        <exclude>com/project/devblog/dto/**</exclude>
+                        <!--                        <exclude>com/project/devblog/exception/**</exclude>-->
+                        <!--                        <exclude>com/project/devblog/repository/**</exclude>-->
+                        <!--                        <exclude>com/project/devblog/security/**</exclude>-->
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jacoco-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <destFile>${project.build.directory}/coverage-reports/jacoco.exec</destFile>
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>jacoco-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/coverage-reports/jacoco.exec</dataFile>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>jacoco-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>COMPLEXITY</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.60</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--endregion-->
+
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${maven.surefire.report.plugin.version}</version>
+                <configuration>
+                    <outputName>DevBlog-Test-Report</outputName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>${maven.jxr.plugin.version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
 
 </project>

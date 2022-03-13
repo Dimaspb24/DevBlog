@@ -2,7 +2,12 @@ package com.project.devblog.security;
 
 import com.project.devblog.exception.JwtAuthenticationException;
 import com.project.devblog.model.enums.Role;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import static java.lang.String.format;
 import static java.util.Optional.ofNullable;
 import lombok.RequiredArgsConstructor;
@@ -66,29 +71,27 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String bearerToken) {
-        if (Objects.nonNull(bearerToken)) {
-            if (bearerToken.startsWith(TOKEN_PREFIX)) {
-                try {
-                    return Jwts.parser()
-                            .setSigningKey(secret)
-                            .parseClaimsJws(bearerToken.replace(TOKEN_PREFIX, ""))
-                            .getBody()
-                            .getExpiration()
-                            .after(new Date());
-                } catch (ExpiredJwtException e) {
-                    throw new JwtAuthenticationException("Expired token", e);
-                } catch (UnsupportedJwtException | MalformedJwtException e) {
-                    throw new JwtAuthenticationException("Unsupported token", e);
-                } catch (JwtException | IllegalArgumentException e) {
-                    throw new JwtAuthenticationException("JWT token is invalid", e);
-                } catch (Exception e) {
-                    throw new JwtAuthenticationException("User authorization not resolved", e);
-                }
-            } else {
-                throw new JwtAuthenticationException(format("Token authorizations must be prefixed with {%s}", TOKEN_PREFIX));
-            }
-        } else {
+        if (Objects.isNull(bearerToken)) {
             throw new JwtAuthenticationException("Authorization token not found");
+        }
+        if (!bearerToken.startsWith(TOKEN_PREFIX)) {
+            throw new JwtAuthenticationException(format("Token authorizations must be prefixed with {%s}", TOKEN_PREFIX));
+        }
+        try {
+            return Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(bearerToken.replace(TOKEN_PREFIX, ""))
+                    .getBody()
+                    .getExpiration()
+                    .after(new Date());
+        } catch (ExpiredJwtException e) {
+            throw new JwtAuthenticationException("Expired token", e);
+        } catch (UnsupportedJwtException | MalformedJwtException e) {
+            throw new JwtAuthenticationException("Unsupported token", e);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new JwtAuthenticationException("JWT token is invalid", e);
+        } catch (Exception e) {
+            throw new JwtAuthenticationException("User authorization not resolved", e);
         }
     }
 }

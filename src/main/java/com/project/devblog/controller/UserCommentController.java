@@ -38,7 +38,7 @@ public class UserCommentController {
     public CommentResponse find(@NonNull @PathVariable String userId,
                                 @NonNull @PathVariable Integer articleId,
                                 @NonNull @PathVariable Long commentId) {
-        return toResponse(commentService.find(commentId, userId, articleId));
+        return toResponse(commentService.findByIdAndAuthorIdAndArticleId(commentId, userId, articleId));
     }
 
     @GetMapping("/users/{userId}/articles/{articleId}/comments")

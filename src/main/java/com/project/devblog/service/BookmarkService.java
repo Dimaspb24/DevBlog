@@ -17,14 +17,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class BookmarkService {
 
@@ -33,22 +32,26 @@ public class BookmarkService {
     private final UserService userService;
 
     @NonNull
+    @Transactional
     public BookmarkResponse create(@NonNull String userId, @NonNull Integer articleId, @NonNull BookmarkRequest request) {
         BookmarkType bookmarkType = BookmarkType.valueOf(request.getBookmarkType());
 
-        UserArticleEntity userArticleEntity = userArticleRepository.findByUserIdAndArticleId(userId, articleId).map(userArt -> {
-            userArt.setBookmarkType(bookmarkType);
-            return userArt;
-        }).orElseGet(() -> {
-            final UserEntity userEntity = userService.find(userId);
-            final ArticleEntity articleEntity = articleService.findById(articleId);
-            return new UserArticleEntity(bookmarkType, userEntity, articleEntity);
-        });
+        UserArticleEntity userArticleEntity = userArticleRepository
+                .findByUserIdAndArticleId(userId, articleId)
+                .map(userArt -> {
+                    userArt.setBookmarkType(bookmarkType);
+                    return userArt;
+                }).orElseGet(() -> {
+                    final UserEntity userEntity = userService.findById(userId);
+                    final ArticleEntity articleEntity = articleService.findById(articleId);
+                    return new UserArticleEntity(bookmarkType, userEntity, articleEntity);
+                });
 
         return new BookmarkResponse(userId, articleId, userArticleEntity.getBookmarkType().name());
     }
 
     @NonNull
+    @Transactional(readOnly = true)
     public Page<BookmarkArticleResponse> findAll(@NonNull String userId, String bookmarkType, Pageable pageable) {
         if (Objects.isNull(bookmarkType)) {
             return userArticleRepository.findByUserIdAndBookmarkTypeNotNull(userId, pageable).
@@ -60,6 +63,7 @@ public class BookmarkService {
         }
     }
 
+    @Transactional
     public void delete(@NonNull Long bookmarkId) {
         UserArticleEntity userArticleEntity = userArticleRepository.findById(bookmarkId)
                 .orElseThrow(() -> new NotFoundException(UserArticleEntity.class, bookmarkId.toString()));

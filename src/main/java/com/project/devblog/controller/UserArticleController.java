@@ -49,14 +49,14 @@ public class UserArticleController {
     @ResponseStatus(HttpStatus.OK)
     public OpenArticleResponse find(@NonNull @PathVariable String userId,
                                     @NonNull @PathVariable Integer articleId) {
-        return toOpenArticleResponse(articleService.find(userId, articleId));
+        return toOpenArticleResponse(articleService.findByAuthorIdAndArticleId(userId, articleId));
     }
 
     @GetMapping("/users/{userId}/articles")
     @ResponseStatus(HttpStatus.OK)
     public Page<CloseArticleResponse> findAll(@NonNull @PathVariable String userId,
                                               @SortDefault(sort = "publicationDate") Pageable pageable) {
-        return articleService.findAll(userId, pageable)
+        return articleService.findAllEnabled(userId, pageable)
                 .map(this::toCloseArticleResponse);
     }
 

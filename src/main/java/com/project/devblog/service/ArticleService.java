@@ -5,6 +5,8 @@ import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.StatusArticle;
+import static com.project.devblog.model.enums.StatusArticle.CREATED;
+import static com.project.devblog.model.enums.StatusArticle.PUBLISHED;
 import com.project.devblog.repository.ArticleRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ArticleService {
 
@@ -30,25 +31,58 @@ public class ArticleService {
     private final TagService tagService;
 
     @NonNull
-    public ArticleEntity find(@NonNull String authorId, @NonNull Integer articleId) {
-        return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(articleId, authorId).orElseThrow(() ->
-                new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
-    }
-
-    @NonNull
+    @Transactional(readOnly = true)
     public ArticleEntity findById(@NonNull Integer articleId) {
         return articleRepository.findById(articleId)
                 .orElseThrow(() -> new NotFoundException(ArticleEntity.class, articleId.toString()));
     }
 
     @NonNull
+    @Transactional(readOnly = true)
+    public ArticleEntity findByAuthorIdAndArticleId(@NonNull String authorId, @NonNull Integer articleId) {
+        return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(articleId, authorId).orElseThrow(() ->
+                new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
+    }
+
+    @NonNull
+    @Transactional(readOnly = true)
+    public Page<ArticleEntity> findAllEnabled(@NonNull String userId, Pageable pageable) {
+        return articleRepository.findByAuthorIdAndEnabledIsTrue(userId, pageable);
+    }
+
+    @NonNull
+    @Transactional(readOnly = true)
+    public Page<ArticleEntity> findAllEnabled(String titleContains, String tagName, Pageable pageable) {
+        Page<ArticleEntity> articleEntities;
+        if (Objects.isNull(titleContains) && Objects.isNull(tagName)) {
+            articleEntities = articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageable);
+        } else if (Objects.nonNull(titleContains) && Objects.nonNull(tagName)) {
+            PageRequest pageRequest = getPageRequestForSortByArticles(pageable);
+            articleEntities = articleRepository.findByEnabledAndTagNameAndTitleContains(tagName, titleContains, pageRequest);
+        } else if (Objects.nonNull(titleContains)) {
+            articleEntities = articleRepository.findByEnabledIsTrueAndTitleContains(titleContains, pageable);
+        } else {
+            PageRequest pageRequest = getPageRequestForSortByArticles(pageable);
+            articleEntities = articleRepository.findByEnabledAndTagName(tagName, pageRequest);
+        }
+        return articleEntities;
+    }
+
+    @NonNull
+    @Transactional(readOnly = true)
+    public Page<ArticleEntity> findBySubscriptions(@NonNull String userId, Pageable pageable) {
+        return articleRepository.findBySubscriptions(userId, pageable);
+    }
+
+    @NonNull
+    @Transactional
     public ArticleEntity create(@NonNull String userId, @NonNull String title, List<String> tags,
                                 @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
 
-        final UserEntity author = userService.find(userId);
+        final UserEntity author = userService.findById(userId);
         final ArticleEntity articleEntity = new ArticleEntity(title, body, status, description, author);
 
-        if (status.toString().equalsIgnoreCase(StatusArticle.PUBLISHED.toString())) {
+        if (status.toString().equalsIgnoreCase(PUBLISHED.toString())) {
             articleEntity.setPublicationDate(LocalDateTime.now());
         }
 
@@ -60,67 +94,43 @@ public class ArticleService {
     }
 
     @NonNull
-    public Page<ArticleEntity> findAll(@NonNull String userId, Pageable pageable) {
-        return articleRepository.findByAuthorIdAndEnabledIsTrue(userId, pageable);
-    }
-
-    public void enable(@NonNull String authorId, @NonNull Integer articleId, @NonNull Boolean enabled) {
-        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId).orElseThrow(() ->
-                new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
-
-        articleEntity.setEnabled(enabled);
-        articleRepository.save(articleEntity);
-    }
-
-    public void delete(@NonNull String authorId, @NonNull Integer articleId) {
-        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId).orElseThrow(() ->
-                new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
-        articleRepository.delete(articleEntity);
-    }
-
-    @NonNull
+    @Transactional
     public ArticleEntity update(@NonNull String authorId, @NonNull Integer articleId, @NonNull String title, List<String> tags,
                                 @NonNull String description, @NonNull String body, @NonNull StatusArticle status) {
-        final ArticleEntity articleEntity = find(authorId, articleId);
+        final ArticleEntity articleEntity = findByAuthorIdAndArticleId(authorId, articleId);
         final List<TagEntity> tagEntities = tagService.createAndGetAllByName(tags);
 
         articleEntity.setTitle(title);
         articleEntity.setTags(tagEntities);
         articleEntity.setDescription(description);
         articleEntity.setBody(body);
-        articleEntity.setStatus(status);
 
         StatusArticle statusArticle = articleEntity.getStatus();
-        if (status == StatusArticle.PUBLISHED && statusArticle != StatusArticle.PUBLISHED) {
+        if (status == PUBLISHED && statusArticle == CREATED) {
             articleEntity.setPublicationDate(LocalDateTime.now());
         }
-        if (status == StatusArticle.CREATED && statusArticle == StatusArticle.PUBLISHED) {
+        if (status == CREATED && statusArticle == PUBLISHED) {
             articleEntity.setPublicationDate(null);
         }
+        articleEntity.setStatus(status);
 
         return articleRepository.save(articleEntity);
     }
 
-    @NonNull
-    public Page<ArticleEntity> findArticlesBySubscriptions(@NonNull String userId, Pageable pageable) {
-        return articleRepository.findBySubscriptions(userId, pageable);
+    @Transactional
+    public void delete(@NonNull String authorId, @NonNull Integer articleId) {
+        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId).orElseThrow(() ->
+                new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
+        articleRepository.delete(articleEntity);
     }
 
-    @NonNull
-    public Page<ArticleEntity> findAll(String titleContains, String tagName, Pageable pageable) {
-        Page<ArticleEntity> articleEntities;
-        if (Objects.isNull(titleContains) && Objects.isNull(tagName)) {
-            articleEntities = articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageable);
-        } else if (Objects.nonNull(titleContains) && Objects.nonNull(tagName)) {
-            PageRequest pageRequest = getPageRequestForSortByArticles(pageable);
-            articleEntities = articleRepository.findByTagNameAndTitleContains(tagName, titleContains, pageRequest);
-        } else if (Objects.nonNull(titleContains)) {
-            articleEntities = articleRepository.findByEnabledIsTrueAndTitleContains(titleContains, pageable);
-        } else {
-            PageRequest pageRequest = getPageRequestForSortByArticles(pageable);
-            articleEntities = articleRepository.findByTagName(tagName, pageRequest);
-        }
-        return articleEntities;
+    @Transactional
+    public void enable(@NonNull String authorId, @NonNull Integer articleId, @NonNull Boolean enabled) {
+        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId).orElseThrow(() ->
+                new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
+
+        articleEntity.setEnabled(enabled);
+        articleRepository.save(articleEntity);
     }
 
     @NonNull

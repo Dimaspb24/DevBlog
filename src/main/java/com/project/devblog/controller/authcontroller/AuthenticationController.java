@@ -4,11 +4,14 @@ import com.project.devblog.controller.annotation.ApiV1;
 import com.project.devblog.dto.request.AuthenticationRequest;
 import com.project.devblog.dto.request.RegistrationRequest;
 import com.project.devblog.dto.response.AuthenticationResponse;
+import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
+import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import com.project.devblog.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +37,14 @@ public class AuthenticationController {
     @PostMapping("/auth/login")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<AuthenticationResponse> login(@NonNull @Valid @RequestBody AuthenticationRequest request) {
-        return authenticationService.login(request.getLogin(), request.getPassword());
+
+        AuthenticationResponse response = authenticationService.login(request.getLogin(), request.getPassword());
+        final String token = jwtTokenProvider.createToken(response.getLogin(), Role.valueOf(response.getRole()));
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, TOKEN_PREFIX + token)
+                .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.AUTHORIZATION)
+                .body(response);
     }
 
     @PostMapping("/auth/logout")
@@ -46,7 +56,9 @@ public class AuthenticationController {
     @PostMapping("/auth/registration")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<AuthenticationResponse> registration(@NonNull @Valid @RequestBody RegistrationRequest request) {
-        return authenticationService.register(request.getLogin(), request.getPassword());
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(authenticationService.register(request.getLogin(), request.getPassword()));
     }
 
     @GetMapping("/auth/checkToken")

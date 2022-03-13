@@ -1,0 +1,231 @@
+package com.project.devblog.service;
+
+import com.project.devblog.exception.NotFoundException;
+import com.project.devblog.model.ArticleEntity;
+import com.project.devblog.model.CommentEntity;
+import com.project.devblog.model.UserEntity;
+import com.project.devblog.model.enums.Role;
+import com.project.devblog.model.enums.StatusArticle;
+import com.project.devblog.repository.CommentRepository;
+import static java.lang.String.format;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@ExtendWith(MockitoExtension.class)
+class CommentServiceTest {
+
+    @Mock
+    CommentRepository commentRepository;
+    @Mock
+    ArticleService articleService;
+    @Mock
+    UserService userService;
+    @InjectMocks
+    CommentService commentService;
+
+    UserEntity author;
+    UserEntity receiver;
+    ArticleEntity article;
+    CommentEntity comment;
+    CommentEntity comment2;
+
+    @BeforeEach
+    void init() {
+        author = UserEntity.builder()
+                .id(UUID.randomUUID().toString())
+                .login("author@mail.ru")
+                .password("author")
+                .role(Role.USER)
+                .build();
+        receiver = UserEntity.builder()
+                .id(UUID.randomUUID().toString())
+                .login("receiver@mail.ru")
+                .password("receiver")
+                .role(Role.USER)
+                .build();
+        article = ArticleEntity.builder()
+                .id(1)
+                .author(new UserEntity())
+                .title("title")
+                .body("body")
+                .status(StatusArticle.PUBLISHED)
+                .description("description")
+                .build();
+        comment = CommentEntity.builder()
+                .id(1L)
+                .message("message")
+                .article(article)
+                .author(author)
+                .receiver(receiver)
+                .enabled(true)
+                .build();
+        comment2 = CommentEntity.builder()
+                .id(2L)
+                .message("message2")
+                .article(article)
+                .author(author)
+                .receiver(receiver)
+                .enabled(true)
+                .build();
+    }
+
+    @Test
+    void createTest() {
+        when(articleService.findByAuthorIdAndArticleId(author.getId(), article.getId())).thenReturn(article);
+        when(userService.findById(author.getId())).thenReturn(author);
+        when(userService.findById(receiver.getId())).thenReturn(receiver);
+        when(commentRepository.save(any(CommentEntity.class))).thenReturn(comment);
+
+        final CommentEntity createdComment = commentService.create(author.getId(), article.getId(),
+                comment.getMessage(), receiver.getId());
+
+        assertThat(createdComment.getId()).isEqualTo(comment.getId());
+        assertThat(createdComment.getAuthor()).isEqualTo(author);
+        assertThat(createdComment.getArticle()).isEqualTo(article);
+        assertThat(createdComment.getMessage()).isEqualTo(comment.getMessage());
+        assertThat(createdComment.getReceiver()).isEqualTo(receiver);
+    }
+
+    @Test
+    void findTest() {
+        when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(comment.getId(), author.getId(), article.getId()))
+                .thenReturn(Optional.of(comment));
+
+        final CommentEntity foundComment = commentService.findByIdAndAuthorIdAndArticleId(comment.getId(), author.getId(), article.getId());
+
+        assertThat(foundComment.getId()).isEqualTo(comment.getId());
+        assertThat(foundComment.getAuthor()).isEqualTo(author);
+        assertThat(foundComment.getArticle()).isEqualTo(article);
+        assertThat(foundComment.getMessage()).isEqualTo(comment.getMessage());
+        assertThat(foundComment.getReceiver()).isEqualTo(receiver);
+    }
+
+    @Test
+    void findTestWithNotFoundComment() {
+        final Long id = 5L;
+        when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(id, author.getId(), article.getId()))
+                .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> commentService.findByIdAndAuthorIdAndArticleId(id, author.getId(), article.getId()))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining(format("%s with id=%s not found", CommentEntity.class.getSimpleName(), id));
+    }
+
+    @Test
+    void findAllByAuthorIdAndArticleIdTest() {
+        final Page<CommentEntity> page = new PageImpl<>(List.of(comment, comment2));
+        final Pageable pageable = Pageable.ofSize(2);
+
+        when(commentRepository.findAllByAuthorIdAndArticleIdAndEnabledIsTrue(author.getId(), article.getId(), pageable))
+                .thenReturn(page);
+
+        final Page<CommentEntity> foundPage = commentService.findAllByAuthorIdAndArticleId(author.getId(), article.getId(),
+                pageable);
+
+        assertThat(foundPage.getContent()).containsExactly(comment, comment2);
+    }
+
+    @Test
+    void findAllByArticleIdTest() {
+        final Page<CommentEntity> page = new PageImpl<>(List.of(comment, comment2));
+        final Pageable pageable = Pageable.ofSize(2);
+
+        when(commentRepository.findAllByArticleIdAndEnabledIsTrue(article.getId(), pageable)).thenReturn(page);
+
+        final Page<CommentEntity> foundPage = commentService.findAllByArticleId(article.getId(), pageable);
+
+        assertThat(foundPage.getContent()).containsExactly(comment, comment2);
+    }
+
+    @Test
+    void enableTest() {
+        when(commentRepository.findByIdAndAuthorIdAndArticleId(comment.getId(), author.getId(), article.getId())).thenReturn(Optional.of(comment));
+        when(commentRepository.save(any(CommentEntity.class))).thenReturn(comment);
+
+        commentService.enable(comment.getId(), author.getId(), article.getId(), true);
+        assertThat(comment.getEnabled()).isTrue();
+
+        commentService.enable(comment.getId(), author.getId(), article.getId(), false);
+        assertThat(comment.getEnabled()).isFalse();
+    }
+
+    @Test
+    void enableTestWithNotFoundComment() {
+        final Long id = 5L;
+        when(commentRepository.findByIdAndAuthorIdAndArticleId(id, author.getId(), article.getId()))
+                .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> commentService.enable(id, author.getId(), article.getId(), true))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining(format("%s with id=%s not found", CommentEntity.class.getSimpleName(), id));
+    }
+
+    @Test
+    void deleteTest() {
+        when(commentRepository.findByIdAndAuthorIdAndArticleId(comment.getId(), author.getId(), article.getId()))
+                .thenReturn(Optional.of(comment));
+        doNothing().when(commentRepository).delete(any());
+
+        commentService.delete(comment.getId(), author.getId(), article.getId());
+
+        verify(commentRepository, times(1)).delete(any());
+    }
+
+    @Test
+    void deleteTestWithNotFoundComment() {
+        final Long id = 5L;
+        when(commentRepository.findByIdAndAuthorIdAndArticleId(id, author.getId(), article.getId()))
+                .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> commentService.delete(id, author.getId(), article.getId()))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining(format("%s with id=%s not found", CommentEntity.class.getSimpleName(), id));
+    }
+
+    @Test
+    void updateTest() {
+        when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(comment.getId(), author.getId(), article.getId()))
+                .thenReturn(Optional.of(comment));
+        when(commentRepository.save(any(CommentEntity.class)))
+                .thenReturn(comment);
+
+        final String updatedMessage = "updatedMessage";
+        final CommentEntity updatedComment = commentService.update(comment.getId(), updatedMessage, article.getId(),
+                author.getId());
+
+        assertThat(updatedComment.getMessage()).isEqualTo(updatedMessage);
+    }
+
+    @Test
+    void updateTestWithNotFoundComment() {
+        final Long id = 5L;
+        when(commentRepository.findByIdAndAuthorIdAndArticleIdAndEnabledIsTrue(id, author.getId(), article.getId()))
+                .thenReturn(Optional.empty());
+
+        final String updatedMessage = "updatedMessage";
+        assertThatThrownBy(() -> commentService.update(id, updatedMessage, article.getId(), author.getId()))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining(format("%s with id=%s not found", CommentEntity.class.getSimpleName(), id));
+    }
+}

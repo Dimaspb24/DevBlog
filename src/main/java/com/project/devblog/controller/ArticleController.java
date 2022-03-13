@@ -41,7 +41,7 @@ public class ArticleController {
     public Page<CloseArticleResponse> findAll(@RequestParam(name = "titleContains", required = false) String titleContains,
                                               @RequestParam(name = "tagName", required = false) String tagName,
                                               @SortDefault("publicationDate") Pageable pageable) {
-        return articleService.findAll(titleContains, tagName, pageable)
+        return articleService.findAllEnabled(titleContains, tagName, pageable)
                 .map(this::toResponse);
     }
 

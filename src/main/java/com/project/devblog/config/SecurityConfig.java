@@ -1,6 +1,5 @@
 package com.project.devblog.config;
 
-import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.CustomAccessDeniedHandler;
 import com.project.devblog.security.CustomAuthenticationEntryPoint;
 import com.project.devblog.security.JwtTokenAuthorizationFilter;
@@ -20,7 +19,6 @@ import org.springframework.web.filter.CorsFilter;
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JwtTokenAuthorizationFilter jwtTokenAuthorizationFilter;
     private static final String AUTH_URL = "/v1/auth/**";
     private static final String GOOGLE_AUTH_REDIRECT_URL = "/";
     private static final String[] DOMAIN_URLS = {
@@ -34,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-ui/**",
             "/swagger-ui.html"
     };
+    private final JwtTokenAuthorizationFilter jwtTokenAuthorizationFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

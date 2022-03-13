@@ -40,7 +40,7 @@ public class TagController {
     @GetMapping("/tags/{tagId}")
     @ResponseStatus(HttpStatus.OK)
     public TagResponse find(@NonNull @PathVariable Integer tagId) {
-        return toResponse(tagService.find(tagId));
+        return toResponse(tagService.findById(tagId));
     }
 
     @DeleteMapping("/tags/{tagId}")

@@ -9,6 +9,7 @@ import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
 import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import com.project.devblog.service.AuthenticationService;
+import com.project.devblog.testcontainers.AbstractPostgresTestcontainer;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,7 +36,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AuthenticationControllerTest {
+class AuthenticationControllerTest extends AbstractPostgresTestcontainer {
 
     @MockBean
     AuthenticationService authenticationService;

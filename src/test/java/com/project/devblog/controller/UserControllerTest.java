@@ -8,6 +8,7 @@ import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
 import com.project.devblog.service.UserService;
+import com.project.devblog.testcontainers.AbstractPostgresTestcontainer;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,7 +41,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class UserControllerTest {
+class UserControllerTest extends AbstractPostgresTestcontainer {
 
     @MockBean
     UserService userService;

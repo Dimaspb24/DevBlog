@@ -8,6 +8,7 @@ import com.project.devblog.security.JwtTokenProvider;
 import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import com.project.devblog.service.UserService;
 import com.project.devblog.service.VerificationService;
+import com.project.devblog.testcontainers.AbstractPostgresTestcontainer;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class VerificationControllerTest {
+class VerificationControllerTest extends AbstractPostgresTestcontainer {
 
     @Autowired
     MockMvc mockMvc;

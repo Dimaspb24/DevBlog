@@ -5,29 +5,29 @@ import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
-import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import com.project.devblog.service.UserService;
 import com.project.devblog.service.VerificationService;
 import com.project.devblog.testcontainers.AbstractPostgresTestcontainer;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc

@@ -1,10 +1,10 @@
 package com.project.devblog.controller;
 
+import com.project.devblog.integration.config.PostgresTestContainer;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.service.UserService;
-import com.project.devblog.testcontainers.AbstractPostgresTestcontainer;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class GoogleAuthControllerTest extends AbstractPostgresTestcontainer {
+class GoogleAuthControllerTest extends PostgresTestContainer {
 
     @MockBean
     UserService userService;

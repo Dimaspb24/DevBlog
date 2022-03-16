@@ -3,12 +3,12 @@ package com.project.devblog.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.devblog.dto.request.UserRequest;
 import com.project.devblog.exception.NotFoundException;
+import com.project.devblog.integration.config.PostgresTestContainer;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
 import com.project.devblog.service.UserService;
-import com.project.devblog.testcontainers.AbstractPostgresTestcontainer;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,7 +41,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class UserControllerTest extends AbstractPostgresTestcontainer {
+class UserControllerTest extends PostgresTestContainer {
 
     @MockBean
     UserService userService;

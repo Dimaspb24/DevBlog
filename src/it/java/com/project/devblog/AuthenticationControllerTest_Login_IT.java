@@ -32,14 +32,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthenticationControllerTest_Login_IT extends AbstractPostgresTestcontainer {
 
     @Autowired
-    private AuthenticationService authenticationService;
+    AuthenticationService authenticationService;
     @Autowired
-    private UserService userService;
+    UserService userService;
     @Autowired
-    private VerificationService verificationService;
+    VerificationService verificationService;
     @Autowired
-    private MockMvc mockMvc;
-    private final ObjectMapper mapper = new ObjectMapper();
+    MockMvc mockMvc;
+    final ObjectMapper mapper = new ObjectMapper();
 
     @Test
     void loginTest() throws Exception {

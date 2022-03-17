@@ -7,10 +7,7 @@ import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
 import com.project.devblog.service.UserService;
 import com.project.devblog.service.VerificationService;
-import com.project.devblog.testcontainers.AbstractPostgresTestcontainer;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import com.project.devblog.testcontainers.PostgresTestContainer;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;
@@ -21,10 +18,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class VerificationControllerTest extends AbstractPostgresTestcontainer {
+class VerificationControllerTest extends PostgresTestContainer {
 
     @Autowired
     MockMvc mockMvc;

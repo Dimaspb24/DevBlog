@@ -1,18 +1,16 @@
-package com.project.devblog;
+package com.project.devblog.integration.controller;
 
 import com.project.devblog.dto.request.UserRequest;
 import com.project.devblog.exception.NonUniqueValueException;
 import com.project.devblog.exception.NotFoundException;
-import com.project.devblog.model.PersonalInfo;
+import com.project.devblog.integration.config.annotation.IT;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.repository.UserRepository;
 import com.project.devblog.security.JwtTokenProvider;
 import com.project.devblog.service.UserService;
-import com.project.devblog.testcontainers.AbstractPostgresTestcontainer;
+import com.project.devblog.testcontainers.PostgresTestContainer;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,64 +30,27 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@IT
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserControllerTest_IT extends AbstractPostgresTestcontainer {
+public class UserControllerTest extends PostgresTestContainer {
 
     @Autowired
     UserService userService;
     @Autowired
     JwtTokenProvider jwtTokenProvider;
     @Autowired
-    UserRepository userRepository;
-    @Autowired
     MockMvc mockMvc;
     final ObjectMapper mapper = new ObjectMapper();
 
     UserEntity user;
-    UserEntity user2;
     String token;
 
     @BeforeEach
     void init() {
-        final PersonalInfo personalInfo = PersonalInfo.builder()
-                .nickname("nickname")
-                .phone("88005553535")
-                .firstname("Aleksey")
-                .lastname("Alekseev")
-                .info("info")
-                .photo("https://ghjklvhhvhvh.ujhuh")
-                .build();
-        user = UserEntity.builder()
-                .id(UUID.randomUUID().toString())
-                .role(Role.USER)
-                .login("login1@mail.ru")
-                .password("pass1")
-                .verificationCode(UUID.randomUUID().toString())
-                .personalInfo(personalInfo)
-                .build();
-        userService.save(user);
-
-        final PersonalInfo personalInfo2 = PersonalInfo.builder()
-                .nickname("nickname2")
-                .phone("88888888888")
-                .firstname("Aleksey")
-                .lastname("Alekseev")
-                .info("info")
-                .photo("https://ghjklvhhvhvh.ujhuh")
-                .build();
-        user2 = UserEntity.builder()
-                .id(UUID.randomUUID().toString())
-                .role(Role.USER)
-                .login("login2@mail.ru")
-                .password("pass2")
-                .verificationCode(UUID.randomUUID().toString())
-                .personalInfo(personalInfo2)
-                .build();
-        userService.save(user2);
-
-        token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final UserEntity user = userService.findById("1");
+        final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
     }
 
     @Test
@@ -109,14 +70,15 @@ public class UserControllerTest_IT extends AbstractPostgresTestcontainer {
 
     @Test
     void findTestNotExistUser() throws Exception {
-        final String id = UUID.randomUUID().toString();
+        final String idForFind = UUID.randomUUID().toString();
+
         mockMvc
-                .perform(get("/v1/users/{userId}", id).header("Authorization", token))
+                .perform(get("/v1/users/{userId}", idForFind).header("Authorization", token))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(NotFoundException.class))
                 .andExpect(result -> assertThat(result.getResolvedException().getMessage())
-                        .isEqualTo(format("%s with id=%s not found", UserEntity.class.getSimpleName(), id)));
+                        .isEqualTo(format("%s with id=%s not found", UserEntity.class.getSimpleName(), idForFind)));
     }
 
     @Test
@@ -124,8 +86,8 @@ public class UserControllerTest_IT extends AbstractPostgresTestcontainer {
         final UserRequest request = UserRequest.builder()
                 .nickname("newNickname")
                 .phone("88008005050")
-                .firstname("Aleksey")
-                .lastname("Alekseev")
+                .firstname("newName")
+                .lastname("newName")
                 .info("newInfo")
                 .photo("https://ghjklvhhvhvh.ujhuh")
                 .build();
@@ -144,6 +106,8 @@ public class UserControllerTest_IT extends AbstractPostgresTestcontainer {
 
         assertThat(response.getPersonalInfo().getNickname()).isEqualTo(updatedUser.getPersonalInfo().getNickname());
         assertThat(response.getPersonalInfo().getPhone()).isEqualTo(updatedUser.getPersonalInfo().getPhone());
+        assertThat(response.getPersonalInfo().getFirstname()).isEqualTo(updatedUser.getPersonalInfo().getFirstname());
+        assertThat(response.getPersonalInfo().getLastname()).isEqualTo(updatedUser.getPersonalInfo().getLastname());
         assertThat(response.getPersonalInfo().getInfo()).isEqualTo(updatedUser.getPersonalInfo().getInfo());
         assertThat(response.getPersonalInfo().getPhoto()).isEqualTo(updatedUser.getPersonalInfo().getPhoto());
     }
@@ -151,12 +115,7 @@ public class UserControllerTest_IT extends AbstractPostgresTestcontainer {
     @Test
     void updateUserTest2() throws Exception {
         final UserRequest request = UserRequest.builder()
-                .nickname("nickname2")
-                .phone("88008005050")
-                .firstname("Aleksey")
-                .lastname("Alekseev")
-                .info("newInfo")
-                .photo("https://ghjklvhhvhvh.ujhuh")
+                .nickname("Шрэк")
                 .build();
 
         mockMvc
@@ -174,12 +133,7 @@ public class UserControllerTest_IT extends AbstractPostgresTestcontainer {
     @Test
     void updateUserTest3() throws Exception {
         final UserRequest request = UserRequest.builder()
-                .nickname(UUID.randomUUID().toString())
-                .phone("88888888888")
-                .firstname("Aleksey")
-                .lastname("Alekseev")
-                .info("newInfo")
-                .photo("https://ghjklvhhvhvh.ujhuh")
+                .phone("85555555555")
                 .build();
 
         mockMvc
@@ -192,11 +146,5 @@ public class UserControllerTest_IT extends AbstractPostgresTestcontainer {
                 .andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(NonUniqueValueException.class))
                 .andExpect(result -> assertThat(result.getResolvedException().getMessage())
                         .isEqualTo(format("User with this phone=%s already exists", request.getPhone())));
-    }
-
-    @AfterEach
-    void clear() {
-        userRepository.delete(user);
-        userRepository.delete(user2);
     }
 }

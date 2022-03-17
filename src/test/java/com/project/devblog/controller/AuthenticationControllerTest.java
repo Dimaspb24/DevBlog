@@ -7,16 +7,11 @@ import com.project.devblog.dto.response.AuthenticationResponse;
 import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
-import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import com.project.devblog.service.AuthenticationService;
-import com.project.devblog.testcontainers.AbstractPostgresTestcontainer;
+import com.project.devblog.testcontainers.PostgresTestContainer;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,18 +20,24 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
+import java.util.UUID;
+
+import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.UUID;
-
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AuthenticationControllerTest extends AbstractPostgresTestcontainer {
+class AuthenticationControllerTest extends PostgresTestContainer {
 
     @MockBean
     AuthenticationService authenticationService;

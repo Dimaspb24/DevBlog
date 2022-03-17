@@ -1,7 +1,6 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.exception.VerificationException;
-import com.project.devblog.integration.config.PostgresTestContainer;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
@@ -9,6 +8,7 @@ import com.project.devblog.security.JwtTokenProvider;
 import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import com.project.devblog.service.UserService;
 import com.project.devblog.service.VerificationService;
+import com.project.devblog.testcontainers.PostgresTestContainer;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;

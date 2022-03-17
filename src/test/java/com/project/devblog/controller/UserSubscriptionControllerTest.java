@@ -2,7 +2,6 @@ package com.project.devblog.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.devblog.exception.NotFoundException;
-import com.project.devblog.integration.config.PostgresTestContainer;
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
@@ -12,6 +11,7 @@ import com.project.devblog.security.JwtTokenProvider;
 import com.project.devblog.service.ArticleService;
 import com.project.devblog.service.SubscriptionService;
 import com.project.devblog.service.UserService;
+import com.project.devblog.testcontainers.PostgresTestContainer;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import static org.assertj.core.api.Assertions.assertThat;

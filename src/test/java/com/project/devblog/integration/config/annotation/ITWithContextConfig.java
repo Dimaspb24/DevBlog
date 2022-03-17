@@ -1,6 +1,6 @@
 package com.project.devblog.integration.config.annotation;
 
-import com.project.devblog.integration.config.IntegrationTestConfig;
+import com.project.devblog.integration.config.ContextConfigIT;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +15,6 @@ import java.lang.annotation.Target;
 @ActiveProfiles("test")
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = IntegrationTestConfig.class)
+        classes = ContextConfigIT.class)
 public @interface ITWithContextConfig {
 }

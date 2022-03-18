@@ -15,7 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -33,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IT
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserControllerTest extends PostgresTestContainer {
 
     @Autowired
@@ -49,12 +47,12 @@ public class UserControllerTest extends PostgresTestContainer {
 
     @BeforeEach
     void init() {
-        final UserEntity user = userService.findById("1");
-        final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        user = userService.findById("1");
+        token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
     }
 
     @Test
-    void findTest() throws Exception {
+    void Find_ExistsUser_Success() throws Exception {
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/users/{userId}", user.getId())
                         .header("Authorization", token)
@@ -69,7 +67,7 @@ public class UserControllerTest extends PostgresTestContainer {
     }
 
     @Test
-    void findTestNotExistUser() throws Exception {
+    void Find_NotExistsUser_NotFoundException() throws Exception {
         final String idForFind = UUID.randomUUID().toString();
 
         mockMvc
@@ -82,7 +80,7 @@ public class UserControllerTest extends PostgresTestContainer {
     }
 
     @Test
-    void updateUserTest() throws Exception {
+    void Update_WithValidData_Success() throws Exception {
         final UserRequest request = UserRequest.builder()
                 .nickname("newNickname")
                 .phone("88008005050")
@@ -113,7 +111,7 @@ public class UserControllerTest extends PostgresTestContainer {
     }
 
     @Test
-    void updateUserTest2() throws Exception {
+    void Update_WithAlreadyExistsNickName_NonUniqueValueException() throws Exception {
         final UserRequest request = UserRequest.builder()
                 .nickname("Шрэк")
                 .build();
@@ -131,7 +129,7 @@ public class UserControllerTest extends PostgresTestContainer {
     }
 
     @Test
-    void updateUserTest3() throws Exception {
+    void Update_WithAlreadyExistsPhone_NonUniqueValueException() throws Exception {
         final UserRequest request = UserRequest.builder()
                 .phone("85555555555")
                 .build();

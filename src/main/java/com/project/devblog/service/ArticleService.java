@@ -11,16 +11,13 @@ import com.project.devblog.repository.ArticleRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,13 +54,11 @@ public class ArticleService {
         if (Objects.isNull(titleContains) && Objects.isNull(tagName)) {
             articleEntities = articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageable);
         } else if (Objects.nonNull(titleContains) && Objects.nonNull(tagName)) {
-            PageRequest pageRequest = getPageRequestForSortByArticles(pageable);
-            articleEntities = articleRepository.findByEnabledAndTagNameAndTitleContains(tagName, titleContains, pageRequest);
+            articleEntities = articleRepository.findByEnabledAndTagNameAndTitleContains(tagName, titleContains, pageable);
         } else if (Objects.nonNull(titleContains)) {
             articleEntities = articleRepository.findByEnabledIsTrueAndTitleContains(titleContains, pageable);
         } else {
-            PageRequest pageRequest = getPageRequestForSortByArticles(pageable);
-            articleEntities = articleRepository.findByEnabledAndTagName(tagName, pageRequest);
+            articleEntities = articleRepository.findByEnabledAndTagName(tagName, pageable);
         }
         return articleEntities;
     }
@@ -131,14 +126,5 @@ public class ArticleService {
 
         articleEntity.setEnabled(enabled);
         articleRepository.save(articleEntity);
-    }
-
-    @NonNull
-    private PageRequest getPageRequestForSortByArticles(Pageable pageable) {
-        List<Sort.Order> orders = pageable.getSort().stream().map(order ->
-                order.withProperty("a." + order.getProperty()))
-                .collect(Collectors.toList());
-        Sort sort = Sort.by(orders);
-        return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
     }
 }

@@ -1,7 +1,7 @@
 package com.project.devblog.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.devblog.exception.NotFoundException;
+import com.project.devblog.integration.config.annotation.ITWithContextConfig;
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
@@ -13,6 +13,7 @@ import com.project.devblog.service.SubscriptionService;
 import com.project.devblog.service.UserService;
 import com.project.devblog.testcontainers.PostgresTestContainer;
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,10 +23,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -40,25 +38,20 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+@ITWithContextConfig
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@RequiredArgsConstructor
 class UserSubscriptionControllerTest extends PostgresTestContainer {
-
-    @MockBean
-    UserService userService;
-    @MockBean
-    SubscriptionService subscriptionService;
-    @MockBean
-    ArticleService articleService;
-    @Autowired
-    MockMvc mockMvc;
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
 
     static UserEntity user;
     static UserEntity author;
-    final ObjectMapper mapper = new ObjectMapper();
+
+    final UserService userService;
+    final SubscriptionService subscriptionService;
+    final ArticleService articleService;
+    final MockMvc mockMvc;
+    final JwtTokenProvider jwtTokenProvider;
 
     @BeforeAll
     static void init() {

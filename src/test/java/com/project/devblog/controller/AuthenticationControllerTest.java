@@ -5,22 +5,21 @@ import com.project.devblog.dto.request.AuthenticationRequest;
 import com.project.devblog.dto.request.RegistrationRequest;
 import com.project.devblog.dto.response.AuthenticationResponse;
 import com.project.devblog.exception.NotFoundException;
+import com.project.devblog.integration.config.annotation.ITWithContextConfig;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
 import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import com.project.devblog.service.AuthenticationService;
 import com.project.devblog.testcontainers.PostgresTestContainer;
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,19 +32,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.UUID;
 
+@ITWithContextConfig
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@RequiredArgsConstructor
 class AuthenticationControllerTest extends PostgresTestContainer {
 
-    @MockBean
-    AuthenticationService authenticationService;
-    @Autowired
-    MockMvc mockMvc;
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
-
     final ObjectMapper mapper = new ObjectMapper();
+
+    final AuthenticationService authenticationService;
+    final MockMvc mockMvc;
+    final JwtTokenProvider jwtTokenProvider;
 
     @Test
     void registrationTest() throws Exception {

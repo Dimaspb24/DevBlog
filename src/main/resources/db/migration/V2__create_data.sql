@@ -54,27 +54,27 @@ values (1, 2),
        (9, 8),
        (9, 5);
 
-insert into articles (id, user_id, title, body, status, description, publication_date)
-values (1, 1, 'Spring Security with JWT', 'Some body', 'PUBLISHED', 'The Spring Security framework is ... ',
-        timestamp '2022-01-30 10:10:35'),
-       (2, 2, 'Spring Security', 'test body 1', 'PUBLISHED', 'In Spring Security ...', timestamp '2022-01-30 10:17:35'),
-       (3, 2, 'Title 2.2', 'test body 2', 'CREATED', 'description', null),
-       (4, 3, 'Title 3.1', 'test body 1', 'CREATED', 'description', null),
-       (5, 3, 'Title 3.2', 'test body 2', 'CREATED', 'description', null),
-       (6, 3, 'Title 3.3', 'test body 3', 'PUBLISHED', 'description', timestamp '2022-01-30 10:08:35'),
-       (7, 4, 'Title 4.1', 'test body 1', 'CREATED', 'description', null),
-       (8, 4, 'Title 4.2', 'test body 2', 'PUBLISHED', 'description', timestamp '2021-12-30 12:08:35'),
-       (9, 5, 'Title 5.1', 'test body 1', 'PUBLISHED', 'description', timestamp '2022-01-05 10:30:35'),
-       (10, 6, 'Title 6.1', 'test body 1', 'CREATED', 'description', null),
-       (11, 6, 'Title 6.2', 'test body 2', 'CREATED', 'description', null),
-       (12, 6, 'Title 6.3', 'test body 3', 'PUBLISHED', 'description', timestamp '2022-01-15 15:08:35');
 insert into articles (id, user_id, title, body, status, description, enabled, publication_date)
-values (13, 6, 'Title 6.4', 'test body 4', 'CREATED', 'description', false, null),
+values (1, 1, 'Spring Security with JWT', 'Some body', 'PUBLISHED', 'The Spring Security framework is ... ', true,
+        timestamp '2022-01-30 10:10:35'),
+       (2, 2, 'Spring Security', 'test body 1', 'PUBLISHED', 'In Spring Security ...', true,
+        timestamp '2022-01-30 10:17:35'),
+       (3, 2, 'Title 2.2', 'test body 2', 'CREATED', 'description', true, null),
+       (4, 3, 'Title 3.1', 'test body 1', 'CREATED', 'description', true, null),
+       (5, 3, 'Title 3.2', 'test body 2', 'CREATED', 'description', true, null),
+       (6, 3, 'Title 3.3', 'test body 3', 'PUBLISHED', 'description', true, timestamp '2022-01-30 10:08:35'),
+       (7, 4, 'Title 4.1', 'test body 1', 'CREATED', 'description', true, null),
+       (8, 4, 'Title 4.2', 'test body 2', 'PUBLISHED', 'description', true, timestamp '2021-12-30 12:08:35'),
+       (9, 5, 'Title 5.1', 'test body 1', 'PUBLISHED', 'description', true, timestamp '2022-01-05 10:30:35'),
+       (10, 6, 'Title 6.1', 'test body 1', 'CREATED', 'description', true, null),
+       (11, 6, 'Title 6.2', 'test body 2', 'CREATED', 'description', true, null),
+       (12, 6, 'Title 6.3', 'test body 3', 'PUBLISHED', 'description', true, timestamp '2022-01-15 15:08:35'),
+       (13, 6, 'Title 6.4', 'test body 4', 'CREATED', 'description', false, null),
        (14, 7, 'Title 7.1', 'test body 1', 'PUBLISHED', 'description', false, timestamp '2021-11-25 10:08:35'),
        (15, 7, 'Title 7.2', 'test body 2', 'PUBLISHED', 'description', false, timestamp '2022-01-21 23:08:35'),
        (16, 9, 'Title 9.1', 'test body 1', 'PUBLISHED', 'description', false, timestamp '2022-01-24 11:08:35'),
        (17, 9, 'Title 9.2', 'test body 2', 'CREATED', 'description', true, null);
--- select setval('articles_id_seq', (select max(id) from articles));
+select setval('articles_id_seq', (select max(id) from articles));
 
 insert into users_articles (id, user_id, article_id, rating, bookmark_type)
 values (1, '1', 8, 8, 'FAVORITE'),
@@ -85,26 +85,24 @@ values (1, '1', 8, 8, 'FAVORITE'),
        (6, '3', 2, 8, 'FAVORITE'),
        (7, '4', 11, 9, 'BOOKMARK'),
        (8, '4', 12, 7, 'BOOKMARK'),
-       (9, '4', 3, 6, 'FAVORITE');
-insert into users_articles (id, user_id, article_id, rating)
-values (10, '1', 9, 3),
-       (11, '3', 3, 4),
-       (12, '5', 5, 5),
-       (13, '6', 6, 6),
-       (14, '7', 5, 7),
-       (15, '7', 4, 8),
-       (16, '8', 3, 9);
-insert into users_articles (id, user_id, article_id, bookmark_type)
-values (17, '1', 10, 'FAVORITE'),
-       (18, '2', 7, 'BOOKMARK'),
-       (19, '2', 8, 'FAVORITE'),
-       (20, '6', 2, 'FAVORITE'),
-       (21, '8', 2, 'BOOKMARK'),
-       (22, '9', 1, 'BOOKMARK'),
-       (23, '9', 4, 'BOOKMARK'),
-       (24, '9', 5, 'FAVORITE'),
-       (25, '9', 2, 'FAVORITE');
--- select setval('users_articles_id_seq', (select max(id) from users_articles));
+       (9, '4', 3, 6, 'FAVORITE'),
+       (10, '1', 9, 3, null),
+       (11, '3', 3, 4, null),
+       (12, '5', 5, 5, null),
+       (13, '6', 6, 6, null),
+       (14, '7', 5, 7, null),
+       (15, '7', 4, 8, null),
+       (16, '8', 3, 9, null),
+       (17, '1', 10, null, 'FAVORITE'),
+       (18, '2', 7, null, 'BOOKMARK'),
+       (19, '2', 8, null, 'FAVORITE'),
+       (20, '6', 2, null, 'FAVORITE'),
+       (21, '8', 2, null, 'BOOKMARK'),
+       (22, '9', 1, null, 'BOOKMARK'),
+       (23, '9', 4, null, 'BOOKMARK'),
+       (24, '9', 5, null, 'FAVORITE'),
+       (25, '9', 2, null, 'FAVORITE');
+select setval('users_articles_id_seq', (select max(id) from users_articles));
 
 insert into tags (id, name)
 values (1, 'software'),
@@ -117,7 +115,7 @@ values (1, 'software'),
        (8, 'ACID'),
        (9, 'transactional'),
        (10, 'DAO');
--- select setval('tags_id_seq', (select max(id) from tags));
+select setval('tags_id_seq', (select max(id) from tags));
 
 insert into articles_tags (article_id, tag_id)
 values (1, 1),
@@ -138,7 +136,16 @@ values (1, 1),
        (7, 4),
        (8, 8),
        (8, 10),
+       (8, 4),
        (9, 2),
        (9, 3),
-       (14, 4),
-       (15, 4);
+       (9, 4);
+
+insert into comments (id, article_id, author_id, receiver_id, message, enabled)
+values (1, 1, 2, 1, 'Bad title', false),
+       (2, 1, 3, 1, 'Best title', true),
+       (3, 1, 1, 3, 'Oh no, you are exaggerating', true),
+       (4, 2, 1, 2, 'WTF', true),
+       (5, 3, 2, 3, 'I`m first!', true),
+       (6, 4, 2, 3, 'I`m first!', true);
+select setval('comments_id_seq', (select max(id) from comments));

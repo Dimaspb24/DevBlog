@@ -1,18 +1,17 @@
 package com.project.devblog.controller;
 
+import com.project.devblog.integration.config.annotation.ITWithContextConfig;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.service.UserService;
 import com.project.devblog.testcontainers.PostgresTestContainer;
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.when;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -32,15 +31,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+@ITWithContextConfig
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@RequiredArgsConstructor
 class GoogleAuthControllerTest extends PostgresTestContainer {
 
-    @MockBean
-    UserService userService;
-    @Autowired
-    MockMvc mockMvc;
+    final UserService userService;
+    final MockMvc mockMvc;
 
     @Test
     void registrationTest() throws Exception {

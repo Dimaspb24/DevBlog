@@ -7,6 +7,8 @@ import org.springframework.lang.Nullable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@EqualsAndHashCode(exclude = {"modificationDate"})
+@ToString
 @Getter
 @Builder
 @AllArgsConstructor

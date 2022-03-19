@@ -1,6 +1,7 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.exception.VerificationException;
+import com.project.devblog.integration.config.annotation.ITWithContextConfig;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
@@ -10,15 +11,13 @@ import com.project.devblog.service.UserService;
 import com.project.devblog.service.VerificationService;
 import com.project.devblog.testcontainers.PostgresTestContainer;
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,19 +28,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+@ITWithContextConfig
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@RequiredArgsConstructor
 class VerificationControllerTest extends PostgresTestContainer {
 
-    @Autowired
-    MockMvc mockMvc;
-    @MockBean
-    VerificationService verificationService;
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
-    @MockBean
-    UserService userService;
+    final UserService userService;
+    final VerificationService verificationService;
+    final MockMvc mockMvc;
+    final JwtTokenProvider jwtTokenProvider;
 
     @Test
     void confirmVerificationCodeTest() throws Exception {

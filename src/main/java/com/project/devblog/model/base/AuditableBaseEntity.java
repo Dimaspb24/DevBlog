@@ -1,4 +1,4 @@
-package com.project.devblog.model;
+package com.project.devblog.model.base;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.project.devblog.integration.controller;
+package com.project.devblog.integration.controller.validation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.devblog.dto.request.ArticleRequest;

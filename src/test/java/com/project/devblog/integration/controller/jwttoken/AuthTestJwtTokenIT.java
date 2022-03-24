@@ -1,4 +1,4 @@
-package com.project.devblog.integration.controller;
+package com.project.devblog.integration.controller.jwttoken;
 
 import com.project.devblog.integration.config.annotation.IT;
 import com.project.devblog.model.enums.Role;
@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.project.devblog.integration.CommonData.AUTHOR_ID;
+import static com.project.devblog.integration.CommonData.AUTHOR_LOGIN;
 import static com.project.devblog.security.JwtTokenProvider.AUTH_HEADER_KEY;
 import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -32,7 +33,7 @@ class AuthTestJwtTokenIT extends PostgresTestContainer {
 
     @NonNull
     private String getValidToken() {
-        return TOKEN_PREFIX + jwtTokenProvider.createToken("mail1@mail.ru", Role.USER);
+        return TOKEN_PREFIX + jwtTokenProvider.createToken(AUTHOR_LOGIN, Role.USER);
     }
 
     @Test

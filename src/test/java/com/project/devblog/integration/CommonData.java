@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public final class CommonData {
 
     public final static String AUTHOR_ID = "1";
+    public final static String AUTHOR_LOGIN = "mail1@mail.ru";
     public final static String AUTHOR_NICKNAME = "Вождь";
     public final static int ARTICLE_ID = 1;
     public final static int INVALID_ARTICLE_ID = 100;

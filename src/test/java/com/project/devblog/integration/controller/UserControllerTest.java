@@ -9,19 +9,22 @@ import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
 import com.project.devblog.service.UserService;
 import com.project.devblog.testcontainers.PostgresTestContainer;
+import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.UUID;
-
+import static com.project.devblog.integration.CommonData.AUTHOR_LOGIN;
+import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,32 +33,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @IT
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @AutoConfigureMockMvc
-public class UserControllerTest extends PostgresTestContainer {
+@RequiredArgsConstructor
+class UserControllerTest extends PostgresTestContainer {
 
-    @Autowired
     UserService userService;
-    @Autowired
     JwtTokenProvider jwtTokenProvider;
-    @Autowired
     MockMvc mockMvc;
-    final ObjectMapper mapper = new ObjectMapper();
 
+    ObjectMapper mapper = new ObjectMapper();
+
+    @NonFinal
     UserEntity user;
-    String token;
 
     @BeforeEach
     void init() {
         user = userService.findById("1");
-        token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
     }
 
     @Test
     void Find_ExistsUser_Success() throws Exception {
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/users/{userId}", user.getId())
-                        .header("Authorization", token)
+                        .header("Authorization", getValidToken())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -71,7 +72,8 @@ public class UserControllerTest extends PostgresTestContainer {
         final String idForFind = UUID.randomUUID().toString();
 
         mockMvc
-                .perform(get("/v1/users/{userId}", idForFind).header("Authorization", token))
+                .perform(get("/v1/users/{userId}", idForFind)
+                        .header("Authorization", getValidToken()))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(NotFoundException.class))
@@ -94,7 +96,7 @@ public class UserControllerTest extends PostgresTestContainer {
                 .perform(put("/v1/users/{userId}", user.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsBytes(request))
-                        .header("Authorization", token))
+                        .header("Authorization", getValidToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -120,7 +122,7 @@ public class UserControllerTest extends PostgresTestContainer {
                 .perform(put("/v1/users/{userId}", user.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsBytes(request))
-                        .header("Authorization", token))
+                        .header("Authorization", getValidToken()))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(NonUniqueValueException.class))
@@ -138,11 +140,16 @@ public class UserControllerTest extends PostgresTestContainer {
                 .perform(put("/v1/users/{userId}", user.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsBytes(request))
-                        .header("Authorization", token))
+                        .header("Authorization", getValidToken()))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(NonUniqueValueException.class))
                 .andExpect(result -> assertThat(result.getResolvedException().getMessage())
                         .isEqualTo(format("User with this phone=%s already exists", request.getPhone())));
+    }
+
+    @NonNull
+    private String getValidToken() {
+        return TOKEN_PREFIX + jwtTokenProvider.createToken(AUTHOR_LOGIN, Role.USER);
     }
 }

@@ -8,29 +8,28 @@ import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.integration.config.annotation.ITWithContextConfig;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
-import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import com.project.devblog.service.AuthenticationService;
 import com.project.devblog.testcontainers.PostgresTestContainer;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
+import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.UUID;
 
 @ITWithContextConfig
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -56,7 +55,6 @@ class AuthenticationControllerTest extends PostgresTestContainer {
                 .perform(post("/v1/auth/registration")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
-                .andDo(print())
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -79,7 +77,6 @@ class AuthenticationControllerTest extends PostgresTestContainer {
                 .perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.AUTHORIZATION))
                 .andReturn();
@@ -100,7 +97,6 @@ class AuthenticationControllerTest extends PostgresTestContainer {
                 .perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
-                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andReturn();
     }
@@ -109,9 +105,7 @@ class AuthenticationControllerTest extends PostgresTestContainer {
     void logoutTest() throws Exception {
         doNothing().when(authenticationService).logout(any(), any());
 
-        mockMvc
-                .perform(post("/v1/auth/logout"))
-                .andDo(print())
+        mockMvc.perform(post("/v1/auth/logout"))
                 .andExpect(status().isOk())
                 .andReturn();
     }
@@ -123,7 +117,6 @@ class AuthenticationControllerTest extends PostgresTestContainer {
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/auth/checkToken")
                         .queryParam("token", token))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
         assertThat(mvcResult.getResponse().getContentAsString()).isEqualTo("Token is valid");
@@ -136,7 +129,6 @@ class AuthenticationControllerTest extends PostgresTestContainer {
         mockMvc
                 .perform(get("/v1/auth/checkToken")
                         .queryParam("token", token))
-                .andDo(print())
                 .andExpect(status().isUnauthorized())
                 .andReturn();
     }
@@ -147,7 +139,6 @@ class AuthenticationControllerTest extends PostgresTestContainer {
         mockMvc
                 .perform(get("/v1/auth/checkToken")
                         .queryParam("token", token))
-                .andDo(print())
                 .andExpect(status().isUnauthorized())
                 .andReturn();
     }

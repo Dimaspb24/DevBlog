@@ -18,7 +18,6 @@ import static com.project.devblog.security.JwtTokenProvider.AUTH_HEADER_KEY;
 import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,7 +40,6 @@ class AuthTestJwtTokenIT extends PostgresTestContainer {
         mockMvc.perform(
                 get("/v1/users/{userId}", AUTHOR_ID)
                         .contentType(APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.debugMessage").value("Full authentication is required to access this resource"));
     }
@@ -52,7 +50,6 @@ class AuthTestJwtTokenIT extends PostgresTestContainer {
                 get("/v1/users/{userId}", AUTHOR_ID)
                         .header(AUTH_HEADER_KEY, "")
                         .contentType(APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.debugMessage").value("Full authentication is required to access this resource"));
     }
@@ -64,7 +61,6 @@ class AuthTestJwtTokenIT extends PostgresTestContainer {
                 get("/v1/users/{userId}", AUTHOR_ID)
                         .header(AUTH_HEADER_KEY, expiredToken)
                         .contentType(APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isUnauthorized())
                 /*FIXME: should another message with expired token*/
                 .andExpect(jsonPath("$.debugMessage").value("Full authentication is required to access this resource"));
@@ -76,7 +72,6 @@ class AuthTestJwtTokenIT extends PostgresTestContainer {
                 get("/v1/users/{userId}", AUTHOR_ID)
                         .header(AUTH_HEADER_KEY, getValidToken() + "1")
                         .contentType(APPLICATION_JSON))
-                .andDo(print())
                 /*FIXME: should another message with wrong token*/
                 .andExpect(status().isUnauthorized());
     }
@@ -87,7 +82,6 @@ class AuthTestJwtTokenIT extends PostgresTestContainer {
                 get("/v1/users/{userId}", AUTHOR_ID)
                         .header(AUTH_HEADER_KEY, getValidToken())
                         .contentType(APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 }

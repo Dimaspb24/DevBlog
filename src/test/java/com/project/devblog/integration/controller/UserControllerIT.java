@@ -29,7 +29,6 @@ import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @IT
@@ -58,7 +57,6 @@ class UserControllerIT extends PostgresTestContainer {
                 .perform(get("/v1/users/{userId}", user.getId())
                         .header("Authorization", getValidToken())
                         .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -74,7 +72,6 @@ class UserControllerIT extends PostgresTestContainer {
         mockMvc
                 .perform(get("/v1/users/{userId}", idForFind)
                         .header("Authorization", getValidToken()))
-                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(NotFoundException.class))
                 .andExpect(result -> assertThat(result.getResolvedException().getMessage())
@@ -97,7 +94,6 @@ class UserControllerIT extends PostgresTestContainer {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsBytes(request))
                         .header("Authorization", getValidToken()))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -123,7 +119,6 @@ class UserControllerIT extends PostgresTestContainer {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsBytes(request))
                         .header("Authorization", getValidToken()))
-                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(NonUniqueValueException.class))
                 .andExpect(result -> assertThat(result.getResolvedException().getMessage())
@@ -141,7 +136,6 @@ class UserControllerIT extends PostgresTestContainer {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsBytes(request))
                         .header("Authorization", getValidToken()))
-                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(NonUniqueValueException.class))
                 .andExpect(result -> assertThat(result.getResolvedException().getMessage())

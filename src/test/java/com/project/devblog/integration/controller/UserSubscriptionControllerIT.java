@@ -31,7 +31,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @IT
@@ -65,7 +64,6 @@ class UserSubscriptionControllerIT extends PostgresTestContainer {
         mockMvc
                 .perform(post("/v1/users/{userId}/subscriptions/{authorId}", user.getId(), authorId)
                         .header("Authorization", getValidToken()))
-                .andDo(print())
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -80,7 +78,6 @@ class UserSubscriptionControllerIT extends PostgresTestContainer {
         mockMvc
                 .perform(post("/v1/users/{userId}/subscriptions/{authorId}", user.getId(), authorId)
                         .header("Authorization", getValidToken()))
-                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(NotFoundException.class))
                 .andExpect(result -> assertThat(result.getResolvedException().getMessage())
@@ -98,7 +95,6 @@ class UserSubscriptionControllerIT extends PostgresTestContainer {
         mockMvc
                 .perform(delete("/v1/users/{userId}/subscriptions/{authorId}", user.getId(), authorId)
                         .header("Authorization", getValidToken()))
-                .andDo(print())
                 .andExpect(status().isNoContent())
                 .andReturn();
 
@@ -113,7 +109,6 @@ class UserSubscriptionControllerIT extends PostgresTestContainer {
         mockMvc
                 .perform(delete("/v1/users/{userId}/subscriptions/{authorId}", user.getId(), authorId)
                         .header("Authorization", getValidToken()))
-                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(NotFoundException.class))
                 .andExpect(result -> assertThat(result.getResolvedException().getMessage())
@@ -128,7 +123,6 @@ class UserSubscriptionControllerIT extends PostgresTestContainer {
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/users/{userId}/subscriptions/articles", user.getId())
                         .header("Authorization", getValidToken()))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
 

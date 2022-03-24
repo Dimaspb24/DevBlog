@@ -12,31 +12,30 @@ import com.project.devblog.service.ArticleService;
 import com.project.devblog.service.SubscriptionService;
 import com.project.devblog.service.UserService;
 import com.project.devblog.testcontainers.PostgresTestContainer;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 @ITWithContextConfig
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -77,7 +76,6 @@ class UserSubscriptionControllerTest extends PostgresTestContainer {
         mockMvc
                 .perform(post("/v1/users/{userId}/subscriptions/{authorId}", user.getId(), author.getId())
                         .header("Authorization", token))
-                .andDo(print())
                 .andExpect(status().isCreated())
                 .andReturn();
     }
@@ -91,7 +89,6 @@ class UserSubscriptionControllerTest extends PostgresTestContainer {
         mockMvc
                 .perform(post("/v1/users/{userId}/subscriptions/{authorId}", user.getId(), author.getId())
                         .header("Authorization", token))
-                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andReturn();
     }
@@ -106,7 +103,6 @@ class UserSubscriptionControllerTest extends PostgresTestContainer {
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/users/{userId}/subscriptions", user.getId())
                         .header("Authorization", token))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -122,7 +118,6 @@ class UserSubscriptionControllerTest extends PostgresTestContainer {
         mockMvc
                 .perform(delete("/v1/users/{userId}/subscriptions/{authorId}", user.getId(), author.getId())
                         .header("Authorization", token))
-                .andDo(print())
                 .andExpect(status().isNoContent())
                 .andReturn();
     }
@@ -141,7 +136,6 @@ class UserSubscriptionControllerTest extends PostgresTestContainer {
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/users/{userId}/subscriptions/articles", user.getId())
                         .header("Authorization", token))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -168,7 +162,6 @@ class UserSubscriptionControllerTest extends PostgresTestContainer {
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/users/{userId}/subscribers", author.getId())
                         .header("Authorization", token))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
 

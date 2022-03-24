@@ -22,7 +22,6 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,7 +51,6 @@ class AuthenticationControllerIT extends PostgresTestContainer {
                 .perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.AUTHORIZATION))
                 .andReturn();
@@ -73,7 +71,6 @@ class AuthenticationControllerIT extends PostgresTestContainer {
                 .perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
-                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andReturn();
     }
@@ -88,7 +85,6 @@ class AuthenticationControllerIT extends PostgresTestContainer {
                 .perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
-                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andReturn();
     }

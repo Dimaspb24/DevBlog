@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @AutoConfigureMockMvc
 @RequiredArgsConstructor
-class UserSubscriptionControllerTest extends PostgresTestContainer {
+class UserSubscriptionControllerIT extends PostgresTestContainer {
 
     ArticleService articleService;
     SubscriptionService subscriptionService;

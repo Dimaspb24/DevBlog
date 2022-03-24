@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @AutoConfigureMockMvc
 @RequiredArgsConstructor
-class UserControllerTest extends PostgresTestContainer {
+class UserControllerIT extends PostgresTestContainer {
 
     UserService userService;
     JwtTokenProvider jwtTokenProvider;

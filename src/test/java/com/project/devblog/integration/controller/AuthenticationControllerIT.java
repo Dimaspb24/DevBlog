@@ -1,19 +1,19 @@
-package com.project.devblog;
+package com.project.devblog.integration.controller;
 
 import com.project.devblog.dto.request.AuthenticationRequest;
 import com.project.devblog.dto.response.AuthenticationResponse;
+import com.project.devblog.integration.config.annotation.IT;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.service.AuthenticationService;
 import com.project.devblog.service.UserService;
 import com.project.devblog.service.VerificationService;
-import com.project.devblog.testcontainers.AbstractPostgresTestcontainer;
+import com.project.devblog.testcontainers.PostgresTestContainer;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,20 +26,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@IT
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AuthenticationControllerTest_Login_IT extends AbstractPostgresTestcontainer {
+@RequiredArgsConstructor
+class AuthenticationControllerIT extends PostgresTestContainer {
 
-    @Autowired
     AuthenticationService authenticationService;
-    @Autowired
     UserService userService;
-    @Autowired
     VerificationService verificationService;
-    @Autowired
     MockMvc mockMvc;
-    final ObjectMapper mapper = new ObjectMapper();
+
+    ObjectMapper mapper = new ObjectMapper();
 
     @Test
     void loginTest() throws Exception {
@@ -60,9 +58,10 @@ public class AuthenticationControllerTest_Login_IT extends AbstractPostgresTestc
                 .andReturn();
 
         final String response = mvcResult.getResponse().getContentAsString();
-        assertThat(response).contains(String.format("\"id\":\"%s\"", authenticationResponse.getId()));
-        assertThat(response).contains(String.format("\"login\":\"%s\"", authenticationResponse.getLogin()));
-        assertThat(response).contains(String.format("\"role\":\"%s\"", authenticationResponse.getRole()));
+        assertThat(response)
+                .contains(String.format("\"id\":\"%s\"", authenticationResponse.getId()))
+                .contains(String.format("\"login\":\"%s\"", authenticationResponse.getLogin()))
+                .contains(String.format("\"role\":\"%s\"", authenticationResponse.getRole()));
     }
 
     @Test

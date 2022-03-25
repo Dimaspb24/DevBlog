@@ -1,10 +1,16 @@
 package com.project.devblog.dto.response;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(exclude = {"creationDate"})
 @Getter
 @Builder
 @AllArgsConstructor

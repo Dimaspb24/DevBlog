@@ -25,18 +25,23 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, Integer>
             "and a.enabled = true and a.publicationDate is not null")
     Page<ArticleEntity> findByEnabledIsTrueAndPublicationDateIsNotNull(Pageable pageable);
 
-    Page<ArticleEntity> findByEnabledIsTrueAndTitleContains(@NonNull String name, Pageable pageable);
+    @Query("select a from ArticleEntity a " +
+            "where lower(a.title) like lower(concat('%', :titleContains, '%'))  " +
+            "and a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +
+            "and a.enabled = true " +
+            "and a.publicationDate is not null")
+    Page<ArticleEntity> findByEnabledIsTrueAndTitleContains(@NonNull @Param("titleContains") String titleContains, Pageable pageable);
 
-    @Query("select a from TagEntity t " +
-            "join t.articles a " +
+    @Query("select a from ArticleEntity a " +
+            "join a.tags t " +
             "where t.name = :tagName " +
             "and a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +
             "and a.enabled = true " +
             "and a.publicationDate is not null")
     Page<ArticleEntity> findByEnabledAndTagName(@NonNull @Param("tagName") String tagName, Pageable pageable);
 
-    @Query("select a from TagEntity t " +
-            "join t.articles a " +
+    @Query("select a from ArticleEntity a " +
+            "join a.tags t " +
             "where t.name = :tagName " +
             "and lower(a.title) like lower(concat('%', :titleContains, '%'))  " +
             "and a.status = com.project.devblog.model.enums.StatusArticle.PUBLISHED " +

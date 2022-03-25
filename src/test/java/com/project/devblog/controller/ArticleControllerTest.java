@@ -180,7 +180,7 @@ class ArticleControllerTest {
         when(commentService.findAllByArticleId(any(Integer.class), any(Pageable.class)))
                 .thenReturn(new PageImpl<>(List.of(commentEntity)));
 
-        final var response = articleController.findAll(articleId, pageable);
+        final var response = articleController.findAllCommentsById(articleId, pageable);
 
         verify(commentService).findAllByArticleId(any(Integer.class), any(Pageable.class));
         assertEquals(1, response.getTotalElements());

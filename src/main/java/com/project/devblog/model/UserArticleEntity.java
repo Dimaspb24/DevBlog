@@ -1,5 +1,6 @@
 package com.project.devblog.model;
 
+import com.project.devblog.model.base.AuditableBaseEntity;
 import com.project.devblog.model.enums.BookmarkType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

@@ -54,80 +54,68 @@ values (1, 2),
        (9, 8),
        (9, 5);
 
-insert into articles (user_id, title, body, status, description, publication_date)
-values (1, 'Spring Security with JWT for REST API',
-        'Spring is considered a trusted framework in the Java ecosystem and is widely used. It’s no longer valid to refer to Spring as a framework, as it’s more of an umbrella term that covers various frameworks. One of these frameworks is Spring Security, which is a powerful and customizable authentication and authorization framework. It is considered the de facto standard for securing Spring-based applications.
-
-Despite its popularity, I must admit that when it comes to single-page applications, it’s not simple and straightforward to configure. I suspect the reason is that it started more as an MVC application-oriented framework, where webpage rendering happens on the server-side and communication is session-based.
-
-If the back end is based on Java and Spring, it makes sense to use Spring Security for authentication/authorization and configure it for stateless communication. While there are a lot of articles explaining how this is done, for me, it was still frustrating to set it up for the first time, and I had to read and sum up information from multiple sources. That’s why I decided to write this article, where I will try to summarize and cover all the required subtle details and foibles you may encounter during the configuration process.',
-        'PUBLISHED',
-        'The Spring Security framework is the de facto industry standard when it comes to securing Spring-based apps, but it can be tricky to configure. In this article, Toptal Software Engineer Ioram Gordadze demonstrates how you can implement it without wasting too much time.',
+insert into articles (id, user_id, title, body, status, description, enabled, publication_date)
+values (1, 1, 'Spring Security with JWT', 'Some body', 'PUBLISHED', 'The Spring Security framework is ... ', true,
         timestamp '2022-01-30 10:10:35'),
-       (2, 'Spring Security: Check If a User Has a Role in Java',
-        'test body 1',
-        'PUBLISHED',
-        'In Spring Security, sometimes it is necessary to check if an authenticated user has a specific role. This can be useful to enable or disable particular features in our applications.
-
-In this tutorial, we''ll see various ways to check user roles in Java for Spring Security.',
+       (2, 2, 'Spring Security', 'test body 1', 'PUBLISHED', 'In Spring Security ...', true,
         timestamp '2022-01-30 10:17:35'),
-       (2, 'Title 2.2', 'test body 2', 'CREATED', 'description', null),
-       (3, 'Title 3.1', 'test body 1', 'CREATED', 'description', null),
-       (3, 'Title 3.2', 'test body 2', 'CREATED', 'description', null),
-       (3, 'Title 3.3', 'test body 3', 'PUBLISHED', 'description', timestamp '2022-01-30 10:08:35'),
-       (4, 'Title 4.1', 'test body 1', 'CREATED', 'description', null),
-       (4, 'Title 4.2', 'test body 2', 'PUBLISHED', 'description', timestamp '2021-12-30 12:08:35'),
-       (5, 'Title 5.1', 'test body 1', 'PUBLISHED', 'description', timestamp '2022-01-05 10:30:35'),
-       (6, 'Title 6.1', 'test body 1', 'CREATED', 'description', null),
-       (6, 'Title 6.2', 'test body 2', 'CREATED', 'description', null),
-       (6, 'Title 6.3', 'test body 3', 'PUBLISHED', 'description', timestamp '2022-01-15 15:08:35');
-insert into articles (user_id, title, body, status, description, enabled, publication_date)
-values (6, 'Title 6.4', 'test body 4', 'CREATED', 'description', false, null),
-       (7, 'Title 7.1', 'test body 1', 'PUBLISHED', 'description', false, timestamp '2021-11-25 10:08:35'),
-       (7, 'Title 7.2', 'test body 2', 'PUBLISHED', 'description', false, timestamp '2022-01-21 23:08:35'),
-       (9, 'Title 9.1', 'test body 1', 'PUBLISHED', 'description', false, timestamp '2022-01-24 11:08:35'),
-       (9, 'Title 9.2', 'test body 2', 'CREATED', 'description', true, null);
+       (3, 2, 'Title 2.2', 'test body 2', 'CREATED', 'description', true, null),
+       (4, 3, 'Title 3.1', 'test body 1', 'CREATED', 'description', true, null),
+       (5, 3, 'Title 3.2', 'test body 2', 'CREATED', 'description', true, null),
+       (6, 3, 'Title 3.3', 'test body 3', 'PUBLISHED', 'description', true, timestamp '2022-01-30 10:08:35'),
+       (7, 4, 'Title 4.1', 'test body 1', 'CREATED', 'description', true, null),
+       (8, 4, 'Title 4.2', 'test body 2', 'PUBLISHED', 'description', true, timestamp '2021-12-30 12:08:35'),
+       (9, 5, 'Title 5.1', 'test body 1', 'PUBLISHED', 'description', true, timestamp '2022-01-05 10:30:35'),
+       (10, 6, 'Title 6.1', 'test body 1', 'CREATED', 'description', true, null),
+       (11, 6, 'Title 6.2', 'test body 2', 'CREATED', 'description', true, null),
+       (12, 6, 'Title 6.3', 'test body 3', 'PUBLISHED', 'description', true, timestamp '2022-01-15 15:08:35'),
+       (13, 6, 'Title 6.4', 'test body 4', 'CREATED', 'description', false, null),
+       (14, 7, 'Title 7.1', 'test body 1', 'PUBLISHED', 'description', false, timestamp '2021-11-25 10:08:35'),
+       (15, 7, 'Title 7.2', 'test body 2', 'PUBLISHED', 'description', false, timestamp '2022-01-21 23:08:35'),
+       (16, 9, 'Title 9.1', 'test body 1', 'PUBLISHED', 'description', false, timestamp '2022-01-24 11:08:35'),
+       (17, 9, 'Title 9.2', 'test body 2', 'CREATED', 'description', true, null);
+select setval('articles_id_seq', (select max(id) from articles));
 
-insert into users_articles (user_id, article_id, rating, bookmark_type)
-values ('1', 8, 8, 'FAVORITE'),
-       ('1', 7, 6, 'BOOKMARK'),
-       ('1', 5, 5, 'BOOKMARK'),
-       ('2', 1, 2, 'FAVORITE'),
-       ('2', 5, 10, 'BOOKMARK'),
-       ('3', 2, 8, 'FAVORITE'),
-       ('4', 11, 9, 'BOOKMARK'),
-       ('4', 12, 7, 'BOOKMARK'),
-       ('4', 3, 6, 'FAVORITE');
-insert into users_articles (user_id, article_id, rating)
-values ('1', 9, 3),
-       ('3', 3, 4),
-       ('5', 5, 5),
-       ('6', 6, 6),
-       ('7', 5, 7),
-       ('7', 4, 8),
-       ('8', 3, 9);
-insert into users_articles (user_id, article_id, bookmark_type)
-values ('1', 10, 'FAVORITE'),
-       ('2', 7, 'BOOKMARK'),
-       ('2', 8, 'FAVORITE'),
-       ('6', 2, 'FAVORITE'),
-       ('8', 2, 'BOOKMARK'),
-       ('9', 1, 'BOOKMARK'),
-       ('9', 4, 'BOOKMARK'),
-       ('9', 5, 'FAVORITE'),
-       ('9', 2, 'FAVORITE');
+insert into users_articles (id, user_id, article_id, rating, bookmark_type)
+values (1, '1', 8, 8, 'FAVORITE'),
+       (2, '1', 7, 6, 'BOOKMARK'),
+       (3, '1', 5, 5, 'BOOKMARK'),
+       (4, '2', 1, 2, 'FAVORITE'),
+       (5, '2', 5, 10, 'BOOKMARK'),
+       (6, '3', 2, 8, 'FAVORITE'),
+       (7, '4', 11, 9, 'BOOKMARK'),
+       (8, '4', 12, 7, 'BOOKMARK'),
+       (9, '4', 3, 6, 'FAVORITE'),
+       (10, '1', 9, 3, null),
+       (11, '3', 3, 4, null),
+       (12, '5', 5, 5, null),
+       (13, '6', 6, 6, null),
+       (14, '7', 5, 7, null),
+       (15, '7', 4, 8, null),
+       (16, '8', 3, 9, null),
+       (17, '1', 10, null, 'FAVORITE'),
+       (18, '2', 7, null, 'BOOKMARK'),
+       (19, '2', 8, null, 'FAVORITE'),
+       (20, '6', 2, null, 'FAVORITE'),
+       (21, '8', 2, null, 'BOOKMARK'),
+       (22, '9', 1, null, 'BOOKMARK'),
+       (23, '9', 4, null, 'BOOKMARK'),
+       (24, '9', 5, null, 'FAVORITE'),
+       (25, '9', 2, null, 'FAVORITE');
+select setval('users_articles_id_seq', (select max(id) from users_articles));
 
-insert into tags (name)
-values ('software'),
-       ('docker'),
-       ('spring boot'),
-       ('maven'),
-       ('gradle'),
-       ('spring'),
-       ('database'),
-       ('ACID'),
-       ('transactional'),
-       ('DAO');
+insert into tags (id, name)
+values (1, 'software'),
+       (2, 'docker'),
+       (3, 'spring boot'),
+       (4, 'maven'),
+       (5, 'gradle'),
+       (6, 'spring'),
+       (7, 'database'),
+       (8, 'ACID'),
+       (9, 'transactional'),
+       (10, 'DAO');
+select setval('tags_id_seq', (select max(id) from tags));
 
 insert into articles_tags (article_id, tag_id)
 values (1, 1),
@@ -148,5 +136,16 @@ values (1, 1),
        (7, 4),
        (8, 8),
        (8, 10),
+       (8, 4),
        (9, 2),
-       (9, 3);
+       (9, 3),
+       (9, 4);
+
+insert into comments (id, article_id, author_id, receiver_id, message, enabled)
+values (1, 1, 2, 1, 'Bad title', false),
+       (2, 1, 3, 1, 'Best title', true),
+       (3, 1, 1, 3, 'Oh no, you are exaggerating', true),
+       (4, 2, 1, 2, 'WTF', true),
+       (5, 3, 2, 3, 'I`m first!', true),
+       (6, 4, 2, 3, 'I`m first!', true);
+select setval('comments_id_seq', (select max(id) from comments));

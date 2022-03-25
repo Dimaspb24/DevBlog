@@ -53,8 +53,8 @@ public class ArticleController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/articles/{articleId}/comments")
-    public Page<CommentResponse> findAll(@NonNull @PathVariable Integer articleId,
-                                         @SortDefault("creationDate") Pageable pageable) {
+    public Page<CommentResponse> findAllCommentsById(@NonNull @PathVariable Integer articleId,
+                                                     @SortDefault("creationDate") Pageable pageable) {
         return commentService.findAllByArticleId(articleId, pageable)
                 .map(this::toResponse);
     }

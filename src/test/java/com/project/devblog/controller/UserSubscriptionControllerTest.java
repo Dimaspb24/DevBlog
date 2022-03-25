@@ -1,7 +1,7 @@
 package com.project.devblog.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.devblog.exception.NotFoundException;
+import com.project.devblog.integration.config.annotation.ITWithContextConfig;
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
@@ -11,54 +11,46 @@ import com.project.devblog.security.JwtTokenProvider;
 import com.project.devblog.service.ArticleService;
 import com.project.devblog.service.SubscriptionService;
 import com.project.devblog.service.UserService;
-import com.project.devblog.testcontainers.AbstractPostgresTestcontainer;
+import com.project.devblog.testcontainers.PostgresTestContainer;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
+@ITWithContextConfig
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class UserSubscriptionControllerTest extends AbstractPostgresTestcontainer {
-
-    @MockBean
-    UserService userService;
-    @MockBean
-    SubscriptionService subscriptionService;
-    @MockBean
-    ArticleService articleService;
-    @Autowired
-    MockMvc mockMvc;
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
+@RequiredArgsConstructor
+class UserSubscriptionControllerTest extends PostgresTestContainer {
 
     static UserEntity user;
     static UserEntity author;
-    final ObjectMapper mapper = new ObjectMapper();
+
+    final UserService userService;
+    final SubscriptionService subscriptionService;
+    final ArticleService articleService;
+    final MockMvc mockMvc;
+    final JwtTokenProvider jwtTokenProvider;
 
     @BeforeAll
     static void init() {
@@ -84,7 +76,6 @@ class UserSubscriptionControllerTest extends AbstractPostgresTestcontainer {
         mockMvc
                 .perform(post("/v1/users/{userId}/subscriptions/{authorId}", user.getId(), author.getId())
                         .header("Authorization", token))
-                .andDo(print())
                 .andExpect(status().isCreated())
                 .andReturn();
     }
@@ -98,7 +89,6 @@ class UserSubscriptionControllerTest extends AbstractPostgresTestcontainer {
         mockMvc
                 .perform(post("/v1/users/{userId}/subscriptions/{authorId}", user.getId(), author.getId())
                         .header("Authorization", token))
-                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andReturn();
     }
@@ -113,7 +103,6 @@ class UserSubscriptionControllerTest extends AbstractPostgresTestcontainer {
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/users/{userId}/subscriptions", user.getId())
                         .header("Authorization", token))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -129,7 +118,6 @@ class UserSubscriptionControllerTest extends AbstractPostgresTestcontainer {
         mockMvc
                 .perform(delete("/v1/users/{userId}/subscriptions/{authorId}", user.getId(), author.getId())
                         .header("Authorization", token))
-                .andDo(print())
                 .andExpect(status().isNoContent())
                 .andReturn();
     }
@@ -148,7 +136,6 @@ class UserSubscriptionControllerTest extends AbstractPostgresTestcontainer {
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/users/{userId}/subscriptions/articles", user.getId())
                         .header("Authorization", token))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -175,7 +162,6 @@ class UserSubscriptionControllerTest extends AbstractPostgresTestcontainer {
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/users/{userId}/subscribers", author.getId())
                         .header("Authorization", token))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
 

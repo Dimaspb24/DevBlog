@@ -1,13 +1,14 @@
 package com.project.devblog.model;
 
+import com.project.devblog.model.base.AuditableBaseEntity;
 import com.project.devblog.model.enums.StatusArticle;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -49,8 +50,8 @@ public class ArticleEntity extends AuditableBaseEntity<Integer> {
     @Column(name = "publication_date")
     LocalDateTime publicationDate;
 
-    @Formula("(select avg(ua.rating) from users_articles ua where ua.article_id = id)")
-    Double rating;
+    @Formula("(select round(avg(ua.rating)) from users_articles ua where ua.article_id = id)")
+    Double rating = 0.0;
 
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)

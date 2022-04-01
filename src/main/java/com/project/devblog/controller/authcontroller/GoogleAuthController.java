@@ -3,8 +3,6 @@ package com.project.devblog.controller.authcontroller;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
-import static com.project.devblog.security.JwtTokenProvider.AUTH_HEADER_KEY;
-import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import com.project.devblog.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
@@ -19,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletResponse;
+
+import static com.project.devblog.security.JwtTokenProvider.AUTH_HEADER_KEY;
+import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 
 @Tag(name = "Google authentication")
 @RestController

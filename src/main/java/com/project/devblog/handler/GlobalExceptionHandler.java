@@ -5,13 +5,10 @@ import com.project.devblog.exception.NonUniqueValueException;
 import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.exception.VerificationException;
 import com.project.devblog.handler.apierror.ApiError;
-import static com.project.devblog.handler.apierror.ApiError.buildResponseEntity;
-import static com.project.devblog.handler.apierror.ApiError.toResponseEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import static org.springframework.http.HttpStatus.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
@@ -37,6 +34,10 @@ import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import java.util.Objects;
+
+import static com.project.devblog.handler.apierror.ApiError.buildResponseEntity;
+import static com.project.devblog.handler.apierror.ApiError.toResponseEntity;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @ControllerAdvice

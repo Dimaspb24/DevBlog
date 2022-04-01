@@ -7,12 +7,16 @@ Usefullt command for Maven:
 Usefully links:
 
 1) JUnit 5
-   * https://github.com/lokeshgupta1981/Junit5Examples
+    * https://github.com/lokeshgupta1981/Junit5Examples
 2) Sonar
-   * https://www.baeldung.com/sonar-qube
-   * https://www.baeldung.com/sonarqube-jacoco-code-coverage
+    * https://www.baeldung.com/sonar-qube
+    * https://www.baeldung.com/sonarqube-jacoco-code-coverage
+3) Separate java and resources packages for integration test
+    * https://www.baeldung.com/maven-integration-test
+4) CI/CD with GitHub Actions
+    * https://rieckpil.de/github-actions-for-java-automate-your-maven-workflows/
 
-#### Итеграционные тесты:
+#### Интеграционные тесты:
 
 Механизм кэширования контекста активируется когда:
 

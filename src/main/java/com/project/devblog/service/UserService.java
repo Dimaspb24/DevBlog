@@ -8,7 +8,6 @@ import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.repository.UserRepository;
 import com.project.devblog.service.idgenerator.Generator;
-import static java.lang.String.format;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
+
+import static java.lang.String.format;
 
 @Service
 @RequiredArgsConstructor

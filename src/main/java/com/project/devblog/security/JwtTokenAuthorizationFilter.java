@@ -1,7 +1,5 @@
 package com.project.devblog.security;
 
-import static com.project.devblog.security.JwtTokenProvider.AUTH_HEADER_KEY;
-import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
+
+import static com.project.devblog.security.JwtTokenProvider.AUTH_HEADER_KEY;
+import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 
 @Component
 @RequiredArgsConstructor

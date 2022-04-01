@@ -2,16 +2,10 @@ package com.project.devblog.controller;
 
 import com.project.devblog.dto.request.RatingRequest;
 import com.project.devblog.dto.response.RatingResponse;
-import com.project.devblog.model.ArticleEntity;
-import com.project.devblog.model.PersonalInfo;
-import com.project.devblog.model.TagEntity;
-import com.project.devblog.model.UserArticleEntity;
-import com.project.devblog.model.UserEntity;
+import com.project.devblog.model.*;
 import com.project.devblog.model.enums.BookmarkType;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.service.RatingService;
-import java.util.List;
-import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -5,8 +5,6 @@ import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.StatusArticle;
-import static com.project.devblog.model.enums.StatusArticle.CREATED;
-import static com.project.devblog.model.enums.StatusArticle.PUBLISHED;
 import com.project.devblog.repository.ArticleRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+
+import static com.project.devblog.model.enums.StatusArticle.CREATED;
+import static com.project.devblog.model.enums.StatusArticle.PUBLISHED;
 
 @Service
 @RequiredArgsConstructor

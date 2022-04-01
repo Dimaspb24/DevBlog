@@ -7,15 +7,15 @@ import com.project.devblog.model.CommentEntity;
 import com.project.devblog.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @Tag(name = "User comments")
 @ApiV1
@@ -45,7 +45,7 @@ public class UserCommentController {
     @ResponseStatus(HttpStatus.OK)
     public Page<CommentResponse> findAll(@NonNull @PathVariable String userId,
                                          @NonNull @PathVariable Integer articleId,
-                                         @SortDefault(sort = "creationDate") Pageable pageable) {
+                                         @SortDefault(sort = "creationDate") @ParameterObject Pageable pageable) {
         return commentService.findAllByAuthorIdAndArticleId(userId, articleId, pageable)
                 .map(this::toResponse);
     }

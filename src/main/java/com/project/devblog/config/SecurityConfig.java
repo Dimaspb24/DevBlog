@@ -1,5 +1,6 @@
 package com.project.devblog.config;
 
+import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.CustomAccessDeniedHandler;
 import com.project.devblog.security.CustomAuthenticationEntryPoint;
 import com.project.devblog.security.JwtTokenAuthorizationFilter;
@@ -30,7 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api-docs/**",
             "/api-docs.yaml",
             "/swagger-ui/**",
-            "/swagger-ui.html"
+            "/swagger-ui.html",
+            "/actuator/**",
+            "/management/**"
     };
     private final JwtTokenAuthorizationFilter jwtTokenAuthorizationFilter;
 
@@ -47,10 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(OPEN_API_URLS).permitAll()
                 .antMatchers(AUTH_URL).permitAll()
-//                .antMatchers(DOMAIN_URLS).hasRole(Role.USER.toString())
-//                .antMatchers(GOOGLE_AUTH_REDIRECT_URL).hasRole(Role.USER.toString())
-                .anyRequest()
-                .authenticated()
+                .antMatchers(DOMAIN_URLS).hasAuthority(Role.USER.toString())
+                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtTokenAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login();

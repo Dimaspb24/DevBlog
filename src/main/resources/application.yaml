@@ -1,5 +1,3 @@
-api-version: v1
-
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -46,23 +44,15 @@ spring:
     resources:
       add-mappings: false
 
-#logging:
-#  level:
-#    org:
-#      apache:
-#        tomcat: INFO
-#    org.springframework.orm.jpa: DEBUG
-#    org.springframework.transaction: DEBUG
-
 jwt:
   token:
     secret: jwtdevblog
     expired: 60 # minute
-
 app:
   google:
     redirect:
       url: http://localhost:8080/v1/users/%s/articles
+#Mail
 mail:
   name: IDK
   email: idkspbcorp.com
@@ -74,8 +64,22 @@ mail:
     пожалуйста, пройдите по ссылке:<br>
     <h3><a href="[[URL]]" target="_self">Подтвердить регистрацию</a></h3>
     Если вы получили это письмо по ошибке, просто игнорируйте его.
-
+# Springdoc
 springdoc:
   show-actuator: true
   api-docs:
     path: /api-docs
+# Actuator
+info:
+  app:
+    name: Dev BLog
+    description: The blog with the ability to create articles, rate them, subscribe to authors and bookmark articles you like
+    version: v1
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -6,14 +6,14 @@ import com.project.devblog.dto.response.TagResponse;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.service.TagService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @Tag(name = "Tags")
 @ApiV1
@@ -32,7 +32,7 @@ public class TagController {
     @GetMapping("/tags")
     @ResponseStatus(HttpStatus.OK)
     public Page<TagResponse> findAll(@RequestParam(name = "nameContains", required = false) String tagNameContains,
-                                     Pageable pageable) {
+                                     @ParameterObject Pageable pageable) {
         return tagService.findAll(tagNameContains, pageable)
                 .map(this::toResponse);
     }

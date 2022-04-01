@@ -142,10 +142,6 @@
             <artifactId>tomcat-dbcp</artifactId>
             <version>${tomcat.dbcp.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-        </dependency>
 
         <!--region Open Api-->
         <dependency>
@@ -202,7 +198,16 @@
                             <goal>stop</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.springdoc</groupId>
@@ -223,9 +228,11 @@
                 </configuration>
             </plugin>
 
+            <!--For Integration Tests-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
                 <configuration>
                     <argLine>
                         --illegal-access=permit
@@ -236,6 +243,7 @@
                     <argLine>${surefireArgLine}</argLine>
                 </configuration>
             </plugin>
+            <!--end region-->
 
             <!--Jacoco plugin region -->
             <plugin>
@@ -299,15 +307,12 @@
                 </executions>
             </plugin>
             <!--endregion-->
+
+            <!--For Unit Tests-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${failsafe.plugin.version}</version>
-                <configuration>
-                    <includes>
-                        <include>**/*IT</include>
-                    </includes>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -317,6 +322,22 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--end region-->
+
+            <!--Static analyse code-->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.5.3.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs</artifactId>
+                        <version>4.6.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <!--end region-->
         </plugins>
     </build>
 

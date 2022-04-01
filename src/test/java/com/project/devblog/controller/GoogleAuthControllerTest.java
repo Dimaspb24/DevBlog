@@ -6,11 +6,7 @@ import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.service.UserService;
 import com.project.devblog.testcontainers.PostgresTestContainer;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,6 +20,7 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 
+
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -31,13 +28,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ITWithContextConfig
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @AutoConfigureMockMvc
 @RequiredArgsConstructor
 class GoogleAuthControllerTest extends PostgresTestContainer {
 
-    final UserService userService;
-    final MockMvc mockMvc;
+    UserService userService;
+    MockMvc mockMvc;
 
     @Test
     void registrationTest() throws Exception {

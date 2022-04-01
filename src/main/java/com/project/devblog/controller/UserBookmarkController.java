@@ -6,16 +6,16 @@ import com.project.devblog.dto.response.BookmarkArticleResponse;
 import com.project.devblog.dto.response.BookmarkResponse;
 import com.project.devblog.service.BookmarkService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @Tag(name = "User bookmarks")
 @ApiV1
@@ -37,7 +37,7 @@ public class UserBookmarkController {
     @ResponseStatus(HttpStatus.OK)
     public Page<BookmarkArticleResponse> findAll(@NonNull @PathVariable String userId,
                                                  @RequestParam(name = "bookmarkType", required = false) String bookmarkType,
-                                                 @SortDefault(sort = "article.publicationDate") Pageable pageable) {
+                                                 @SortDefault(sort = "article.publicationDate") @ParameterObject Pageable pageable) {
         return bookmarkService.findAll(userId, bookmarkType, pageable);
     }
 

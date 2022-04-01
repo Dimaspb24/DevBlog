@@ -12,20 +12,16 @@ import com.project.devblog.model.TagEntity;
 import com.project.devblog.service.ArticleService;
 import com.project.devblog.service.CommentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Articles")
 @ApiV1
@@ -40,7 +36,7 @@ public class ArticleController {
     @GetMapping("/articles")
     public Page<CloseArticleResponse> findAll(@RequestParam(name = "titleContains", required = false) String titleContains,
                                               @RequestParam(name = "tagName", required = false) String tagName,
-                                              @SortDefault("publicationDate") Pageable pageable) {
+                                              @SortDefault("publicationDate") @ParameterObject Pageable pageable) {
         return articleService.findAllEnabled(titleContains, tagName, pageable)
                 .map(this::toResponse);
     }
@@ -54,7 +50,7 @@ public class ArticleController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/articles/{articleId}/comments")
     public Page<CommentResponse> findAllCommentsById(@NonNull @PathVariable Integer articleId,
-                                                     @SortDefault("creationDate") Pageable pageable) {
+                                                     @SortDefault("creationDate") @ParameterObject Pageable pageable) {
         return commentService.findAllByArticleId(articleId, pageable)
                 .map(this::toResponse);
     }

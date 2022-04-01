@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+
 import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,16 +33,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ITWithContextConfig
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @AutoConfigureMockMvc
 @RequiredArgsConstructor
 class AuthenticationControllerTest extends PostgresTestContainer {
 
-    final ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper mapper = new ObjectMapper();
 
-    final AuthenticationService authenticationService;
-    final MockMvc mockMvc;
-    final JwtTokenProvider jwtTokenProvider;
+    AuthenticationService authenticationService;
+    MockMvc mockMvc;
+    JwtTokenProvider jwtTokenProvider;
 
     @Test
     void registrationTest() throws Exception {

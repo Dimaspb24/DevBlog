@@ -44,6 +44,15 @@ paths:
         schema:
           type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -51,10 +60,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -66,8 +75,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -75,8 +84,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -90,17 +99,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -131,6 +131,15 @@ paths:
               $ref: '#/components/schemas/UserRequest'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -138,10 +147,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -153,8 +162,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -162,8 +171,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -177,17 +186,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -213,6 +213,15 @@ paths:
         schema:
           type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -220,10 +229,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -235,8 +244,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -244,8 +253,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -259,17 +268,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -296,6 +296,15 @@ paths:
         schema:
           type: boolean
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -303,10 +312,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -318,8 +327,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -327,8 +336,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -342,17 +351,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -380,6 +380,15 @@ paths:
           type: integer
           format: int32
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -387,10 +396,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -402,8 +411,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -411,8 +420,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -426,17 +435,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -473,6 +473,15 @@ paths:
               $ref: '#/components/schemas/ArticleRequest'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -480,10 +489,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -495,8 +504,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -504,8 +513,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -519,17 +528,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -560,6 +560,15 @@ paths:
           type: integer
           format: int32
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -567,10 +576,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -582,8 +591,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -591,8 +600,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -606,17 +615,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -649,6 +649,15 @@ paths:
         schema:
           type: boolean
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -656,10 +665,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -671,8 +680,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -680,8 +689,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -695,17 +704,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -733,6 +733,15 @@ paths:
           type: integer
           format: int32
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -740,10 +749,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -755,8 +764,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -764,8 +773,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -779,17 +788,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -826,6 +826,15 @@ paths:
               $ref: '#/components/schemas/RatingRequest'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -833,10 +842,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -848,8 +857,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -857,8 +866,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -872,17 +881,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -919,6 +919,15 @@ paths:
               $ref: '#/components/schemas/RatingRequest'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -926,10 +935,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -941,8 +950,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -950,8 +959,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -965,17 +974,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -1013,6 +1013,15 @@ paths:
           type: integer
           format: int64
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -1020,10 +1029,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -1035,8 +1044,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1044,8 +1053,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1059,17 +1068,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -1112,6 +1112,15 @@ paths:
               $ref: '#/components/schemas/CommentRequest'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -1119,10 +1128,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -1134,8 +1143,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1143,8 +1152,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1158,17 +1167,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -1205,6 +1205,15 @@ paths:
           type: integer
           format: int64
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -1212,10 +1221,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -1227,8 +1236,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1236,8 +1245,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1251,17 +1260,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -1300,6 +1300,15 @@ paths:
         schema:
           type: boolean
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -1307,10 +1316,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -1322,8 +1331,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1331,8 +1340,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1346,17 +1355,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -1379,6 +1379,15 @@ paths:
           type: integer
           format: int32
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -1386,10 +1395,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -1401,8 +1410,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1410,8 +1419,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1425,17 +1434,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -1467,6 +1467,15 @@ paths:
               $ref: '#/components/schemas/TagRequest'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -1474,10 +1483,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -1489,8 +1498,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1498,8 +1507,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1513,17 +1522,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -1549,6 +1549,15 @@ paths:
           type: integer
           format: int32
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -1556,10 +1565,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -1571,8 +1580,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1580,8 +1589,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1595,17 +1604,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -1632,6 +1632,15 @@ paths:
         schema:
           type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -1639,10 +1648,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -1654,8 +1663,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1663,8 +1672,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1678,17 +1687,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -1718,6 +1718,15 @@ paths:
         schema:
           type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -1725,10 +1734,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -1740,8 +1749,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1749,8 +1758,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1764,17 +1773,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -1790,17 +1790,46 @@ paths:
       - User articles
       operationId: findAll_2
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Zero-based page index (0..N)
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: The size of the page to be returned
+          required: false
+          schema:
+            minimum: 1
+            type: integer
+            default: 20
+        - name: sort
+          in: query
+          description: "Sorting criteria in the format: property(,asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -1808,10 +1837,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -1823,8 +1852,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1832,8 +1861,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1847,17 +1876,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -1888,6 +1908,15 @@ paths:
               $ref: '#/components/schemas/ArticleRequest'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -1895,10 +1924,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -1910,8 +1939,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1919,8 +1948,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1934,17 +1963,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -1975,12 +1995,41 @@ paths:
         schema:
           type: integer
           format: int32
-      - name: pageable
+      - name: page
         in: query
-        required: true
+        description: Zero-based page index (0..N)
+        required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 20
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property(,asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -1988,10 +2037,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -2003,8 +2052,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2012,8 +2061,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2027,17 +2076,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -2074,6 +2114,15 @@ paths:
               $ref: '#/components/schemas/CommentRequest'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -2081,10 +2130,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -2096,8 +2145,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2105,8 +2154,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2120,17 +2169,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -2168,6 +2208,15 @@ paths:
               $ref: '#/components/schemas/BookmarkRequest'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -2175,10 +2224,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -2190,8 +2239,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2199,8 +2248,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2214,17 +2263,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -2244,17 +2284,46 @@ paths:
       - Tags
       operationId: findAll_4
       parameters:
-      - name: nameContains
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: nameContains
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Zero-based page index (0..N)
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: The size of the page to be returned
+          required: false
+          schema:
+            minimum: 1
+            type: integer
+            default: 20
+        - name: sort
+          in: query
+          description: "Sorting criteria in the format: property(,asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -2262,10 +2331,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -2277,8 +2346,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2286,8 +2355,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2301,17 +2370,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -2336,6 +2396,15 @@ paths:
               $ref: '#/components/schemas/TagRequest'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -2343,10 +2412,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -2358,8 +2427,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2367,8 +2436,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2382,17 +2451,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -2418,6 +2478,15 @@ paths:
               $ref: '#/components/schemas/RegistrationRequest'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -2425,10 +2494,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -2440,8 +2509,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2449,8 +2518,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2464,17 +2533,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -2494,6 +2554,15 @@ paths:
       - Authentication
       operationId: logout
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -2501,10 +2570,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -2516,8 +2585,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2525,8 +2594,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2540,17 +2609,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -2572,6 +2632,15 @@ paths:
               $ref: '#/components/schemas/AuthenticationRequest'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -2579,10 +2648,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -2594,8 +2663,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2603,8 +2672,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2618,17 +2687,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -2642,18 +2702,28 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthenticationResponse'
-  /v1/users:
+  /actuator/loggers/{name}:
     get:
       tags:
-      - User
-      operationId: findAll
+        - Actuator
+      summary: Actuator web endpoint 'loggers-name'
+      operationId: loggers-name_2
       parameters:
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -2661,10 +2731,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -2676,8 +2746,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2685,8 +2755,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2700,6 +2770,64 @@ paths:
             '*/*':
               schema:
                 type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    post:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'loggers-name'
+      operationId: loggers-name
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
         "403":
           description: Forbidden
           content:
@@ -2709,8 +2837,125 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/users:
+    get:
+      tags:
+        - User
+      operationId: findAll
+      parameters:
+        - name: page
+          in: query
+          description: Zero-based page index (0..N)
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: The size of the page to be returned
+          required: false
+          schema:
+            minimum: 1
+            type: integer
+            default: 20
+        - name: sort
+          in: query
+          description: "Sorting criteria in the format: property(,asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
         "404":
           description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -2741,6 +2986,15 @@ paths:
         schema:
           type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -2748,10 +3002,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -2763,8 +3017,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2772,8 +3026,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2787,17 +3041,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -2814,20 +3059,49 @@ paths:
   /v1/users/{userId}/subscriptions:
     get:
       tags:
-      - User subscription
+        - User subscription
       operationId: findSubscriptions
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Zero-based page index (0..N)
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: The size of the page to be returned
+          required: false
+          schema:
+            minimum: 1
+            type: integer
+            default: 20
+        - name: sort
+          in: query
+          description: "Sorting criteria in the format: property(,asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -2835,10 +3109,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -2850,8 +3124,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2859,8 +3133,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2874,17 +3148,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -2901,20 +3166,49 @@ paths:
   /v1/users/{userId}/subscriptions/articles:
     get:
       tags:
-      - User subscription
+        - User subscription
       operationId: findArticlesBySubscriptions
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Zero-based page index (0..N)
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: The size of the page to be returned
+          required: false
+          schema:
+            minimum: 1
+            type: integer
+            default: 20
+        - name: sort
+          in: query
+          description: "Sorting criteria in the format: property(,asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -2922,10 +3216,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -2937,8 +3231,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2946,8 +3240,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2961,17 +3255,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -2988,20 +3273,49 @@ paths:
   /v1/users/{userId}/subscribers:
     get:
       tags:
-      - User subscription
+        - User subscription
       operationId: findSubscribers
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Zero-based page index (0..N)
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: The size of the page to be returned
+          required: false
+          schema:
+            minimum: 1
+            type: integer
+            default: 20
+        - name: sort
+          in: query
+          description: "Sorting criteria in the format: property(,asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -3009,10 +3323,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -3024,8 +3338,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3033,8 +3347,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3048,17 +3362,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -3075,25 +3380,54 @@ paths:
   /v1/users/{userId}/bookmarks:
     get:
       tags:
-      - User bookmarks
+        - User bookmarks
       operationId: findAll_1
       parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: bookmarkType
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: bookmarkType
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Zero-based page index (0..N)
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: The size of the page to be returned
+          required: false
+          schema:
+            minimum: 1
+            type: integer
+            default: 20
+        - name: sort
+          in: query
+          description: "Sorting criteria in the format: property(,asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -3101,10 +3435,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -3116,8 +3450,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3125,8 +3459,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3140,17 +3474,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -3167,15 +3492,24 @@ paths:
   /v1/auth/checkToken:
     get:
       tags:
-      - Authentication
+        - Authentication
       operationId: checkValidateToken
       parameters:
-      - name: token
-        in: query
-        required: true
-        schema:
-          type: string
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -3183,10 +3517,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -3198,8 +3532,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3207,8 +3541,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3222,17 +3556,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -3249,25 +3574,54 @@ paths:
   /v1/articles:
     get:
       tags:
-      - Articles
+        - Articles
       operationId: findAll_5
       parameters:
-      - name: titleContains
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: tagName
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: titleContains
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tagName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Zero-based page index (0..N)
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: The size of the page to be returned
+          required: false
+          schema:
+            minimum: 1
+            type: integer
+            default: 20
+        - name: sort
+          in: query
+          description: "Sorting criteria in the format: property(,asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -3275,10 +3629,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -3290,8 +3644,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3299,8 +3653,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3314,17 +3668,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -3341,16 +3686,25 @@ paths:
   /v1/articles/{articleId}:
     get:
       tags:
-      - Articles
+        - Articles
       operationId: find_5
       parameters:
-      - name: articleId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -3358,10 +3712,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -3373,8 +3727,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3382,8 +3736,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3397,17 +3751,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -3424,21 +3769,50 @@ paths:
   /v1/articles/{articleId}/comments:
     get:
       tags:
-      - Articles
-      operationId: findAll_6
+        - Articles
+      operationId: findAllCommentsById
       parameters:
-      - name: articleId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: pageable
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          description: Zero-based page index (0..N)
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: The size of the page to be returned
+          required: false
+          schema:
+            minimum: 1
+            type: integer
+            default: 20
+        - name: sort
+          in: query
+          description: "Sorting criteria in the format: property(,asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -3446,10 +3820,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -3461,8 +3835,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3470,8 +3844,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3485,17 +3859,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -3512,10 +3877,19 @@ paths:
   /actuator:
     get:
       tags:
-      - Actuator
+        - Actuator
       summary: Actuator root web endpoint
       operationId: links
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -3523,10 +3897,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -3538,8 +3912,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3547,8 +3921,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3562,17 +3936,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -3590,13 +3955,22 @@ paths:
                   type: object
                   additionalProperties:
                     $ref: '#/components/schemas/Link'
-  /actuator/health:
+  /actuator/threaddump:
     get:
       tags:
-      - Actuator
-      summary: Actuator web endpoint 'health'
-      operationId: health
+        - Actuator
+      summary: Actuator web endpoint 'threaddump'
+      operationId: threaddump_2
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -3604,10 +3978,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -3619,8 +3993,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3628,8 +4002,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3643,6 +4017,59 @@ paths:
             '*/*':
               schema:
                 type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/scheduledtasks:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'scheduledtasks'
+      operationId: scheduledtasks
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
         "403":
           description: Forbidden
           content:
@@ -3652,8 +4079,568 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/metrics:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'metrics'
+      operationId: metrics
+      responses:
         "404":
           description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/metrics/{requiredMetricName}:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'metrics-requiredMetricName'
+      operationId: metrics-requiredMetricName
+      parameters:
+        - name: requiredMetricName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/mappings:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'mappings'
+      operationId: mappings
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/loggers:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'loggers'
+      operationId: loggers
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/info:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'info'
+      operationId: info
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/heapdump:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'heapdump'
+      operationId: heapdump
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/health:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'health'
+      operationId: health
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -3670,10 +4657,19 @@ paths:
   /actuator/health/**:
     get:
       tags:
-      - Actuator
+        - Actuator
       summary: Actuator web endpoint 'health-path'
       operationId: health-path
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -3681,10 +4677,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -3696,8 +4692,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3705,8 +4701,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3720,6 +4716,59 @@ paths:
             '*/*':
               schema:
                 type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/flyway:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'flyway'
+      operationId: flyway
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
         "403":
           description: Forbidden
           content:
@@ -3729,8 +4778,815 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/env:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'env'
+      operationId: env
+      responses:
         "404":
           description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/env/{toMatch}:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'env-toMatch'
+      operationId: env-toMatch
+      parameters:
+        - name: toMatch
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/configprops:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'configprops'
+      operationId: configprops
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/configprops/{prefix}:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'configprops-prefix'
+      operationId: configprops-prefix
+      parameters:
+        - name: prefix
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/conditions:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'conditions'
+      operationId: conditions
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/caches:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'caches'
+      operationId: caches
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'caches'
+      operationId: caches_2
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/caches/{cache}:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'caches-cache'
+      operationId: caches-cache
+      parameters:
+        - name: cache
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'caches-cache'
+      operationId: caches-cache_2
+      parameters:
+        - name: cache
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /actuator/beans:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'beans'
+      operationId: beans
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      com.project.devblog.handler.apierror.ApiError:
+                        $ref: '#/components/schemas/ApiError'
+                  - type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
+        "415":
+          description: Unsupported Media Type
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -3747,9 +5603,18 @@ paths:
   /:
     get:
       tags:
-      - Google authentication
+        - Google authentication
       operationId: login_1
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -3757,10 +5622,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -3772,8 +5637,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3781,8 +5646,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3796,17 +5661,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -3838,6 +5694,15 @@ paths:
           type: integer
           format: int64
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  com.project.devblog.handler.apierror.ApiError:
+                    $ref: '#/components/schemas/ApiError'
         "500":
           description: Internal Server Error
           content:
@@ -3845,10 +5710,10 @@ paths:
               schema:
                 oneOf:
                   - type: object
+                  - type: object
                     properties:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
-                  - type: object
         "400":
           description: Bad Request
           content:
@@ -3860,8 +5725,8 @@ paths:
                       com.project.devblog.handler.apierror.ApiError:
                         $ref: '#/components/schemas/ApiError'
                   - type: object
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3869,8 +5734,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "409":
-          description: Conflict
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3884,17 +5749,8 @@ paths:
             '*/*':
               schema:
                 type: object
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                type: object
-                properties:
-                  com.project.devblog.handler.apierror.ApiError:
-                    $ref: '#/components/schemas/ApiError'
-        "404":
-          description: Not Found
+        "409":
+          description: Conflict
           content:
             '*/*':
               schema:
@@ -4212,28 +6068,16 @@ components:
           maxLength: 45
           minLength: 8
           type: string
-    Pageable:
-      type: object
-      properties:
-        page:
-          minimum: 0
-          type: integer
-          format: int32
-        size:
-          minimum: 1
-          type: integer
-          format: int32
-        sort:
-          type: array
-          items:
-            type: string
     PageUserResponse:
       type: object
       properties:
+        totalPages:
+          type: integer
+          format: int32
         totalElements:
           type: integer
           format: int64
-        totalPages:
+        number:
           type: integer
           format: int32
         size:
@@ -4243,20 +6087,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserResponse'
+        sort:
+          $ref: '#/components/schemas/Sort'
         first:
           type: boolean
         last:
           type: boolean
-        sort:
-          $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
         pageable:
           $ref: '#/components/schemas/PageableObject'
-        number:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageableObject:
@@ -4267,16 +6108,16 @@ components:
           format: int64
         sort:
           $ref: '#/components/schemas/Sort'
-        unpaged:
-          type: boolean
-        paged:
-          type: boolean
         pageSize:
           type: integer
           format: int32
         pageNumber:
           type: integer
           format: int32
+        unpaged:
+          type: boolean
+        paged:
+          type: boolean
     Sort:
       type: object
       properties:
@@ -4318,16 +6159,16 @@ components:
           - 302 MOVED_TEMPORARILY
           - 303 SEE_OTHER
           - 304 NOT_MODIFIED
-          - 305 USE_PROXY
-          - 307 TEMPORARY_REDIRECT
-          - 308 PERMANENT_REDIRECT
-          - 400 BAD_REQUEST
-          - 401 UNAUTHORIZED
-          - 402 PAYMENT_REQUIRED
-          - 403 FORBIDDEN
-          - 404 NOT_FOUND
-          - 405 METHOD_NOT_ALLOWED
-          - 406 NOT_ACCEPTABLE
+            - 305 USE_PROXY
+            - 307 TEMPORARY_REDIRECT
+            - 308 PERMANENT_REDIRECT
+            - 400 BAD_REQUEST
+            - 401 UNAUTHORIZED
+            - 402 PAYMENT_REQUIRED
+            - 403 FORBIDDEN
+            - 404 NOT_FOUND
+            - 405 METHOD_NOT_ALLOWED
+            - 406 NOT_ACCEPTABLE
             - 407 PROXY_AUTHENTICATION_REQUIRED
             - 408 REQUEST_TIMEOUT
             - 409 CONFLICT
@@ -4370,8 +6211,6 @@ components:
           type: boolean
         viewName:
           type: string
-        reference:
-          type: boolean
         modelMap:
           type: object
           properties:
@@ -4379,6 +6218,8 @@ components:
               type: boolean
           additionalProperties:
             type: object
+        reference:
+          type: boolean
     View:
       type: object
       properties:
@@ -4387,10 +6228,13 @@ components:
     PageSubscriptionResponse:
       type: object
       properties:
+        totalPages:
+          type: integer
+          format: int32
         totalElements:
           type: integer
           format: int64
-        totalPages:
+        number:
           type: integer
           format: int32
         size:
@@ -4400,20 +6244,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SubscriptionResponse'
+        sort:
+          $ref: '#/components/schemas/Sort'
         first:
           type: boolean
         last:
           type: boolean
-        sort:
-          $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
         pageable:
           $ref: '#/components/schemas/PageableObject'
-        number:
-          type: integer
-          format: int32
         empty:
           type: boolean
     SubscriptionResponse:
@@ -4461,10 +6302,13 @@ components:
     PageCloseArticleResponse:
       type: object
       properties:
+        totalPages:
+          type: integer
+          format: int32
         totalElements:
           type: integer
           format: int64
-        totalPages:
+        number:
           type: integer
           format: int32
         size:
@@ -4474,29 +6318,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CloseArticleResponse'
+        sort:
+          $ref: '#/components/schemas/Sort'
         first:
           type: boolean
         last:
           type: boolean
-        sort:
-          $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
         pageable:
           $ref: '#/components/schemas/PageableObject'
-        number:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageSubscriberResponse:
       type: object
       properties:
+        totalPages:
+          type: integer
+          format: int32
         totalElements:
           type: integer
           format: int64
-        totalPages:
+        number:
           type: integer
           format: int32
         size:
@@ -4506,20 +6350,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SubscriberResponse'
+        sort:
+          $ref: '#/components/schemas/Sort'
         first:
           type: boolean
         last:
           type: boolean
-        sort:
-          $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
         pageable:
           $ref: '#/components/schemas/PageableObject'
-        number:
-          type: integer
-          format: int32
         empty:
           type: boolean
     SubscriberResponse:
@@ -4545,10 +6386,13 @@ components:
     PageBookmarkArticleResponse:
       type: object
       properties:
+        totalPages:
+          type: integer
+          format: int32
         totalElements:
           type: integer
           format: int64
-        totalPages:
+        number:
           type: integer
           format: int32
         size:
@@ -4558,29 +6402,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BookmarkArticleResponse'
+        sort:
+          $ref: '#/components/schemas/Sort'
         first:
           type: boolean
         last:
           type: boolean
-        sort:
-          $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
         pageable:
           $ref: '#/components/schemas/PageableObject'
-        number:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageCommentResponse:
       type: object
       properties:
+        totalPages:
+          type: integer
+          format: int32
         totalElements:
           type: integer
           format: int64
-        totalPages:
+        number:
           type: integer
           format: int32
         size:
@@ -4590,29 +6434,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CommentResponse'
+        sort:
+          $ref: '#/components/schemas/Sort'
         first:
           type: boolean
         last:
           type: boolean
-        sort:
-          $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
         pageable:
           $ref: '#/components/schemas/PageableObject'
-        number:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageTagResponse:
       type: object
       properties:
+        totalPages:
+          type: integer
+          format: int32
         totalElements:
           type: integer
           format: int64
-        totalPages:
+        number:
           type: integer
           format: int32
         size:
@@ -4622,20 +6466,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TagResponse'
+        sort:
+          $ref: '#/components/schemas/Sort'
         first:
           type: boolean
         last:
           type: boolean
-        sort:
-          $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
         pageable:
           $ref: '#/components/schemas/PageableObject'
-        number:
-          type: integer
-          format: int32
         empty:
           type: boolean
     Link:
@@ -4656,11 +6497,11 @@ components:
           type: string
         autowireCapableBeanFactory:
           $ref: '#/components/schemas/AutowireCapableBeanFactory'
-        applicationName:
-          type: string
         startupDate:
           type: integer
           format: int64
+        applicationName:
+          type: string
         environment:
           $ref: '#/components/schemas/Environment'
         beanDefinitionCount:
@@ -4721,6 +6562,10 @@ components:
                                   type: object
                               sealed:
                                 type: boolean
+                              specificationTitle:
+                                type: string
+                              implementationTitle:
+                                type: string
                               specificationVersion:
                                 type: string
                               specificationVendor:
@@ -4728,10 +6573,6 @@ components:
                               implementationVersion:
                                 type: string
                               implementationVendor:
-                                type: string
-                              specificationTitle:
-                                type: string
-                              implementationTitle:
                                 type: string
                     annotations:
                       type: array
@@ -4770,6 +6611,10 @@ components:
                           type: object
                       sealed:
                         type: boolean
+                      specificationTitle:
+                        type: string
+                      implementationTitle:
+                        type: string
                       specificationVersion:
                         type: string
                       specificationVendor:
@@ -4777,10 +6622,6 @@ components:
                       implementationVersion:
                         type: string
                       implementationVendor:
-                        type: string
-                      specificationTitle:
-                        type: string
-                      implementationTitle:
                         type: string
             name:
               type: string
@@ -4825,6 +6666,10 @@ components:
                               type: object
                           sealed:
                             type: boolean
+                          specificationTitle:
+                            type: string
+                          implementationTitle:
+                            type: string
                           specificationVersion:
                             type: string
                           specificationVendor:
@@ -4832,10 +6677,6 @@ components:
                           implementationVersion:
                             type: string
                           implementationVendor:
-                            type: string
-                          specificationTitle:
-                            type: string
-                          implementationTitle:
                             type: string
                 annotations:
                   type: array
@@ -4874,6 +6715,10 @@ components:
                       type: object
                   sealed:
                     type: boolean
+                  specificationTitle:
+                    type: string
+                  implementationTitle:
+                    type: string
                   specificationVersion:
                     type: string
                   specificationVendor:
@@ -4881,10 +6726,6 @@ components:
                   implementationVersion:
                     type: string
                   implementationVendor:
-                    type: string
-                  specificationTitle:
-                    type: string
-                  implementationTitle:
                     type: string
     AutowireCapableBeanFactory:
       type: object
@@ -4936,6 +6777,10 @@ components:
                           type: object
                       sealed:
                         type: boolean
+                      specificationTitle:
+                        type: string
+                      implementationTitle:
+                        type: string
                       specificationVersion:
                         type: string
                       specificationVendor:
@@ -4944,118 +6789,29 @@ components:
                         type: string
                       implementationVendor:
                         type: string
-                      specificationTitle:
-                        type: string
-                      implementationTitle:
-                        type: string
             majorVersion:
               type: integer
               format: int32
             minorVersion:
               type: integer
               format: int32
-            servletNames:
+            servlets:
               type: object
               deprecated: true
             serverInfo:
               type: string
-            servlets:
+            sessionTimeout:
+              type: integer
+              format: int32
+            servletNames:
               type: object
               deprecated: true
             attributeNames:
               type: object
-            sessionTimeout:
-              type: integer
-              format: int32
-            contextPath:
+            servletContextName:
               type: string
             initParameterNames:
               type: object
-            filterRegistrations:
-              type: object
-              additionalProperties:
-                type: object
-                properties:
-                  servletNameMappings:
-                    type: array
-                    items:
-                      type: string
-                  urlPatternMappings:
-                    type: array
-                    items:
-                      type: string
-                  name:
-                    type: string
-                  className:
-                    type: string
-                  initParameters:
-                    type: object
-                    additionalProperties:
-                      type: string
-            sessionTrackingModes:
-              uniqueItems: true
-              type: array
-              writeOnly: true
-              items:
-                type: string
-                enum:
-                  - COOKIE
-                  - URL
-                  - SSL
-            jspConfigDescriptor:
-              type: object
-              properties:
-                jspPropertyGroups:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      buffer:
-                        type: string
-                      deferredSyntaxAllowedAsLiteral:
-                        type: string
-                      errorOnUndeclaredNamespace:
-                        type: string
-                      scriptingInvalid:
-                        type: string
-                      trimDirectiveWhitespaces:
-                        type: string
-                      urlPatterns:
-                        type: array
-                        items:
-                          type: string
-                      defaultContentType:
-                        type: string
-                      isXml:
-                        type: string
-                      includeCodas:
-                        type: array
-                        items:
-                          type: string
-                      elIgnored:
-                        type: string
-                      pageEncoding:
-                        type: string
-                      includePreludes:
-                        type: array
-                        items:
-                          type: string
-                taglibs:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      taglibURI:
-                        type: string
-                      taglibLocation:
-                        type: string
-            responseCharacterEncoding:
-              type: string
-            virtualServerName:
-              type: string
-            effectiveMinorVersion:
-              type: integer
-              format: int32
             servletRegistrations:
               type: object
               additionalProperties:
@@ -5075,11 +6831,43 @@ components:
                     type: object
                     additionalProperties:
                       type: string
-            effectiveMajorVersion:
+            filterRegistrations:
+              type: object
+              additionalProperties:
+                type: object
+                properties:
+                  urlPatternMappings:
+                    type: array
+                    items:
+                      type: string
+                  servletNameMappings:
+                    type: array
+                    items:
+                      type: string
+                  name:
+                    type: string
+                  className:
+                    type: string
+                  initParameters:
+                    type: object
+                    additionalProperties:
+                      type: string
+            effectiveSessionTrackingModes:
+              uniqueItems: true
+              type: array
+              items:
+                type: string
+                enum:
+                  - COOKIE
+                  - URL
+                  - SSL
+            responseCharacterEncoding:
+              type: string
+            virtualServerName:
+              type: string
+            effectiveMinorVersion:
               type: integer
               format: int32
-            servletContextName:
-              type: string
             sessionCookieConfig:
               type: object
               properties:
@@ -5098,8 +6886,65 @@ components:
                   type: boolean
                 httpOnly:
                   type: boolean
+            sessionTrackingModes:
+              uniqueItems: true
+              type: array
+              writeOnly: true
+              items:
+                type: string
+                enum:
+                  - COOKIE
+                  - URL
+                  - SSL
             requestCharacterEncoding:
               type: string
+            jspConfigDescriptor:
+              type: object
+              properties:
+                taglibs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      taglibLocation:
+                        type: string
+                      taglibURI:
+                        type: string
+                jspPropertyGroups:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      scriptingInvalid:
+                        type: string
+                      errorOnUndeclaredNamespace:
+                        type: string
+                      deferredSyntaxAllowedAsLiteral:
+                        type: string
+                      trimDirectiveWhitespaces:
+                        type: string
+                      buffer:
+                        type: string
+                      pageEncoding:
+                        type: string
+                      includeCodas:
+                        type: array
+                        items:
+                          type: string
+                      elIgnored:
+                        type: string
+                      includePreludes:
+                        type: array
+                        items:
+                          type: string
+                      isXml:
+                        type: string
+                      defaultContentType:
+                        type: string
+                      urlPatterns:
+                        type: array
+                        items:
+                          type: string
             defaultSessionTrackingModes:
               uniqueItems: true
               type: array
@@ -5109,15 +6954,11 @@ components:
                   - COOKIE
                   - URL
                   - SSL
-            effectiveSessionTrackingModes:
-              uniqueItems: true
-              type: array
-              items:
-                type: string
-                enum:
-                  - COOKIE
-                  - URL
-                  - SSL
+            effectiveMajorVersion:
+              type: integer
+              format: int32
+            contextPath:
+              type: string
           writeOnly: true
         contentType:
           type: string

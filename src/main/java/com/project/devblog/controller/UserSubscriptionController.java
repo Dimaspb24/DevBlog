@@ -12,24 +12,19 @@ import com.project.devblog.model.UserEntity;
 import com.project.devblog.service.ArticleService;
 import com.project.devblog.service.SubscriptionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "User subscription")
 @ApiV1
@@ -58,7 +53,7 @@ public class UserSubscriptionController {
     @GetMapping("/users/{userId}/subscriptions")
     @ResponseStatus(HttpStatus.OK)
     public Page<SubscriptionResponse> findSubscriptions(@NonNull @PathVariable String userId,
-                                                        Pageable pageable) {
+                                                        @ParameterObject Pageable pageable) {
         return subscriptionService.findSubscriptions(userId, pageable)
                 .map(this::toSubscriptionResponse);
     }
@@ -66,7 +61,7 @@ public class UserSubscriptionController {
     @GetMapping("/users/{userId}/subscriptions/articles")
     @ResponseStatus(HttpStatus.OK)
     public Page<CloseArticleResponse> findArticlesBySubscriptions(@NonNull @PathVariable String userId,
-                                                                  @SortDefault(sort = "a.publicationDate") Pageable pageable) {
+                                                                  @SortDefault(sort = "a.publicationDate") @ParameterObject Pageable pageable) {
         return articleService.findBySubscriptions(userId, pageable)
                 .map(this::toCloseArticleResponse);
     }
@@ -74,7 +69,7 @@ public class UserSubscriptionController {
     @GetMapping("/users/{userId}/subscribers")
     @ResponseStatus(HttpStatus.OK)
     public Page<SubscriberResponse> findSubscribers(@NonNull @PathVariable String userId,
-                                                    Pageable pageable) {
+                                                    @ParameterObject Pageable pageable) {
         return subscriptionService.findSubscribers(userId, pageable)
                 .map(this::toSubscriberResponse);
     }

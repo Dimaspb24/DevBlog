@@ -1,7 +1,6 @@
 package com.project.devblog.config;
 
 import com.project.devblog.constant.OpenApiConstant;
-import static com.project.devblog.constant.OpenApiConstant.*;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -10,18 +9,20 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
-import static java.lang.String.format;
+import java.util.List;
 import org.springdoc.core.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
+
+import static com.project.devblog.constant.OpenApiConstant.*;
+import static java.lang.String.format;
 
 @Configuration
 public class OpenApiConfig {
 
-    @Value("${api-version}")
+    @Value("${info.app.version}")
     private String apiVersion;
 
     @Bean
@@ -30,6 +31,15 @@ public class OpenApiConfig {
                 .builder()
                 .group(format("Api %s", apiVersion))
                 .pathsToMatch(format("/%s/**", apiVersion))
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi actuatorGroup() {
+        return GroupedOpenApi
+                .builder()
+                .group("Tools")
+                .pathsToMatch("/actuator/**")
                 .build();
     }
 

@@ -51,13 +51,13 @@ class AuthenticationControllerIT extends PostgresITContainer {
     static GenericContainer greenMailContainer = new GenericContainer<>(DockerImageName.parse("greenmail/standalone:1.6.1"))
             .waitingFor(Wait.forLogMessage(".*Starting GreenMail standalone.*", 1))
             .withEnv("GREENMAIL_OPTS", "-Dgreenmail.setup.test.smtp -Dgreenmail.hostname=0.0.0.0 -Dgreenmail.users=duke:springboot")
-            .withExposedPorts(587);
+            .withExposedPorts(3025);
 
-//    @DynamicPropertySource
-//    static void configureMailHost(DynamicPropertyRegistry registry) {
-//        registry.add("spring.mail.host", greenMailContainer::getHost);
-//        registry.add("spring.mail.port", greenMailContainer::getFirstMappedPort);
-//    }
+    @DynamicPropertySource
+    static void configureMailHost(DynamicPropertyRegistry registry) {
+        registry.add("spring.mail.host", greenMailContainer::getHost);
+        registry.add("spring.mail.port", greenMailContainer::getFirstMappedPort);
+    }
 
     @Test
     void loginTest() throws Exception {

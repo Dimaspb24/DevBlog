@@ -9,7 +9,7 @@ on:
     branches: [ development, master]
 
 jobs:
-  Build_Package:
+  Integration_tests:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -19,5 +19,5 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
         cache: maven
-    - name: Mvn_Build_Package
+    - name: mvn_verify
       run: mvn -B verify -DskipUTs=true --file pom.xml

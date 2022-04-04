@@ -20,4 +20,4 @@ jobs:
         distribution: 'adopt'
         cache: maven
     - name: Mvn_Build_Package
-      run: mvn -B verife -DskipUTs=true --file pom.xml
+      run: mvn -B verify -DskipUTs=true --file pom.xml

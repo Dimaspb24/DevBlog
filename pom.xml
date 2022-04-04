@@ -361,6 +361,12 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <includes>
+                        <include>**/*IT</include>
+                        <include>**/*ST</include>
+                    </includes>
+                </configuration>
             </plugin>
             <!--end region-->
 

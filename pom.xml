@@ -185,25 +185,6 @@
                         </exclude>
                     </excludes>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>pre-integration-test</id>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>post-integration-test</id>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <goals>
-                            <goal>build-info</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -268,24 +249,24 @@
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-maven-plugin</artifactId>
-                <version>${springdoc.openapi.maven.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <apiDocsUrl>http://localhost:8080/api-docs.yaml</apiDocsUrl>
-                    <outputFileName>openapi.yaml</outputFileName>
-                    <outputDir>${project.basedir}/src/main/resources</outputDir>
-                </configuration>
-            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>org.springdoc</groupId>-->
+            <!--                <artifactId>springdoc-openapi-maven-plugin</artifactId>-->
+            <!--                <version>${springdoc.openapi.maven.plugin.version}</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <phase>integration-test</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>generate</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--                <configuration>-->
+            <!--                    <apiDocsUrl>http://localhost:8080/api-docs.yaml</apiDocsUrl>-->
+            <!--                    <outputFileName>openapi.yaml</outputFileName>-->
+            <!--                    <outputDir>${project.basedir}/src/main/resources</outputDir>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
 
             <!--For Unit Tests-->
             <plugin>
@@ -293,10 +274,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
                 <configuration>
+                    <skip>${skipUTs}</skip>
                     <argLine>
                         --illegal-access=permit
                     </argLine>
-                    <testFailureIgnore>false</testFailureIgnore>
                     <forkCount>2</forkCount>
                     <reuseForks>true</reuseForks>
                     <argLine>${surefireArgLine}</argLine>
@@ -380,12 +361,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <includes>
-                        <include>**/*IT</include>
-                        <include>**/*ST</include>
-                    </includes>
-                </configuration>
             </plugin>
             <!--end region-->
 
@@ -424,4 +399,19 @@
         </plugins>
     </reporting>
 
+
+    <profiles>
+        <profile>
+            <id>integration-test</id>
+            <properties>
+                <spring.profiles.active>integration-test</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>system-test</id>
+            <properties>
+                <spring.profiles.active>system-test</spring.profiles.active>
+            </properties>
+        </profile>
+    </profiles>
 </project>

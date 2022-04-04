@@ -1,17 +1,13 @@
-name: Ci-Github-Pipelines
+name: Ci-Unit-Tests
 
 on:
   push:
     branches:
       - '*'
-  pull_request:
-    branches: [ development ]
 
 jobs:
-  Build_Package:
-
+  Unit_tests:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Up container with Java 11
@@ -20,5 +16,5 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
         cache: maven
-    - name: Mvn_Build_Package
-      run: mvn -B package --file pom.xml
+    - name: mvn_verify
+      run: mvn -B verify -DskipITs=true --file pom.xml

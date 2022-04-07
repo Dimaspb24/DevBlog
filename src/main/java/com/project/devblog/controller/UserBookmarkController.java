@@ -28,10 +28,10 @@ public class UserBookmarkController {
 
     @PostMapping("/users/{userId}/articles/{articleId}/bookmarks")
     @ResponseStatus(HttpStatus.CREATED)
-    public BookmarkResponse create(@NonNull @PathVariable String userId,
-                                   @NonNull @PathVariable Integer articleId,
-                                   @NonNull @Valid @RequestBody BookmarkRequest request) {
-        return bookmarkService.create(userId, articleId, request);
+    public BookmarkResponse createOrUpdate(@NonNull @PathVariable String userId,
+                                           @NonNull @PathVariable Integer articleId,
+                                           @NonNull @Valid @RequestBody BookmarkRequest request) {
+        return bookmarkService.createOrUpdate(userId, articleId, request);
     }
 
     @GetMapping("/users/{userId}/bookmarks")

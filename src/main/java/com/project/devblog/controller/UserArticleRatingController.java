@@ -23,10 +23,10 @@ public class UserArticleRatingController {
 
     @PostMapping("/users/{userId}/articles/{articleId}/ratings")
     @ResponseStatus(HttpStatus.CREATED)
-    public RatingResponse create(@NonNull @PathVariable String userId,
-                                 @NonNull @PathVariable Integer articleId,
-                                 @NonNull @Valid @RequestBody RatingRequest request) {
-        return toResponse(ratingService.create(userId, articleId, request.getRating()));
+    public RatingResponse createOrUpdate(@NonNull @PathVariable String userId,
+                                         @NonNull @PathVariable Integer articleId,
+                                         @NonNull @Valid @RequestBody RatingRequest request) {
+        return toResponse(ratingService.createOrUpdate(userId, articleId, request.getRating()));
     }
 
     @GetMapping("/users/{userId}/articles/{articleId}/ratings")
@@ -34,14 +34,6 @@ public class UserArticleRatingController {
     public RatingResponse find(@NonNull @PathVariable String userId,
                                @NonNull @PathVariable Integer articleId) {
         return toResponse(ratingService.findByUserIdAndArticleId(userId, articleId));
-    }
-
-    @PutMapping("/users/{userId}/articles/{articleId}/ratings")
-    @ResponseStatus(HttpStatus.OK)
-    public RatingResponse update(@NonNull @PathVariable String userId,
-                                 @NonNull @PathVariable Integer articleId,
-                                 @NonNull @Valid @RequestBody RatingRequest request) {
-        return toResponse(ratingService.update(userId, articleId, request.getRating()));
     }
 
     @NonNull

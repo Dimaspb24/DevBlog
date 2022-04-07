@@ -3,9 +3,7 @@ package com.project.devblog.controller;
 import com.project.devblog.config.annotation.ST;
 import com.project.devblog.dto.response.CloseArticleResponse;
 import com.project.devblog.utils.ResponsePage;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -17,16 +15,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpMethod.GET;
 
 @ST
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@RequiredArgsConstructor
-class ArticleControllerST extends BaseAuthController {
-
-    final ArticleController articleController;
+class SortingArticlesST extends BaseST {
 
     @Test
+    @DisplayName("Sorting articles by publication date and(or) rating")
     void sortArticlesByPublicationDateAndOrRating() {
         ResponsePage<CloseArticleResponse> response;
-        HttpEntity<Void> entity = new HttpEntity<>(null, headers);
+        HttpEntity<Void> entity = getHttpEntity(authResponseEntity);
         ParameterizedTypeReference<ResponsePage<CloseArticleResponse>> ptr = new ParameterizedTypeReference<>() {
         };
 
@@ -51,7 +46,8 @@ class ArticleControllerST extends BaseAuthController {
         }
 
 
-        response = restTemplate.exchange(basePathV1 + "/articles?sort=rating,desc&sort=publicationDate,desc", GET, entity, ptr).getBody();
+        response = restTemplate.exchange(basePathV1 + "/articles?sort=rating,desc&sort=publicationDate,desc", GET,
+                entity, ptr).getBody();
 
         assertThat(response).isNotNull();
         List<CloseArticleResponse> contentByRatingAndPublicationDate = response.getContent();

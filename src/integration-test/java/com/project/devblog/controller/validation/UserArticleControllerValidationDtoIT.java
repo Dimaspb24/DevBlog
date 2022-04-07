@@ -5,7 +5,7 @@ import com.project.devblog.config.annotation.IT;
 import com.project.devblog.dto.request.ArticleRequest;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.security.JwtTokenProvider;
-import com.project.devblog.testcontainers.PostgresSTContainer;
+import com.project.devblog.testcontainers.PostgresITContainer;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @AutoConfigureMockMvc
 @RequiredArgsConstructor
-class UserArticleControllerValidationDtoIT extends PostgresSTContainer {
+class UserArticleControllerValidationDtoIT extends PostgresITContainer {
 
     ObjectMapper mapper = new ObjectMapper();
 

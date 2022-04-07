@@ -1,53 +1,27 @@
 package com.project.devblog.controller;
 
 import com.project.devblog.config.annotation.ST;
-import com.project.devblog.dto.request.AuthenticationRequest;
-import com.project.devblog.dto.response.AuthenticationResponse;
 import com.project.devblog.dto.response.CloseArticleResponse;
-import com.project.devblog.testcontainers.PostgresSTContainer;
 import com.project.devblog.utils.ResponsePage;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpMethod.GET;
 
 @ST
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
-class ArticleControllerST extends PostgresSTContainer {
+class ArticleControllerST extends BaseAuthController {
 
     final ArticleController articleController;
-
-    final HttpHeaders headers = new HttpHeaders();
-    final TestRestTemplate restTemplate = new TestRestTemplate();
-    final AuthenticationRequest authRequest = new AuthenticationRequest("mail1@mail.ru", "password");
-
-    @LocalServerPort
-    Integer port;
-
-    String basePathV1;
-
-    @BeforeEach
-    void signIn() {
-        basePathV1 = "http://localhost:" + port + "/v1";
-        ResponseEntity<AuthenticationResponse> response = restTemplate.postForEntity(
-                basePathV1 + "/auth/login", authRequest, AuthenticationResponse.class);
-        headers.set(AUTHORIZATION, Objects.requireNonNull(response.getHeaders().get(AUTHORIZATION)).get(0));
-    }
 
     @Test
     void sortArticlesByPublicationDateAndOrRating() {

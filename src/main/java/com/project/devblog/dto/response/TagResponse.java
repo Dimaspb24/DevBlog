@@ -7,6 +7,7 @@ import lombok.extern.jackson.Jacksonized;
 @EqualsAndHashCode
 @Getter
 @Builder
+@ToString
 @Jacksonized
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)

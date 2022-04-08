@@ -366,6 +366,9 @@
                         <include>**/*IT</include>
                         <include>**/*ST</include>
                     </includes>
+                    <excludes>
+                        <exclude>${excludeRegex}</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <!--end region-->

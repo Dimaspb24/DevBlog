@@ -3,9 +3,6 @@ package com.project.devblog.controller;
 import com.project.devblog.config.annotation.ST;
 import com.project.devblog.dto.request.UserRequest;
 import com.project.devblog.dto.response.UserResponse;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 
@@ -14,9 +11,7 @@ import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.PUT;
 
 @ST
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@RequiredArgsConstructor
-public class UserControllerST extends BaseAuthController {
+class UpdateUserST extends BaseST {
 
     @Test
     void updatePersonalInfo() {
@@ -25,7 +20,7 @@ public class UserControllerST extends BaseAuthController {
                 .nickname("Челик")
                 .build();
 
-        HttpEntity<?> httpEntity = new HttpEntity<>(request, headers);
+        HttpEntity<UserRequest> httpEntity = getHttpEntity(request, authResponseEntity);
         restTemplate.exchange(basePathV1 + "/users/1", PUT, httpEntity, UserResponse.class);
         UserResponse response = restTemplate.exchange(basePathV1 + "/users/1", GET, httpEntity, UserResponse.class)
                 .getBody();

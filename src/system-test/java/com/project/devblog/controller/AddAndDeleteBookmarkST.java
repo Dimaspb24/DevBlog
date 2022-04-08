@@ -1,6 +1,5 @@
 package com.project.devblog.controller;
 
-import com.project.devblog.config.annotation.ST;
 import com.project.devblog.dto.request.BookmarkRequest;
 import com.project.devblog.dto.response.BookmarkArticleResponse;
 import com.project.devblog.dto.response.BookmarkResponse;
@@ -8,24 +7,20 @@ import com.project.devblog.utils.ResponsePage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
-@ST
-public class UserBookmarkControllerST extends BaseAuthController {
+class AddAndDeleteBookmarkST extends BaseST {
 
     @Test
-    @DisplayName("Добавление существующий статьи в закладки и дальнейшее удаление ее")
+    @DisplayName("Adding an existing article to bookmarks and further deleting it")
     void addingExistingArticleToBookmarkTest() {
-        var entity = new HttpEntity<>(BookmarkRequest.builder()
+        var entity = getHttpEntity(BookmarkRequest.builder()
                 .bookmarkType("BOOKMARK")
-                .build(), headers);
+                .build(), authResponseEntity);
         var responseType = new ParameterizedTypeReference<BookmarkResponse>() {
         };
         var response = restTemplate.exchange(
@@ -37,7 +32,7 @@ public class UserBookmarkControllerST extends BaseAuthController {
         assertThat(response.getBody().getUserId()).isEqualTo("2");
         assertThat(response.getBody().getBookmarkType()).isEqualTo("BOOKMARK");
 
-        var entity2 = new HttpEntity<>(null, headers);
+        var entity2 = getHttpEntity(authResponseEntity);
         var responseType2 = new ParameterizedTypeReference<ResponsePage<BookmarkArticleResponse>>() {
         };
         var response2 = restTemplate.exchange(

@@ -1,29 +1,24 @@
 package com.project.devblog.controller;
 
-import com.project.devblog.config.annotation.ST;
-import com.project.devblog.dto.request.BookmarkRequest;
 import com.project.devblog.dto.request.CommentRequest;
-import com.project.devblog.dto.response.BookmarkResponse;
 import com.project.devblog.dto.response.CommentResponse;
 import com.project.devblog.utils.ResponsePage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
-@ST
-public class UserCommentControllerST extends BaseAuthController {
+class AddCommentToArticleST extends BaseST {
 
     @Test
-    @DisplayName("Добавление комментария к существующей статье")
+    @DisplayName("Adding a comment to an existing article")
     void addingCommentTest() {
-        var entity = new HttpEntity<>(CommentRequest.builder()
+        var entity = getHttpEntity(CommentRequest.builder()
                 .message("qqqqq")
-                .build(), headers);
+                .build(), authResponseEntity);
         var responseType = new ParameterizedTypeReference<CommentResponse>() {
         };
         var response = restTemplate.exchange(
@@ -33,7 +28,7 @@ public class UserCommentControllerST extends BaseAuthController {
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getMessage()).isEqualTo("qqqqq");
 
-        var entity2 = new HttpEntity<>(null, headers);
+        var entity2 = getHttpEntity(authResponseEntity);
         var responseType2 = new ParameterizedTypeReference<ResponsePage<CommentResponse>>() {
         };
         var response2 = restTemplate.exchange(

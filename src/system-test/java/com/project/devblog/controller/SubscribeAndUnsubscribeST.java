@@ -1,12 +1,10 @@
 package com.project.devblog.controller;
 
-import com.project.devblog.config.annotation.ST;
 import com.project.devblog.dto.response.SubscriptionResponse;
 import com.project.devblog.utils.ResponsePage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,13 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.POST;
 
-@ST
-public class UserSubscriptionControllerST extends BaseAuthController {
+class SubscribeAndUnsubscribeST extends BaseST {
 
     @Test
-    @DisplayName("Проверка возможности юзера подписаться и отписаться от автора")
+    @DisplayName("Checking the user's ability to subscribe and unsubscribe from the author")
     void subscribingAndUnsubscribingTest() {
-        var entity = new HttpEntity<>(null, headers);
+        var entity = getHttpEntity(authResponseEntity);
         var responseType = new ParameterizedTypeReference<>() {
         };
         var response = restTemplate.exchange(basePathV1 + "/users/2/subscriptions/3",

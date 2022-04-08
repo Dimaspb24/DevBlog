@@ -1,12 +1,15 @@
-name: Ci-Integration-Tests
+name: Ci-System-Tests
 
 on:
   push:
     branches:
-      - '*'
+      - 'development'
+      - 'master'
+  pull_request:
+    branches: [ development, master ]
 
 jobs:
-  integration_tests:
+  system_tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,4 +20,4 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: mvn_verify
-        run: mvn -B verify -DskipUTs=true --file pom.xml -DexcludeRegex=**/*ST
+        run: mvn -B verify -DskipUTs=true --file pom.xml -DexcludeRegex=**/*IT

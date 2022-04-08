@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -82,10 +83,10 @@ class RatingServiceTest {
 
     @Test
     void create() {
-        doReturn(article).when(articleService).findByAuthorIdAndArticleId(user.getId(), article.getId());
-        doReturn(user).when(userService).findById(user.getId());
+        doReturn(Optional.of(rating)).when(userArticleRepository).findByUserIdAndArticleIdAndArticleEnabledIsTrue(user.getId(), article.getId());
+        doReturn(rating).when(userArticleRepository).save(any(UserArticleEntity.class));
 
-        ratingService.create(rating.getUser().getId(), rating.getArticle().getId(), rating.getRating());
+        ratingService.createOrUpdate(rating.getUser().getId(), rating.getArticle().getId(), rating.getRating());
 
         verify(userArticleRepository).save(argumentCaptorUserArticle.capture());
         assertThat(argumentCaptorUserArticle.getValue().getRating()).isEqualTo(rating.getRating());
@@ -110,7 +111,7 @@ class RatingServiceTest {
         int newRating = 6;
         doReturn(Optional.of(rating)).when(userArticleRepository).findByUserIdAndArticleIdAndArticleEnabledIsTrue(user.getId(), article.getId());
 
-        ratingService.update(user.getId(), article.getId(), newRating);
+        ratingService.createOrUpdate(user.getId(), article.getId(), newRating);
 
         verify(userArticleRepository).findByUserIdAndArticleIdAndArticleEnabledIsTrue(user.getId(), article.getId());
         verify(userArticleRepository).save(argumentCaptorUserArticle.capture());

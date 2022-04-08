@@ -6,7 +6,7 @@ on:
       - 'development'
       - 'master'
   pull_request:
-    branches: [ development, master]
+    branches: [ development, master ]
 
 jobs:
   Integration_And_System_tests:

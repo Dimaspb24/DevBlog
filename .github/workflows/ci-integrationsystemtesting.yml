@@ -1,4 +1,4 @@
-name: Ci-Integration-Tests
+name: Ci-Integration-And-System-Tests
 
 on:
   push:

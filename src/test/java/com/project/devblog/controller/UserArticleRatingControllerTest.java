@@ -83,11 +83,11 @@ class UserArticleRatingControllerTest {
         final var userId = userEntity.getId();
         final var articleId = articleEntity.getId();
         final var ratingRequest = RatingRequest.builder().rating(422).build();
-        when(ratingService.create(any(), any(), any())).thenReturn(userArticleEntity);
+        when(ratingService.createOrUpdate(any(), any(), any())).thenReturn(userArticleEntity);
 
-        final var response = userArticleRatingController.create(userId, articleId, ratingRequest);
+        final var response = userArticleRatingController.createOrUpdate(userId, articleId, ratingRequest);
 
-        verify(ratingService).create(any(), any(), any());
+        verify(ratingService).createOrUpdate(any(), any(), any());
         assertEquals(ratingResponse.getRating(), response.getRating());
         assertEquals(ratingResponse.getArticleId(), response.getArticleId());
         assertEquals(ratingResponse.getAuthorId(), response.getAuthorId());
@@ -112,11 +112,11 @@ class UserArticleRatingControllerTest {
         final var userId = userEntity.getId();
         final var articleId = articleEntity.getId();
         final var ratingRequest = RatingRequest.builder().rating(422).build();
-        when(ratingService.update(any(), any(), any())).thenReturn(userArticleEntity);
+        when(ratingService.createOrUpdate(any(), any(), any())).thenReturn(userArticleEntity);
 
-        final var response = userArticleRatingController.update(userId, articleId, ratingRequest);
+        final var response = userArticleRatingController.createOrUpdate(userId, articleId, ratingRequest);
 
-        verify(ratingService).update(any(), any(), any());
+        verify(ratingService).createOrUpdate(any(), any(), any());
         assertEquals(ratingResponse.getRating(), response.getRating());
         assertEquals(ratingResponse.getArticleId(), response.getArticleId());
         assertEquals(ratingResponse.getAuthorId(), response.getAuthorId());

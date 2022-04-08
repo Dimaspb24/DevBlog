@@ -33,7 +33,7 @@ public class BookmarkService {
 
     @NonNull
     @Transactional
-    public BookmarkResponse create(@NonNull String userId, @NonNull Integer articleId, @NonNull BookmarkRequest request) {
+    public BookmarkResponse createOrUpdate(@NonNull String userId, @NonNull Integer articleId, @NonNull BookmarkRequest request) {
         BookmarkType bookmarkType = BookmarkType.valueOf(request.getBookmarkType());
 
         UserArticleEntity userArticleEntity = userArticleRepository
@@ -47,7 +47,8 @@ public class BookmarkService {
                     return new UserArticleEntity(bookmarkType, userEntity, articleEntity);
                 });
 
-        return new BookmarkResponse(userId, articleId, userArticleEntity.getBookmarkType().name());
+        UserArticleEntity savedBookmark = userArticleRepository.save(userArticleEntity);
+        return new BookmarkResponse(userId, articleId, savedBookmark.getBookmarkType().name());
     }
 
     @NonNull

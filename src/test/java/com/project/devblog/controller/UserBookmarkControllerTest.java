@@ -80,12 +80,12 @@ class UserBookmarkControllerTest {
     void create() {
         final var userId = bookmarkResponse.getUserId();
         final var articleId = bookmarkResponse.getArticleId();
-        when(bookmarkService.create(any(), any(), any()))
+        when(bookmarkService.createOrUpdate(any(), any(), any()))
                 .thenReturn(bookmarkResponse);
 
-        final var response = bookmarkController.create(userId, articleId, bookmarkRequest);
+        final var response = bookmarkController.createOrUpdate(userId, articleId, bookmarkRequest);
 
-        verify(bookmarkService).create(any(), any(), any());
+        verify(bookmarkService).createOrUpdate(any(), any(), any());
         assertEquals(bookmarkResponse.getUserId(), response.getUserId());
         assertEquals(bookmarkResponse.getBookmarkType(), response.getBookmarkType());
         assertEquals(bookmarkResponse.getArticleId(), response.getArticleId());

@@ -21,10 +21,18 @@ public class RatingService {
 
     @NonNull
     @Transactional
-    public UserArticleEntity create(@NonNull String authorId, @NonNull Integer articleId, @NonNull Integer rating) {
-        final ArticleEntity articleEntity = articleService.findByAuthorIdAndArticleId(authorId, articleId);
-        final UserEntity userEntity = userService.findById(authorId);
-        final UserArticleEntity userArticleEntity = new UserArticleEntity(rating, userEntity, articleEntity);
+    public UserArticleEntity createOrUpdate(@NonNull String userId, @NonNull Integer articleId, @NonNull Integer rating) {
+        UserArticleEntity userArticleEntity = userArticleRepository
+                .findByUserIdAndArticleIdAndArticleEnabledIsTrue(userId, articleId)
+                .map(userArt -> {
+                    userArt.setRating(rating);
+                    return userArt;
+                })
+                .orElseGet(() -> {
+                    final UserEntity userEntity = userService.findById(userId);
+                    final ArticleEntity articleEntity = articleService.findById(articleId);
+                    return new UserArticleEntity(rating, userEntity, articleEntity);
+                });
 
         return userArticleRepository.save(userArticleEntity);
     }
@@ -34,15 +42,5 @@ public class RatingService {
     public UserArticleEntity findByUserIdAndArticleId(@NonNull String userId, @NonNull Integer articleId) {
         return userArticleRepository.findByUserIdAndArticleIdAndArticleEnabledIsTrue(userId, articleId).orElseThrow(() ->
                 new NotFoundException(UserArticleEntity.class, "userId", userId, "articleId", articleId.toString()));
-    }
-
-    @NonNull
-    @Transactional
-    public UserArticleEntity update(@NonNull String userId, @NonNull Integer articleId, @NonNull Integer rating) {
-        final UserArticleEntity userArticleEntity = findByUserIdAndArticleId(userId, articleId);
-
-        userArticleEntity.setRating(rating);
-
-        return userArticleRepository.save(userArticleEntity);
     }
 }

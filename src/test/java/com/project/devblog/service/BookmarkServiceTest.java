@@ -124,9 +124,10 @@ class BookmarkServiceTest {
         doReturn(Optional.empty()).when(userArticleRepository).findByUserIdAndArticleId(anyString(), anyInt());
         doReturn(bookmark.getUser()).when(userService).findById(anyString());
         doReturn(bookmark.getArticle()).when(articleService).findById(anyInt());
+        doReturn(bookmark).when(userArticleRepository).save(any(UserArticleEntity.class));
         BookmarkRequest request = new BookmarkRequest(BookmarkType.BOOKMARK.name());
 
-        BookmarkResponse bookmarkResponseActual = bookmarkService.create(bookmark.getUser().getId(), bookmark.getArticle().getId(), request);
+        BookmarkResponse bookmarkResponseActual = bookmarkService.createOrUpdate(bookmark.getUser().getId(), bookmark.getArticle().getId(), request);
 
         BookmarkResponse bookmarkResponseExpected = new BookmarkResponse(user.getId(), article.getId(), bookmark.getBookmarkType().name());
         assertThat(bookmarkResponseActual.getUserId()).isEqualTo(bookmarkResponseExpected.getUserId());
@@ -137,9 +138,10 @@ class BookmarkServiceTest {
     @Test
     void updateBookmark() {
         doReturn(Optional.of(bookmark)).when(userArticleRepository).findByUserIdAndArticleId(anyString(), anyInt());
+        doReturn(bookmark).when(userArticleRepository).save(any(UserArticleEntity.class));
         BookmarkRequest request = new BookmarkRequest(BookmarkType.FAVORITE.name());
 
-        BookmarkResponse bookmarkResponseActual = bookmarkService.create(bookmark.getUser().getId(), bookmark.getArticle().getId(), request);
+        BookmarkResponse bookmarkResponseActual = bookmarkService.createOrUpdate(bookmark.getUser().getId(), bookmark.getArticle().getId(), request);
 
         BookmarkResponse bookmarkResponseExpected = new BookmarkResponse(user.getId(), article.getId(), bookmark.getBookmarkType().name());
         assertThat(bookmarkResponseActual.getUserId()).isEqualTo(bookmarkResponseExpected.getUserId());

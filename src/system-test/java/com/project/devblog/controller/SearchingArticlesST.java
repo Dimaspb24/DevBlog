@@ -1,6 +1,5 @@
 package com.project.devblog.controller;
 
-import com.project.devblog.config.annotation.ST;
 import com.project.devblog.dto.response.BookmarkArticleResponse;
 import com.project.devblog.dto.response.CloseArticleResponse;
 import com.project.devblog.utils.ResponsePage;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpMethod.GET;
 
-@ST
 class SearchingArticlesST extends BaseST {
 
     @Test

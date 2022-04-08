@@ -1,6 +1,5 @@
 package com.project.devblog.controller;
 
-import com.project.devblog.config.annotation.ST;
 import com.project.devblog.dto.request.UserRequest;
 import com.project.devblog.dto.response.UserResponse;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.PUT;
 
-@ST
 class UpdateUserST extends BaseST {
 
     @Test

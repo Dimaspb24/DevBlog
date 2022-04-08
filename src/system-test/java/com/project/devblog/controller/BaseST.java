@@ -1,5 +1,6 @@
 package com.project.devblog.controller;
 
+import com.project.devblog.config.annotation.ST;
 import com.project.devblog.dto.request.AuthenticationRequest;
 import com.project.devblog.dto.response.AuthenticationResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import java.util.Objects;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+@ST
 public class BaseST {
 
     protected static final TestRestTemplate restTemplate = new TestRestTemplate();

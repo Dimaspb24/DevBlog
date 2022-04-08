@@ -1,6 +1,5 @@
 package com.project.devblog.controller;
 
-import com.project.devblog.config.annotation.ST;
 import com.project.devblog.dto.response.AuthenticationResponse;
 import com.project.devblog.dto.response.OpenArticleResponse;
 import com.project.devblog.dto.response.RatingResponse;
@@ -17,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
-@ST
 class RatingArticlesST extends BaseST {
 
     /**

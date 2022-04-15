@@ -3,6 +3,7 @@ package com.project.devblog.controller;
 import com.project.devblog.config.annotation.ST;
 import com.project.devblog.dto.request.AuthenticationRequest;
 import com.project.devblog.dto.response.AuthenticationResponse;
+import com.project.devblog.testcontainers.PostgresContainerST;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -16,7 +17,7 @@ import java.util.Objects;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @ST
-public class BaseST {
+public class BaseST extends PostgresContainerST {
 
     protected static final TestRestTemplate restTemplate = new TestRestTemplate();
     protected static final String USER1_LOGIN = "mail1@mail.ru";

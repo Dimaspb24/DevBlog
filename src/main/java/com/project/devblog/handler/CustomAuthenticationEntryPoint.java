@@ -1,4 +1,4 @@
-package com.project.devblog.security;
+package com.project.devblog.handler;
 
 import com.project.devblog.handler.apierror.ApiError;
 import org.springframework.security.core.AuthenticationException;
@@ -16,8 +16,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authenticationException)
-            throws IOException, ServletException {
+    public void commence(HttpServletRequest request,
+                         HttpServletResponse response,
+                         AuthenticationException authenticationException) throws IOException, ServletException {
 
         // FIXME: This exception needs to be properly handled somehow.
 //        if (authenticationException instanceof InsufficientAuthenticationException) {
@@ -28,5 +29,12 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setStatus(SC_UNAUTHORIZED);
         response.setContentType(APPLICATION_JSON_VALUE);
         response.getWriter().write(apiError.toJson());
+
+        /*
+        ServerHttpResponse outputMessage = new ServletServerHttpResponse(httpServletResponse);
+        outputMessage.setStatusCode(HttpStatus.UNAUTHORIZED);
+
+        messageConverter.write(mapper.writeValueAsString(apiError), MediaType.APPLICATION_JSON, outputMessage);
+        * */
     }
 }

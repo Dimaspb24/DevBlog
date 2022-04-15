@@ -7,7 +7,7 @@ import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
 import com.project.devblog.model.enums.StatusArticle;
-import com.project.devblog.security.JwtTokenProvider;
+import com.project.devblog.security.JwtTokenUtil;
 import com.project.devblog.service.ArticleService;
 import com.project.devblog.service.SubscriptionService;
 import com.project.devblog.service.UserService;
@@ -24,7 +24,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,21 +46,19 @@ class UserSubscriptionControllerIT extends PostgresITContainer {
     final SubscriptionService subscriptionService;
     final ArticleService articleService;
     final MockMvc mockMvc;
-    final JwtTokenProvider jwtTokenProvider;
+    final JwtTokenUtil jwtTokenUtil;
 
     @BeforeAll
     static void init() {
         final PersonalInfo userInfo = new PersonalInfo("firstname", "lastname",
                 "nickname", "photo", "user info", "891245646544");
         user = new UserEntity(UUID.randomUUID().toString(), "user@mail.ru", "encryptedPassword",
-                Role.USER, true, null, userInfo,
-                List.of(), List.of(), List.of(), List.of(), Set.of(), Set.of());
+                Role.USER, true, null, userInfo);
 
         final PersonalInfo authorInfo = new PersonalInfo("firstname", "lastname",
                 "nickname", "photo", "user info", "891245646544");
         author = new UserEntity(UUID.randomUUID().toString(), "user@mail.ru", "encryptedPassword",
-                Role.USER, true, null, authorInfo,
-                List.of(), List.of(), List.of(), List.of(), Set.of(), Set.of());
+                Role.USER, true, null, authorInfo);
     }
 
     @Test
@@ -69,7 +66,7 @@ class UserSubscriptionControllerIT extends PostgresITContainer {
         doNothing().when(subscriptionService).subscribe(user.getId(), author.getId());
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
-        final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final String token = JwtTokenUtil.TOKEN_PREFIX + jwtTokenUtil.createToken(user.getLogin(), Role.USER);
         mockMvc
                 .perform(post("/v1/users/{userId}/subscriptions/{authorId}", user.getId(), author.getId())
                         .header("Authorization", token))
@@ -82,7 +79,7 @@ class UserSubscriptionControllerIT extends PostgresITContainer {
         doThrow(NotFoundException.class).when(subscriptionService).subscribe(user.getId(), author.getId());
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
-        final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final String token = JwtTokenUtil.TOKEN_PREFIX + jwtTokenUtil.createToken(user.getLogin(), Role.USER);
         mockMvc
                 .perform(post("/v1/users/{userId}/subscriptions/{authorId}", user.getId(), author.getId())
                         .header("Authorization", token))
@@ -96,7 +93,7 @@ class UserSubscriptionControllerIT extends PostgresITContainer {
         when(subscriptionService.findSubscriptions(eq(user.getId()), any())).thenReturn(page);
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
-        final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final String token = JwtTokenUtil.TOKEN_PREFIX + jwtTokenUtil.createToken(user.getLogin(), Role.USER);
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/users/{userId}/subscriptions", user.getId())
                         .header("Authorization", token))
@@ -111,7 +108,7 @@ class UserSubscriptionControllerIT extends PostgresITContainer {
         doNothing().when(subscriptionService).unsubscribe(user.getId(), author.getId());
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
-        final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final String token = JwtTokenUtil.TOKEN_PREFIX + jwtTokenUtil.createToken(user.getLogin(), Role.USER);
         mockMvc
                 .perform(delete("/v1/users/{userId}/subscriptions/{authorId}", user.getId(), author.getId())
                         .header("Authorization", token))
@@ -129,7 +126,7 @@ class UserSubscriptionControllerIT extends PostgresITContainer {
         when(articleService.findBySubscriptions(eq(user.getId()), any())).thenReturn(page);
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
-        final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final String token = JwtTokenUtil.TOKEN_PREFIX + jwtTokenUtil.createToken(user.getLogin(), Role.USER);
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/users/{userId}/subscriptions/articles", user.getId())
                         .header("Authorization", token))
@@ -155,7 +152,7 @@ class UserSubscriptionControllerIT extends PostgresITContainer {
         when(subscriptionService.findSubscribers(eq(author.getId()), any())).thenReturn(page);
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
-        final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(author.getLogin(), Role.USER);
+        final String token = JwtTokenUtil.TOKEN_PREFIX + jwtTokenUtil.createToken(author.getLogin(), Role.USER);
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/users/{userId}/subscribers", author.getId())
                         .header("Authorization", token))

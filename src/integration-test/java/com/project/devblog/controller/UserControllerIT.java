@@ -6,7 +6,7 @@ import com.project.devblog.exception.NonUniqueValueException;
 import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.security.JwtTokenProvider;
+import com.project.devblog.security.JwtTokenUtil;
 import com.project.devblog.service.UserService;
 import com.project.devblog.testcontainers.PostgresITContainer;
 import lombok.AccessLevel;
@@ -24,7 +24,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.UUID;
 
-import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
+import static com.project.devblog.security.JwtTokenUtil.TOKEN_PREFIX;
 import static com.project.devblog.testdata.CommonData.AUTHOR_LOGIN;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerIT extends PostgresITContainer {
 
     UserService userService;
-    JwtTokenProvider jwtTokenProvider;
+    JwtTokenUtil jwtTokenUtil;
     MockMvc mockMvc;
 
     ObjectMapper mapper = new ObjectMapper();
@@ -145,6 +145,6 @@ class UserControllerIT extends PostgresITContainer {
 
     @NonNull
     private String getValidToken() {
-        return TOKEN_PREFIX + jwtTokenProvider.createToken(AUTHOR_LOGIN, Role.USER);
+        return TOKEN_PREFIX + jwtTokenUtil.createToken(AUTHOR_LOGIN, Role.USER);
     }
 }

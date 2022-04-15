@@ -12,6 +12,7 @@ import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 @ApiV1
 @RestController
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('ADMIN')")
 public class TagController {
 
     private final TagService tagService;
@@ -62,3 +64,4 @@ public class TagController {
         return new TagResponse(tagEntity.getId(), tagEntity.getName());
     }
 }
+

@@ -7,7 +7,7 @@ import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.security.JwtTokenProvider;
+import com.project.devblog.security.JwtTokenUtil;
 import com.project.devblog.service.UserService;
 import com.project.devblog.testcontainers.PostgresITContainer;
 import lombok.AccessLevel;
@@ -23,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,15 +44,14 @@ class UserControllerIT extends PostgresITContainer {
 
     final UserService userService;
     final MockMvc mockMvc;
-    final JwtTokenProvider jwtTokenProvider;
+    final JwtTokenUtil jwtTokenUtil;
 
     @BeforeAll
     static void init() {
         final PersonalInfo personalInfo = new PersonalInfo("firstname", "lastname",
                 "nickname", "photo", "user info", "891245646544");
         user = new UserEntity(UUID.randomUUID().toString(), "user@mail.ru", "encryptedPassword",
-                Role.USER, true, null, personalInfo,
-                List.of(), List.of(), List.of(), List.of(), Set.of(), Set.of());
+                Role.USER, true, null, personalInfo);
     }
 
     @Test
@@ -61,7 +59,7 @@ class UserControllerIT extends PostgresITContainer {
         when(userService.findById(user.getId())).thenReturn(user);
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
-        final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final String token = JwtTokenUtil.TOKEN_PREFIX + jwtTokenUtil.createToken(user.getLogin(), Role.USER);
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/users/{userId}", user.getId()).header("Authorization", token))
                 .andExpect(status().isOk())
@@ -77,7 +75,7 @@ class UserControllerIT extends PostgresITContainer {
         when(userService.findById(user.getId())).thenThrow(NotFoundException.class);
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
-        final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final String token = JwtTokenUtil.TOKEN_PREFIX + jwtTokenUtil.createToken(user.getLogin(), Role.USER);
         mockMvc
                 .perform(get("/v1/users/{userId}", user.getId()).header("Authorization", token))
                 .andExpect(status().isNotFound())
@@ -89,14 +87,13 @@ class UserControllerIT extends PostgresITContainer {
         final PersonalInfo personalInfo = new PersonalInfo("firstname", "lastname",
                 "nickname", "photo", "user info", "891245646544");
         final UserEntity secondUser = new UserEntity(UUID.randomUUID().toString(), "user@mail.ru",
-                "encryptedPassword", Role.USER, true, null, personalInfo,
-                List.of(), List.of(), List.of(), List.of(), Set.of(), Set.of());
+                "encryptedPassword", Role.USER, true, null, personalInfo);
 
         PageImpl<UserEntity> page = new PageImpl<>(List.of(user, secondUser));
         when(userService.findAll(Pageable.ofSize(2))).thenReturn(page);
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
-        final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final String token = JwtTokenUtil.TOKEN_PREFIX + jwtTokenUtil.createToken(user.getLogin(), Role.USER);
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/users")
                         .header("Authorization", token)
@@ -113,7 +110,7 @@ class UserControllerIT extends PostgresITContainer {
         doNothing().when(userService).delete(user.getId());
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
-        final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final String token = JwtTokenUtil.TOKEN_PREFIX + jwtTokenUtil.createToken(user.getLogin(), Role.USER);
         mockMvc
                 .perform(delete("/v1/users/{userId}", user.getId())
                         .header("Authorization", token))
@@ -126,7 +123,7 @@ class UserControllerIT extends PostgresITContainer {
         doNothing().when(userService).enable(user.getId(), true);
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
-        final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final String token = JwtTokenUtil.TOKEN_PREFIX + jwtTokenUtil.createToken(user.getLogin(), Role.USER);
         mockMvc
                 .perform(patch("/v1/users/{userId}", user.getId())
                         .queryParam("enabled", "true")
@@ -145,7 +142,7 @@ class UserControllerIT extends PostgresITContainer {
         when(userService.update(eq(user.getId()), any())).thenReturn(user);
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
 
-        final String token = JwtTokenProvider.TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final String token = JwtTokenUtil.TOKEN_PREFIX + jwtTokenUtil.createToken(user.getLogin(), Role.USER);
         final MvcResult mvcResult = mockMvc
                 .perform(put("/v1/users/{userId}", user.getId())
                         .contentType(MediaType.APPLICATION_JSON)

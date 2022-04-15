@@ -6,6 +6,7 @@ import com.project.devblog.dto.response.OpenArticleResponse;
 import com.project.devblog.dto.response.TagResponse;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.utils.ResponsePage;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -20,6 +21,7 @@ import static org.springframework.http.HttpMethod.*;
 class CreateAndUpdateArticleST extends BaseST {
 
     @Test
+    @DisplayName("Update article")
     void updateArticle() {
         ArticleRequest request = getArticleRequest().build();
         ResponseEntity<AuthenticationResponse> authResponseUser3 = signIn(USER3_LOGIN, PASSWORD);
@@ -36,6 +38,7 @@ class CreateAndUpdateArticleST extends BaseST {
     }
 
     @Test
+    @DisplayName("Create article with tags and save with published status")
     void createArticleWithTagsAndSaveWithPublishedStatus() {
         ResponseEntity<AuthenticationResponse> authResponseUser3 = signIn(USER3_LOGIN, PASSWORD);
         String tag1 = "System test";
@@ -64,6 +67,7 @@ class CreateAndUpdateArticleST extends BaseST {
     }
 
     @Test
+    @DisplayName("Create article without tags and save with created status")
     void createArticleWithoutTagsAndSaveWithCreatedStatus() {
         ResponseEntity<AuthenticationResponse> authResponseUser3 = signIn(USER3_LOGIN, PASSWORD);
         ArticleRequest request = getArticleRequest()

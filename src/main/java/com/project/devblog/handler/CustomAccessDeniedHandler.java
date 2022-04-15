@@ -1,10 +1,9 @@
-package com.project.devblog.security;
+package com.project.devblog.handler;
 
 import com.project.devblog.handler.apierror.ApiError;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -17,7 +16,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException)
-            throws IOException, ServletException {
+            throws IOException {
 
         ApiError apiError = new ApiError(FORBIDDEN, "Access denied", accessDeniedException);
         response.setStatus(SC_FORBIDDEN);

@@ -2,6 +2,7 @@ package com.project.devblog.controller;
 
 import com.project.devblog.dto.request.UserRequest;
 import com.project.devblog.dto.response.UserResponse;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 
@@ -12,6 +13,7 @@ import static org.springframework.http.HttpMethod.PUT;
 class UpdateUserST extends BaseST {
 
     @Test
+    @DisplayName("Update personal info")
     void updatePersonalInfo() {
         UserRequest request = UserRequest.builder()
                 .phone("81112223344")

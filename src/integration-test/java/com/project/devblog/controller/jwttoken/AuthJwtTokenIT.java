@@ -2,7 +2,7 @@ package com.project.devblog.controller.jwttoken;
 
 import com.project.devblog.config.annotation.IT;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.security.JwtTokenProvider;
+import com.project.devblog.security.JwtTokenUtil;
 import com.project.devblog.testcontainers.PostgresITContainer;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.project.devblog.security.JwtTokenProvider.AUTH_HEADER_KEY;
-import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
+import static com.project.devblog.security.JwtTokenUtil.AUTH_HEADER_KEY;
+import static com.project.devblog.security.JwtTokenUtil.TOKEN_PREFIX;
 import static com.project.devblog.testdata.CommonData.AUTHOR_ID;
 import static com.project.devblog.testdata.CommonData.AUTHOR_LOGIN;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -28,11 +28,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AuthJwtTokenIT extends PostgresITContainer {
 
     MockMvc mockMvc;
-    JwtTokenProvider jwtTokenProvider;
+    JwtTokenUtil jwtTokenUtil;
 
     @NonNull
     private String getValidToken() {
-        return TOKEN_PREFIX + jwtTokenProvider.createToken(AUTHOR_LOGIN, Role.USER);
+        return TOKEN_PREFIX + jwtTokenUtil.createToken(AUTHOR_LOGIN, Role.USER);
     }
 
     @Test

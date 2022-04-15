@@ -5,7 +5,7 @@ import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.ArticleEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.security.JwtTokenProvider;
+import com.project.devblog.security.JwtTokenUtil;
 import com.project.devblog.service.ArticleService;
 import com.project.devblog.service.SubscriptionService;
 import com.project.devblog.service.UserService;
@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.List;
 import java.util.UUID;
 
-import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
+import static com.project.devblog.security.JwtTokenUtil.TOKEN_PREFIX;
 import static com.project.devblog.testdata.CommonData.AUTHOR_LOGIN;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,7 +41,7 @@ class UserSubscriptionControllerIT extends PostgresITContainer {
     ArticleService articleService;
     SubscriptionService subscriptionService;
     UserService userService;
-    JwtTokenProvider jwtTokenProvider;
+    JwtTokenUtil jwtTokenUtil;
     MockMvc mockMvc;
 
     @NonFinal
@@ -135,6 +135,6 @@ class UserSubscriptionControllerIT extends PostgresITContainer {
 
     @NonNull
     private String getValidToken() {
-        return TOKEN_PREFIX + jwtTokenProvider.createToken(AUTHOR_LOGIN, Role.USER);
+        return TOKEN_PREFIX + jwtTokenUtil.createToken(AUTHOR_LOGIN, Role.USER);
     }
 }

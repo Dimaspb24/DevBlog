@@ -1,14 +1,22 @@
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+#    org.springframework.boot.autoconfigure: DEBUG
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     # for docker db
-#    username: demouser
-#    password: demopassword
-#    url: jdbc:postgresql://localhost:15432/postgres
+    #    username: demouser
+    #    password: demopassword
+    #    url: jdbc:postgresql://localhost:15432/postgres
     # for local db
     username: postgres
     password: postgres
     url: jdbc:postgresql://localhost:5432/postgres
+
   jpa:
     open-in-view: true # TODO: change to false later
     show-sql: true
@@ -18,8 +26,10 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
         order_by.default_null_ordering: last
+
   flyway:
     validate-on-migrate: false
+
   mail:
     host: smtp.gmail.com
     port: 587
@@ -28,6 +38,7 @@ spring:
     properties.mail.smtp:
       auth: true
       starttls.enable: true
+
   security:
     oauth2:
       client:
@@ -35,7 +46,11 @@ spring:
           google:
             clientId: 295125751349-7dp9n0ts4gqalikl3srd4b54ul9mv83s.apps.googleusercontent.com
             clientSecret: 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
-            scope: 'email,profile,openid'
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+              - openid
 
   # For Handling NoHandlerFoundException
   mvc:
@@ -51,7 +66,7 @@ jwt:
 app:
   google:
     redirect:
-      url: http://localhost:8080/v1/users/%s/articles
+      url: http://localhost:8080/v1/users/%s
 #Mail
 mail:
   name: IDK

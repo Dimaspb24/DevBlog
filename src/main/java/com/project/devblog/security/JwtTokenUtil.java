@@ -20,7 +20,7 @@ import static java.util.Optional.ofNullable;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider {
+public class JwtTokenUtil {
 
     public static final String AUTH_HEADER_KEY = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer ";
@@ -77,11 +77,11 @@ public class JwtTokenProvider {
                     .getExpiration()
                     .after(new Date());
         } catch (ExpiredJwtException e) {
-            throw new JwtAuthenticationException("Expired token", e);
+            throw new JwtAuthenticationException("Expired JWT token", e);
         } catch (UnsupportedJwtException | MalformedJwtException e) {
-            throw new JwtAuthenticationException("Unsupported token", e);
+            throw new JwtAuthenticationException("Unsupported JWT token", e);
         } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtAuthenticationException("JWT token is invalid", e);
+            throw new JwtAuthenticationException("Invalid JWT token", e);
         } catch (Exception e) {
             throw new JwtAuthenticationException("User authorization not resolved", e);
         }

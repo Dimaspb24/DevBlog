@@ -19,7 +19,10 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
@@ -41,8 +44,7 @@ class GoogleAuthControllerIT extends PostgresITContainer {
         final PersonalInfo personalInfo = new PersonalInfo("firstname", "lastname",
                 "nickname", "photo", "user info", "891245646544");
         final UserEntity user = new UserEntity(UUID.randomUUID().toString(), "user@mail.ru", "encryptedPassword",
-                Role.USER, true, null, personalInfo,
-                List.of(), List.of(), List.of(), List.of(), Set.of(), Set.of());
+                Role.USER, true, null, personalInfo);
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("sub", user.getId());
         attributes.put("email", user.getLogin());

@@ -1,6 +1,7 @@
 package com.project.devblog.model;
 
 import com.project.devblog.model.base.AuditableBaseEntity;
+import com.project.devblog.model.enums.AuthProvider;
 import com.project.devblog.model.enums.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -37,6 +38,12 @@ public class UserEntity extends AuditableBaseEntity<String> {
 
     boolean enabled;
     String verificationCode;
+
+    @Transient
+    @Enumerated(EnumType.STRING)
+    AuthProvider provider;
+    @Transient
+    String providerId;
 
     PersonalInfo personalInfo;
 
@@ -92,6 +99,16 @@ public class UserEntity extends AuditableBaseEntity<String> {
         this.role = role;
         this.enabled = enabled;
         this.verificationCode = verificationCode;
+    }
+
+    public UserEntity(String id, String login, String password, Role role, Boolean enabled, String verificationCode, PersonalInfo personalInfo) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.role = role;
+        this.enabled = enabled;
+        this.verificationCode = verificationCode;
+        this.personalInfo = personalInfo;
     }
 
     /*-----------------------------------FOR_MANY_TO_MANY_SUBSCRIBERS--------------------------------*/

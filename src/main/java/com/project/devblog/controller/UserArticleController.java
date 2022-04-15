@@ -10,6 +10,7 @@ import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.TagEntity;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.service.ArticleService;
+import com.project.devblog.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,8 +34,11 @@ import java.util.stream.Collectors;
 public class UserArticleController {
 
     private final ArticleService articleService;
+    private final UserService userService;
 
     @PostMapping("/users/{userId}/articles")
+    @PreAuthorize("hasAuthority('ADMIN') || " +
+            "(hasAuthority('USER') && (#userId == @userService.findByLogin(authentication.principal).id))")
     @ResponseStatus(HttpStatus.CREATED)
     public OpenArticleResponse create(@NonNull @PathVariable String userId,
                                       @NonNull @Valid @RequestBody ArticleRequest request) {
@@ -62,6 +67,8 @@ public class UserArticleController {
     }
 
     @DeleteMapping("/users/{userId}/articles/{articleId}")
+    @PreAuthorize("hasAuthority('ADMIN') || (hasAuthority('USER') && " +
+            "(@articleService.findById(#articleId).author == @userService.findByLogin(authentication.principal)))")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@NonNull @PathVariable String userId,
                        @NonNull @PathVariable Integer articleId) {
@@ -70,6 +77,7 @@ public class UserArticleController {
 
     @Operation(summary = "Block or unblock the article")
     @PatchMapping("/users/{userId}/articles/{articleId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public void enable(@NonNull @PathVariable String userId,
                        @NonNull @PathVariable Integer articleId,
@@ -78,6 +86,8 @@ public class UserArticleController {
     }
 
     @PutMapping("/users/{userId}/articles/{articleId}")
+    @PreAuthorize("hasAuthority('ADMIN') || " +
+            "(hasAuthority('USER') && (#userId == @userService.findByLogin(authentication.principal).id))")
     @ResponseStatus(HttpStatus.OK)
     public OpenArticleResponse update(@NonNull @PathVariable String userId,
                                       @NonNull @PathVariable Integer articleId,

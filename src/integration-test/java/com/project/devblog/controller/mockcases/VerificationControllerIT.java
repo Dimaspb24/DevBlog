@@ -5,7 +5,7 @@ import com.project.devblog.exception.VerificationException;
 import com.project.devblog.model.PersonalInfo;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.security.JwtTokenProvider;
+import com.project.devblog.security.JwtTokenUtil;
 import com.project.devblog.service.UserService;
 import com.project.devblog.service.VerificationService;
 import com.project.devblog.testcontainers.PostgresITContainer;
@@ -17,11 +17,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
-import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
+import static com.project.devblog.security.JwtTokenUtil.TOKEN_PREFIX;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,17 +33,16 @@ class VerificationControllerIT extends PostgresITContainer {
     final UserService userService;
     final VerificationService verificationService;
     final MockMvc mockMvc;
-    final JwtTokenProvider jwtTokenProvider;
+    final JwtTokenUtil jwtTokenUtil;
 
     @Test
     void confirmVerificationCodeTest() throws Exception {
         final PersonalInfo personalInfo = new PersonalInfo("firstname", "lastname",
                 "nickname", "photo", "user info", "891245646544");
         final UserEntity user = new UserEntity(UUID.randomUUID().toString(), "user@mail.ru", "encryptedPassword",
-                Role.USER, true, null, personalInfo,
-                List.of(), List.of(), List.of(), List.of(), Set.of(), Set.of());
+                Role.USER, true, null, personalInfo);
 
-        final String token = TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final String token = TOKEN_PREFIX + jwtTokenUtil.createToken(user.getLogin(), Role.USER);
         final String verificationCode = UUID.randomUUID().toString();
 
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
@@ -64,10 +61,9 @@ class VerificationControllerIT extends PostgresITContainer {
         final PersonalInfo personalInfo = new PersonalInfo("firstname", "lastname",
                 "nickname", "photo", "user info", "891245646544");
         final UserEntity user = new UserEntity(UUID.randomUUID().toString(), "user@mail.ru", "encryptedPassword",
-                Role.USER, true, null, personalInfo,
-                List.of(), List.of(), List.of(), List.of(), Set.of(), Set.of());
+                Role.USER, true, null, personalInfo);
 
-        final String token = TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final String token = TOKEN_PREFIX + jwtTokenUtil.createToken(user.getLogin(), Role.USER);
         final String verificationCode = UUID.randomUUID().toString();
 
         when(userService.findByLogin(user.getLogin())).thenReturn(user);
@@ -86,10 +82,9 @@ class VerificationControllerIT extends PostgresITContainer {
         final PersonalInfo personalInfo = new PersonalInfo("firstname", "lastname",
                 "nickname", "photo", "user info", "891245646544");
         final UserEntity user = new UserEntity(UUID.randomUUID().toString(), "user@mail.ru", "encryptedPassword",
-                Role.USER, true, null, personalInfo,
-                List.of(), List.of(), List.of(), List.of(), Set.of(), Set.of());
+                Role.USER, true, null, personalInfo);
 
-        final String token = TOKEN_PREFIX + jwtTokenProvider.createToken(user.getLogin(), Role.USER);
+        final String token = TOKEN_PREFIX + jwtTokenUtil.createToken(user.getLogin(), Role.USER);
         final String verificationCode = UUID.randomUUID().toString();
 
         when(userService.findByLogin(user.getLogin())).thenReturn(user);

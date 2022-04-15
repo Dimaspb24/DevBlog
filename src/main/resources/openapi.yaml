@@ -90,8 +90,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -99,8 +99,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -177,8 +177,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -186,8 +186,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -259,8 +259,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -268,8 +268,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -342,8 +342,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -351,8 +351,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -426,8 +426,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -435,8 +435,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -519,8 +519,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -528,8 +528,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -606,8 +606,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -615,8 +615,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -695,8 +695,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -704,8 +704,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -785,8 +785,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -794,8 +794,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -884,8 +884,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -893,8 +893,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -919,16 +919,16 @@ paths:
           schema:
             type: string
         - name: articleId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: commentId
-        in: path
-        required: true
-        schema:
-          type: integer
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: integer
           format: int64
       responses:
         "500":
@@ -977,8 +977,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -986,8 +986,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1072,8 +1072,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1081,8 +1081,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1151,8 +1151,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1160,8 +1160,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1239,8 +1239,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1248,8 +1248,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1321,8 +1321,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1330,8 +1330,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1404,8 +1404,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1413,8 +1413,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1490,8 +1490,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1499,8 +1499,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1593,8 +1593,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1602,8 +1602,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1680,8 +1680,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1689,8 +1689,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1768,8 +1768,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1777,8 +1777,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1861,8 +1861,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1870,8 +1870,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -1974,8 +1974,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1983,8 +1983,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2067,8 +2067,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2076,8 +2076,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2161,8 +2161,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2170,8 +2170,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2268,8 +2268,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2277,8 +2277,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2349,8 +2349,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2358,8 +2358,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2431,8 +2431,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2440,8 +2440,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2507,8 +2507,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2516,8 +2516,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2585,8 +2585,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2594,8 +2594,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2668,8 +2668,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2677,8 +2677,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2750,8 +2750,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2759,8 +2759,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2852,8 +2852,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2861,8 +2861,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -2939,8 +2939,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -2948,8 +2948,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3046,8 +3046,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3055,8 +3055,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3153,8 +3153,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3162,8 +3162,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3260,8 +3260,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3269,8 +3269,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3372,8 +3372,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3381,8 +3381,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3454,8 +3454,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3463,8 +3463,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3566,8 +3566,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3575,8 +3575,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3649,8 +3649,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3658,8 +3658,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3757,8 +3757,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3766,8 +3766,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3834,8 +3834,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3843,8 +3843,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3915,8 +3915,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -3924,8 +3924,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -3992,8 +3992,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -4001,8 +4001,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -4069,8 +4069,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -4078,8 +4078,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -4152,8 +4152,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -4161,8 +4161,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -4229,8 +4229,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -4238,8 +4238,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -4306,8 +4306,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -4315,8 +4315,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -4383,8 +4383,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -4392,8 +4392,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -4460,8 +4460,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -4469,8 +4469,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -4537,8 +4537,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -4546,8 +4546,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -4614,8 +4614,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -4623,8 +4623,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -4691,8 +4691,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -4700,8 +4700,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -4768,8 +4768,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -4777,8 +4777,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -4851,8 +4851,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -4860,8 +4860,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -4928,8 +4928,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -4937,8 +4937,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -5011,8 +5011,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -5020,8 +5020,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -5088,8 +5088,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -5097,8 +5097,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -5165,8 +5165,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -5174,8 +5174,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -5241,8 +5241,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -5250,8 +5250,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -5324,8 +5324,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -5333,8 +5333,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -5406,8 +5406,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -5415,8 +5415,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -5483,8 +5483,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -5492,8 +5492,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -5559,8 +5559,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -5568,8 +5568,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -5647,8 +5647,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -5656,8 +5656,8 @@ paths:
                 properties:
                   com.project.devblog.handler.apierror.ApiError:
                     $ref: '#/components/schemas/ApiError'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             '*/*':
               schema:
@@ -5980,13 +5980,10 @@ components:
     PageUserResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
-        number:
+        totalPages:
           type: integer
           format: int32
         size:
@@ -5996,17 +5993,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserResponse'
+        number:
+          type: integer
+          format: int32
         sort:
           $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         first:
           type: boolean
         last:
           type: boolean
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
         empty:
           type: boolean
     PageableObject:
@@ -6017,15 +6017,15 @@ components:
           format: int64
         sort:
           $ref: '#/components/schemas/Sort'
-        pageSize:
-          type: integer
-          format: int32
         pageNumber:
           type: integer
           format: int32
-        unpaged:
-          type: boolean
+        pageSize:
+          type: integer
+          format: int32
         paged:
+          type: boolean
+        unpaged:
           type: boolean
     Sort:
       type: object
@@ -6137,13 +6137,10 @@ components:
     PageSubscriptionResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
-        number:
+        totalPages:
           type: integer
           format: int32
         size:
@@ -6153,17 +6150,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SubscriptionResponse'
+        number:
+          type: integer
+          format: int32
         sort:
           $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         first:
           type: boolean
         last:
           type: boolean
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
         empty:
           type: boolean
     SubscriptionResponse:
@@ -6211,13 +6211,10 @@ components:
     PageCloseArticleResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
-        number:
+        totalPages:
           type: integer
           format: int32
         size:
@@ -6227,29 +6224,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CloseArticleResponse'
+        number:
+          type: integer
+          format: int32
         sort:
           $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         first:
           type: boolean
         last:
           type: boolean
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
         empty:
           type: boolean
     PageSubscriberResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
-        number:
+        totalPages:
           type: integer
           format: int32
         size:
@@ -6259,17 +6256,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SubscriberResponse'
+        number:
+          type: integer
+          format: int32
         sort:
           $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         first:
           type: boolean
         last:
           type: boolean
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
         empty:
           type: boolean
     SubscriberResponse:
@@ -6295,13 +6295,10 @@ components:
     PageBookmarkArticleResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
-        number:
+        totalPages:
           type: integer
           format: int32
         size:
@@ -6311,29 +6308,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BookmarkArticleResponse'
+        number:
+          type: integer
+          format: int32
         sort:
           $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         first:
           type: boolean
         last:
           type: boolean
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
         empty:
           type: boolean
     PageCommentResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
-        number:
+        totalPages:
           type: integer
           format: int32
         size:
@@ -6343,29 +6340,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CommentResponse'
+        number:
+          type: integer
+          format: int32
         sort:
           $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         first:
           type: boolean
         last:
           type: boolean
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
         empty:
           type: boolean
     PageTagResponse:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
-        number:
+        totalPages:
           type: integer
           format: int32
         size:
@@ -6375,17 +6372,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TagResponse'
+        number:
+          type: integer
+          format: int32
         sort:
           $ref: '#/components/schemas/Sort'
         numberOfElements:
           type: integer
           format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         first:
           type: boolean
         last:
           type: boolean
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
         empty:
           type: boolean
     Link:
@@ -6471,10 +6471,6 @@ components:
                                   type: object
                               sealed:
                                 type: boolean
-                              specificationTitle:
-                                type: string
-                              implementationTitle:
-                                type: string
                               specificationVersion:
                                 type: string
                               specificationVendor:
@@ -6482,6 +6478,10 @@ components:
                               implementationVersion:
                                 type: string
                               implementationVendor:
+                                type: string
+                              specificationTitle:
+                                type: string
+                              implementationTitle:
                                 type: string
                     annotations:
                       type: array
@@ -6520,10 +6520,6 @@ components:
                           type: object
                       sealed:
                         type: boolean
-                      specificationTitle:
-                        type: string
-                      implementationTitle:
-                        type: string
                       specificationVersion:
                         type: string
                       specificationVendor:
@@ -6531,6 +6527,10 @@ components:
                       implementationVersion:
                         type: string
                       implementationVendor:
+                        type: string
+                      specificationTitle:
+                        type: string
+                      implementationTitle:
                         type: string
             name:
               type: string
@@ -6575,10 +6575,6 @@ components:
                               type: object
                           sealed:
                             type: boolean
-                          specificationTitle:
-                            type: string
-                          implementationTitle:
-                            type: string
                           specificationVersion:
                             type: string
                           specificationVendor:
@@ -6586,6 +6582,10 @@ components:
                           implementationVersion:
                             type: string
                           implementationVendor:
+                            type: string
+                          specificationTitle:
+                            type: string
+                          implementationTitle:
                             type: string
                 annotations:
                   type: array
@@ -6624,10 +6624,6 @@ components:
                       type: object
                   sealed:
                     type: boolean
-                  specificationTitle:
-                    type: string
-                  implementationTitle:
-                    type: string
                   specificationVersion:
                     type: string
                   specificationVendor:
@@ -6636,6 +6632,10 @@ components:
                     type: string
                   implementationVendor:
                     type: string
+                  specificationTitle:
+                    type: string
+                  implementationTitle:
+                    type: string
     AutowireCapableBeanFactory:
       type: object
     BeanFactory:
@@ -6643,11 +6643,11 @@ components:
     Environment:
       type: object
       properties:
-        activeProfiles:
+        defaultProfiles:
           type: array
           items:
             type: string
-        defaultProfiles:
+        activeProfiles:
           type: array
           items:
             type: string
@@ -6686,10 +6686,6 @@ components:
                           type: object
                       sealed:
                         type: boolean
-                      specificationTitle:
-                        type: string
-                      implementationTitle:
-                        type: string
                       specificationVersion:
                         type: string
                       specificationVendor:
@@ -6697,6 +6693,10 @@ components:
                       implementationVersion:
                         type: string
                       implementationVendor:
+                        type: string
+                      specificationTitle:
+                        type: string
+                      implementationTitle:
                         type: string
             majorVersion:
               type: integer
@@ -6706,6 +6706,19 @@ components:
               format: int32
             contextPath:
               type: string
+            sessionTimeout:
+              type: integer
+              format: int32
+            servletNames:
+              type: object
+              deprecated: true
+            serverInfo:
+              type: string
+            attributeNames:
+              type: object
+            servlets:
+              type: object
+              deprecated: true
             servletRegistrations:
               type: object
               additionalProperties:
@@ -6725,6 +6738,105 @@ components:
                     type: object
                     additionalProperties:
                       type: string
+            initParameterNames:
+              type: object
+            effectiveMajorVersion:
+              type: integer
+              format: int32
+            effectiveMinorVersion:
+              type: integer
+              format: int32
+            servletContextName:
+              type: string
+            requestCharacterEncoding:
+              type: string
+            responseCharacterEncoding:
+              type: string
+            virtualServerName:
+              type: string
+            sessionCookieConfig:
+              type: object
+              properties:
+                name:
+                  type: string
+                path:
+                  type: string
+                comment:
+                  type: string
+                domain:
+                  type: string
+                maxAge:
+                  type: integer
+                  format: int32
+                secure:
+                  type: boolean
+                httpOnly:
+                  type: boolean
+            effectiveSessionTrackingModes:
+              uniqueItems: true
+              type: array
+              items:
+                type: string
+                enum:
+                  - COOKIE
+                  - URL
+                  - SSL
+            jspConfigDescriptor:
+              type: object
+              properties:
+                jspPropertyGroups:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      buffer:
+                        type: string
+                      isXml:
+                        type: string
+                      pageEncoding:
+                        type: string
+                      includePreludes:
+                        type: array
+                        items:
+                          type: string
+                      includeCodas:
+                        type: array
+                        items:
+                          type: string
+                      elIgnored:
+                        type: string
+                      defaultContentType:
+                        type: string
+                      urlPatterns:
+                        type: array
+                        items:
+                          type: string
+                      deferredSyntaxAllowedAsLiteral:
+                        type: string
+                      trimDirectiveWhitespaces:
+                        type: string
+                      scriptingInvalid:
+                        type: string
+                      errorOnUndeclaredNamespace:
+                        type: string
+                taglibs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      taglibLocation:
+                        type: string
+                      taglibURI:
+                        type: string
+            defaultSessionTrackingModes:
+              uniqueItems: true
+              type: array
+              items:
+                type: string
+                enum:
+                  - COOKIE
+                  - URL
+                  - SSL
             filterRegistrations:
               type: object
               additionalProperties:
@@ -6746,24 +6858,6 @@ components:
                     type: object
                     additionalProperties:
                       type: string
-            sessionCookieConfig:
-              type: object
-              properties:
-                name:
-                  type: string
-                path:
-                  type: string
-                maxAge:
-                  type: integer
-                  format: int32
-                domain:
-                  type: string
-                comment:
-                  type: string
-                secure:
-                  type: boolean
-                httpOnly:
-                  type: boolean
             sessionTrackingModes:
               uniqueItems: true
               type: array
@@ -6774,100 +6868,6 @@ components:
                   - COOKIE
                   - URL
                   - SSL
-            defaultSessionTrackingModes:
-              uniqueItems: true
-              type: array
-              items:
-                type: string
-                enum:
-                  - COOKIE
-                  - URL
-                  - SSL
-            effectiveSessionTrackingModes:
-              uniqueItems: true
-              type: array
-              items:
-                type: string
-                enum:
-                  - COOKIE
-                  - URL
-                  - SSL
-            initParameterNames:
-              type: object
-            effectiveMajorVersion:
-              type: integer
-              format: int32
-            effectiveMinorVersion:
-              type: integer
-              format: int32
-            servletContextName:
-              type: string
-            requestCharacterEncoding:
-              type: string
-            responseCharacterEncoding:
-              type: string
-            jspConfigDescriptor:
-              type: object
-              properties:
-                jspPropertyGroups:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      buffer:
-                        type: string
-                      defaultContentType:
-                        type: string
-                      urlPatterns:
-                        type: array
-                        items:
-                          type: string
-                      elIgnored:
-                        type: string
-                      pageEncoding:
-                        type: string
-                      isXml:
-                        type: string
-                      includePreludes:
-                        type: array
-                        items:
-                          type: string
-                      includeCodas:
-                        type: array
-                        items:
-                          type: string
-                      errorOnUndeclaredNamespace:
-                        type: string
-                      scriptingInvalid:
-                        type: string
-                      trimDirectiveWhitespaces:
-                        type: string
-                      deferredSyntaxAllowedAsLiteral:
-                        type: string
-                taglibs:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      taglibURI:
-                        type: string
-                      taglibLocation:
-                        type: string
-            virtualServerName:
-              type: string
-            serverInfo:
-              type: string
-            servlets:
-              type: object
-              deprecated: true
-            sessionTimeout:
-              type: integer
-              format: int32
-            attributeNames:
-              type: object
-            servletNames:
-              type: object
-              deprecated: true
           writeOnly: true
         contentType:
           type: string

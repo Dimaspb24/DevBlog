@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.devblog.config.annotation.IT;
 import com.project.devblog.dto.request.ArticleRequest;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.security.JwtTokenProvider;
+import com.project.devblog.security.JwtTokenUtil;
 import com.project.devblog.testcontainers.PostgresITContainer;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -16,8 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.project.devblog.security.JwtTokenProvider.AUTH_HEADER_KEY;
-import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
+import static com.project.devblog.security.JwtTokenUtil.AUTH_HEADER_KEY;
+import static com.project.devblog.security.JwtTokenUtil.TOKEN_PREFIX;
 import static com.project.devblog.testdata.CommonData.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -33,11 +33,11 @@ class UserArticleControllerValidationDtoIT extends PostgresITContainer {
     ObjectMapper mapper = new ObjectMapper();
 
     MockMvc mockMvc;
-    JwtTokenProvider jwtTokenProvider;
+    JwtTokenUtil jwtTokenUtil;
 
     @NonNull
     private String getToken() {
-        return TOKEN_PREFIX + jwtTokenProvider.createToken("mail1@mail.ru", Role.USER);
+        return TOKEN_PREFIX + jwtTokenUtil.createToken("mail1@mail.ru", Role.USER);
     }
 
     /*TODO: https://rieckpil.de/guide-to-testing-spring-boot-applications-with-mockmvc/

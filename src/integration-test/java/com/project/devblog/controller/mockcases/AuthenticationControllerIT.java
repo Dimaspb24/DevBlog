@@ -7,7 +7,7 @@ import com.project.devblog.dto.request.RegistrationRequest;
 import com.project.devblog.dto.response.AuthenticationResponse;
 import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.security.JwtTokenProvider;
+import com.project.devblog.security.JwtTokenUtil;
 import com.project.devblog.service.AuthenticationService;
 import com.project.devblog.testcontainers.PostgresITContainer;
 import lombok.AccessLevel;
@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.UUID;
 
-import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
+import static com.project.devblog.security.JwtTokenUtil.TOKEN_PREFIX;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -42,7 +42,7 @@ class AuthenticationControllerIT extends PostgresITContainer {
 
     AuthenticationService authenticationService;
     MockMvc mockMvc;
-    JwtTokenProvider jwtTokenProvider;
+    JwtTokenUtil jwtTokenUtil;
 
     @Test
     void registrationTest() throws Exception {
@@ -113,7 +113,7 @@ class AuthenticationControllerIT extends PostgresITContainer {
 
     @Test
     void checkTokenTest() throws Exception {
-        final String token = TOKEN_PREFIX + jwtTokenProvider.createToken("user@mail.ru", Role.USER);
+        final String token = TOKEN_PREFIX + jwtTokenUtil.createToken("user@mail.ru", Role.USER);
 
         final MvcResult mvcResult = mockMvc
                 .perform(get("/v1/auth/checkToken")
@@ -125,7 +125,7 @@ class AuthenticationControllerIT extends PostgresITContainer {
 
     @Test
     void checkTokenWithoutBearerPrefixTest() throws Exception {
-        final String token = jwtTokenProvider.createToken("user@mail.ru", Role.USER);
+        final String token = jwtTokenUtil.createToken("user@mail.ru", Role.USER);
 
         mockMvc
                 .perform(get("/v1/auth/checkToken")

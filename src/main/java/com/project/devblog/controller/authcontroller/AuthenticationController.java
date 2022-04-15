@@ -5,7 +5,7 @@ import com.project.devblog.dto.request.AuthenticationRequest;
 import com.project.devblog.dto.request.RegistrationRequest;
 import com.project.devblog.dto.response.AuthenticationResponse;
 import com.project.devblog.model.enums.Role;
-import com.project.devblog.security.JwtTokenProvider;
+import com.project.devblog.security.JwtTokenUtil;
 import com.project.devblog.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
+import static com.project.devblog.security.JwtTokenUtil.TOKEN_PREFIX;
 
 @Tag(name = "Authentication")
 @ApiV1
@@ -27,7 +27,7 @@ import static com.project.devblog.security.JwtTokenProvider.TOKEN_PREFIX;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationService authenticationService;
 
     @PostMapping("/auth/login")
@@ -35,7 +35,7 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> login(@NonNull @Valid @RequestBody AuthenticationRequest request) {
 
         AuthenticationResponse response = authenticationService.login(request.getLogin(), request.getPassword());
-        final String token = jwtTokenProvider.createToken(response.getLogin(), Role.valueOf(response.getRole()));
+        final String token = jwtTokenUtil.createToken(response.getLogin(), Role.valueOf(response.getRole()));
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, TOKEN_PREFIX + token)
@@ -59,7 +59,7 @@ public class AuthenticationController {
 
     @GetMapping("/auth/checkToken")
     public ResponseEntity<String> checkValidateToken(@NonNull @RequestParam String token) {
-        jwtTokenProvider.validateToken(token);
+        jwtTokenUtil.validateToken(token);
         return ResponseEntity.ok("Token is valid");
     }
 }

@@ -61,8 +61,7 @@ public class UserService {
         final PersonalInfo personalInfo = new PersonalInfo(firstname, lastname, nickname, photo, null, phone);
         userEntity.setPersonalInfo(personalInfo);
 
-        return userRepository.findById(id)
-                .orElseGet(() -> userRepository.save(userEntity));
+        return userRepository.save(userEntity);
     }
 
     @NonNull

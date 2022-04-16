@@ -19,5 +19,6 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String login) {
         UserEntity user = userService.findByLogin(login);
         return JwtUserFactory.create(user);
+        // User.withUsername(username).password(applicationUser.getPassword()).roles("USER").disabled(!applicationUser.isVerified()).build();
     }
 }

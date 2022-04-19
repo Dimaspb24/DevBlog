@@ -15,6 +15,8 @@ Usefully links:
     * https://www.baeldung.com/maven-integration-test
 4) CI/CD with GitHub Actions
     * https://rieckpil.de/github-actions-for-java-automate-your-maven-workflows/
+5) OAuth
+    * https://www.callicoder.com/spring-boot-security-oauth2-social-login-part-1/
 
 #### Интеграционные тесты:
 

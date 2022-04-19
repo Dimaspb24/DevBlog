@@ -13,7 +13,7 @@ import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException)

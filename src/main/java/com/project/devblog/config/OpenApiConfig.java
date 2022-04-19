@@ -38,7 +38,7 @@ public class OpenApiConfig {
     public GroupedOpenApi actuatorGroup() {
         return GroupedOpenApi
                 .builder()
-                .group("Tools")
+                .group("Metrics")
                 .pathsToMatch("/actuator/**")
                 .build();
     }

@@ -2,7 +2,6 @@ package com.project.devblog.service;
 
 import com.project.devblog.exception.NotFoundException;
 import com.project.devblog.model.ArticleEntity;
-import com.project.devblog.model.TagEntity;
 import com.project.devblog.model.UserEntity;
 import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.repository.ArticleRepository;
@@ -24,6 +23,8 @@ import static com.project.devblog.model.enums.StatusArticle.PUBLISHED;
 @RequiredArgsConstructor
 public class ArticleService {
 
+    public static final String ARTICLE_ID_FIELD_NAME = "articleId";
+    public static final String AUTHOR_ID_FIELD_NAME = "authorId";
     private final ArticleRepository articleRepository;
     private final UserService userService;
     private final TagService tagService;
@@ -39,7 +40,7 @@ public class ArticleService {
     @Transactional(readOnly = true)
     public ArticleEntity findByAuthorIdAndArticleId(@NonNull final String authorId, @NonNull final Integer articleId) {
         return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(articleId, authorId).orElseThrow(() ->
-                new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
+                new NotFoundException(ArticleEntity.class, ARTICLE_ID_FIELD_NAME, articleId.toString(), AUTHOR_ID_FIELD_NAME, authorId));
     }
 
     @NonNull
@@ -94,18 +95,16 @@ public class ArticleService {
     public ArticleEntity update(@NonNull final String authorId, @NonNull final Integer articleId, @NonNull final String title, final List<String> tags,
                                 @NonNull final String description, @NonNull final String body, @NonNull final StatusArticle status) {
         final ArticleEntity articleEntity = findByAuthorIdAndArticleId(authorId, articleId);
-        final List<TagEntity> tagEntities = tagService.createAndGetAllByName(tags);
 
         articleEntity.setTitle(title);
-        articleEntity.setTags(tagEntities);
+        articleEntity.setTags(tagService.createAndGetAllByName(tags));
         articleEntity.setDescription(description);
         articleEntity.setBody(body);
 
-        StatusArticle statusArticle = articleEntity.getStatus();
-        if (status == PUBLISHED && statusArticle == CREATED) {
+        if (status == PUBLISHED && articleEntity.getStatus() == CREATED) {
             articleEntity.setPublicationDate(LocalDateTime.now());
         }
-        if (status == CREATED && statusArticle == PUBLISHED) {
+        if (status == CREATED && articleEntity.getStatus() == PUBLISHED) {
             articleEntity.setPublicationDate(null);
         }
         articleEntity.setStatus(status);
@@ -116,14 +115,14 @@ public class ArticleService {
     @Transactional
     public void delete(@NonNull final String authorId, @NonNull final Integer articleId) {
         final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId).orElseThrow(() ->
-                new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
+                new NotFoundException(ArticleEntity.class, ARTICLE_ID_FIELD_NAME, articleId.toString(), AUTHOR_ID_FIELD_NAME, authorId));
         articleRepository.delete(articleEntity);
     }
 
     @Transactional
     public void enable(@NonNull final String authorId, @NonNull final Integer articleId, @NonNull final Boolean enabled) {
         final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId).orElseThrow(() ->
-                new NotFoundException(ArticleEntity.class, "articleId", articleId.toString(), "authorId", authorId));
+                new NotFoundException(ArticleEntity.class, ARTICLE_ID_FIELD_NAME, articleId.toString(), AUTHOR_ID_FIELD_NAME, authorId));
 
         articleEntity.setEnabled(enabled);
         articleRepository.save(articleEntity);

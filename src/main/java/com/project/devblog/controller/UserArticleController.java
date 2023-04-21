@@ -25,12 +25,14 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Tag(name = "User articles")
+@Tag(name = UserArticleController.TAG_NAME)
 @ApiV1
 @RestController
 @RequiredArgsConstructor
 public class UserArticleController {
 
+    public static final String TAG_NAME = "User articles";
+    public static final String OPERATION_SUMMARY = "Block or unblock the article";
     private final ArticleService articleService;
 
     @PostMapping("/users/{userId}/articles")
@@ -68,7 +70,7 @@ public class UserArticleController {
         articleService.delete(userId, articleId);
     }
 
-    @Operation(summary = "Block or unblock the article")
+    @Operation(summary = OPERATION_SUMMARY)
     @PatchMapping("/users/{userId}/articles/{articleId}")
     @ResponseStatus(HttpStatus.OK)
     public void enable(@NonNull @PathVariable final String userId,
@@ -94,7 +96,7 @@ public class UserArticleController {
 
     @NonNull
     private OpenArticleResponse toOpenArticleResponse(@NonNull final ArticleEntity article) {
-        PersonalInfo personalInfo = article.getAuthor().getPersonalInfo();
+        final PersonalInfo personalInfo = article.getAuthor().getPersonalInfo();
         return new OpenArticleResponse(
                 article.getId(),
                 article.getTitle(),

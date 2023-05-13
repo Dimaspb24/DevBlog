@@ -94,16 +94,31 @@ class ArticleServiceTest {
     }
 
     @Test
+        // позитивный сценарий поиска статьи по её id
     void findByArticleId() {
+        // ставим заглушку на метод findById() класса ArticleRepository,
+        // тем самым вместо articleRepository.findById(articleId) будет возвращена сущность article,
+        // определённая в блоке init(), срабатывающим перед этим тестом
         doReturn(Optional.of(article)).when(articleRepository).findById(article.getId());
+
+        // имитируем вызов тестируемого метода сервиса
         articleService.findById(article.getId());
+
+        // проверяем, что был произведён вызов articleRepository.findById(articleId)
         verify(articleRepository).findById(article.getId());
     }
 
     @Test
+        // негативный сценарий поиска несуществующей статьи
     void throwIfNotFoundByFindByArticleId() {
+        // ставим заглушку на метод findById() класса ArticleRepository,
+        // тем самым вместо articleRepository.findById(articleId) будет возвращена пустая сущность
         doReturn(Optional.empty()).when(articleRepository).findById(article.getId());
+
+        // проверяем, что ожидаемое исключение было вызвано с нужным сообщением об ошибке
         assertThrows(NotFoundException.class, () -> articleService.findById(article.getId()));
+
+        // проверяем, что был произведён вызов articleRepository.findById(articleId)
         verify(articleRepository).findById(article.getId());
     }
 

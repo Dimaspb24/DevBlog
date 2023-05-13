@@ -7,6 +7,7 @@ import com.project.devblog.model.enums.StatusArticle;
 import com.project.devblog.repository.ArticleRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,30 +29,44 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final UserService userService;
     private final TagService tagService;
+    private static final Logger log = Logger.getLogger(ArticleService.class);
 
     @NonNull
     @Transactional(readOnly = true)
     public ArticleEntity findById(@NonNull final Integer articleId) {
+        log.trace("The ArticleService search method was called with articleId={" + articleId + "}");
+
         return articleRepository.findById(articleId)
-                .orElseThrow(() -> new NotFoundException(ArticleEntity.class, articleId.toString()));
+                .orElseThrow(() -> {
+                    log.error("The article with id={" + articleId + "} was NOT FOUND");
+                    return new NotFoundException(ArticleEntity.class, articleId.toString());
+                });
     }
 
     @NonNull
     @Transactional(readOnly = true)
     public ArticleEntity findByAuthorIdAndArticleId(@NonNull final String authorId, @NonNull final Integer articleId) {
-        return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(articleId, authorId).orElseThrow(() ->
-                new NotFoundException(ArticleEntity.class, ARTICLE_ID_FIELD_NAME, articleId.toString(), AUTHOR_ID_FIELD_NAME, authorId));
+        log.trace("The ArticleService search method was called with authorId={" + authorId + "} and articleId={" + articleId + "}");
+
+        return articleRepository.findByIdAndAuthorIdAndEnabledIsTrue(articleId, authorId).orElseThrow(() -> {
+            log.error("The article with authorId={" + authorId + "} and articleId={" + articleId + "} was NOT FOUND");
+            return new NotFoundException(ArticleEntity.class, ARTICLE_ID_FIELD_NAME, articleId.toString(), AUTHOR_ID_FIELD_NAME, authorId);
+        });
     }
 
     @NonNull
     @Transactional(readOnly = true)
     public Page<ArticleEntity> findAllEnabled(@NonNull final String userId, final Pageable pageable) {
+        log.trace("The ArticleService search method for all articles was called");
+
         return articleRepository.findByAuthorIdAndEnabledIsTrue(userId, pageable);
     }
 
     @NonNull
     @Transactional(readOnly = true)
     public Page<ArticleEntity> findAllEnabled(final String titleContains, final String tagName, final Pageable pageable) {
+        log.trace("The ArticleService search method for all published articles was called with tag={" + tagName + "}");
+
         Page<ArticleEntity> articleEntities;
         if (Objects.isNull(titleContains) && Objects.isNull(tagName)) {
             articleEntities = articleRepository.findByEnabledIsTrueAndPublicationDateIsNotNull(pageable);
@@ -68,6 +83,8 @@ public class ArticleService {
     @NonNull
     @Transactional(readOnly = true)
     public Page<ArticleEntity> findBySubscriptions(@NonNull final String userId, final Pageable pageable) {
+        log.trace("The ArticleService search method by subscriptions was called by the user={" + userId + "}");
+
         return articleRepository.findBySubscriptions(userId, pageable);
     }
 
@@ -75,6 +92,7 @@ public class ArticleService {
     @Transactional
     public ArticleEntity create(@NonNull final String userId, @NonNull final String title, final List<String> tags,
                                 @NonNull final String description, @NonNull final String body, @NonNull final StatusArticle status) {
+        log.trace("The ArticleService creating method was called by the user={" + userId + "}");
 
         final UserEntity author = userService.findById(userId);
         final ArticleEntity articleEntity = new ArticleEntity(title, body, status, description, author);
@@ -87,6 +105,8 @@ public class ArticleService {
             articleEntity.setTags(tagService.createAndGetAllByName(tags));
         }
 
+        log.debug("Article was created: " + articleEntity);
+
         return articleRepository.save(articleEntity);
     }
 
@@ -94,6 +114,8 @@ public class ArticleService {
     @Transactional
     public ArticleEntity update(@NonNull final String authorId, @NonNull final Integer articleId, @NonNull final String title, final List<String> tags,
                                 @NonNull final String description, @NonNull final String body, @NonNull final StatusArticle status) {
+        log.trace("The ArticleService updating method was called with authorId={" + authorId + "} and articleId={" + articleId + "}");
+
         final ArticleEntity articleEntity = findByAuthorIdAndArticleId(authorId, articleId);
 
         articleEntity.setTitle(title);
@@ -109,20 +131,30 @@ public class ArticleService {
         }
         articleEntity.setStatus(status);
 
+        log.debug("Article was updated: " + articleEntity);
+
         return articleRepository.save(articleEntity);
     }
 
     @Transactional
     public void delete(@NonNull final String authorId, @NonNull final Integer articleId) {
-        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId).orElseThrow(() ->
-                new NotFoundException(ArticleEntity.class, ARTICLE_ID_FIELD_NAME, articleId.toString(), AUTHOR_ID_FIELD_NAME, authorId));
+        log.trace("The ArticleService deleting method was called with authorId={" + authorId + "} and articleId={" + articleId + "}");
+
+        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId).orElseThrow(() -> {
+            log.error("The article with authorId ={" + authorId + "} and articleId={" + articleId + "} was NOT FOUND");
+            return new NotFoundException(ArticleEntity.class, ARTICLE_ID_FIELD_NAME, articleId.toString(), AUTHOR_ID_FIELD_NAME, authorId);
+        });
         articleRepository.delete(articleEntity);
     }
 
     @Transactional
     public void enable(@NonNull final String authorId, @NonNull final Integer articleId, @NonNull final Boolean enabled) {
-        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId).orElseThrow(() ->
-                new NotFoundException(ArticleEntity.class, ARTICLE_ID_FIELD_NAME, articleId.toString(), AUTHOR_ID_FIELD_NAME, authorId));
+        log.trace("The ArticleService publishing method was called with authorId={" + authorId + "} and articleId={" + articleId + "}");
+
+        final ArticleEntity articleEntity = articleRepository.findByIdAndAuthorId(articleId, authorId).orElseThrow(() -> {
+            log.error("The article with authorId={" + authorId + "} and articleId={" + articleId + "} was NOT FOUND");
+            return new NotFoundException(ArticleEntity.class, ARTICLE_ID_FIELD_NAME, articleId.toString(), AUTHOR_ID_FIELD_NAME, authorId);
+        });
 
         articleEntity.setEnabled(enabled);
         articleRepository.save(articleEntity);

@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,11 +35,14 @@ public class UserArticleController {
     public static final String TAG_NAME = "User articles";
     public static final String OPERATION_SUMMARY = "Block or unblock the article";
     private final ArticleService articleService;
+    private static final Logger log = Logger.getLogger(UserArticleController.class);
 
     @PostMapping("/users/{userId}/articles")
     @ResponseStatus(HttpStatus.CREATED)
     public OpenArticleResponse create(@NonNull @PathVariable final String userId,
                                       @NonNull @Valid @RequestBody final ArticleRequest request) {
+        log.info("The method of creating the article was called by the user={" + userId + "}");
+
         return toOpenArticleResponse(articleService.create(
                 userId,
                 request.getTitle(),
@@ -52,6 +56,8 @@ public class UserArticleController {
     @ResponseStatus(HttpStatus.OK)
     public OpenArticleResponse find(@NonNull @PathVariable final String userId,
                                     @NonNull @PathVariable final Integer articleId) {
+        log.info("The search method was called by the user={" + userId + "}" + " for the article={" + articleId + "}");
+
         return toOpenArticleResponse(articleService.findByAuthorIdAndArticleId(userId, articleId));
     }
 
@@ -59,6 +65,8 @@ public class UserArticleController {
     @ResponseStatus(HttpStatus.OK)
     public Page<CloseArticleResponse> findAll(@NonNull @PathVariable final String userId,
                                               @SortDefault(sort = "publicationDate") @ParameterObject final Pageable pageable) {
+        log.info("The search method for all articles was called by the user={" + userId + "}");
+
         return articleService.findAllEnabled(userId, pageable)
                 .map(this::toCloseArticleResponse);
     }
@@ -67,6 +75,8 @@ public class UserArticleController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@NonNull @PathVariable final String userId,
                        @NonNull @PathVariable final Integer articleId) {
+        log.info("The deletion method was called by the user={" + userId + "}" + " for the article={" + articleId + "}");
+
         articleService.delete(userId, articleId);
     }
 
@@ -76,6 +86,8 @@ public class UserArticleController {
     public void enable(@NonNull @PathVariable final String userId,
                        @NonNull @PathVariable final Integer articleId,
                        @NonNull @Valid @RequestParam final Boolean enabled) {
+        log.info("The publishing method was called by the user={" + userId + "}" + " for the article={" + articleId + "}");
+
         articleService.enable(userId, articleId, enabled);
     }
 
@@ -84,6 +96,8 @@ public class UserArticleController {
     public OpenArticleResponse update(@NonNull @PathVariable final String userId,
                                       @NonNull @PathVariable final Integer articleId,
                                       @NonNull @Valid @RequestBody final ArticleRequest request) {
+        log.info("The update method was called by the user={" + userId + "}" + " for the article={" + articleId + "}");
+
         return toOpenArticleResponse(articleService.update(
                 userId,
                 articleId,

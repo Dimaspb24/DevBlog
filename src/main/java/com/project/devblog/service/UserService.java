@@ -10,6 +10,7 @@ import com.project.devblog.repository.UserRepository;
 import com.project.devblog.service.idgenerator.Generator;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -31,10 +32,14 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final Generator idGenerator;
     private final VerificationService verificationService;
+    private static final Logger log = Logger.getLogger(UserService.class);
+
 
     @NonNull
     @Transactional
     public UserEntity register(@NonNull String login, @NonNull String password) {
+        log.trace("The UserService register method was called with login={" + login + "}");
+
         String userId = idGenerator.generateId();
         final UserEntity userEntity = UserEntity.builder()
                 .id(userId)
@@ -55,11 +60,15 @@ public class UserService {
     public UserEntity create(@NonNull String id, @NonNull String login, @NonNull Role role, @NonNull Boolean enabled,
                              @Nullable String firstname, @Nullable String lastname, @Nullable String nickname,
                              @Nullable String photo, @Nullable String phone) {
+        log.trace("The UserService creating method was called with login={" + login + "} and nickname={" + nickname + "}");
+
         String encodePassword = passwordEncoder.encode(UUID.randomUUID().toString());
         String verificationCode = Boolean.TRUE.equals((enabled)) ? null : UUID.randomUUID().toString();
         final UserEntity userEntity = new UserEntity(id, login, encodePassword, role, enabled, verificationCode);
         final PersonalInfo personalInfo = new PersonalInfo(firstname, lastname, nickname, photo, null, phone);
         userEntity.setPersonalInfo(personalInfo);
+
+        log.debug("User was created with PersonalInfo={" + personalInfo + "}");
 
         return userRepository.findById(id)
                 .orElseGet(() -> userRepository.save(userEntity));
@@ -68,33 +77,49 @@ public class UserService {
     @NonNull
     @Transactional
     public UserEntity save(UserEntity userEntity) {
+        log.trace("The UserService saving user method was called");
+
         return userRepository.save(userEntity);
     }
 
     @Transactional(readOnly = true)
     public Page<UserEntity> findAll(Pageable pageable) {
+        log.trace("The UserService search method for all users was called");
+
         return userRepository.findAll(pageable);
     }
 
     @Transactional
     public UserEntity findByLogin(@NonNull String login) {
-        return userRepository.findByLogin(login).orElseThrow(() ->
-                new NotFoundException(UserEntity.class, "login", login));
+        log.trace("The UserService search method was called with login={" + login + "}");
+
+        return userRepository.findByLogin(login).orElseThrow(() -> {
+            log.error("The user with login={" + login + "} was NOT FOUND");
+            return new NotFoundException(UserEntity.class, "login", login);
+        });
     }
 
     @Transactional(readOnly = true)
     public UserEntity findById(@NonNull String id) {
-        return userRepository.findById(id).orElseThrow(() ->
-                new NotFoundException(UserEntity.class, id));
+        log.trace("The UserService search method was called with id={" + id + "}");
+
+        return userRepository.findById(id).orElseThrow(() -> {
+            log.error("The user with id={" + id + "} was NOT FOUND");
+            return new NotFoundException(UserEntity.class, id);
+        });
     }
 
     @Transactional(readOnly = true)
     public boolean isExists(@NonNull String login) {
+        log.trace("The UserService check existing user method was called with login={" + login + "}");
+
         return userRepository.existsByLogin(login);
     }
 
     @Transactional
     public void delete(String userId) {
+        log.trace("The UserService deleting user method was called with userId={" + userId + "}");
+
         UserEntity user = findById(userId);
         user.setEnabled(false);
         userRepository.save(user);
@@ -102,13 +127,18 @@ public class UserService {
 
     @Transactional
     public void enable(@NonNull String userId, @NonNull Boolean enabled) {
+        log.trace("The UserService block/unblock user method was called for userId={" + userId + "}");
+
         UserEntity user = findById(userId);
         user.setEnabled(enabled);
-        userRepository.save(user);
+
+        log.debug("User with userId={" + userId + "} was " + (enabled ? "unblocked" : "blocked"));
     }
 
     @Transactional
     public UserEntity update(String userId, UserRequest userRequest) {
+        log.trace("The UserService updating user method was called for userId={" + userId + "}");
+
         UserEntity user = findById(userId);
         PersonalInfo personalInfo = user.getPersonalInfo();
 
@@ -135,6 +165,9 @@ public class UserService {
 
         user.setPersonalInfo(personalInfo);
         userRepository.save(user);
+
+        log.debug("User was updated with PersonalInfo={" + personalInfo + "}");
+
         return user;
     }
 
